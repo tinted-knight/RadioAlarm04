@@ -1,0 +1,3 @@
+include ':radiobrowser'
+include ':app'
+rootProject.name = "RadioAlarm02"
