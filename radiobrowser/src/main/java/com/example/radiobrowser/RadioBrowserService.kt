@@ -1,6 +1,39 @@
 package com.example.radiobrowser
 
-class RadioBrowserService(private val api: RadioBrowserController.RadioBrowserApi) {
+import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.net.InetAddress
+
+private fun plog(message: String) = Log.i("tagg", message)
+
+private data class ServerInfo(val name: String, val isReachable: Boolean)
+
+class RadioBrowserService() {
+
+    private val api = RadioBrowserController.getApi()
+
+    private var baseUrl = ""
+
+    init {
+        plog("RadioBrowserService::init")
+    }
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    suspend fun getAvailableServers(): Boolean = withContext(Dispatchers.IO) {
+        plog("looking for available servers")
+        val rawServerList = InetAddress.getAllByName("all.api.radio-browser.info")
+        val serverList: List<ServerInfo> =
+            rawServerList
+                .asList()
+                .distinctBy { it.canonicalHostName }
+                .map { ServerInfo(name = it.canonicalHostName, isReachable = it.isReachable(500)) }
+
+        val haveReachableServer = serverList.any { it.isReachable }
+        if (haveReachableServer) baseUrl = serverList.first { it.isReachable }.name
+
+        return@withContext haveReachableServer
+    }
 
     suspend fun getAllStations(): List<StationNetworkEntity> {
         return api.getAllStations()
