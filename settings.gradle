@@ -1,3 +1,4 @@
+include ':alarmtheme'
 include ':radiobrowser'
 include ':app'
 rootProject.name = "RadioAlarm02"
