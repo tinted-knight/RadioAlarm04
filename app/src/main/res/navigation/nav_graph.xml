@@ -8,5 +8,13 @@
         android:id="@+id/homeFragment"
         android:name="com.noomit.radioalarm02.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_radioBrowser"
+            app:destination="@id/radioBrowserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/radioBrowserFragment"
+        android:name="com.noomit.radioalarm02.radiobrowserview.ui.RadioBrowserFragment"
+        android:label="RadioBrowserFragment" />
 </navigation>

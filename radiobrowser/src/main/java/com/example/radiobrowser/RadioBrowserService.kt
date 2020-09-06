@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.InetAddress
 
-private fun plog(message: String) = Log.i("tagg", message)
+private fun plog(message: String) = Log.i("tagg-radio_service", "$message, ${Thread.currentThread().name}")
 
 private data class ServerInfo(val name: String, val isReachable: Boolean)
 
@@ -30,6 +30,7 @@ class RadioBrowserService() {
                 .map { ServerInfo(name = it.canonicalHostName, isReachable = it.isReachable(500)) }
 
         val haveReachableServer = serverList.any { it.isReachable }
+        plog("haveReachableServer = $haveReachableServer")
         if (haveReachableServer) baseUrl = serverList.first { it.isReachable }.name
 
         return@withContext haveReachableServer

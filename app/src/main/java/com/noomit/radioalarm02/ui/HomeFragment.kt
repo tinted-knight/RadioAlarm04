@@ -2,9 +2,9 @@ package com.noomit.radioalarm02.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.R
@@ -31,7 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun listenUiEvents() = with(viewBinding) {
         btnBrowseStations.setOnClickListener {
-            Toast.makeText(requireContext(), "test", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_home_to_radioBrowser)
         }
     }
 
