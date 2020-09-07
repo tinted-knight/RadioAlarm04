@@ -1,40 +1,86 @@
 package com.example.radiobrowser
 
 import android.util.Log
+import com.example.radiobrowser.ServerListResponse.ServerListFailure
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.net.InetAddress
+import java.net.UnknownHostException
 
 private fun plog(message: String) =
-    Log.i("tagg-radio_service", "$message, ${Thread.currentThread().name}")
+    Log.i("tagg-radio_service", "$message [${Thread.currentThread().name}]")
 
-private data class ServerInfo(val name: String, val isReachable: Boolean)
+data class ServerInfo(val urlString: String, val isReachable: Boolean)
+
+sealed class ServerListResponse {
+    sealed class ServerListFailure {
+        object UnknownHost : ServerListFailure()
+        object NetworkError : ServerListFailure()
+        object NoReachableServers : ServerListFailure()
+    }
+
+    class Success(val value: List<ServerInfo>) : ServerListResponse()
+    class Failure(val error: ServerListFailure) : ServerListResponse()
+}
 
 class RadioBrowserService() {
 
-    private val api = RadioBrowserController.getApi()
-
-    private var baseUrl = ""
+    private lateinit var api: RadioBrowserApi
+    private val serverList = mutableListOf<ServerInfo>()
 
     init {
         plog("RadioBrowserService::init")
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun getAvailableServers(): Boolean = withContext(Dispatchers.IO) {
+    suspend fun checkForAvailableServers(): ServerListResponse = withContext(Dispatchers.IO) {
         plog("looking for available servers")
-        val rawServerList = InetAddress.getAllByName("all.api.radio-browser.info")
-        val serverList: List<ServerInfo> =
-            rawServerList
+        try {
+            val rawServerList = InetAddress.getAllByName("all.api.radio-browser.info")
+            serverList.clear()
+            serverList.addAll(rawServerList
                 .asList()
                 .distinctBy { it.canonicalHostName }
-                .map { ServerInfo(name = it.canonicalHostName, isReachable = it.isReachable(500)) }
+                .map {
+                    // :=todo qwe
+                    ServerInfo(
+                        urlString = it.canonicalHostName,
+                        isReachable = it.isReachable(500)
+                    )
+                }
+            )
+            // :=deprecated asd
+//            serverList = rawServerList
+//                .asList()
+//                .distinctBy { it.canonicalHostName }
+//                .map {
+//                    ServerInfo(
+//                        urlString = it.canonicalHostName,
+//                        isReachable = it.isReachable(500)
+//                    )
+//                }
 
-        val haveReachableServer = serverList.any { it.isReachable }
-        plog("haveReachableServer = $haveReachableServer")
-        if (haveReachableServer) baseUrl = serverList.first { it.isReachable }.name
+            val haveReachableServer = serverList.any { it.isReachable }
 
-        return@withContext haveReachableServer
+            return@withContext when {
+                haveReachableServer -> {
+                    ServerListResponse.Success(serverList)
+                }
+                else -> ServerListResponse.Failure(ServerListFailure.NoReachableServers)
+            }
+        } catch (e: UnknownHostException) {
+            return@withContext ServerListResponse.Failure(ServerListFailure.UnknownHost)
+        } catch (e: IOException) {
+            return@withContext ServerListResponse.Failure(ServerListFailure.NetworkError)
+        }
+    }
+
+    fun setActiveServer(id: Int) {
+        if (!serverList.isNullOrEmpty()) {
+            api = getApi("https://${serverList[id].urlString}")
+            plog("setActiveServer: ${serverList[id].urlString}")
+        }
     }
 
     suspend fun getAllStations(): List<StationNetworkEntity> {

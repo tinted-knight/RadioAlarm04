@@ -2,8 +2,9 @@ package com.noomit.radioalarm02.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.radiobrowser.RadioBrowserService
@@ -15,11 +16,8 @@ import com.noomit.radioalarm02.vm.ViewModelFactory
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewBinding: FragmentHomeBinding by viewBinding()
-
-    private val viewModel: RadioBrowserViewModel by viewModels {
-        ViewModelFactory(
-            RadioBrowserService()
-        )
+    private val viewModel: RadioBrowserViewModel by activityViewModels {
+        ViewModelFactory(RadioBrowserService())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +35,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun observeModel() {
         viewModel.availableServers.observe(viewLifecycleOwner) {
-            viewBinding.tvText.text = it.toString()
+            it.fold(
+                onSuccess = { values ->
+                    viewBinding.btnServer1.apply {
+                        text = values[0]
+                        isEnabled = true
+                        setOnClickListener { viewModel.setServer(0) }
+                    }
+                    viewBinding.btnServer2.apply {
+                        text = values[1]
+                        isEnabled = true
+                        setOnClickListener { viewModel.setServer(1) }
+                    }
+                    viewBinding.btnServer3.apply {
+                        text = values[2]
+                        isEnabled = true
+                        setOnClickListener { viewModel.setServer(2) }
+                    }
+                },
+                onFailure = { e ->
+                    Toast.makeText(requireContext(), e.localizedMessage, Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 }
