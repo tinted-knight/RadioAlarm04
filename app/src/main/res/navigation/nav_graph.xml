@@ -33,5 +33,17 @@
         android:id="@+id/languageListFragment"
         android:name="com.noomit.radioalarm02.radiobrowserview.ui.LanguageListFragment"
         android:label="fragment_language_list"
-        tools:layout="@layout/fragment_language_list" />
+        tools:layout="@layout/fragment_language_list">
+        <action
+            android:id="@+id/action_languageList_to_stationList"
+            app:destination="@id/stationListFragment"
+            app:enterAnim="@anim/to_in"
+            app:exitAnim="@anim/from_out"
+            app:popEnterAnim="@anim/from_in"
+            app:popExitAnim="@anim/to_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/stationListFragment"
+        android:name="com.noomit.radioalarm02.radiobrowserview.ui.StationListFragment"
+        android:label="StationListFragment" />
 </navigation>

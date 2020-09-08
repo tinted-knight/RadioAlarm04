@@ -1,11 +1,11 @@
 package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.view.View
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
-import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.RadioVMFragment
 
 class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
@@ -19,7 +19,7 @@ class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
             adapter = CategoryListAdapter { value ->
-                requireContext().toast("onClick: $value")
+                findNavController().navigate(R.id.action_languageList_to_stationList)
             }
             // #todo restore state
 //            layoutManager?.onRestoreInstanceState()
