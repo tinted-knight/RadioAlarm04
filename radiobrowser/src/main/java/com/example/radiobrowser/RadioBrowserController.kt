@@ -19,7 +19,7 @@ internal interface RadioBrowserApi {
     @GET("tags")
     suspend fun getTagList(): List<LanguageNetworkEntity>
 
-    @GET("languages")
+    @GET("languages?hidebroken=true")
     suspend fun getLanguageList(): List<LanguageNetworkEntity>
 
     @GET("stations/bylanguage/{lang}")

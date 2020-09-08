@@ -77,7 +77,7 @@ class RadioBrowserService() {
 
     fun setActiveServer(id: Int) {
         if (!serverList.isNullOrEmpty()) {
-            api = getApi("https://${serverList[id].urlString}")
+            api = getApi("https://${serverList[id].urlString}/json/")
             plog("setActiveServer: ${serverList[id].urlString}")
         }
     }
@@ -98,7 +98,7 @@ class RadioBrowserService() {
         return api.getLanguageList()
     }
 
-    suspend fun stationsByCountry(langString: String): List<StationNetworkEntity> {
+    suspend fun stationsByLanguage(langString: String): List<StationNetworkEntity> {
         return api.getStationsByLanguage(langString)
     }
 

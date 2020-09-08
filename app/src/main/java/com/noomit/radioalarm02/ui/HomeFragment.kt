@@ -28,9 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun listenUiEvents() = with(viewBinding) {
-        btnBrowseStations.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_radioBrowser)
-        }
+        btnBrowseStations.setOnClickListener { showRadioBrowser() }
     }
 
     private fun observeModel() {
@@ -41,17 +39,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     viewBinding.btnServer1.apply {
                         text = values[0]
                         isEnabled = true
-                        setOnClickListener { viewModel.setServer(0) }
+                        setOnClickListener {
+                            viewModel.setServer(0)
+                            showRadioBrowser()
+                        }
                     }
                     viewBinding.btnServer2.apply {
                         text = values[1]
                         isEnabled = true
-                        setOnClickListener { viewModel.setServer(1) }
+                        setOnClickListener {
+                            viewModel.setServer(1)
+                            showRadioBrowser()
+                        }
                     }
                     viewBinding.btnServer3.apply {
                         text = values[2]
                         isEnabled = true
-                        setOnClickListener { viewModel.setServer(2) }
+                        setOnClickListener {
+                            viewModel.setServer(2)
+                            showRadioBrowser()
+                        }
                     }
                 },
                 onFailure = { e ->
@@ -61,4 +68,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             )
         }
     }
+
+    private fun showRadioBrowser() = findNavController().navigate(R.id.action_home_to_radioBrowser)
 }
