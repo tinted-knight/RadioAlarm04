@@ -8,6 +8,7 @@ import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerListResponse.Failure
 import com.example.radiobrowser.ServerListResponse.Success
 import com.noomit.radioalarm02.radiobrowserview.model.LanguageModel
+import com.noomit.radioalarm02.radiobrowserview.model.StationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -15,6 +16,14 @@ import timber.log.Timber
 
 private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
+
+typealias StationList = List<StationModel>
+
+typealias StationListResponse = Result<StationList>
+
+typealias LanguageList = List<LanguageModel>
+
+typealias LanguageListResponse = Result<LanguageList>
 
 class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewModel() {
 
@@ -37,7 +46,7 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         apiService.setActiveServer(id)
     }
 
-    val languageList: LiveData<Result<List<LanguageModel>>> = liveData(Dispatchers.Default) {
+    val languageList: LiveData<LanguageListResponse> = liveData(Dispatchers.Default) {
         plog("get language list")
         try {
             val languageList = withContext(Dispatchers.IO) { apiService.getLanguageList() }
@@ -55,7 +64,17 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
             }
         } catch (e: HttpException) {
             plog(e.localizedMessage ?: "Exception: no message")
-            emit(Result.failure<List<LanguageModel>>(Exception("http exception")))
+            emit(Result.failure<LanguageList>(Exception("http exception")))
+        }
+    }
+
+    val stationList: LiveData<StationListResponse> = liveData {
+        plog("get station list")
+        try {
+
+        } catch (e: HttpException) {
+            plog(e.localizedMessage ?: "Exception: no message")
+            emit(Result.failure<StationList>(Exception("http exception")))
         }
     }
 }
