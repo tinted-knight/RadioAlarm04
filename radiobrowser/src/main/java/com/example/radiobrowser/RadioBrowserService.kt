@@ -43,14 +43,13 @@ class RadioBrowserService() {
                 .asList()
                 .distinctBy { it.canonicalHostName }
                 .map {
-                    // :=todo qwe
                     ServerInfo(
                         urlString = it.canonicalHostName,
                         isReachable = it.isReachable(500)
                     )
                 }
             )
-            // :=deprecated asd
+            // :=deprecated
 //            serverList = rawServerList
 //                .asList()
 //                .distinctBy { it.canonicalHostName }

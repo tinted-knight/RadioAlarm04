@@ -37,6 +37,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.availableServers.observe(viewLifecycleOwner) {
             it.fold(
                 onSuccess = { values ->
+                    viewBinding.tvText.text = "success"
                     viewBinding.btnServer1.apply {
                         text = values[0]
                         isEnabled = true
@@ -54,6 +55,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 },
                 onFailure = { e ->
+                    viewBinding.tvText.text = "failure"
                     Toast.makeText(requireContext(), e.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             )
