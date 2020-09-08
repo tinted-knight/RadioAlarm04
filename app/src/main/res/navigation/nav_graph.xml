@@ -12,10 +12,10 @@
         <action
             android:id="@+id/action_home_to_radioBrowser"
             app:destination="@id/radioBrowserFragment"
-            app:enterAnim="@anim/fade_scale_in"
-            app:exitAnim="@anim/fade_scale_out"
-            app:popEnterAnim="@anim/fade_scale_in"
-            app:popExitAnim="@anim/fade_scale_out" />
+            app:enterAnim="@anim/to_in"
+            app:exitAnim="@anim/from_out"
+            app:popEnterAnim="@anim/from_in"
+            app:popExitAnim="@anim/to_out" />
     </fragment>
     <fragment
         android:id="@+id/radioBrowserFragment"
