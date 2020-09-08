@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
 
-class CategoryListAdapter : ListAdapter<String, CategoryListViewHolder>(MyDiffUtilCallback()) {
+typealias ItemClickListener = ((String) -> Unit)
+
+class CategoryListAdapter(private val onClick: ItemClickListener) :
+    ListAdapter<String, CategoryListViewHolder>(MyDiffUtilCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryListViewHolder {
         return CategoryListViewHolder(
             LayoutInflater
@@ -20,6 +23,18 @@ class CategoryListAdapter : ListAdapter<String, CategoryListViewHolder>(MyDiffUt
 
     override fun onBindViewHolder(holder: CategoryListViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onViewAttachedToWindow(holder: CategoryListViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.itemView.setOnClickListener {
+            onClick(getItem(holder.adapterPosition))
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: CategoryListViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.itemView.setOnClickListener(null)
     }
 }
 

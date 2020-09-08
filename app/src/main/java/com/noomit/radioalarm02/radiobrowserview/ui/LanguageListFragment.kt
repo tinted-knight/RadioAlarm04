@@ -5,13 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
+import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.RadioVMFragment
 
 class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
 
     private val viewBinding: FragmentLanguageListBinding by viewBinding()
-
-    private val categoriesAdapter = CategoryListAdapter()
 
     override fun prepareUi() {
         showLoading()
@@ -19,7 +18,9 @@ class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
-            adapter = categoriesAdapter
+            adapter = CategoryListAdapter { value ->
+                requireContext().toast("onClick: $value")
+            }
             // #todo restore state
 //            layoutManager?.onRestoreInstanceState()
         }
@@ -41,7 +42,7 @@ class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
 
     private fun showContent(values: List<String>) = with(viewBinding) {
         progressIndicator.visibility = View.GONE
-        categoriesAdapter.submitList(values)
+        (rvCategoryList.adapter as CategoryListAdapter).submitList(values)
         rvCategoryList.visibility = View.VISIBLE
     }
 
