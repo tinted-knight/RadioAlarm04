@@ -49,7 +49,7 @@ class RadioBrowserService() {
                     )
                 }
             )
-            // :=deprecated
+            // #deprecated
 //            serverList = rawServerList
 //                .asList()
 //                .distinctBy { it.canonicalHostName }

@@ -28,7 +28,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun listenUiEvents() = with(viewBinding) {
-        btnBrowseStations.setOnClickListener { showRadioBrowser() }
     }
 
     private fun observeModel() {

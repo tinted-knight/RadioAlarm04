@@ -8,6 +8,7 @@ import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerListResponse.Failure
 import com.example.radiobrowser.ServerListResponse.Success
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -40,10 +41,10 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         try {
             val languageList = withContext(Dispatchers.IO) { apiService.getLanguageList() }
             if (!languageList.isNullOrEmpty()) {
-                val forViewList = languageList.map {
-                    plog(it.name)
-                    it.name
-                }
+                // #fake delay
+                delay(500)
+                val forViewList = languageList.map { it.name }
+                plog("${forViewList.size}")
                 emit(Result.success(forViewList))
             }
         } catch (e: HttpException) {
