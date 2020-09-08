@@ -20,6 +20,7 @@ class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
             adapter = CategoryListAdapter { value ->
+                viewModel.onLanguageChoosed(value)
                 findNavController().navigate(R.id.action_languageList_to_stationList)
             }
             // #todo restore state

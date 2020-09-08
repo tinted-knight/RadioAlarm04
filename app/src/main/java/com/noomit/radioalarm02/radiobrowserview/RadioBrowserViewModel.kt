@@ -1,8 +1,6 @@
 package com.noomit.radioalarm02.radiobrowserview
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.bumptech.glide.load.HttpException
 import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerListResponse.Failure
@@ -68,13 +66,23 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         }
     }
 
-    val stationList: LiveData<StationListResponse> = liveData {
-        plog("get station list")
-        try {
+    private var chosenLanguage = MutableLiveData<LanguageModel>()
 
-        } catch (e: HttpException) {
-            plog(e.localizedMessage ?: "Exception: no message")
-            emit(Result.failure<StationList>(Exception("http exception")))
+    fun onLanguageChoosed(value: LanguageModel) {
+        chosenLanguage.value = value
+    }
+
+    val stationList: LiveData<StationListResponse> = chosenLanguage.switchMap {
+        plog("get station list")
+        liveData {
+            try {
+                val stationList = withContext(Dispatchers.IO) {
+                    apiService.getStationsByLanguage(it.name)
+                }
+            } catch (e: HttpException) {
+                plog(e.localizedMessage ?: "Exception: no message")
+                emit(Result.failure<StationList>(Exception("http exception")))
+            }
         }
     }
 }

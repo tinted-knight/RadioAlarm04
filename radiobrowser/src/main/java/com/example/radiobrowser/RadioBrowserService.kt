@@ -98,11 +98,11 @@ class RadioBrowserService() {
         return api.getLanguageList()
     }
 
-    suspend fun stationsByLanguage(langString: String): List<StationNetworkEntity> {
+    suspend fun getStationsByLanguage(langString: String): List<StationNetworkEntity> {
         return api.getStationsByLanguage(langString)
     }
 
-    suspend fun stationsByTag(tag: String): List<StationNetworkEntity> {
+    suspend fun getStationsByTag(tag: String): List<StationNetworkEntity> {
         return api.getStationsByTag(tag)
     }
 
