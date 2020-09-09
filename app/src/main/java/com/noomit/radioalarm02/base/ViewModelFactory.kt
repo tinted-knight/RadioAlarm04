@@ -1,9 +1,10 @@
-package com.noomit.radioalarm02.vm
+package com.noomit.radioalarm02.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.Database
+import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 
 @Suppress("UNCHECKED_CAST")

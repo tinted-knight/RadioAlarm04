@@ -7,21 +7,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.FavoritesViewModelFactory
+import com.noomit.radioalarm02.base.PlayerVMFragment
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
+import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.radiobrowserview.StationList
+import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.ui.PlayerVMFragment
-import com.noomit.radioalarm02.vm.FavoritesViewModel
-import com.noomit.radioalarm02.vm.FavoritesViewModelFactory
 
-class StationListFragment() :
-    PlayerVMFragment(
-        playerViewId = R.id.exo_player_view,
-        playerControlId = R.id.exo_player_controls,
-        contentLayoutId = R.layout.fragment_station_list,
-    ) {
+class StationListFragment() : PlayerVMFragment(
+    playerViewId = R.id.exo_player_view,
+    playerControlId = R.id.exo_player_controls,
+    contentLayoutId = R.layout.fragment_station_list,
+) {
 
     private val viewBinding: FragmentStationListBinding by viewBinding()
 

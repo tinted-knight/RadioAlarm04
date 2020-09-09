@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.ui
+package com.noomit.radioalarm02.radiobrowserview.adapters
 
 import android.view.LayoutInflater
 import android.view.View

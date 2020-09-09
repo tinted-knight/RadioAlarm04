@@ -9,9 +9,9 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
-import com.noomit.radioalarm02.vm.ViewModelFactory
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 

@@ -47,11 +47,13 @@ abstract class BasePlayerServiceFragment(
     }
 
     /**
-     * Fires when [service] connects to this [BasePlayerServiceController]
+     * Fires when [service] connects to this [BasePlayerServiceFragment]
      * Expected that here [service] should not be null
      */
     protected open fun onServiceConnected() {}
 
+    //  #deprecated Looks like no need in this method
+    //      since started to use PlayerControlView
     /**
      * Fires on [isPlaying] field changes value
      */
