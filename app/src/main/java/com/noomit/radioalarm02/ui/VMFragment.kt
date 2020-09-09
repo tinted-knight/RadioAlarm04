@@ -6,10 +6,8 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.radiobrowser.RadioBrowserService
 import com.noomit.playerservice.BasePlayerServiceFragment
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
-import com.noomit.radioalarm02.vm.ViewModelFactory
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -31,20 +29,14 @@ abstract class VMFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLay
 
 abstract class RadioVMFragment(@LayoutRes contentLayoutId: Int) : VMFragment(contentLayoutId) {
 
-    protected val viewModel: RadioBrowserViewModel by activityViewModels {
-        plog("RadioVMFragment::viewModel")
-        ViewModelFactory(RadioBrowserService())
-    }
+    protected val viewModel: RadioBrowserViewModel by activityViewModels()
 
 }
 
 abstract class PlayerVMFragment(@IdRes playerViewId: Int, @LayoutRes contentLayoutId: Int) :
     BasePlayerServiceFragment(playerViewId, contentLayoutId) {
 
-    protected val viewModel: RadioBrowserViewModel by activityViewModels {
-        plog("PlayerVMFragment::viewModel")
-        ViewModelFactory(RadioBrowserService())
-    }
+    protected val viewModel: RadioBrowserViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
