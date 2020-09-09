@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.radiobrowserview.ui
 
+import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -12,9 +13,18 @@ import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.PlayerVMFragment
 
 class StationListFragment() :
-    PlayerVMFragment(R.id.exo_player_view, R.layout.fragment_station_list) {
+    PlayerVMFragment(
+        playerViewId = R.id.exo_player_view,
+        playerControlId = R.id.exo_player_controls,
+        contentLayoutId = R.layout.fragment_station_list,
+    ) {
 
     private val viewBinding: FragmentStationListBinding by viewBinding()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewBinding.exoPlayerControls.player = playerView.player
+    }
 
     override fun prepareUi() {
         showLoading()

@@ -33,8 +33,12 @@ abstract class RadioVMFragment(@LayoutRes contentLayoutId: Int) : VMFragment(con
 
 }
 
-abstract class PlayerVMFragment(@IdRes playerViewId: Int, @LayoutRes contentLayoutId: Int) :
-    BasePlayerServiceFragment(playerViewId, contentLayoutId) {
+abstract class PlayerVMFragment(
+    @IdRes playerViewId: Int,
+    @IdRes playerControlId: Int,
+    @LayoutRes contentLayoutId: Int,
+) :
+    BasePlayerServiceFragment(playerViewId, playerControlId, contentLayoutId) {
 
     protected val viewModel: RadioBrowserViewModel by activityViewModels()
 

@@ -9,7 +9,6 @@ import com.noomit.radioalarm02.ui.RadioVMFragment
 class RadioBrowserFragment() : RadioVMFragment(R.layout.fragment_radio_browser) {
     private val viewBinding: FragmentRadioBrowserBinding by viewBinding()
 
-
     override fun prepareUi() {}
 
     override fun observeModel() {}

@@ -10,15 +10,18 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 
 abstract class BasePlayerServiceFragment(
     @IdRes private val playerViewId: Int,
+    @IdRes private val playerControlId: Int,
     @LayoutRes contentLayoutId: Int,
 ) :
     Fragment(contentLayoutId) {
 
-    private lateinit var playerView: PlayerView
+    protected lateinit var playerView: PlayerView
+    protected lateinit var playerControlView: PlayerControlView
 
     protected var service: PlayerService.PlayerServiceBinder? = null
 
@@ -32,6 +35,7 @@ abstract class BasePlayerServiceFragment(
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service is PlayerService.PlayerServiceBinder) {
                 playerView.player = service.exoPlayerInstance
+                playerControlView.player = playerView.player
                 this@BasePlayerServiceFragment.service = service
                 onServiceConnected()
             }
@@ -56,6 +60,7 @@ abstract class BasePlayerServiceFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindExoPlayerService()
         playerView = view.findViewById(playerViewId)
+        playerControlView = view.findViewById(playerControlId)
     }
 
     override fun onDestroyView() {

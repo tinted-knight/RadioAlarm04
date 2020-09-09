@@ -23,6 +23,10 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import timber.log.Timber
+
+private fun plog(message: String) =
+    Timber.tag("tagg-player").i("$message [${Thread.currentThread().name}]")
 
 class PlayerService : Service() {
 
@@ -66,6 +70,15 @@ class PlayerService : Service() {
     }
 
     private val playerStateListener = object : Player.DefaultEventListener() {
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) {
+                Player.STATE_READY -> updateNotification()
+//                Player.STATE_IDLE -> plog("IDLE")
+//                Player.STATE_BUFFERING -> plog("BUFFERING")
+//                Player.STATE_ENDED -> plog("ENDED")
+            }
+        }
+
         override fun onPlayerError(error: ExoPlaybackException?) {
             val intent = Intent(BROADCAST_FILTER)
             intent.putExtra(BR_SERVICE_UNAVAILABLE, BR_CODE_ERROR)
@@ -85,7 +98,7 @@ class PlayerService : Service() {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, NOTIF_CHANNEL_ID).apply {
             setContent(content)
-            setSmallIcon(R.drawable.ic_play_arrow_24)
+            setSmallIcon(R.drawable.ic_radio_24)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(
@@ -103,7 +116,7 @@ class PlayerService : Service() {
     }
 
     private fun updateNotification() {
-        updateRemoteViews(remoteViews)
+        updateRemoteViews()
         displayNotification()
     }
 
@@ -122,7 +135,7 @@ class PlayerService : Service() {
         }
     }
 
-    private fun updateRemoteViews(remoteViews: RemoteViews) = composeRemoteViews(remoteViews)
+    private fun updateRemoteViews(isPlaying: Boolean = true) = composeRemoteViews(remoteViews)
     private fun composeRemoteViews(remoteViews: RemoteViews) = with(remoteViews) {
         setImageViewResource(
             R.id.btn_play_pause,
