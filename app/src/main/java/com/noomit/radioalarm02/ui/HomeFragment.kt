@@ -16,6 +16,7 @@ import com.noomit.radioalarm02.vm.ViewModelFactory
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewBinding: FragmentHomeBinding by viewBinding()
+
     private val viewModel: RadioBrowserViewModel by activityViewModels {
         ViewModelFactory(RadioBrowserService())
     }
@@ -28,6 +29,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun listenUiEvents() = with(viewBinding) {
+        btnBrowseStations.setOnClickListener {
+        }
     }
 
     private fun observeModel() {

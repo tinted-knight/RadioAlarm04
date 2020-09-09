@@ -5,8 +5,8 @@ import com.bumptech.glide.load.HttpException
 import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerListResponse.Failure
 import com.example.radiobrowser.ServerListResponse.Success
-import com.noomit.radioalarm02.radiobrowserview.model.LanguageModel
-import com.noomit.radioalarm02.radiobrowserview.model.StationModel
+import com.noomit.radioalarm02.model.LanguageModel
+import com.noomit.radioalarm02.model.StationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.squareup.sqldelight'
 
 android {
     compileSdkVersion 29
@@ -79,6 +80,9 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:$exo_payer"
     implementation "com.google.android.exoplayer:exoplayer-dash:$exo_payer"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exo_payer"
+    //SQLDelight
+    implementation "com.squareup.sqldelight:android-driver:$sql_delight"
+    implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
 //    //swipe button
 //    implementation 'com.github.stfalcon:swipeable-button:0.1.0'
 //    //Room

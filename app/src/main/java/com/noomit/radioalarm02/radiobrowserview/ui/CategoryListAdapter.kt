@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.radiobrowserview.model.LanguageModel
+import com.noomit.radioalarm02.model.LanguageModel
 
 typealias LanguageClickListener = ((LanguageModel) -> Unit)
 

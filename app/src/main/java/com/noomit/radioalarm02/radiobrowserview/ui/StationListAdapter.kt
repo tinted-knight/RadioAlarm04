@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.radiobrowserview.model.StationModel
+import com.noomit.radioalarm02.model.StationModel
 
 typealias StationClickListener = ((StationModel) -> Unit)
+typealias StationLongClickListener = ((StationModel) -> Unit)
 
-class StationListAdapter(private val onClick: StationClickListener) :
+class StationListAdapter(
+    private val onClick: StationClickListener,
+    private val onLongClick: StationLongClickListener,
+) :
     ListAdapter<StationModel, StationListViewHolder>(StationListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationListViewHolder {
         return StationListViewHolder(
@@ -31,11 +35,16 @@ class StationListAdapter(private val onClick: StationClickListener) :
         holder.itemView.setOnClickListener {
             onClick(getItem(holder.adapterPosition))
         }
+        holder.itemView.setOnLongClickListener {
+            onLongClick(getItem(holder.adapterPosition))
+            true
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: StationListViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.setOnClickListener(null)
+        holder.itemView.setOnLongClickListener(null)
     }
 }
 

@@ -2,15 +2,19 @@ package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
+import com.noomit.radioalarm02.model.AppDatabase
+import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.radiobrowserview.StationList
-import com.noomit.radioalarm02.radiobrowserview.model.StationModel
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.PlayerVMFragment
+import com.noomit.radioalarm02.vm.FavoritesViewModel
+import com.noomit.radioalarm02.vm.FavoritesViewModelFactory
 
 class StationListFragment() :
     PlayerVMFragment(
@@ -20,6 +24,10 @@ class StationListFragment() :
     ) {
 
     private val viewBinding: FragmentStationListBinding by viewBinding()
+
+    private val favoritesViewModel: FavoritesViewModel by viewModels {
+        FavoritesViewModelFactory(AppDatabase.getInstance(requireContext()))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,10 +40,16 @@ class StationListFragment() :
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
-            adapter = StationListAdapter { value ->
-                requireContext().toast(value.name)
-                play(value)
-            }
+            adapter = StationListAdapter(
+                onClick = { value ->
+                    requireContext().toast(value.name)
+                    play(value)
+                },
+                onLongClick = { value ->
+                    requireContext().toast("long click: ${value.name}")
+                    favoritesViewModel.add(value)
+                }
+            )
             // #todo StationList restore state
 //            layoutManager?.onRestoreInstanceState()
         }

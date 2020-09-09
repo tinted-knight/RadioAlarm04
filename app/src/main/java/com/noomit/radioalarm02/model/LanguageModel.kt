@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.model
+package com.noomit.radioalarm02.model
 
 data class LanguageModel(
     val name: String,

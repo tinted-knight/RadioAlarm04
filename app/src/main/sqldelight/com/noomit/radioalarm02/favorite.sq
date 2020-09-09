@@ -1,0 +1,16 @@
+CREATE TABLE favorite (
+    name TEXT NOT NULL,
+    stream_url TEXT NOT NULL,
+    country TEXT NOT NULL,
+    homepage TEXT NOT NULL,
+    favicon TEXT NOT NULL,
+    tags TEXT NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM favorite;
+
+insert:
+INSERT INTO favorite(name, stream_url, country, homepage, favicon, tags)
+VALUES ?;
