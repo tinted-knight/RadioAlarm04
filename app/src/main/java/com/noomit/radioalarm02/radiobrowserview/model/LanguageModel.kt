@@ -9,4 +9,10 @@ data class StationModel(
     val name: String,
     val upvotes: String,
     val streamUrl: String,
+    val country: String,
+    val homepage: String,
+    val codec: String,
+    val bitrate: String,
+    val favicon: String,
+    val tags: String,
 )

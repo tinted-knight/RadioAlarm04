@@ -6,7 +6,7 @@
     tools:context=".radiobrowserview.ui.LanguageListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_category_list"
+        android:id="@+id/rv_station_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"

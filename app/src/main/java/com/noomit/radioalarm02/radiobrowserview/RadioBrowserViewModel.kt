@@ -79,10 +79,42 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
                 val stationList = withContext(Dispatchers.IO) {
                     apiService.getStationsByLanguage(it.name)
                 }
+                if (stationList.isNullOrEmpty()) {
+                    emit(Result.failure<StationList>(Exception("Station list is empty")))
+                } else {
+                    // #fake delay
+                    delay(500)
+                    val forViewList = stationList
+                        .map {
+                            StationModel(
+                                name = it.name,
+                                upvotes = it.votes.toString(),
+                                streamUrl = it.url,
+                                country = it.country,
+                                homepage = it.homepage,
+                                codec = it.codec,
+                                bitrate = it.bitrate,
+                                favicon = it.favicon,
+                                tags = it.tags,
+                            )
+                        }
+                    plog("${forViewList.size}")
+                    emit(Result.success(forViewList))
+                }
             } catch (e: HttpException) {
                 plog(e.localizedMessage ?: "Exception: no message")
                 emit(Result.failure<StationList>(Exception("http exception")))
             }
+        }
+    }
+
+    // #future
+    val filteredStationList: LiveData<StationListResponse> = stationList.switchMap { response ->
+        liveData {
+            response.fold(
+                onSuccess = {},
+                onFailure = { emit(Result.failure<StationList>(it)) },
+            )
         }
     }
 }

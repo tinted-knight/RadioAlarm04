@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.radiobrowserview.model.LanguageModel
 
-typealias ItemClickListener = ((LanguageModel) -> Unit)
+typealias LanguageClickListener = ((LanguageModel) -> Unit)
 
-class CategoryListAdapter(private val onClick: ItemClickListener) :
-    ListAdapter<LanguageModel, CategoryListViewHolder>(MyDiffUtilCallback()) {
+class CategoryListAdapter(private val onClick: LanguageClickListener) :
+    ListAdapter<LanguageModel, CategoryListViewHolder>(CategoryDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryListViewHolder {
         return CategoryListViewHolder(
             LayoutInflater
@@ -39,7 +39,7 @@ class CategoryListAdapter(private val onClick: ItemClickListener) :
     }
 }
 
-private class MyDiffUtilCallback : DiffUtil.ItemCallback<LanguageModel>() {
+private class CategoryDiffUtil : DiffUtil.ItemCallback<LanguageModel>() {
     override fun areItemsTheSame(oldItem: LanguageModel, newItem: LanguageModel): Boolean {
         return oldItem == newItem
     }
