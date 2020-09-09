@@ -41,6 +41,7 @@ android {
 dependencies {
     implementation project(":radiobrowser")
     implementation project(":alarmtheme")
+    implementation project(":playerservice")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -73,7 +74,11 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
     //ViewBinding helper
-    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.0.0'
+    implementation "com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:$view_binding_delegate"
+    //ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer-core:$exo_payer"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exo_payer"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_payer"
 //    //swipe button
 //    implementation 'com.github.stfalcon:swipeable-button:0.1.0'
 //    //Room

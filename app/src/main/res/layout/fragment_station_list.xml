@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".radiobrowserview.ui.LanguageListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_station_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_category"
-        tools:visibility="visible" />
+        android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress_indicator"
-        android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_station_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_category"
+            tools:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            tools:visibility="visible" />
+    </FrameLayout>
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exo_player_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        tools:visibility="visible" />
+        app:controller_layout_id="@layout/custom_playback_controls"
+        tools:visibility="invisible" />
 
-</FrameLayout>
+</LinearLayout>

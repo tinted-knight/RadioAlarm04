@@ -25,6 +25,10 @@ typealias LanguageListResponse = Result<LanguageList>
 
 class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewModel() {
 
+    init {
+        plog("RadioBrowserViewModel.init")
+    }
+
     val availableServers: LiveData<Result<List<String>>> = liveData(Dispatchers.Default) {
         plog("RadioBrowserViewModel")
         when (val serverList = apiService.checkForAvailableServers()) {
@@ -51,12 +55,14 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
             if (!languageList.isNullOrEmpty()) {
                 // #fake delay
                 delay(500)
-                val forViewList = languageList.map {
-                    LanguageModel(
-                        name = it.name,
-                        stationCount = it.stationcount.toString(),
-                    )
-                }
+                val forViewList = languageList
+                    .sortedByDescending { it.stationcount }
+                    .map {
+                        LanguageModel(
+                            name = it.name,
+                            stationCount = it.stationcount.toString(),
+                        )
+                    }
                 plog("${forViewList.size}")
                 emit(Result.success(forViewList))
             }
@@ -69,6 +75,7 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
     private var chosenLanguage = MutableLiveData<LanguageModel>()
 
     fun onLanguageChoosed(value: LanguageModel) {
+        if (chosenLanguage.value == value) return
         chosenLanguage.value = value
     }
 
@@ -76,15 +83,17 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         plog("get station list")
         liveData {
             try {
+                emit(Result.success(emptyList()))
                 val stationList = withContext(Dispatchers.IO) {
                     apiService.getStationsByLanguage(it.name)
                 }
                 if (stationList.isNullOrEmpty()) {
-                    emit(Result.failure<StationList>(Exception("Station list is empty")))
+                    emit(Result.success(emptyList()))
                 } else {
                     // #fake delay
                     delay(500)
                     val forViewList = stationList
+                        .sortedByDescending { it.votes }
                         .map {
                             StationModel(
                                 name = it.name,

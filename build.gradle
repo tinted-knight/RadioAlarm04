@@ -17,6 +17,8 @@ buildscript {
         material = '1.2.0'
         kotlinx_coroutines_android = '1.3.7'
         glide = '4.10.0'
+        exo_payer = '2.7.3'
+        view_binding_delegate = '1.0.0'
     }
 
     dependencies {
