@@ -2,28 +2,32 @@ package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.FavoritesViewModelFactory
-import com.noomit.radioalarm02.base.PlayerVMFragment
+import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.model.StationModel
+import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.StationList
 import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
 import com.noomit.radioalarm02.toast
 
-class StationListFragment() : PlayerVMFragment(
+class StationListFragment() : PlayerBaseFragment(
     playerViewId = R.id.exo_player_view,
     playerControlId = R.id.exo_player_controls,
     contentLayoutId = R.layout.fragment_station_list,
 ) {
 
-    private val viewBinding: FragmentStationListBinding by viewBinding()
+    override val viewBinding: FragmentStationListBinding by viewBinding()
+
+    private val viewModel: RadioBrowserViewModel by activityViewModels()
 
     private val favoritesViewModel: FavoritesViewModel by viewModels {
         FavoritesViewModelFactory(AppDatabase.getInstance(requireContext()))
@@ -95,6 +99,7 @@ class StationListFragment() : PlayerVMFragment(
         isPlaying = true
     }
 
+    // #deprecated look like no need because of using controls
     private fun stop() {
         service?.stop()
         isPlaying = false

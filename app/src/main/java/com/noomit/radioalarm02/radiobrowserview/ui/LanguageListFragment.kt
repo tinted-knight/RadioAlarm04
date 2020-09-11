@@ -1,18 +1,22 @@
 package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.RadioVMFragment
+import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
 import com.noomit.radioalarm02.radiobrowserview.LanguageList
+import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.CategoryListAdapter
 
-class LanguageListFragment : RadioVMFragment(R.layout.fragment_language_list) {
+class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
 
-    private val viewBinding: FragmentLanguageListBinding by viewBinding()
+    private val viewModel: RadioBrowserViewModel by activityViewModels()
+
+    override val viewBinding: FragmentLanguageListBinding by viewBinding()
 
     override fun prepareUi() {
         showLoading()

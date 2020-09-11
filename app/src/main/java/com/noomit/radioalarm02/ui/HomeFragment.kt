@@ -30,6 +30,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun listenUiEvents() = with(viewBinding) {
         btnBrowseStations.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_favorites)
         }
     }
 

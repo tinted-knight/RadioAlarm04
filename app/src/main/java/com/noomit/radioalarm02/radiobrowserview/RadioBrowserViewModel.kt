@@ -87,8 +87,9 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
                 val stationList = withContext(Dispatchers.IO) {
                     apiService.getStationsByLanguage(it.name)
                 }
+                // #think
                 if (stationList.isNullOrEmpty()) {
-                    emit(Result.success(emptyList()))
+                    emit(Result.success(emptyList<StationModel>()))
                 } else {
                     // #fake delay
                     delay(500)

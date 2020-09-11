@@ -16,6 +16,13 @@
             app:exitAnim="@anim/from_out"
             app:popEnterAnim="@anim/from_in"
             app:popExitAnim="@anim/to_out" />
+        <action
+            android:id="@+id/action_home_to_favorites"
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/to_in"
+            app:exitAnim="@anim/from_out"
+            app:popEnterAnim="@anim/from_in"
+            app:popExitAnim="@anim/to_out" />
     </fragment>
     <fragment
         android:id="@+id/radioBrowserFragment"
@@ -46,4 +53,8 @@
         android:id="@+id/stationListFragment"
         android:name="com.noomit.radioalarm02.radiobrowserview.ui.StationListFragment"
         android:label="StationListFragment" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.noomit.radioalarm02.favoritesview.ui.FavoritesFragment"
+        android:label="FavoritesFragment" />
 </navigation>

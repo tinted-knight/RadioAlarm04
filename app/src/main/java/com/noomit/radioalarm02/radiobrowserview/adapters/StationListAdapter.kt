@@ -18,13 +18,11 @@ class StationListAdapter(
     private val onLongClick: StationLongClickListener,
 ) :
     ListAdapter<StationModel, StationListViewHolder>(StationListDiffUtil()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationListViewHolder {
-        return StationListViewHolder(
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.item_category, parent, false)
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = StationListViewHolder(
+        LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.item_category, parent, false)
+    )
 
     override fun onBindViewHolder(holder: StationListViewHolder, position: Int) {
         holder.bind(getItem(position))
