@@ -1,0 +1,17 @@
+CREATE TABLE alarm (
+    hour INTEGER NOT NULL,
+    minute INTEGER NOT NULL,
+    is_enabled INTEGER NOT NULL,
+    bell_id INTEGER NOT NULL,
+    repeat INTEGER NOT NULL,
+    days_of_week INTEGER NOT NULL,
+    time_in_millis INTEGER NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM alarm;
+
+insert:
+INSERT INTO alarm(hour, minute, is_enabled, bell_id, repeat, days_of_week, time_in_millis)
+VALUES ?;

@@ -12,7 +12,7 @@ import timber.log.Timber
 private fun plog(message: String) =
     Timber.tag("tagg-app-favorites").i("$message [${Thread.currentThread().name}]")
 
-class FavoritesViewModel(private val database: Database) : ViewModel() {
+class FavoritesViewModel(database: Database) : ViewModel() {
 
     private val queries = database.favoriteQueries
 

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.FavoritesViewModelFactory
+import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
@@ -30,7 +30,7 @@ class StationListFragment() : PlayerBaseFragment(
     private val viewModel: RadioBrowserViewModel by activityViewModels()
 
     private val favoritesViewModel: FavoritesViewModel by viewModels {
-        FavoritesViewModelFactory(AppDatabase.getInstance(requireContext()))
+        DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

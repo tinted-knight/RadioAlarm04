@@ -9,8 +9,10 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
+import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -19,6 +21,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewModel: RadioBrowserViewModel by activityViewModels {
         ViewModelFactory(RadioBrowserService())
+    }
+
+    private val alarmManager: AlarmManagerViewModel by activityViewModels {
+        DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,7 +40,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         btnAlarmAdd.setOnClickListener {
-            TimePickerFragment().show(childFragmentManager, "tag_time_picker")
+            val timePicker = TimePickerFragment { _, hour, minute ->
+                alarmManager.insert(hour, minute)
+            }
+            timePicker.show(childFragmentManager, "tag_time_picker")
         }
     }
 
