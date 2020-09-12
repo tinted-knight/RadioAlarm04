@@ -32,6 +32,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         btnBrowseStations.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_favorites)
         }
+
+        btnAlarmAdd.setOnClickListener {
+            TimePickerFragment().show(childFragmentManager, "tag_time_picker")
+        }
     }
 
     private fun observeModel() {
