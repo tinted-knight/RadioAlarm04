@@ -75,11 +75,26 @@
         android:id="@+id/rv_alarms"
         android:layout_width="0dp"
         android:layout_height="250dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="2"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"
-        tools:listitem="@layout/item_alarm" />
+        tools:listitem="@layout/item_alarm"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_indicator"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/rv_alarms"
+        app:layout_constraintEnd_toEndOf="@id/rv_alarms"
+        app:layout_constraintStart_toStartOf="@id/rv_alarms"
+        app:layout_constraintTop_toTopOf="@id/rv_alarms"
+        app:layout_constraintVertical_bias="0.51"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

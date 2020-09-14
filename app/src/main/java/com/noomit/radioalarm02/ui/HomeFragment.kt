@@ -3,21 +3,28 @@ package com.noomit.radioalarm02.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.radiobrowser.RadioBrowserService
+import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
+import timber.log.Timber
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+private fun plog(message: String) =
+    Timber.tag("tagg-app-home").i("$message [${Thread.currentThread().name}]")
 
-    private val viewBinding: FragmentHomeBinding by viewBinding()
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
+
+    override val viewBinding: FragmentHomeBinding by viewBinding()
 
     private val viewModel: RadioBrowserViewModel by activityViewModels {
         ViewModelFactory(RadioBrowserService())
@@ -34,7 +41,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         observeModel()
     }
 
-    private fun listenUiEvents() = with(viewBinding) {
+    override fun prepareUi() {
+        showLoading()
+        viewBinding.rvAlarms.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+            isVerticalScrollBarEnabled = true
+            // #fake
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+            adapter = AlarmListAdapter(
+                deleteClickListener = { alarm ->
+                }
+            )
+            // #todo StationList restore state
+//            layoutManager?.onRestoreInstanceState()
+        }
+    }
+
+    override fun listenUiEvents() = with(viewBinding) {
         btnBrowseStations.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_favorites)
         }
@@ -47,7 +71,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun observeModel() {
+    override fun observeModel() {
+        alarmManager.alarms.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                plog("alarm list: ${it.size}")
+                it.forEach { alarm -> plog(alarm.toString()) }
+                showContent(it)
+            } else {
+                showEmpty()
+            }
+        }
+
         viewModel.availableServers.observe(viewLifecycleOwner) {
             it.fold(
                 onSuccess = { values ->
@@ -83,6 +117,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             )
         }
+    }
+
+    private fun showLoading() = with(viewBinding) {
+        progressIndicator.visibility = View.VISIBLE
+        rvAlarms.visibility = View.INVISIBLE
+    }
+
+    private fun showContent(values: List<Alarm>) = with(viewBinding) {
+        (rvAlarms.adapter as AlarmListAdapter).submitList(values)
+        rvAlarms.visibility = View.VISIBLE
+        progressIndicator.visibility = View.INVISIBLE
+    }
+
+    private fun showEmpty() {
+        viewBinding.progressIndicator.visibility = View.INVISIBLE
     }
 
     private fun showRadioBrowser() = findNavController().navigate(R.id.action_home_to_radioBrowser)
