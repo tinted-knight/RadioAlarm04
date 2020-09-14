@@ -3,6 +3,7 @@ package com.noomit.radioalarm02.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -18,7 +19,8 @@ typealias MelodyClickListener = ((Alarm) -> Unit)
 typealias MelodyLongClickListener = ((Alarm) -> Unit)
 
 class AlarmListAdapter(
-    deleteClickListener: DeleteClickListener,
+    private val deleteClickListener: DeleteClickListener,
+    private val deleteLonglickListener: DeleteLongClickListener,
 ) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
         LayoutInflater.from(parent.context)
@@ -31,10 +33,21 @@ class AlarmListAdapter(
 
     override fun onViewAttachedToWindow(holder: AlarmListViewHolder) {
         super.onViewAttachedToWindow(holder)
+        holder.apply {
+            btnDelete.setOnClickListener { deleteClickListener(getItem(adapterPosition)) }
+            btnDelete.setOnLongClickListener {
+                deleteLonglickListener(getItem(adapterPosition))
+                return@setOnLongClickListener true
+            }
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: AlarmListViewHolder) {
         super.onViewDetachedFromWindow(holder)
+        holder.apply {
+            btnDelete.setOnClickListener(null)
+            btnDelete.setOnLongClickListener(null)
+        }
     }
 }
 
@@ -51,11 +64,11 @@ class AlarmListDiffUtil : DiffUtil.ItemCallback<Alarm>() {
 }
 
 class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    val btnDelete: ImageButton = itemView.findViewById(R.id.imbtn_delete)
+
     fun bind(value: Alarm) = with(itemView) {
         findViewById<TextView>(R.id.tv_time).text = "${value.hour}:${value.minute}"
-        findViewById<SwitchCompat>(R.id.sw_enabled).isChecked = when (value.is_enabled) {
-            0L -> false
-            else -> true
-        }
+        findViewById<SwitchCompat>(R.id.sw_enabled).isChecked = value.is_enabled ?: false
     }
 }

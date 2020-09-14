@@ -11,12 +11,13 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.AlarmManagerViewModelFactory
 import com.noomit.radioalarm02.base.BaseFragment
-import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
+import com.noomit.radioalarm02.toast
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -31,7 +32,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private val alarmManager: AlarmManagerViewModel by activityViewModels {
-        DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
+        AlarmManagerViewModelFactory(
+            AppDatabase.getInstance(requireActivity()),
+            requireActivity().application,
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,6 +55,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
             adapter = AlarmListAdapter(
                 deleteClickListener = { alarm ->
+                    requireContext().toast("delete click")
+                    plog("delete click: $alarm")
+                },
+                deleteLonglickListener = { alarm ->
+                    requireContext().toast("delete long click")
+                    alarmManager.delete(alarm)
                 }
             )
             // #todo StationList restore state
@@ -74,13 +84,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override fun observeModel() {
         alarmManager.alarms.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                plog("alarm list: ${it.size}")
-                it.forEach { alarm -> plog(alarm.toString()) }
                 showContent(it)
             } else {
                 showEmpty()
             }
         }
+
+//        alarmManager.nextActive.observe(viewLifecycleOwner) {
+//
+//        }
 
         viewModel.availableServers.observe(viewLifecycleOwner) {
             it.fold(
@@ -130,7 +142,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         progressIndicator.visibility = View.INVISIBLE
     }
 
-    private fun showEmpty() {
+    private fun showEmpty() = with(viewBinding) {
+        (viewBinding.rvAlarms.adapter as AlarmListAdapter).submitList(emptyList())
+        rvAlarms.visibility = View.INVISIBLE
         viewBinding.progressIndicator.visibility = View.INVISIBLE
     }
 

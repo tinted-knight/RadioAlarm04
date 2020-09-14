@@ -1,9 +1,19 @@
 package com.noomit.radioalarm02.model
 
-import com.noomit.radioalarm02.Alarm
 import java.util.*
 
-fun composeAlarmEntity(hour: Int, minute: Int): Alarm {
+// #think temporary
+data class Alarma(
+    val hour: Int,
+    val minute: Int,
+    val isEnabled: Boolean,
+    val bellId: Int,
+    val repeat: Boolean,
+    val daysOfWeek: Int,
+    val timeInMillis: Long,
+)
+
+fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
     val calendar = Calendar.getInstance().apply {
         val now = timeInMillis
         set(Calendar.HOUR_OF_DAY, hour)
@@ -12,22 +22,22 @@ fun composeAlarmEntity(hour: Int, minute: Int): Alarm {
         if (timeInMillis < now) add(Calendar.DAY_OF_YEAR, 1)
     }
 
-    return Alarm(
+    return Alarma(
         hour = calendar.hour,
         minute = calendar.minute,
-        is_enabled = 1,
-        bell_id = -1,
-        repeat = 0,
-        days_of_week = zipDaysInBits(listOf(calendar.dayOfWeek)).toLong(),
-        time_in_millis = calendar.timeInMillis,
+        isEnabled = true,
+        bellId = -1,
+        repeat = false,
+        daysOfWeek = zipDaysInBits(listOf(calendar.dayOfWeek)),
+        timeInMillis = calendar.timeInMillis,
     )
 }
 
-private val Calendar.hour: Long
-    get() = get(Calendar.HOUR_OF_DAY).toLong()
+private val Calendar.hour: Int
+    get() = get(Calendar.HOUR_OF_DAY)
 
-private val Calendar.minute: Long
-    get() = get(Calendar.MINUTE).toLong()
+private val Calendar.minute: Int
+    get() = get(Calendar.MINUTE)
 
 private val Calendar.dayOfWeek: Int
     get() = get(Calendar.DAY_OF_WEEK)
