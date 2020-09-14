@@ -8,6 +8,7 @@ data class Alarma(
     val minute: Int,
     val isEnabled: Boolean,
     val bellId: Int,
+    val bellName: String,
     val repeat: Boolean,
     val daysOfWeek: Int,
     val timeInMillis: Long,
@@ -27,6 +28,7 @@ fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
         minute = calendar.minute,
         isEnabled = true,
         bellId = -1,
+        bellName = "system", // #todo i18n
         repeat = false,
         daysOfWeek = zipDaysInBits(listOf(calendar.dayOfWeek)),
         timeInMillis = calendar.timeInMillis,

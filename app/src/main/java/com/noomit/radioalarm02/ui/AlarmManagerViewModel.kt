@@ -9,6 +9,7 @@ import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.composeAlarmEntity
 import com.noomit.radioalarm02.model.scheduleAlarm
+import com.noomit.radioalarm02.model.switchBitByDay
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
@@ -40,6 +41,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
             minute = alarm.minute,
             is_enabled = alarm.isEnabled,
             bell_id = alarm.bellId,
+            bell_name = alarm.bellName,
             repeat = alarm.repeat,
             days_of_week = alarm.daysOfWeek,
             time_in_millis = alarm.timeInMillis,
@@ -47,6 +49,11 @@ class AlarmManagerViewModel(database: Database, application: Application) :
     }
 
     fun delete(alarm: Alarm) = queries.delete(id = alarm.id)
+
+    fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm) = queries.updateDays(
+        daysOfWeek = switchBitByDay(dayToSwitch, alarm.days_of_week),
+        alarmId = alarm.id,
+    )
 
     private fun observeNextActive() = viewModelScope.launch {
         queries.nextActive()

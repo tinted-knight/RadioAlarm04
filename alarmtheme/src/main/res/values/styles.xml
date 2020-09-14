@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="LightTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -12,5 +13,14 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!-- Alarm Card -->
+    <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />
+
+    <style name="LightTheme.DayOfWeek" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorDayTextInactive</item>
+        <item name="android:padding">4dp</item>
     </style>
 </resources>

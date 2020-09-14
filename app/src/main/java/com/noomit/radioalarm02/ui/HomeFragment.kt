@@ -61,6 +61,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 deleteLonglickListener = { alarm ->
                     requireContext().toast("delete long click")
                     alarmManager.delete(alarm)
+                },
+                dayOfWeekClickListener = { dayToSwitch, alarm ->
+                    alarmManager.updateDayOfWeek(dayToSwitch, alarm)
                 }
             )
             // #todo StationList restore state
