@@ -6,6 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
 import java.net.UnknownHostException
 
 private fun plog(message: String) =
@@ -33,6 +35,16 @@ class RadioBrowserService() {
         plog("RadioBrowserService::init")
     }
 
+    private fun isReachable(addr: String, port: Int, timeout: Int): Boolean {
+        try {
+            val socket = Socket()
+            socket.connect(InetSocketAddress(addr, port), timeout)
+            return true;
+        } catch (e: IOException) {
+            return false
+        }
+    }
+
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun checkForAvailableServers(): ServerListResponse = withContext(Dispatchers.IO) {
         plog("looking for available servers")
@@ -45,20 +57,10 @@ class RadioBrowserService() {
                 .map {
                     ServerInfo(
                         urlString = it.canonicalHostName,
-                        isReachable = it.isReachable(500)
+                        isReachable = isReachable(it.canonicalHostName, 80, 500)
                     )
                 }
             )
-            // #deprecated
-//            serverList = rawServerList
-//                .asList()
-//                .distinctBy { it.canonicalHostName }
-//                .map {
-//                    ServerInfo(
-//                        urlString = it.canonicalHostName,
-//                        isReachable = it.isReachable(500)
-//                    )
-//                }
 
             val haveReachableServer = serverList.any { it.isReachable }
 
@@ -69,8 +71,10 @@ class RadioBrowserService() {
                 else -> ServerListResponse.Failure(ServerListFailure.NoReachableServers)
             }
         } catch (e: UnknownHostException) {
+            plog("RadioBrowserService.UnknownHostException")
             return@withContext ServerListResponse.Failure(ServerListFailure.UnknownHost)
         } catch (e: IOException) {
+            plog("RadioBrowserService.IOException")
             return@withContext ServerListResponse.Failure(ServerListFailure.NetworkError)
         }
     }
