@@ -29,7 +29,7 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         plog("RadioBrowserViewModel.init")
     }
 
-    val availableServers: LiveData<Result<List<String>>> = liveData(Dispatchers.Default) {
+    val availableServers: LiveData<Result<List<String>>> = liveData(Dispatchers.IO) {
         plog("RadioBrowserViewModel")
         when (val serverList = apiService.checkForAvailableServers()) {
             is Success -> {
@@ -39,6 +39,7 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
             }
             is Failure -> {
                 plog("Failure: ${serverList.error}")
+                // #todo handle various failure reasons
                 emit(Result.failure<List<String>>(Exception(serverList.error.toString())))
             }
         }

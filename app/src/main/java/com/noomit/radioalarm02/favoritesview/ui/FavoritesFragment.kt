@@ -54,7 +54,11 @@ class FavoritesFragment : PlayerBaseFragment(
 
     override fun observeModel() = with(favoritesViewModel) {
         selectAll.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) showContent(it)
+            if (it.isNotEmpty()) {
+                showContent(it)
+            } else {
+                showEmpty()
+            }
         }
     }
 
@@ -69,6 +73,12 @@ class FavoritesFragment : PlayerBaseFragment(
         (rvStationList.adapter as FavoriteListAdapter).submitList(values)
         rvStationList.visibility = View.VISIBLE
         progressIndicator.visibility = View.GONE
+    }
+
+    private fun showEmpty() = with(viewBinding) {
+        progressIndicator.visibility = View.INVISIBLE
+        rvStationList.visibility = View.INVISIBLE
+        tvEmpty.visibility = View.VISIBLE
     }
 
     private fun play(station: Favorite) {

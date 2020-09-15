@@ -54,4 +54,16 @@
         app:use_controller="false"
         tools:visibility="gone" />
 
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favorite list is empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_station_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -82,6 +82,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
             timePicker.show(childFragmentManager, "tag_time_picker")
         }
+
+        btnBrowser.setOnClickListener {
+        }
     }
 
     override fun observeModel() {
