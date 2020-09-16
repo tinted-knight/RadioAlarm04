@@ -3,6 +3,7 @@ package com.noomit.radioalarm02.radiobrowserview
 import androidx.lifecycle.*
 import com.bumptech.glide.load.HttpException
 import com.example.radiobrowser.RadioBrowserService
+import com.example.radiobrowser.ServerInfo
 import com.example.radiobrowser.ServerListResponse.Failure
 import com.example.radiobrowser.ServerListResponse.Success
 import com.noomit.radioalarm02.model.LanguageModel
@@ -29,24 +30,24 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         plog("RadioBrowserViewModel.init")
     }
 
-    val availableServers: LiveData<Result<List<String>>> = liveData(Dispatchers.IO) {
+    val availableServers: LiveData<Result<List<ServerInfo>>> = liveData(Dispatchers.IO) {
         plog("RadioBrowserViewModel")
         when (val serverList = apiService.checkForAvailableServers()) {
             is Success -> {
                 plog("Success:")
                 serverList.value.onEach { plog("$it") }
-                emit(Result.success(serverList.value.map { it.urlString }))
+                emit(Result.success(serverList.value))
             }
             is Failure -> {
                 plog("Failure: ${serverList.error}")
                 // #todo handle various failure reasons
-                emit(Result.failure<List<String>>(Exception(serverList.error.toString())))
+                emit(Result.failure<List<ServerInfo>>(Exception(serverList.error.toString())))
             }
         }
     }
 
-    fun setServer(id: Int) {
-        apiService.setActiveServer(id)
+    fun setServer(serverInfo: ServerInfo) {
+        apiService.setActiveServer(serverInfo)
     }
 
     val languageList: LiveData<LanguageListResponse> = liveData(Dispatchers.Default) {

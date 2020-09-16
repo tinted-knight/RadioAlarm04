@@ -2,21 +2,17 @@ package com.noomit.radioalarm02.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.AlarmManagerViewModelFactory
 import com.noomit.radioalarm02.base.BaseFragment
-import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.model.AppDatabase
-import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 import com.noomit.radioalarm02.toast
 import timber.log.Timber
 
@@ -26,10 +22,6 @@ private fun plog(message: String) =
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     override val viewBinding: FragmentHomeBinding by viewBinding()
-
-    private val viewModel: RadioBrowserViewModel by activityViewModels {
-        ViewModelFactory(RadioBrowserService())
-    }
 
     private val alarmManager: AlarmManagerViewModel by activityViewModels {
         AlarmManagerViewModelFactory(
@@ -87,6 +79,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
 
         btnBrowser.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_radioBrowser)
         }
     }
 
@@ -99,45 +92,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
 
-//        alarmManager.nextActive.observe(viewLifecycleOwner) {
-//
-//        }
-
-        viewModel.availableServers.observe(viewLifecycleOwner) {
-            it.fold(
-                onSuccess = { values ->
-                    viewBinding.tvText.text = "success"
-                    viewBinding.btnServer1.apply {
-                        text = values[0]
-                        isEnabled = true
-                        setOnClickListener {
-                            viewModel.setServer(0)
-                            showRadioBrowser()
-                        }
-                    }
-                    viewBinding.btnServer2.apply {
-                        text = values[1]
-                        isEnabled = true
-                        setOnClickListener {
-                            viewModel.setServer(1)
-                            showRadioBrowser()
-                        }
-                    }
-                    viewBinding.btnServer3.apply {
-                        text = values[2]
-                        isEnabled = true
-                        setOnClickListener {
-                            viewModel.setServer(2)
-                            showRadioBrowser()
-                        }
-                    }
-                },
-                onFailure = { e ->
-                    viewBinding.tvText.text = "failure"
-                    Toast.makeText(requireContext(), e.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
-            )
-        }
     }
 
     private fun showLoading() = with(viewBinding) {
@@ -156,6 +110,4 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         rvAlarms.visibility = View.INVISIBLE
         viewBinding.progressIndicator.visibility = View.INVISIBLE
     }
-
-    private fun showRadioBrowser() = findNavController().navigate(R.id.action_home_to_radioBrowser)
 }

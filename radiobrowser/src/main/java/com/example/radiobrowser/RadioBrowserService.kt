@@ -29,7 +29,6 @@ sealed class ServerListResponse {
 class RadioBrowserService() {
 
     private lateinit var api: RadioBrowserApi
-    private val serverList = mutableListOf<ServerInfo>()
 
     init {
         plog("RadioBrowserService::init")
@@ -50,7 +49,7 @@ class RadioBrowserService() {
         plog("looking for available servers")
         try {
             val rawServerList = InetAddress.getAllByName("all.api.radio-browser.info")
-            serverList.clear()
+            val serverList = mutableListOf<ServerInfo>()
             serverList.addAll(rawServerList
                 .asList()
                 .distinctBy { it.canonicalHostName }
@@ -79,11 +78,9 @@ class RadioBrowserService() {
         }
     }
 
-    fun setActiveServer(id: Int) {
-        if (!serverList.isNullOrEmpty()) {
-            api = getApi("https://${serverList[id].urlString}/json/")
-            plog("setActiveServer: ${serverList[id].urlString}")
-        }
+    fun setActiveServer(serverInfo: ServerInfo) {
+        api = getApi("https://${serverInfo.urlString}/json/")
+        plog("setActiveServer: ${serverInfo.urlString}")
     }
 
     suspend fun getAllStations(): List<StationNetworkEntity> {
