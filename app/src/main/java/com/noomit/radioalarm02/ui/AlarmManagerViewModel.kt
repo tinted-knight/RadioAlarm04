@@ -8,8 +8,8 @@ import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.composeAlarmEntity
+import com.noomit.radioalarm02.model.reCompose
 import com.noomit.radioalarm02.model.scheduleAlarm
-import com.noomit.radioalarm02.model.switchBitByDay
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 class AlarmManagerViewModel(database: Database, application: Application) :
     AndroidViewModel(application) {
@@ -50,10 +51,19 @@ class AlarmManagerViewModel(database: Database, application: Application) :
 
     fun delete(alarm: Alarm) = queries.delete(id = alarm.id)
 
-    fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm) = queries.updateDays(
-        daysOfWeek = switchBitByDay(dayToSwitch, alarm.days_of_week),
-        alarmId = alarm.id,
-    )
+    fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm) {
+        val updated = reCompose(alarm, dayToSwitch)
+        val c = Calendar.getInstance().apply {
+            timeInMillis = updated.time_in_millis
+        }
+        plog("${c[Calendar.DAY_OF_MONTH]} : ${c[Calendar.MONTH]}")
+        queries.updateDays(
+            alarmId = updated.id,
+            daysOfWeek = updated.days_of_week,
+            timeInMillis = updated.time_in_millis,
+            isEnabled = updated.is_enabled,
+        )
+    }
 
     private fun observeNextActive() = viewModelScope.launch {
         queries.nextActive()
@@ -61,6 +71,8 @@ class AlarmManagerViewModel(database: Database, application: Application) :
             .mapToOneOrNull()
             .onEach {
                 if (it != null) {
+                    val c = Calendar.getInstance().apply { timeInMillis = it.time_in_millis }
+                    plog("next: ${c[Calendar.DAY_OF_MONTH]} : ${c[Calendar.MONTH]}")
                     scheduleAlarm(
                         context = getApplication(),
                         alarmId = it.id,
