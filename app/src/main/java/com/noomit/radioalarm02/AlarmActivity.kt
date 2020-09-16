@@ -18,7 +18,7 @@ class AlarmActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         intent?.let {
             plog("alarmId = ${it.getLongExtra(AlarmReceiver.ALARM_ID, -1)}")
-            plog("bellId = ${it.getIntExtra(AlarmReceiver.BELL_ID, -1)}")
+            plog("bellId = ${it.getStringExtra(AlarmReceiver.BELL_URL)}")
         }
     }
 }

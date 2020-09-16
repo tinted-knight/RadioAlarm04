@@ -23,6 +23,13 @@
             app:exitAnim="@anim/from_out"
             app:popEnterAnim="@anim/from_in"
             app:popExitAnim="@anim/to_out" />
+        <action
+            android:id="@+id/action_home_to_selectMelody"
+            app:destination="@id/selectMelodyFragment"
+            app:enterAnim="@anim/to_in"
+            app:exitAnim="@anim/from_out"
+            app:popEnterAnim="@anim/from_in"
+            app:popExitAnim="@anim/to_out" />
     </fragment>
     <fragment
         android:id="@+id/radioBrowserFragment"
@@ -57,4 +64,8 @@
         android:id="@+id/favoritesFragment"
         android:name="com.noomit.radioalarm02.favoritesview.ui.FavoritesFragment"
         android:label="FavoritesFragment" />
+    <fragment
+        android:id="@+id/selectMelodyFragment"
+        android:name="com.noomit.radioalarm02.ui.SelectMelodyFragment"
+        android:label="SelectMelodyFragment" />
 </navigation>

@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
+import com.noomit.radioalarm02.Favorite
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.composeAlarmEntity
 import com.noomit.radioalarm02.model.reCompose
@@ -18,6 +19,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+
+sealed class SetMelodyState {
+    object Idle : SetMelodyState()
+    class ForAlarm(val alarm: Alarm) : SetMelodyState()
+    class Selected(val alarm: Alarm, val melody: Favorite) : SetMelodyState()
+}
 
 class AlarmManagerViewModel(database: Database, application: Application) :
     AndroidViewModel(application) {
@@ -41,7 +48,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
             hour = alarm.hour,
             minute = alarm.minute,
             is_enabled = alarm.isEnabled,
-            bell_id = alarm.bellId,
+            bell_url = alarm.bellUrl,
             bell_name = alarm.bellName,
             repeat = alarm.repeat,
             days_of_week = alarm.daysOfWeek,
@@ -67,6 +74,22 @@ class AlarmManagerViewModel(database: Database, application: Application) :
 
     fun setEnabled(alarm: Alarm, isEnabled: Boolean) = queries.updateEnabled(isEnabled, alarm.id)
 
+    private var selectMelodyFor: Alarm? = null
+
+    fun selectMelodyFor(alarm: Alarm) {
+        selectMelodyFor = alarm
+    }
+
+    fun setMelody(favorite: Favorite) {
+        selectMelodyFor?.let {
+            queries.updateMelody(
+                alarmId = it.id,
+                melodyUrl = favorite.stream_url,
+                melodyName = favorite.name,
+            )
+        }
+    }
+
     private fun observeNextActive() = viewModelScope.launch {
         queries.nextActive()
             .asFlow()
@@ -78,7 +101,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
                     scheduleAlarm(
                         context = getApplication(),
                         alarmId = it.id,
-                        bellId = it.bell_id,
+                        bellUrl = it.bell_url,
                         timeInMillis = it.time_in_millis,
                     )
                 } else {

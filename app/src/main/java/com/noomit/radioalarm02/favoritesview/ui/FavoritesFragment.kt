@@ -2,7 +2,7 @@ package com.noomit.radioalarm02.favoritesview.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
@@ -24,7 +24,7 @@ class FavoritesFragment : PlayerBaseFragment(
 
     override val viewBinding: FragmentStationListBinding by viewBinding()
 
-    private val favoritesViewModel: FavoritesViewModel by viewModels {
+    private val favoritesViewModel: FavoritesViewModel by activityViewModels {
         DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
     }
 
@@ -42,6 +42,7 @@ class FavoritesFragment : PlayerBaseFragment(
             adapter = FavoriteListAdapter(
                 onClick = { value ->
                     requireContext().toast(value.name)
+                    favoritesViewModel.onClick(value)
                     play(value)
                 },
             )

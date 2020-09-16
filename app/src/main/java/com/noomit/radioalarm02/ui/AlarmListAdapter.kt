@@ -29,6 +29,7 @@ class AlarmListAdapter(
     private val onDeleteLongClick: DeleteLongClick,
     private val onDayClick: DayOfWeekClick,
     private val onEnabledChecked: EnabledSwitch,
+    private val onMelodyClick: MelodyClick,
 ) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
         LayoutInflater.from(parent.context)
@@ -59,6 +60,8 @@ class AlarmListAdapter(
             swEnabled.setOnCheckedChangeListener { _, isChecked ->
                 onEnabledChecked(alarm, isChecked)
             }
+
+            tvMelody.setOnClickListener { onMelodyClick(alarm) }
         }
     }
 
@@ -74,6 +77,7 @@ class AlarmListAdapter(
             tvThu.setOnClickListener(null)
             tvFri.setOnClickListener(null)
             tvSat.setOnClickListener(null)
+            tvMelody.setOnClickListener(null)
         }
     }
 }
@@ -87,7 +91,7 @@ class AlarmListDiffUtil : DiffUtil.ItemCallback<Alarm>() {
         return (oldItem.time_in_millis == newItem.time_in_millis
                 && oldItem.is_enabled == newItem.is_enabled
                 && oldItem.days_of_week == newItem.days_of_week
-                && oldItem.bell_id == newItem.bell_id)
+                && oldItem.bell_url == newItem.bell_url)
     }
 
 }

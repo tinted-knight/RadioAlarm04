@@ -6,7 +6,7 @@ CREATE TABLE alarm (
     hour INTEGER as Integer NOT NULL,
     minute INTEGER as Integer NOT NULL,
     is_enabled INTEGER AS Boolean DEFAULT 0,
-    bell_id INTEGER as Integer NOT NULL,
+    bell_url TEXT NOT NULL,
     bell_name TEXT NOT NULL,
     repeat INTEGER AS Boolean DEFAULT 0,
     days_of_week INTEGER as Integer NOT NULL,
@@ -18,7 +18,7 @@ SELECT *
 FROM alarm;
 
 insert:
-INSERT INTO alarm(hour, minute, is_enabled, bell_id, bell_name, repeat, days_of_week, time_in_millis)
+INSERT INTO alarm(hour, minute, is_enabled, bell_url, bell_name, repeat, days_of_week, time_in_millis)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 delete:
@@ -41,4 +41,9 @@ WHERE id = :alarmId;
 updateEnabled:
 UPDATE alarm
 SET is_enabled = :isEnabled
+WHERE id = :alarmId;
+
+updateMelody:
+UPDATE alarm
+SET bell_url = :melodyUrl, bell_name = :melodyName
 WHERE id = :alarmId;
