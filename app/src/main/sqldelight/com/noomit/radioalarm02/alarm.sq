@@ -37,3 +37,8 @@ updateDays:
 UPDATE alarm
 SET days_of_week = :daysOfWeek, is_enabled = :isEnabled, time_in_millis = :timeInMillis
 WHERE id = :alarmId;
+
+updateEnabled:
+UPDATE alarm
+SET is_enabled = :isEnabled
+WHERE id = :alarmId;

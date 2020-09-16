@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.model.days
+import com.noomit.radioalarm02.model.isDayBitOn
 import java.util.*
 
 typealias TimeClickListener = ((Alarm) -> Unit)
@@ -21,11 +22,13 @@ typealias DeleteLongClickListener = ((Alarm) -> Unit)
 typealias MelodyClickListener = ((Alarm) -> Unit)
 typealias MelodyLongClickListener = ((Alarm) -> Unit)
 typealias DayOfWeekClickListener = ((Int, Alarm) -> Unit)
+typealias EnabledSwitchListener = ((Alarm, Boolean) -> Unit)
 
 class AlarmListAdapter(
     private val deleteClickListener: DeleteClickListener,
     private val deleteLonglickListener: DeleteLongClickListener,
     private val dayOfWeekClickListener: DayOfWeekClickListener,
+    private val enabledSwitchListener: EnabledSwitchListener,
 ) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
         LayoutInflater.from(parent.context)
@@ -52,6 +55,10 @@ class AlarmListAdapter(
             tvThu.setOnClickListener { dayOfWeekClickListener(5, alarm) }
             tvFri.setOnClickListener { dayOfWeekClickListener(6, alarm) }
             tvSat.setOnClickListener { dayOfWeekClickListener(7, alarm) }
+
+            swEnabled.setOnCheckedChangeListener { _, isChecked ->
+                enabledSwitchListener(alarm, isChecked)
+            }
         }
     }
 
@@ -114,7 +121,7 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun processDaysOfWeek(daysOfWeek: Int) {
         days.forEachIndexed { index, day ->
-            val isBitOn = isDayBitOn(day, daysOfWeek)
+            val isBitOn = daysOfWeek.isDayBitOn(day)
             val textColor = when {
                 isBitOn -> R.color.colorDayTextActive
                 else -> R.color.colorDayTextInactive
@@ -135,6 +142,7 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 }
 
+// #deprecated
 private fun isDayBitOn(calendarDay: Int, daysOfWeek: Int): Boolean {
     if (calendarDay == 1) return days[6] and daysOfWeek == days[6]
 

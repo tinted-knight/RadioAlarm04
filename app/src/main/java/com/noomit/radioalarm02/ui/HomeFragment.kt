@@ -64,6 +64,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 },
                 dayOfWeekClickListener = { dayToSwitch, alarm ->
                     alarmManager.updateDayOfWeek(dayToSwitch, alarm)
+                },
+                enabledSwitchListener = { alarm, isEnabled ->
+                    alarmManager.setEnabled(alarm, isEnabled)
                 }
             )
             // #todo StationList restore state

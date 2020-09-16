@@ -65,6 +65,8 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         )
     }
 
+    fun setEnabled(alarm: Alarm, isEnabled: Boolean) = queries.updateEnabled(isEnabled, alarm.id)
+
     private fun observeNextActive() = viewModelScope.launch {
         queries.nextActive()
             .asFlow()

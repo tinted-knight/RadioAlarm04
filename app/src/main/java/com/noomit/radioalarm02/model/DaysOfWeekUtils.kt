@@ -26,6 +26,9 @@ fun Int.swithBitFor(day: Int) = when (day) {
     else -> this xor days[day - 2]
 }
 
+/**
+ * Use on daysOfWeek [Int]
+ */
 fun Int.isDayBitOn(day: Int): Boolean {
     if (day == 1) return days[6] and this == days[6]
     return (days[day - 2] and this) == days[day - 2]
