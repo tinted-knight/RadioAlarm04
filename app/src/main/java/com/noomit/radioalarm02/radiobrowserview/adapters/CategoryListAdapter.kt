@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.model.LanguageModel
 
-typealias LanguageClickListener = ((LanguageModel) -> Unit)
+typealias LanguageClick = ((LanguageModel) -> Unit)
 
-class CategoryListAdapter(private val onClick: LanguageClickListener) :
+class CategoryListAdapter(private val onClick: LanguageClick) :
     ListAdapter<LanguageModel, CategoryListViewHolder>(CategoryDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryListViewHolder {
         return CategoryListViewHolder(

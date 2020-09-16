@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.Favorite
 import com.noomit.radioalarm02.R
 
-typealias ItemClickListener = ((Favorite) -> Unit)
-typealias ItemLongClickListener = ((Favorite) -> Unit)
+typealias ItemClick = ((Favorite) -> Unit)
+typealias ItemLongClick = ((Favorite) -> Unit)
 
 class FavoriteListAdapter(
-    private val onClick: ItemClickListener,
+    private val onClick: ItemClick,
 ) : ListAdapter<Favorite, FavoritesListViewHolder>(FavoriteListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FavoritesListViewHolder(
         LayoutInflater

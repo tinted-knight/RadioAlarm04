@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.model.StationModel
 
-typealias StationClickListener = ((StationModel) -> Unit)
-typealias StationLongClickListener = ((StationModel) -> Unit)
+typealias StationClick = ((StationModel) -> Unit)
+typealias StationLongClick = ((StationModel) -> Unit)
 
 class StationListAdapter(
-    private val onClick: StationClickListener,
-    private val onLongClick: StationLongClickListener,
+    private val onClick: StationClick,
+    private val onLongClick: StationLongClick,
 ) :
     ListAdapter<StationModel, StationListViewHolder>(StationListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = StationListViewHolder(

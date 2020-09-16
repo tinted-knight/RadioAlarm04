@@ -16,19 +16,19 @@ import com.noomit.radioalarm02.model.days
 import com.noomit.radioalarm02.model.isDayBitOn
 import java.util.*
 
-typealias TimeClickListener = ((Alarm) -> Unit)
-typealias DeleteClickListener = ((Alarm) -> Unit)
-typealias DeleteLongClickListener = ((Alarm) -> Unit)
-typealias MelodyClickListener = ((Alarm) -> Unit)
-typealias MelodyLongClickListener = ((Alarm) -> Unit)
-typealias DayOfWeekClickListener = ((Int, Alarm) -> Unit)
-typealias EnabledSwitchListener = ((Alarm, Boolean) -> Unit)
+typealias TimeClick = ((Alarm) -> Unit)
+typealias DeleteClick = ((Alarm) -> Unit)
+typealias DeleteLongClick = ((Alarm) -> Unit)
+typealias MelodyClick = ((Alarm) -> Unit)
+typealias MelodyLongClick = ((Alarm) -> Unit)
+typealias DayOfWeekClick = ((Int, Alarm) -> Unit)
+typealias EnabledSwitch = ((Alarm, Boolean) -> Unit)
 
 class AlarmListAdapter(
-    private val deleteClickListener: DeleteClickListener,
-    private val deleteLonglickListener: DeleteLongClickListener,
-    private val dayOfWeekClickListener: DayOfWeekClickListener,
-    private val enabledSwitchListener: EnabledSwitchListener,
+    private val onDeleteClick: DeleteClick,
+    private val onDeleteLongClick: DeleteLongClick,
+    private val onDayClick: DayOfWeekClick,
+    private val onEnabledChecked: EnabledSwitch,
 ) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
         LayoutInflater.from(parent.context)
@@ -43,21 +43,21 @@ class AlarmListAdapter(
         super.onViewAttachedToWindow(holder)
         holder.apply {
             val alarm = getItem(adapterPosition)
-            btnDelete.setOnClickListener { deleteClickListener(alarm) }
+            btnDelete.setOnClickListener { onDeleteClick(alarm) }
             btnDelete.setOnLongClickListener {
-                deleteLonglickListener(alarm)
+                onDeleteLongClick(alarm)
                 return@setOnLongClickListener true
             }
-            tvSun.setOnClickListener { dayOfWeekClickListener(1, alarm) }
-            tvMon.setOnClickListener { dayOfWeekClickListener(2, alarm) }
-            tvTue.setOnClickListener { dayOfWeekClickListener(3, alarm) }
-            tvWed.setOnClickListener { dayOfWeekClickListener(4, alarm) }
-            tvThu.setOnClickListener { dayOfWeekClickListener(5, alarm) }
-            tvFri.setOnClickListener { dayOfWeekClickListener(6, alarm) }
-            tvSat.setOnClickListener { dayOfWeekClickListener(7, alarm) }
+            tvSun.setOnClickListener { onDayClick(1, alarm) }
+            tvMon.setOnClickListener { onDayClick(2, alarm) }
+            tvTue.setOnClickListener { onDayClick(3, alarm) }
+            tvWed.setOnClickListener { onDayClick(4, alarm) }
+            tvThu.setOnClickListener { onDayClick(5, alarm) }
+            tvFri.setOnClickListener { onDayClick(6, alarm) }
+            tvSat.setOnClickListener { onDayClick(7, alarm) }
 
             swEnabled.setOnCheckedChangeListener { _, isChecked ->
-                enabledSwitchListener(alarm, isChecked)
+                onEnabledChecked(alarm, isChecked)
             }
         }
     }

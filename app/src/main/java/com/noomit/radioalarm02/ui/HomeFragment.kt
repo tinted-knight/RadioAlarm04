@@ -46,18 +46,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             // #fake
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
             adapter = AlarmListAdapter(
-                deleteClickListener = { alarm ->
+                onDeleteClick = { alarm ->
                     requireContext().toast("delete click")
                     plog("delete click: $alarm")
                 },
-                deleteLonglickListener = { alarm ->
+                onDeleteLongClick = { alarm ->
                     requireContext().toast("delete long click")
                     alarmManager.delete(alarm)
                 },
-                dayOfWeekClickListener = { dayToSwitch, alarm ->
+                onDayClick = { dayToSwitch, alarm ->
                     alarmManager.updateDayOfWeek(dayToSwitch, alarm)
                 },
-                enabledSwitchListener = { alarm, isEnabled ->
+                onEnabledChecked = { alarm, isEnabled ->
                     alarmManager.setEnabled(alarm, isEnabled)
                 }
             )
