@@ -61,17 +61,17 @@ class RadioBrowserService() {
                 }
             )
 
-            val haveReachableServer = serverList.any { it.isReachable }
-
-            return@withContext when {
-                haveReachableServer -> {
-                    ServerListResponse.Success(serverList)
-                }
-                else -> ServerListResponse.Failure(ServerListFailure.NoReachableServers)
+            serverList.firstOrNull { it.isReachable }?.let {
+                setActiveServer(it)
+                return@withContext ServerListResponse.Success(serverList)
             }
+
+            return@withContext ServerListResponse.Failure(ServerListFailure.NoReachableServers)
+
         } catch (e: UnknownHostException) {
             plog("RadioBrowserService.UnknownHostException")
             return@withContext ServerListResponse.Failure(ServerListFailure.UnknownHost)
+
         } catch (e: IOException) {
             plog("RadioBrowserService.IOException")
             return@withContext ServerListResponse.Failure(ServerListFailure.NetworkError)
