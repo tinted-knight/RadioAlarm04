@@ -7,36 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.HomeFragment">
 
-    <Button
-        android:id="@+id/btn_browse_stations"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Favorites"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_alarms"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btn_alarm_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Add alarm"
-        app:layout_constraintStart_toEndOf="@id/btn_browse_stations"
-        app:layout_constraintTop_toBottomOf="@id/rv_alarms" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_alarms"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="0dp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/bbar_add_alarm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="2"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
         tools:listitem="@layout/item_alarm"
         tools:visibility="visible" />
 
@@ -53,14 +33,33 @@
         app:layout_constraintVertical_bias="0.51"
         tools:visibility="visible" />
 
-    <Button
-        android:id="@+id/btn_browser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Browser"
+    <TextView
+        android:id="@+id/bbar_favorites"
+        style="?attr/buttonBarButtonSide"
+        android:text="Favorites"
+        app:drawableTopCompat="@drawable/ic_favorite_border_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bbar_add_alarm"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/bbar_add_alarm"
+        style="?attr/buttonBarButtonCenter"
+        android:text="Add alarm"
+        app:drawableTopCompat="@drawable/ic_add_alarm_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bbar_browse"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bbar_favorites" />
+
+    <TextView
+        android:id="@+id/bbar_browse"
+        style="?attr/buttonBarButtonSide"
+        android:text="Browse radio"
+        app:drawableTopCompat="@drawable/ic_search_24"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_alarm_add"
-        app:layout_constraintTop_toBottomOf="@id/rv_alarms"
-        tools:layout_editor_absoluteX="253dp"
-        tools:layout_editor_absoluteY="252dp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bbar_add_alarm" />
 </androidx.constraintlayout.widget.ConstraintLayout>

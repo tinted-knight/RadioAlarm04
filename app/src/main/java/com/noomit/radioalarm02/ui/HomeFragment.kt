@@ -67,18 +67,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     override fun listenUiEvents() = with(viewBinding) {
-        btnBrowseStations.setOnClickListener {
+        bbarFavorites.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_favorites)
         }
 
-        btnAlarmAdd.setOnClickListener {
+        bbarAddAlarm.setOnClickListener {
             val timePicker = TimePickerFragment { _, hour, minute ->
                 alarmManager.insert(hour, minute)
             }
             timePicker.show(childFragmentManager, "tag_time_picker")
         }
 
-        btnBrowser.setOnClickListener {
+        bbarBrowse.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_radioBrowser)
         }
     }
