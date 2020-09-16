@@ -59,6 +59,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 },
                 onEnabledChecked = { alarm, isEnabled ->
                     alarmManager.setEnabled(alarm, isEnabled)
+                },
+                onMelodyClick = { alarm ->
+                    alarmManager.selectMelodyFor(alarm)
+                    findNavController().navigate(R.id.action_home_to_selectMelody)
                 }
             )
             // #todo StationList restore state

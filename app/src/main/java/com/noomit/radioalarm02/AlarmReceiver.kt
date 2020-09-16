@@ -17,7 +17,7 @@ class AlarmReceiver : BroadcastReceiver() {
         plog("onReceive")
         if (intent?.action == ALARM_ACTION) {
             val alarmId = intent.getLongExtra(ALARM_ID, -1)
-            val bellId = intent.getIntExtra(BELL_ID, -1)
+            val bellId = intent.getStringExtra(BELL_URL)
             plog("alarmId = $alarmId")
             plog("bellId = $bellId")
             context?.run {
@@ -52,7 +52,7 @@ class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val ALARM_ACTION = "alarm-action"
         const val ALARM_ID = "alarm-id"
-        const val BELL_ID = "bell-id"
+        const val BELL_URL = "bell-id"
         const val CHANNEL_ID = "channel-id"
         const val NOTIF_ID = 1002
     }
