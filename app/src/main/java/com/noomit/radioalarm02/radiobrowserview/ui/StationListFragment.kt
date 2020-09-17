@@ -73,6 +73,8 @@ class StationListFragment() : PlayerBaseFragment(
         }
     }
 
+    override fun onServiceConnected() {}
+
     override fun renderPlayingView() {
         when (isPlaying) {
             true -> {

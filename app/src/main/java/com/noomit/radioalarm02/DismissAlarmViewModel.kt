@@ -16,13 +16,15 @@ class DismissAlarmViewModel(database: Database, application: Application) :
 
     private val queries = database.alarmQueries
 
+    var alarmId: Long? = null
+    var melodyUrl: String? = null
+
     init {
         plog("DismissAlarmViewModel")
     }
 
-    fun alarmFired(alarmId: Long) {
-        plog("alarmFired")
-        val alarm = queries.selectById(alarmId).executeAsOne()
+    fun alarmFired() = alarmId?.let {
+        val alarm = queries.selectById(it).executeAsOne()
         val updated = reComposeFired(alarm)
         val c = Calendar.getInstance().apply {
             timeInMillis = updated.time_in_millis
@@ -46,6 +48,5 @@ class DismissAlarmViewModel(database: Database, application: Application) :
             clearScheduledAlarms(getApplication())
         }
     }
-
 
 }

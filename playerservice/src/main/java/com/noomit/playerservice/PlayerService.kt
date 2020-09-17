@@ -81,7 +81,7 @@ class PlayerService : Service() {
 
         override fun onPlayerError(error: ExoPlaybackException?) {
             val intent = Intent(BROADCAST_FILTER)
-            intent.putExtra(BR_SERVICE_UNAVAILABLE, BR_CODE_ERROR)
+            intent.putExtra(BR_MEDIA_UNAVAILABLE, BR_CODE_ERROR)
             sendBroadcast(intent)
         }
     }
@@ -191,8 +191,8 @@ class PlayerService : Service() {
         const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
         const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
 
-        const val BROADCAST_FILTER = "com.evha.musicalarm01.service_br"
-        const val BR_SERVICE_UNAVAILABLE = "br-service-unavailable"
+        const val BROADCAST_FILTER = "com.noomit.radioalarm.service_br"
+        const val BR_MEDIA_UNAVAILABLE = "br-service-unavailable"
         const val BR_CODE_ERROR = 1
     }
 

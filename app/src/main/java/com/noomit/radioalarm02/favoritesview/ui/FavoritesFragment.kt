@@ -63,6 +63,8 @@ class FavoritesFragment : PlayerBaseFragment(
         }
     }
 
+    override fun onServiceConnected() {}
+
     override fun renderPlayingView() {}
 
     private fun showLoading() = with(viewBinding) {
