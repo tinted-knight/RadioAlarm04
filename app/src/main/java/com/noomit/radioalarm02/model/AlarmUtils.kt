@@ -1,7 +1,10 @@
 package com.noomit.radioalarm02.model
 
 import com.noomit.radioalarm02.Alarm
+import timber.log.Timber
 import java.util.*
+
+private fun plog(message: String) = Timber.tag("tagg-alarmutils").i(message)
 
 // #think temporary
 data class Alarma(
@@ -44,6 +47,7 @@ fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
  */
 fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
     val newDays = switchBitByDay(dayOfWeek, alarm.days_of_week)
+    plog("newDays = $newDays, current = ${alarm.days_of_week}")
     if (newDays == 0) return alarm.copy(
         days_of_week = 0,
         time_in_millis = 0,
@@ -55,7 +59,9 @@ fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
         set(Calendar.HOUR_OF_DAY, alarm.hour)
         set(Calendar.MINUTE, alarm.minute)
 
-//        if (timeInMillis < now.timeInMillis && alarm.days_of_week == get()) add(Calendar.WEEK_OF_YEAR, 1)
+//        if (timeInMillis < now.timeInMillis && alarm.days_of_week == get(Calendar.DAY_OF_WEEK)) {
+//            add(Calendar.WEEK_OF_YEAR, 1)
+//        }
 
         val oneMinuteInFuture = now.apply { add(Calendar.MINUTE, 1) }
         if (timeInMillis < oneMinuteInFuture.timeInMillis) {

@@ -31,7 +31,7 @@ class DismissAlarmViewModel(database: Database, application: Application) :
             timeInMillis = updated.time_in_millis
         }
         plog("updated: ${c[Calendar.DAY_OF_MONTH]}:${c[Calendar.MONTH]}")
-        queries.updateTime(
+        queries.updateTimeInMillis(
             alarmId = updated.id,
             timeInMillis = updated.time_in_millis,
         )

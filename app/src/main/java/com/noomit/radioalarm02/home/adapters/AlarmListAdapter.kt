@@ -31,6 +31,7 @@ class AlarmListAdapter(
     private val onDeleteClick: DeleteClick,
     private val onDeleteLongClick: DeleteLongClick,
     private val onDayClick: DayOfWeekClick,
+    private val onTimeClick: TimeClick,
     private val onEnabledChecked: EnabledSwitch,
     private val onMelodyClick: MelodyClick,
     private val onMelodyLongClick: MelodyLongClick,
@@ -65,8 +66,11 @@ class AlarmListAdapter(
                 onEnabledChecked(alarm, isChecked)
             }
 
-            tvMelody.setOnClickListener { onMelodyClick(alarm) }
+            tvTime.setOnClickListener {
+                onTimeClick(alarm)
+            }
 
+            tvMelody.setOnClickListener { onMelodyClick(alarm) }
             tvMelody.setOnLongClickListener {
                 onMelodyLongClick(alarm)
                 return@setOnLongClickListener true
@@ -86,7 +90,9 @@ class AlarmListAdapter(
             tvThu.setOnClickListener(null)
             tvFri.setOnClickListener(null)
             tvSat.setOnClickListener(null)
+            tvTime.setOnClickListener(null)
             tvMelody.setOnClickListener(null)
+            tvMelody.setOnLongClickListener(null)
         }
     }
 }

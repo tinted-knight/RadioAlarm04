@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.home.ui
 
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -65,6 +66,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 onEnabledChecked = { alarm, isEnabled ->
                     alarmManager.setEnabled(alarm, isEnabled)
                 },
+                onTimeClick = { alarm ->
+                    pickTime { _, hour, minute -> alarmManager.updateTime(alarm, hour, minute) }
+                },
                 onMelodyClick = { alarm ->
                     alarmManager.selectMelodyFor(alarm)
                     findNavController().navigate(R.id.action_home_to_selectMelody)
@@ -91,10 +95,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
 
         bbarAddAlarm.setOnClickListener {
-            val timePicker = TimePickerFragment { _, hour, minute ->
-                alarmManager.insert(hour, minute)
-            }
-            timePicker.show(childFragmentManager, "tag_time_picker")
+            pickTime { _, hour, minute -> alarmManager.insert(hour, minute) }
         }
 
         bbarBrowse.setOnClickListener {
@@ -111,6 +112,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
 
+    }
+
+    private fun pickTime(callback: TimePickerDialog.OnTimeSetListener) {
+        val timePicker = TimePickerFragment(callback)
+        timePicker.show(childFragmentManager, "tag_time_picker")
     }
 
     private fun showLoading() = with(viewBinding) {

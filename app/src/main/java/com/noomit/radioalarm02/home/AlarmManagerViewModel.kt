@@ -7,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.Favorite
-import com.noomit.radioalarm02.model.clearScheduledAlarms
-import com.noomit.radioalarm02.model.composeAlarmEntity
-import com.noomit.radioalarm02.model.reCompose
-import com.noomit.radioalarm02.model.scheduleAlarm
+import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
@@ -63,6 +60,17 @@ class AlarmManagerViewModel(database: Database, application: Application) :
             daysOfWeek = updated.days_of_week,
             timeInMillis = updated.time_in_millis,
             isEnabled = updated.is_enabled,
+        )
+    }
+
+    fun updateTime(alarm: Alarm, hour: Int, minute: Int) {
+        plog("updateTime to $hour:$minute")
+        val updated = reComposeFired(alarm.copy(hour = hour, minute = minute))
+        queries.updateTime(
+            alarmId = alarm.id,
+            hour = updated.hour,
+            minute = updated.minute,
+            timeInMillis = updated.time_in_millis,
         )
     }
 
