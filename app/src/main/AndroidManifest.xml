@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AlarmActivity"></activity>
+        <activity android:name=".alarm.ui.AlarmActivity"></activity>
 
         <service
             android:name="com.noomit.playerservice.PlayerService"

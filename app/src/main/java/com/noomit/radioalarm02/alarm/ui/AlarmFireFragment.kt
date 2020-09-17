@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.alarm
+package com.noomit.radioalarm02.alarm.ui
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerService
-import com.noomit.radioalarm02.DismissAlarmViewModel
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.databinding.FragmentAlarmFireBinding

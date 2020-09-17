@@ -1,7 +1,8 @@
-package com.noomit.radioalarm02
+package com.noomit.radioalarm02.alarm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.reComposeFired
 import com.noomit.radioalarm02.model.scheduleAlarm
