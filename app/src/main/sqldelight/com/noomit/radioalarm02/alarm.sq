@@ -5,7 +5,7 @@ CREATE TABLE alarm (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     hour INTEGER as Integer NOT NULL,
     minute INTEGER as Integer NOT NULL,
-    is_enabled INTEGER AS Boolean DEFAULT 0,
+    is_enabled INTEGER AS Boolean DEFAULT 0 NOT NULL,
     bell_url TEXT NOT NULL,
     bell_name TEXT NOT NULL,
     repeat INTEGER AS Boolean DEFAULT 0,
@@ -16,6 +16,11 @@ CREATE TABLE alarm (
 selectAll:
 SELECT *
 FROM alarm;
+
+selectById:
+SELECT *
+FROM alarm
+WHERE id = :alarmId;
 
 insert:
 INSERT INTO alarm(hour, minute, is_enabled, bell_url, bell_name, repeat, days_of_week, time_in_millis)
@@ -36,6 +41,11 @@ LIMIT 1;
 updateDays:
 UPDATE alarm
 SET days_of_week = :daysOfWeek, is_enabled = :isEnabled, time_in_millis = :timeInMillis
+WHERE id = :alarmId;
+
+updateTime:
+UPDATE alarm
+SET time_in_millis = :timeInMillis
 WHERE id = :alarmId;
 
 updateEnabled:

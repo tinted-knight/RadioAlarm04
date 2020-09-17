@@ -91,7 +91,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
             .onEach {
                 if (it != null) {
                     val c = Calendar.getInstance().apply { timeInMillis = it.time_in_millis }
-                    plog("next: ${c[Calendar.DAY_OF_MONTH]} : ${c[Calendar.MONTH]}")
+                    plog("next: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]};${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}")
                     scheduleAlarm(
                         context = getApplication(),
                         alarmId = it.id,

@@ -17,15 +17,17 @@ class AlarmReceiver : BroadcastReceiver() {
         plog("onReceive")
         if (intent?.action == ALARM_ACTION) {
             val alarmId = intent.getLongExtra(ALARM_ID, -1)
-            val bellId = intent.getStringExtra(BELL_URL)
+            val melodyUrl = intent.getStringExtra(BELL_URL)
             plog("alarmId = $alarmId")
-            plog("bellId = $bellId")
+            plog("bellId = $melodyUrl")
             context?.run {
                 val pendingIntent = PendingIntent.getActivity(
                     context,
                     102, // #fake
                     Intent(context, AlarmActivity::class.java).apply {
                         action = ALARM_ACTION
+                        putExtra(ALARM_ID, alarmId)
+                        putExtra(BELL_URL, melodyUrl)
                     },
                     PendingIntent.FLAG_UPDATE_CURRENT,
                 )

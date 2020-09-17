@@ -80,6 +80,37 @@ fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
     )
 }
 
+fun reComposeFired(alarm: Alarm): Alarm {
+    val now = Calendar.getInstance()
+    val calendar = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, alarm.hour)
+        set(Calendar.MINUTE, alarm.minute)
+
+        if (timeInMillis < now.timeInMillis && alarm.days_of_week == get(Calendar.DAY_OF_WEEK)) {
+            add(Calendar.WEEK_OF_YEAR, 1)
+        }
+
+        val oneMinuteInFuture = now.apply { add(Calendar.MINUTE, 1) }
+        if (timeInMillis < oneMinuteInFuture.timeInMillis) {
+            add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        var today = get(Calendar.DAY_OF_WEEK)
+        repeat(7) {
+            if (alarm.days_of_week.isDayBitOn(today)) {
+                return@repeat
+            } else {
+                add(Calendar.DAY_OF_YEAR, 1)
+                today = get(Calendar.DAY_OF_WEEK)
+            }
+        }
+    }
+    return alarm.copy(
+        time_in_millis = calendar.timeInMillis,
+        is_enabled = true,
+    )
+}
+
 private val Calendar.hour: Int
     get() = get(Calendar.HOUR_OF_DAY)
 
@@ -88,3 +119,9 @@ private val Calendar.minute: Int
 
 private val Calendar.dayOfWeek: Int
     get() = get(Calendar.DAY_OF_WEEK)
+
+val Alarm.hourString: String
+    get() = if (hour > 9) hour.toString() else "0$hour"
+
+val Alarm.minuteString: String
+    get() = if (minute > 9) minute.toString() else "0$minute"

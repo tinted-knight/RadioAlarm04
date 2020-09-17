@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.model.days
+import com.noomit.radioalarm02.model.hourString
 import com.noomit.radioalarm02.model.isDayBitOn
+import com.noomit.radioalarm02.model.minuteString
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 typealias TimeClick = ((Alarm) -> Unit)
@@ -115,9 +118,19 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val dayViews = listOf(tvMon, tvTue, tvWed, tvThu, tvFri, tvSat, tvSun)
 
+    // #think should not be here
+    private val dateFormat = SimpleDateFormat("MMM, d", Locale.getDefault())
+    private val timeFormat = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
+
     fun bind(value: Alarm) {
-        tvTime.text = "${value.hour}:${value.minute}"
-        tvDay.text = "" // #todo dateString
+        if (value.time_in_millis == 0L || value.is_enabled) {
+            tvDay.text = ""
+            tvTime.text = "${value.hourString}:${value.minuteString}"
+        } else {
+            val date = Date(value.time_in_millis)
+            tvTime.text = timeFormat.format(date)
+            tvDay.text = dateFormat.format(date)
+        }
         tvMelody.text = value.bell_name
         swEnabled.isChecked = value.is_enabled ?: false
         processDaysOfWeek(value.days_of_week)
@@ -144,11 +157,4 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
         )
     }
-}
-
-// #deprecated
-private fun isDayBitOn(calendarDay: Int, daysOfWeek: Int): Boolean {
-    if (calendarDay == 1) return days[6] and daysOfWeek == days[6]
-
-    return (days[calendarDay - 2] and daysOfWeek) == days[calendarDay - 2]
 }

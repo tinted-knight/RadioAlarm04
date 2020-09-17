@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.Database
+import com.noomit.radioalarm02.DismissAlarmViewModel
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.AlarmManagerViewModel
@@ -32,7 +33,7 @@ class DatabaseViewModelFactory(private val database: Database) :
 }
 
 @Suppress("UNCHECKED_CAST")
-class AlarmManagerViewModelFactory(
+class AndroidViewModelFactory(
     private val database: Database,
     private val application: Application,
 ) :
@@ -40,6 +41,7 @@ class AlarmManagerViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
             AlarmManagerViewModel::class.java -> AlarmManagerViewModel(database, application) as T
+            DismissAlarmViewModel::class.java -> DismissAlarmViewModel(database, application) as T
             else -> throw IllegalArgumentException("Cannot find ViewModel class to create from factory")
         }
     }

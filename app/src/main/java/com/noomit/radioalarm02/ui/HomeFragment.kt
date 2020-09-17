@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.AlarmManagerViewModelFactory
+import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.model.AppDatabase
@@ -24,7 +24,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override val viewBinding: FragmentHomeBinding by viewBinding()
 
     private val alarmManager: AlarmManagerViewModel by activityViewModels {
-        AlarmManagerViewModelFactory(
+        AndroidViewModelFactory(
             AppDatabase.getInstance(requireActivity()),
             requireActivity().application,
         )
