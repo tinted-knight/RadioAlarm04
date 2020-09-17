@@ -20,12 +20,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-sealed class SetMelodyState {
-    object Idle : SetMelodyState()
-    class ForAlarm(val alarm: Alarm) : SetMelodyState()
-    class Selected(val alarm: Alarm, val melody: Favorite) : SetMelodyState()
-}
-
 class AlarmManagerViewModel(database: Database, application: Application) :
     AndroidViewModel(application) {
 
