@@ -123,7 +123,7 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val timeFormat = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
 
     fun bind(value: Alarm) {
-        if (value.time_in_millis == 0L || value.is_enabled) {
+        if (value.time_in_millis == 0L || !value.is_enabled) {
             tvDay.text = ""
             tvTime.text = "${value.hourString}:${value.minuteString}"
         } else {

@@ -66,7 +66,21 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         )
     }
 
-    fun setEnabled(alarm: Alarm, isEnabled: Boolean) = queries.updateEnabled(isEnabled, alarm.id)
+    fun setEnabled(alarm: Alarm, isEnabled: Boolean) {
+        if (!isEnabled || alarm.days_of_week != 0) {
+            queries.updateEnabled(alarmId = alarm.id, isEnabled = isEnabled)
+            return
+        }
+        if (alarm.days_of_week == 0) {
+            val composed = composeAlarmEntity(alarm.hour, alarm.minute)
+            queries.updateDays(
+                alarmId = alarm.id,
+                daysOfWeek = composed.daysOfWeek,
+                timeInMillis = composed.timeInMillis,
+                isEnabled = true,
+            )
+        }
+    }
 
     private var selectMelodyFor: Alarm? = null
 
