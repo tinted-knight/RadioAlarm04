@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui
+package com.noomit.radioalarm02.home.ui
 
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -8,6 +8,7 @@ import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentSelectMelodyBinding
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
+import com.noomit.radioalarm02.home.AlarmManagerViewModel
 import com.noomit.radioalarm02.model.AppDatabase
 
 class SelectMelodyFragment : BaseFragment(R.layout.fragment_select_melody) {

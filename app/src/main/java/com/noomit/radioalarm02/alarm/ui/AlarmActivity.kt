@@ -2,6 +2,7 @@ package com.noomit.radioalarm02.alarm.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.viewModels
 import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
@@ -25,6 +26,18 @@ class AlarmActivity : BaseWakelockActivity() {
 
         viewModel.alarmId = intent.getLongExtra(AlarmReceiver.ALARM_ID, -1)
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
+
+        val action = intent.action ?: ACTION_TEST
+        if (action == ACTION_FIRE) {
+            findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
+                viewModel.alarmFired()
+                onBackPressed()
+            }
+        } else {
+            findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
+                onBackPressed()
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -33,5 +46,10 @@ class AlarmActivity : BaseWakelockActivity() {
             viewModel.alarmId = it.getLongExtra(AlarmReceiver.ALARM_ID, -1)
             viewModel.melodyUrl = it.getStringExtra(AlarmReceiver.BELL_URL)
         }
+    }
+
+    companion object {
+        const val ACTION_FIRE = "alarm-action"
+        const val ACTION_TEST = "alarm-test"
     }
 }

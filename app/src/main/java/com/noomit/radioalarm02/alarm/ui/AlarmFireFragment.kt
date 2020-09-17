@@ -63,7 +63,7 @@ class AlarmFireFragment : PlayerBaseFragment(
     }
 
     override fun prepareUi() {
-        viewModel.alarmFired()
+//        viewModel.alarmFired()
     }
 
     override fun onServiceConnected() {
@@ -79,11 +79,7 @@ class AlarmFireFragment : PlayerBaseFragment(
         }
     }
 
-    override fun listenUiEvents() {
-        viewBinding.btnDismiss.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
-    }
+    override fun listenUiEvents() {}
 
     override fun observeModel() {
     }

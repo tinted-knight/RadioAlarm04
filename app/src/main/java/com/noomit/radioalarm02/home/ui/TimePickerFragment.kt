@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui
+package com.noomit.radioalarm02.home.ui
 
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -16,9 +16,4 @@ class TimePickerFragment(
 
         return TimePickerDialog(requireActivity(), timeSetListener, hour, minute, true)
     }
-
-//    private val timeSetListener =
-//        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-//            requireActivity().toast("Choosed: $hourOfDay : $minute")
-//        }
 }

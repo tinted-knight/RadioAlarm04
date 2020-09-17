@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui
+package com.noomit.radioalarm02.home.adapters
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -33,6 +33,7 @@ class AlarmListAdapter(
     private val onDayClick: DayOfWeekClick,
     private val onEnabledChecked: EnabledSwitch,
     private val onMelodyClick: MelodyClick,
+    private val onMelodyLongClick: MelodyLongClick,
 ) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
         LayoutInflater.from(parent.context)
@@ -65,6 +66,11 @@ class AlarmListAdapter(
             }
 
             tvMelody.setOnClickListener { onMelodyClick(alarm) }
+
+            tvMelody.setOnLongClickListener {
+                onMelodyLongClick(alarm)
+                return@setOnLongClickListener true
+            }
         }
     }
 

@@ -26,7 +26,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     context,
                     102, // #fake
                     Intent(context, AlarmActivity::class.java).apply {
-                        action = ALARM_ACTION
+                        action = AlarmActivity.ACTION_FIRE
                         putExtra(ALARM_ID, alarmId)
                         putExtra(BELL_URL, melodyUrl)
                     },

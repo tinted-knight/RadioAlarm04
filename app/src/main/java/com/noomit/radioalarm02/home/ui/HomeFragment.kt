@@ -1,5 +1,6 @@
-package com.noomit.radioalarm02.ui
+package com.noomit.radioalarm02.home.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -8,10 +9,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.Alarm
+import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.alarm.ui.AlarmActivity
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
+import com.noomit.radioalarm02.home.AlarmManagerViewModel
+import com.noomit.radioalarm02.home.adapters.AlarmListAdapter
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.toast
 import timber.log.Timber
@@ -63,6 +68,16 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 onMelodyClick = { alarm ->
                     alarmManager.selectMelodyFor(alarm)
                     findNavController().navigate(R.id.action_home_to_selectMelody)
+                },
+                onMelodyLongClick = { alarm ->
+                    startActivity(
+                        Intent(requireActivity(), AlarmActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                            action = AlarmActivity.ACTION_TEST
+                            putExtra(AlarmReceiver.ALARM_ID, alarm.id)
+                            putExtra(AlarmReceiver.BELL_URL, alarm.bell_url)
+                        }
+                    )
                 }
             )
             // #todo StationList restore state
