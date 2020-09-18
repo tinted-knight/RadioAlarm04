@@ -59,14 +59,9 @@ fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
         set(Calendar.HOUR_OF_DAY, alarm.hour)
         set(Calendar.MINUTE, alarm.minute)
 
-//        if (timeInMillis < now.timeInMillis && alarm.days_of_week == get(Calendar.DAY_OF_WEEK)) {
-//            add(Calendar.WEEK_OF_YEAR, 1)
-//        }
-
         val oneMinuteInFuture = now.apply { add(Calendar.MINUTE, 1) }
         if (timeInMillis < oneMinuteInFuture.timeInMillis) {
             add(Calendar.DAY_OF_YEAR, 1)
-//            newDays = switchBitByDay(get(Calendar.DAY_OF_WEEK), newDays)
         }
 
         var today = get(Calendar.DAY_OF_WEEK)

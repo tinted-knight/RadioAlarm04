@@ -54,7 +54,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         val c = Calendar.getInstance().apply {
             timeInMillis = updated.time_in_millis
         }
-        plog("${c[Calendar.DAY_OF_MONTH]} : ${c[Calendar.MONTH]}")
+        plog("updated: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]}, daysOfWeek = ${updated.days_of_week}")
         queries.updateDays(
             alarmId = updated.id,
             daysOfWeek = updated.days_of_week,

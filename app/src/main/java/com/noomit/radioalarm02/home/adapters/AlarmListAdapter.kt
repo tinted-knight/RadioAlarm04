@@ -66,9 +66,8 @@ class AlarmListAdapter(
                 onEnabledChecked(alarm, isChecked)
             }
 
-            tvTime.setOnClickListener {
-                onTimeClick(alarm)
-            }
+            tvTime.setOnClickListener { onTimeClick(alarm) }
+            tvDay.setOnClickListener { onTimeClick(alarm) }
 
             tvMelody.setOnClickListener { onMelodyClick(alarm) }
             tvMelody.setOnLongClickListener {
@@ -83,6 +82,7 @@ class AlarmListAdapter(
         holder.apply {
             btnDelete.setOnClickListener(null)
             btnDelete.setOnLongClickListener(null)
+
             tvSun.setOnClickListener(null)
             tvMon.setOnClickListener(null)
             tvTue.setOnClickListener(null)
@@ -90,7 +90,12 @@ class AlarmListAdapter(
             tvThu.setOnClickListener(null)
             tvFri.setOnClickListener(null)
             tvSat.setOnClickListener(null)
+
+            swEnabled.setOnCheckedChangeListener(null)
+
             tvTime.setOnClickListener(null)
+            tvDay.setOnClickListener(null)
+
             tvMelody.setOnClickListener(null)
             tvMelody.setOnLongClickListener(null)
         }
