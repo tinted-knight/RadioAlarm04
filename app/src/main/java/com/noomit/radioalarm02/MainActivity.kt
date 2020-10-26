@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.ViewModelFactory
-import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 
 class MainActivity : AppCompatActivity() {
 

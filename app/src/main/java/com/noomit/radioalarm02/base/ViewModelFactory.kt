@@ -8,7 +8,7 @@ import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.home.AlarmManagerViewModel
-import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val apiService: RadioBrowserService) :
