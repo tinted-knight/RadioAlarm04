@@ -2,6 +2,7 @@ package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +19,11 @@ import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.StationList
 import com.noomit.radioalarm02.toast
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class StationListFragment() : PlayerBaseFragment(
     playerViewId = R.id.exo_player_view,
     playerControlId = R.id.exo_player_controls,
@@ -69,6 +74,16 @@ class StationListFragment() : PlayerBaseFragment(
                     if (stationList.isEmpty()) showLoading() else showContent(stationList)
                 },
                 onFailure = { err -> requireContext().toast("${err.message}") },
+            )
+        }
+        stationFlowList.observe(viewLifecycleOwner) {
+            it.fold(
+                onSuccess = { list ->
+                    Toast.makeText(activity,
+                        "${list.size}, ${list.first().name}",
+                        Toast.LENGTH_SHORT).show()
+                },
+                onFailure = {},
             )
         }
     }

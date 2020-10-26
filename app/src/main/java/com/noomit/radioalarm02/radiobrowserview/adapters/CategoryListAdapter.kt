@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.model.LanguageModel
+import com.noomit.radioalarm02.model.CategoryModel
 
-typealias LanguageClick = ((LanguageModel) -> Unit)
-
-class CategoryListAdapter(private val onClick: LanguageClick) :
-    ListAdapter<LanguageModel, CategoryListViewHolder>(CategoryDiffUtil()) {
+abstract class CategoryListAdapter<Model : CategoryModel>(
+    private val onClick: (Model) -> Unit,
+    diffUtil: CategoryDiffUtil<Model>,
+) :
+    ListAdapter<Model, CategoryListViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryListViewHolder {
         return CategoryListViewHolder(
             LayoutInflater
@@ -39,19 +40,19 @@ class CategoryListAdapter(private val onClick: LanguageClick) :
     }
 }
 
-private class CategoryDiffUtil : DiffUtil.ItemCallback<LanguageModel>() {
-    override fun areItemsTheSame(oldItem: LanguageModel, newItem: LanguageModel): Boolean {
+abstract class CategoryDiffUtil<Model : CategoryModel> : DiffUtil.ItemCallback<Model>() {
+    override fun areItemsTheSame(oldItem: Model, newItem: Model): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: LanguageModel, newItem: LanguageModel): Boolean {
+    override fun areContentsTheSame(oldItem: Model, newItem: Model): Boolean {
         return (oldItem.name == newItem.name && oldItem.stationCount == newItem.stationCount)
     }
 
 }
 
 class CategoryListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(value: LanguageModel) = with(itemView) {
+    fun bind(value: CategoryModel) = with(itemView) {
         findViewById<TextView>(R.id.tv_station_name).text = value.name
         findViewById<TextView>(R.id.tv_station_count).text = value.stationCount
     }

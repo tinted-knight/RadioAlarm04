@@ -8,9 +8,7 @@ import com.example.radiobrowser.ServerListResponse.Failure
 import com.example.radiobrowser.ServerListResponse.Success
 import com.noomit.radioalarm02.model.LanguageModel
 import com.noomit.radioalarm02.model.StationModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -20,9 +18,15 @@ typealias StationList = List<StationModel>
 
 typealias StationListResponse = Result<StationList>
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewModel() {
 
-    private val languageManager = LanguageManager(apiService)
+    private val languageManager: CategoryManager<LanguageModel> = LanguageManager(apiService)
+    private val stationManager = StationManager(
+        apiService = apiService,
+        chosenFlow = languageManager.chosenFlow,
+    )
 
     init {
         plog("RadioBrowserViewModel.init")
@@ -48,9 +52,9 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         apiService.setActiveServer(serverInfo)
     }
 
-    val languageList = languageManager.languageFlow.asLiveData()
+    val languageList = languageManager.categoryFlow.asLiveData()
 
-    fun onLanguageChoosed(value: LanguageModel) = languageManager.onLanguageChoosed(value)
+    fun onLanguageChoosed(value: LanguageModel) = languageManager.onCategoryChoosed(value)
 
 //    val stationFlow: Flow<StationListResponse> = languageManager.langFlow
 //        .map { apiService.getStationsByLanguage(it.name) }
@@ -76,7 +80,9 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
 //        }
 //        .flowOn(Dispatchers.Default)
 
-    val stationList: LiveData<StationListResponse> = languageManager.chosenLanguage.switchMap {
+    val stationFlowList = stationManager.stationListFlow.asLiveData()
+
+    val stationList: LiveData<StationListResponse> = languageManager.chosenCategory.switchMap {
         plog("get station list")
         liveData {
             try {
