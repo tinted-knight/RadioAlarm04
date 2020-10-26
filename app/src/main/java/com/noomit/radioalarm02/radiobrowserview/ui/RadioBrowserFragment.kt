@@ -10,7 +10,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentRadioBrowserBinding
 import com.noomit.radioalarm02.radiobrowserview.adapters.ServerListAdapter
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.Categories
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.Action
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.ServerState
 import com.noomit.radioalarm02.toast
@@ -52,21 +52,11 @@ class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
                 }
             }
         }
-//        viewModel.availableServers.observe(viewLifecycleOwner) {
-//            it.fold(
-//                onSuccess = { values ->
-//                    showContent(values)
-//                },
-//                onFailure = { e ->
-//                    requireActivity().toast(e.localizedMessage)
-//                },
-//            )
-//        }
     }
 
     override fun listenUiEvents() = with(viewBinding) {
         btnLanguages.setOnClickListener {
-            viewModel.onCategoryChosed(Categories.Language)
+            viewModel.offer(Action.Show.LanguageList)
             findNavController().navigate(R.id.action_radioBrowser_to_languageList)
         }
     }

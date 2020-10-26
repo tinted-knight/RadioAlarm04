@@ -8,6 +8,8 @@ import com.noomit.radioalarm02.model.LanguageModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageManager
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -15,8 +17,22 @@ private fun plog(message: String) =
 
 enum class Categories { Language, Tag }
 
+sealed class Action {
+    object Idle : Action()
+
+    sealed class Show : Action() {
+        object LanguageList : Show()
+        object TagList : Show()
+        data class StationsByLanguage(val value: LanguageModel) : Show()
+    }
+
+    data class SetServer(val value: ServerInfo) : Action()
+}
+
 @ExperimentalCoroutinesApi
 class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
+
+    private val actionFlow = MutableStateFlow<Action>(Action.Idle)
 
     private val serverManager = ServerManager(
         apiService = apiService,
@@ -25,12 +41,13 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
     private val languageManager = LanguageManager(
         apiService = apiService,
+        actions = actionFlow as Flow<Action>,
         scope = viewModelScope,
     )
 
     private val stationManager = StationManager(
         via = apiService,
-        observe = languageManager.chosenCategory,
+        watchFor = actionFlow as Flow<Action>,
         scope = viewModelScope,
     )
 
@@ -46,13 +63,7 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
-    fun onLanguageChoosed(value: LanguageModel) = languageManager.onCategoryChoosed(value)
-
-    fun onCategoryChosed(value: Categories) {
-        when (value) {
-            Categories.Language -> languageManager.load()
-            Categories.Tag -> {
-            }
-        }
+    fun offer(action: Action) {
+        actionFlow.value = action
     }
 }

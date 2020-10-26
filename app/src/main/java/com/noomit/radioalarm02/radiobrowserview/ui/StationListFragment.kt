@@ -18,7 +18,7 @@ import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationList
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationListState
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationManagerState
 import com.noomit.radioalarm02.toast
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -71,9 +71,9 @@ class StationListFragment() : PlayerBaseFragment(
         lifecycleScope.launchWhenStarted {
             viewModel.stationList.collect {
                 when (it) {
-                    is StationListState.Loading -> showLoading()
-                    is StationListState.Success -> showContent(it.values)
-                    is StationListState.Failure -> requireContext().toast(it.error.localizedMessage)
+                    is StationManagerState.Loading -> showLoading()
+                    is StationManagerState.Success -> showContent(it.values)
+                    is StationManagerState.Failure -> requireContext().toast(it.error.localizedMessage)
                 }
             }
         }

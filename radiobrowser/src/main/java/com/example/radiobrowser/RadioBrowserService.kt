@@ -126,6 +126,8 @@ class RadioBrowserService() {
         return api.getStationsByLanguage(langString)
     }
 
+    fun stationsByLanguage(langString: String) = flow { emit(getStationsByLanguage(langString)) }
+
     suspend fun getStationsByTag(tag: String): List<StationNetworkEntity> {
         return api.getStationsByTag(tag)
     }

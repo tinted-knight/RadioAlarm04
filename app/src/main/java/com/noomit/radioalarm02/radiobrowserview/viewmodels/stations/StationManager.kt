@@ -3,7 +3,7 @@ package com.noomit.radioalarm02.radiobrowserview.viewmodels.stations
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.model.StationModel
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.ChosedLanguage
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.Action
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -12,31 +12,26 @@ typealias StationList = List<StationModel>
 @ExperimentalCoroutinesApi
 class StationManager(
     via: RadioBrowserService,
-    observe: Flow<ChosedLanguage>,
+    watchFor: Flow<Action>,
     scope: CoroutineScope,
 ) : WithLogTag {
 
     override val logTag = "station_manager"
 
     private val apiService = via
-    private val chosedLanguage = observe
+    private val actions = watchFor
 
-    private val _state = MutableStateFlow<StationListState>(StationListState.Loading)
-    val state: StateFlow<StationListState> = _state
+    private val _state = MutableStateFlow<StationManagerState>(StationManagerState.Loading)
+    val state: StateFlow<StationManagerState> = _state
 
     init {
         scope.launch {
-            chosedLanguage
-                .onEach { _state.value = StationListState.Loading }
+            actions.filterIsInstance<Action.Show.StationsByLanguage>()
+                .onEach { _state.value = StationManagerState.Loading }
+                .flatMapLatest { apiService.stationsByLanguage(it.value.name) }
                 .onEach { plog(it.toString()) }
                 // #fake delay
                 .onEach { delay(500) }
-                .map {
-                    when (it) {
-                        is ChosedLanguage.None -> emptyList()
-                        is ChosedLanguage.Value -> apiService.getStationsByLanguage(it.value.name)
-                    }
-                }
                 .flowOn(Dispatchers.IO)
                 .onEach { plog("${it.size}") }
                 .map { stationList ->
@@ -56,8 +51,8 @@ class StationManager(
                         }
                 }
                 .flowOn(Dispatchers.Default)
-                .catch { e -> _state.value = StationListState.Failure(e) }
-                .collect { _state.value = StationListState.Success(it) }
+                .catch { e -> _state.value = StationManagerState.Failure(e) }
+                .collect { _state.value = StationManagerState.Success(it) }
         }
     }
 }

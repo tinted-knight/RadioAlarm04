@@ -10,6 +10,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
 import com.noomit.radioalarm02.radiobrowserview.adapters.LanguageListAdapter
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.Action
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageList
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageManagerState
@@ -31,7 +32,7 @@ class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
             adapter = LanguageListAdapter { value ->
-                viewModel.onLanguageChoosed(value)
+                viewModel.offer(Action.Show.StationsByLanguage(value))
                 findNavController().navigate(R.id.action_languageList_to_stationList)
             }
             // #todo LanguageList restore state
