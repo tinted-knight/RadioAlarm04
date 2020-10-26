@@ -28,6 +28,7 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentL
 
     abstract fun prepareUi()
     abstract fun listenUiEvents()
+    // #todo change to Job for StateFlow
     abstract fun observeModel()
 }
 

@@ -13,12 +13,17 @@ import timber.log.Timber
 private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
+enum class Categories { Language, Tag }
+
 @ExperimentalCoroutinesApi
 class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
     private val serverManager = ServerManager(apiService)
 
-    private val languageManager = LanguageManager(apiService)
+    private val languageManager = LanguageManager(
+        apiService = apiService,
+        scope = viewModelScope,
+    )
 
     private val stationManager = StationManager(
         via = apiService,
@@ -28,7 +33,7 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
     val availableServers = serverManager.availableServers
 
-    val languageList = languageManager.values
+    val languageList = languageManager.state
 
     val stationList = stationManager.state
 
@@ -39,4 +44,13 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
     fun setServer(serverInfo: ServerInfo) = serverManager.setServer(serverInfo)
 
     fun onLanguageChoosed(value: LanguageModel) = languageManager.onCategoryChoosed(value)
+
+    fun onCategoryChosed(value: Categories) {
+        when (value) {
+            Categories.Language -> languageManager.load()
+            Categories.Tag -> {
+            }
+        }
+
+    }
 }

@@ -4,11 +4,8 @@ import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.ChosedLanguage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 typealias StationList = List<StationModel>
 
@@ -32,6 +29,8 @@ class StationManager(
             chosedLanguage
                 .onEach { _state.value = StationListState.Loading }
                 .onEach { plog(it.toString()) }
+                // #fake delay
+                .onEach { delay(500) }
                 .map {
                     when (it) {
                         is ChosedLanguage.None -> emptyList()

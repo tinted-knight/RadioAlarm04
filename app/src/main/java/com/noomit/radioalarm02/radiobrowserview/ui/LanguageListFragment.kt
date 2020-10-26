@@ -2,6 +2,7 @@ package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -11,7 +12,10 @@ import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
 import com.noomit.radioalarm02.radiobrowserview.adapters.LanguageListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageList
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageManagerState
+import com.noomit.radioalarm02.toast
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
@@ -38,14 +42,16 @@ class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
     override fun listenUiEvents() {
     }
 
-    override fun observeModel() = with(viewModel) {
-        languageList.observe(viewLifecycleOwner) {
-            it.fold(
-                onSuccess = { languageList ->
-                    showContent(languageList)
-                },
-                onFailure = {},
-            )
+    override fun observeModel() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.languageList.collect {
+                when (it) {
+                    is LanguageManagerState.Loading -> showLoading()
+                    is LanguageManagerState.Empty -> showContent(emptyList())
+                    is LanguageManagerState.Values -> showContent(it.values)
+                    is LanguageManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
+                }
+            }
         }
     }
 
