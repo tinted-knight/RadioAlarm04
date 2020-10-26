@@ -17,13 +17,12 @@ sealed class ChosedLanguage {
 class LanguageManager(
     private val apiService: RadioBrowserService,
     private val scope: CoroutineScope,
-) :
-    CategoryManager<LanguageModel, LanguageManagerState, ChosedLanguage>, WithLogTag {
+) : CategoryManager<LanguageModel, LanguageManagerState, ChosedLanguage>, WithLogTag {
 
     override val logTag = "lang_manager"
 
-    private val _chosenFlow = MutableStateFlow<ChosedLanguage>(ChosedLanguage.None)
-    override val chosenCategory: Flow<ChosedLanguage> = _chosenFlow
+    private val _chosenCategory = MutableStateFlow<ChosedLanguage>(ChosedLanguage.None)
+    override val chosenCategory: Flow<ChosedLanguage> = _chosenCategory
 
     private val _state = MutableStateFlow<LanguageManagerState>(LanguageManagerState.Loading)
     override val state: StateFlow<LanguageManagerState> = _state
@@ -53,7 +52,7 @@ class LanguageManager(
     }
 
     override fun onCategoryChoosed(value: LanguageModel) {
-        _chosenFlow.value = ChosedLanguage.Value(value)
+        _chosenCategory.value = ChosedLanguage.Value(value)
     }
 
 }

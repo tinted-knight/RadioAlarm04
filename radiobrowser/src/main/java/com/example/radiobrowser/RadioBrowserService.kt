@@ -3,7 +3,10 @@ package com.example.radiobrowser
 import android.util.Log
 import com.example.radiobrowser.ServerListResponse.ServerListFailure
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -28,9 +31,18 @@ sealed class ServerListResponse {
     class Failure(val error: ServerListFailure) : ServerListResponse()
 }
 
+sealed class ActiveServerState {
+    object None : ActiveServerState()
+    data class Value(val serverInfo: ServerInfo) : ActiveServerState()
+}
+
+@ExperimentalCoroutinesApi
 class RadioBrowserService() {
 
     private lateinit var api: RadioBrowserApi
+
+    private val _activeServer = MutableStateFlow<ActiveServerState>(ActiveServerState.None)
+    val activeServer: StateFlow<ActiveServerState> = _activeServer
 
     init {
         plog("RadioBrowserService::init")
@@ -83,6 +95,7 @@ class RadioBrowserService() {
     fun setActiveServer(serverInfo: ServerInfo) {
         api = getApi("https://${serverInfo.urlString}/json/")
         plog("setActiveServer: ${serverInfo.urlString}")
+        _activeServer.value = ActiveServerState.Value(serverInfo)
     }
 
     suspend fun getAllStations(): List<StationNetworkEntity> {
@@ -99,7 +112,12 @@ class RadioBrowserService() {
 
     suspend fun getLanguageList(): List<LanguageNetworkEntity> {
         plog("getLanguageList")
-        return api.getLanguageList()
+        // #todo wrapper for every method that calls [api] field
+        if (::api.isInitialized) {
+            return api.getLanguageList()
+        } else {
+            throw UninitializedPropertyAccessException("lateinit errrrror")
+        }
     }
 
     fun getLanguageListFlow(): Flow<List<LanguageNetworkEntity>> = flow { emit(getLanguageList()) }

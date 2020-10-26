@@ -18,7 +18,10 @@ enum class Categories { Language, Tag }
 @ExperimentalCoroutinesApi
 class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
-    private val serverManager = ServerManager(apiService)
+    private val serverManager = ServerManager(
+        apiService = apiService,
+        scope = viewModelScope,
+    )
 
     private val languageManager = LanguageManager(
         apiService = apiService,
@@ -31,7 +34,7 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
         scope = viewModelScope,
     )
 
-    val availableServers = serverManager.availableServers
+    val availableServers = serverManager.state
 
     val languageList = languageManager.state
 
@@ -41,7 +44,7 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
         plog("RadioBrowserViewModel.init")
     }
 
-    fun setServer(serverInfo: ServerInfo) = serverManager.setServer(serverInfo)
+    fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
     fun onLanguageChoosed(value: LanguageModel) = languageManager.onCategoryChoosed(value)
 
@@ -51,6 +54,5 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
             Categories.Tag -> {
             }
         }
-
     }
 }
