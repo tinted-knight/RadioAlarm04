@@ -1,9 +1,19 @@
 package com.noomit.radioalarm02.model
 
+interface CategoryModel {
+    val name: String
+    val stationCount: String
+}
+
 data class LanguageModel(
-    val name: String,
-    val stationCount: String,
-)
+    override val name: String,
+    override val stationCount: String
+) : CategoryModel
+
+data class TagModel(
+    override val name: String,
+    override val stationCount: String
+) : CategoryModel
 
 data class StationModel(
     val name: String,
