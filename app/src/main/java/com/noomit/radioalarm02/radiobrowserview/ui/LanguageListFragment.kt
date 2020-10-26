@@ -11,7 +11,9 @@ import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
 import com.noomit.radioalarm02.radiobrowserview.adapters.LanguageListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.LanguageList
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
 
     private val viewModel: RadioBrowserViewModel by activityViewModels()

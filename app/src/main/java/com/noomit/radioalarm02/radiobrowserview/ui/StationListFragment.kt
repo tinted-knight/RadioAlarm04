@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
@@ -17,8 +18,12 @@ import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.StationList
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.StationListState
 import com.noomit.radioalarm02.toast
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
+@ExperimentalCoroutinesApi
 class StationListFragment() : PlayerBaseFragment(
     playerViewId = R.id.exo_player_view,
     playerControlId = R.id.exo_player_controls,
@@ -62,14 +67,15 @@ class StationListFragment() : PlayerBaseFragment(
     override fun listenUiEvents() {
     }
 
-    override fun observeModel() = with(viewModel) {
-        stationList.observe(viewLifecycleOwner) {
-            it.fold(
-                onSuccess = { stationList ->
-                    if (stationList.isEmpty()) showLoading() else showContent(stationList)
-                },
-                onFailure = { err -> requireContext().toast("${err.message}") },
-            )
+    override fun observeModel() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.stationList.collect {
+                when (it) {
+                    is StationListState.Loading -> showLoading()
+                    is StationListState.Success -> showContent(it.values)
+                    is StationListState.Failure -> requireContext().toast(it.error.localizedMessage)
+                }
+            }
         }
     }
 

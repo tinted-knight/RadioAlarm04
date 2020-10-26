@@ -1,39 +1,52 @@
 package com.noomit.radioalarm02.radiobrowserview.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
-import com.bumptech.glide.load.HttpException
 import com.example.radiobrowser.RadioBrowserService
-import com.noomit.radioalarm02.model.LanguageModel
 import com.noomit.radioalarm02.model.StationModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 typealias StationList = List<StationModel>
 
 typealias StationListResponse = Result<StationList>
 
-class StationManager(via: RadioBrowserService, observe: LiveData<LanguageModel>) {
-    private val chosenLanguage = observe
+sealed class StationListState {
+    object Loading : StationListState()
+    data class Success(val values: StationList) : StationListState()
+    data class Failure(val error: Throwable) : StationListState()
+}
+
+@ExperimentalCoroutinesApi
+class StationManager(
+    via: RadioBrowserService,
+    observe: Flow<ChosedLanguage>,
+    scope: CoroutineScope,
+) : WithLogTag {
+
+    override val logTag = "station_manager"
+
     private val apiService = via
 
-    val values = chosenLanguage.switchMap {
-        liveData {
-            try {
-                emit(Result.success(emptyList()))
-                val stationList = withContext(Dispatchers.IO) {
-                    apiService.getStationsByLanguage(it.name)
+    private val _state = MutableStateFlow<StationListState>(StationListState.Loading)
+    val state: StateFlow<StationListState> = _state
+
+    init {
+        scope.launch {
+            observe
+                .onEach { _state.value = StationListState.Loading }
+                .onEach { plog(it.toString()) }
+                .map {
+                    when (it) {
+                        is ChosedLanguage.None -> emptyList()
+                        is ChosedLanguage.Value -> apiService.getStationsByLanguage(it.value.name)
+                    }
                 }
-                // #think
-                if (stationList.isNullOrEmpty()) {
-                    emit(Result.success(emptyList<StationModel>()))
-                } else {
-                    // #fake delay
-                    delay(500)
-                    val forViewList = stationList
-                        .sortedByDescending { it.votes }
+                .flowOn(Dispatchers.IO)
+                .onEach { plog("${it.size}") }
+                .map { stationList ->
+                    stationList.sortedByDescending { it.votes }
                         .map {
                             StationModel(
                                 name = it.name,
@@ -47,11 +60,10 @@ class StationManager(via: RadioBrowserService, observe: LiveData<LanguageModel>)
                                 tags = it.tags,
                             )
                         }
-                    emit(Result.success(forViewList))
                 }
-            } catch (e: HttpException) {
-                emit(Result.failure<StationList>(Exception("http exception")))
-            }
+                .flowOn(Dispatchers.Default)
+                .catch { e -> StationListState.Failure(e) }
+                .collect { _state.value = StationListState.Success(it) }
         }
     }
 }
