@@ -9,8 +9,8 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
 import com.noomit.radioalarm02.radiobrowserview.adapters.LanguageListAdapter
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.LanguageList
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

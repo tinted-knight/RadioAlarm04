@@ -17,8 +17,8 @@ import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.StationList
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.StationListState
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationList
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationListState
 import com.noomit.radioalarm02.toast
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect

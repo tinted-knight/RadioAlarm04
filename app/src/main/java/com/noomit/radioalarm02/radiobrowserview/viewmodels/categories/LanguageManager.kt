@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.viewmodels
+package com.noomit.radioalarm02.radiobrowserview.viewmodels.categories
 
 import androidx.lifecycle.liveData
 import com.bumptech.glide.load.HttpException
@@ -7,8 +7,8 @@ import com.noomit.radioalarm02.model.LanguageModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
 typealias LanguageList = List<LanguageModel>
@@ -23,7 +23,7 @@ class LanguageManager(apiService: RadioBrowserService) :
     CategoryManager<LanguageModel, ChosedLanguage> {
 
     private val _chosenFlow = MutableStateFlow<ChosedLanguage>(ChosedLanguage.None)
-    override val chosenCategory: StateFlow<ChosedLanguage> = _chosenFlow
+    override val chosenCategory: Flow<ChosedLanguage> = _chosenFlow
 
     override val values = liveData {
         try {

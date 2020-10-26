@@ -1,7 +1,9 @@
-package com.noomit.radioalarm02.radiobrowserview.viewmodels
+package com.noomit.radioalarm02.radiobrowserview.viewmodels.stations
 
 import com.example.radiobrowser.RadioBrowserService
+import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.model.StationModel
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.ChosedLanguage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,14 +11,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 typealias StationList = List<StationModel>
-
-typealias StationListResponse = Result<StationList>
-
-sealed class StationListState {
-    object Loading : StationListState()
-    data class Success(val values: StationList) : StationListState()
-    data class Failure(val error: Throwable) : StationListState()
-}
 
 @ExperimentalCoroutinesApi
 class StationManager(
@@ -28,13 +22,14 @@ class StationManager(
     override val logTag = "station_manager"
 
     private val apiService = via
+    private val chosedLanguage = observe
 
     private val _state = MutableStateFlow<StationListState>(StationListState.Loading)
     val state: StateFlow<StationListState> = _state
 
     init {
         scope.launch {
-            observe
+            chosedLanguage
                 .onEach { _state.value = StationListState.Loading }
                 .onEach { plog(it.toString()) }
                 .map {
@@ -62,7 +57,7 @@ class StationManager(
                         }
                 }
                 .flowOn(Dispatchers.Default)
-                .catch { e -> StationListState.Failure(e) }
+                .catch { e -> _state.value = StationListState.Failure(e) }
                 .collect { _state.value = StationListState.Success(it) }
         }
     }
