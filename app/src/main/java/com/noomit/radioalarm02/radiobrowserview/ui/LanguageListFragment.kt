@@ -8,9 +8,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
-import com.noomit.radioalarm02.radiobrowserview.LanguageList
-import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.CategoryListAdapter
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.LanguageList
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 
 class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
 

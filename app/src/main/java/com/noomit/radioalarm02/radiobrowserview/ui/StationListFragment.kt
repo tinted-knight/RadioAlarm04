@@ -14,9 +14,9 @@ import com.noomit.radioalarm02.databinding.FragmentStationListBinding
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.model.StationModel
-import com.noomit.radioalarm02.radiobrowserview.RadioBrowserViewModel
-import com.noomit.radioalarm02.radiobrowserview.StationList
 import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.StationList
 import com.noomit.radioalarm02.toast
 
 class StationListFragment() : PlayerBaseFragment(

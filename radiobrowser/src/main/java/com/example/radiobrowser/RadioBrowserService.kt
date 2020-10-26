@@ -3,6 +3,7 @@ package com.example.radiobrowser
 import android.util.Log
 import com.example.radiobrowser.ServerListResponse.ServerListFailure
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.InetAddress
@@ -98,6 +99,8 @@ class RadioBrowserService() {
     suspend fun getLanguageList(): List<LanguageNetworkEntity> {
         return api.getLanguageList()
     }
+
+    fun getLanguageFlow() = flow { emit(getLanguageList()) }
 
     suspend fun getStationsByLanguage(langString: String): List<StationNetworkEntity> {
         return api.getStationsByLanguage(langString)

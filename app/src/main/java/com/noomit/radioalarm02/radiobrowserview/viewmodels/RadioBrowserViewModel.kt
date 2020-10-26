@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview
+package com.noomit.radioalarm02.radiobrowserview.viewmodels
 
 import androidx.lifecycle.*
 import com.bumptech.glide.load.HttpException
@@ -20,11 +20,9 @@ typealias StationList = List<StationModel>
 
 typealias StationListResponse = Result<StationList>
 
-typealias LanguageList = List<LanguageModel>
-
-typealias LanguageListResponse = Result<LanguageList>
-
 class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewModel() {
+
+    private val languageManager = LanguageManager(apiService)
 
     init {
         plog("RadioBrowserViewModel.init")
@@ -50,38 +48,35 @@ class RadioBrowserViewModel(private val apiService: RadioBrowserService) : ViewM
         apiService.setActiveServer(serverInfo)
     }
 
-    val languageList: LiveData<LanguageListResponse> = liveData(Dispatchers.Default) {
-        plog("get language list")
-        try {
-            val languageList = withContext(Dispatchers.IO) { apiService.getLanguageList() }
-            if (!languageList.isNullOrEmpty()) {
-                // #fake delay
-                delay(500)
-                val forViewList = languageList
-                    .sortedByDescending { it.stationcount }
-                    .map {
-                        LanguageModel(
-                            name = it.name,
-                            stationCount = it.stationcount.toString(),
-                        )
-                    }
-                plog("${forViewList.size}")
-                emit(Result.success(forViewList))
-            }
-        } catch (e: HttpException) {
-            plog(e.localizedMessage ?: "Exception: no message")
-            emit(Result.failure<LanguageList>(Exception("http exception")))
-        }
-    }
+    val languageList = languageManager.languageFlow.asLiveData()
 
-    private var chosenLanguage = MutableLiveData<LanguageModel>()
+    fun onLanguageChoosed(value: LanguageModel) = languageManager.onLanguageChoosed(value)
 
-    fun onLanguageChoosed(value: LanguageModel) {
-        if (chosenLanguage.value == value) return
-        chosenLanguage.value = value
-    }
+//    val stationFlow: Flow<StationListResponse> = languageManager.langFlow
+//        .map { apiService.getStationsByLanguage(it.name) }
+//        .flowOn(Dispatchers.IO)
+//        .catch { Result.failure<StationList>(JavaLangException("htto exception")) }
+//        .filterNot { it.isNullOrEmpty() }
+//        .map { stations ->
+//            Result.success(stations.sortedByDescending { it.votes }
+//                .map {
+//                    StationModel(
+//                        name = it.name,
+//                        upvotes = it.votes.toString(),
+//                        streamUrl = it.url,
+//                        country = it.country,
+//                        homepage = it.homepage,
+//                        codec = it.codec,
+//                        bitrate = it.bitrate,
+//                        favicon = it.favicon,
+//                        tags = it.tags
+//                    )
+//                }
+//            )
+//        }
+//        .flowOn(Dispatchers.Default)
 
-    val stationList: LiveData<StationListResponse> = chosenLanguage.switchMap {
+    val stationList: LiveData<StationListResponse> = languageManager.chosenLanguage.switchMap {
         plog("get station list")
         liveData {
             try {
