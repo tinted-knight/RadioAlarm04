@@ -47,7 +47,10 @@ class LanguageManager(
                         }
                 }
                 .flowOn(Dispatchers.Default)
-                .catch { e -> _state.value = LanguageManagerState.Failure(e) }
+                .catch { e ->
+                    plog("LanguageManager.catch: ${e.localizedMessage}")
+                    _state.value = LanguageManagerState.Failure(e)
+                }
                 .collect {
                     _state.value = when {
                         it.isEmpty() -> LanguageManagerState.Empty

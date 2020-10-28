@@ -29,7 +29,6 @@ class StationManager(
             actions.filterIsInstance<Action.Show.StationsByLanguage>()
                 .onEach { _state.value = StationManagerState.Loading }
                 .flatMapLatest { apiService.stationsByLanguage(it.value.name) }
-                .onEach { plog(it.toString()) }
                 // #fake delay
                 .onEach { delay(500) }
                 .flowOn(Dispatchers.IO)
