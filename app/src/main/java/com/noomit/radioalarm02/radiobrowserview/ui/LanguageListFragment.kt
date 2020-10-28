@@ -1,9 +1,9 @@
 package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.collect
 @ExperimentalCoroutinesApi
 class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
 
-    private val viewModel: RadioBrowserViewModel by activityViewModels()
+    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
     override val viewBinding: FragmentLanguageListBinding by viewBinding()
 

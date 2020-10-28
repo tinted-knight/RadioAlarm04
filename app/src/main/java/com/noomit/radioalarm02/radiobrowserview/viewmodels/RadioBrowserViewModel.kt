@@ -61,6 +61,11 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
         plog("RadioBrowserViewModel.init")
     }
 
+    override fun onCleared() {
+        plog("RadioBrowserViewModel.onCleared")
+        super.onCleared()
+    }
+
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
     fun offer(action: Action) {

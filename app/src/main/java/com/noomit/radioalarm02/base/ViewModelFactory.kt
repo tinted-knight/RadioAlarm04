@@ -9,7 +9,9 @@ import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.home.AlarmManagerViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val apiService: RadioBrowserService) :
     ViewModelProvider.NewInstanceFactory() {

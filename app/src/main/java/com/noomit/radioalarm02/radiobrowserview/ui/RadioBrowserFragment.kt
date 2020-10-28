@@ -1,13 +1,15 @@
 package com.noomit.radioalarm02.radiobrowserview.ui
 
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
+import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentRadioBrowserBinding
 import com.noomit.radioalarm02.radiobrowserview.adapters.ServerListAdapter
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.Action
@@ -24,7 +26,10 @@ class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
 
     override val viewBinding: FragmentRadioBrowserBinding by viewBinding()
 
-    private val viewModel: RadioBrowserViewModel by activityViewModels()
+    private val viewModel: RadioBrowserViewModel by navGraphViewModels(
+        navGraphId = R.id.nav_radio_browser,
+        factoryProducer = { ViewModelFactory(RadioBrowserService()) }
+    )
 
     override fun prepareUi() {
         showLoading()

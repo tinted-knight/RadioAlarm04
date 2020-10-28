@@ -2,9 +2,9 @@ package com.noomit.radioalarm02.radiobrowserview.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
@@ -32,7 +32,7 @@ class StationListFragment() : PlayerBaseFragment(
 
     override val viewBinding: FragmentStationListBinding by viewBinding()
 
-    private val viewModel: RadioBrowserViewModel by activityViewModels()
+    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
     private val favoritesViewModel: FavoritesViewModel by viewModels {
         DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
