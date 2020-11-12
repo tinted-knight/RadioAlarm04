@@ -10,6 +10,7 @@ import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationManag
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -30,20 +31,23 @@ sealed class Action {
 }
 
 @ExperimentalCoroutinesApi
-class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
+class RadioBrowserViewModel(
+    apiService: RadioBrowserService,
+    private val serverManager: ServerManager,
+    private val languageManager: LanguageManager,
+) : ViewModel() {
 
     private val actionFlow = MutableStateFlow<Action>(Action.Idle)
 
-    private val serverManager = ServerManager(
-        apiService = apiService,
-        scope = viewModelScope,
-    )
+//    private val serverManager = ServerManager(
+//        apiService = apiService,
+//        scope = viewModelScope,
+//    )
 
-    private val languageManager = LanguageManager(
-        apiService = apiService,
-        actions = actionFlow as Flow<Action>,
-        scope = viewModelScope,
-    )
+//    private val languageManager = LanguageManager(
+//        apiService = apiService,
+//        actions = actionFlow as Flow<Action>,
+//    )
 
     private val stationManager = StationManager(
         via = apiService,
@@ -59,6 +63,7 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
     init {
         plog("RadioBrowserViewModel.init")
+        serverManager.getAvalilable(viewModelScope)
     }
 
     override fun onCleared() {
@@ -70,5 +75,12 @@ class RadioBrowserViewModel(apiService: RadioBrowserService) : ViewModel() {
 
     fun offer(action: Action) {
         actionFlow.value = action
+        when (action) {
+            Action.Show.LanguageList -> viewModelScope.launch { languageManager.getLanguages() }
+            Action.Show.TagList -> TODO()
+            is Action.Show.StationsByLanguage -> TODO()
+            is Action.SetServer -> TODO()
+            Action.Idle -> TODO()
+        }
     }
 }

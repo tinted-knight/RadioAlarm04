@@ -18,16 +18,13 @@ sealed class ServerState {
 }
 
 @ExperimentalCoroutinesApi
-class ServerManager(
-    private val apiService: RadioBrowserService,
-    scope: CoroutineScope,
-) : WithLogTag {
+class ServerManager(private val apiService: RadioBrowserService) : WithLogTag {
     override val logTag = "tagg-app-servers"
 
     private val _state = MutableStateFlow<ServerState>(ServerState.Loading)
     val state: StateFlow<ServerState> = _state
 
-    init {
+    fun getAvalilable(scope: CoroutineScope) {
         scope.launch(Dispatchers.IO) {
             plog("RadioBrowserViewModel")
             when (val serverList = apiService.checkForAvailableServers()) {

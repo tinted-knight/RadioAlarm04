@@ -70,10 +70,26 @@ class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
         (rvServers.adapter as ServerListAdapter).submitList(values)
         rvServers.viewShow()
         progressIndicator.viewHide()
+        btnLanguages.isEnabled = true
+        btnTags.isEnabled = true
+        btnTopVoted.isEnabled = true
+        btnAllStations.isEnabled = true
+
+        btnSearch.isEnabled = true
+        etSearchName.isEnabled = true
+        etSearchTag.isEnabled = true
     }
 
     private fun showLoading() = with(viewBinding) {
         progressIndicator.viewShow()
         rvServers.viewHide()
+        btnLanguages.isEnabled = false
+        btnTags.isEnabled = false
+        btnTopVoted.isEnabled = false
+        btnAllStations.isEnabled = false
+
+        btnSearch.isEnabled = false
+        etSearchName.isEnabled = false
+        etSearchTag.isEnabled = false
     }
 }
