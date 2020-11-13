@@ -32,7 +32,7 @@ class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
             adapter = LanguageListAdapter { value ->
-                viewModel.offer(Action.Show.StationsByLanguage(value))
+                viewModel.offer(Action.Click.StationsByLanguage(value))
                 findNavController().navigate(R.id.action_languageList_to_stationList)
             }
             // #todo LanguageList restore state

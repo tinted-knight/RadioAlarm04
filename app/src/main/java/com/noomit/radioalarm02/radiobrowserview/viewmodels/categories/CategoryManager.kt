@@ -1,10 +1,8 @@
 package com.noomit.radioalarm02.radiobrowserview.viewmodels.categories
 
 import com.noomit.radioalarm02.model.CategoryModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 
-@ExperimentalCoroutinesApi
 interface CategoryManager<Model : CategoryModel, State, ChosenState> {
     //    val chosenCategory: Flow<ChosenState>
     val state: StateFlow<State>

@@ -20,10 +20,8 @@ import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationList
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationManagerState
 import com.noomit.radioalarm02.toast
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
-@ExperimentalCoroutinesApi
 class StationListFragment() : PlayerBaseFragment(
     playerViewId = R.id.exo_player_view,
     playerControlId = R.id.exo_player_controls,

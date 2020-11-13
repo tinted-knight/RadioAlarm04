@@ -6,7 +6,6 @@ import com.example.radiobrowser.ServerListResponse
 import com.noomit.radioalarm02.base.WithLogTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +16,6 @@ sealed class ServerState {
     data class Failure(val e: Throwable) : ServerState()
 }
 
-@ExperimentalCoroutinesApi
 class ServerManager(private val apiService: RadioBrowserService) : WithLogTag {
     override val logTag = "tagg-app-servers"
 

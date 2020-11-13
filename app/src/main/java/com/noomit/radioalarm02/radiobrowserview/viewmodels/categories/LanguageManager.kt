@@ -4,7 +4,6 @@ import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.model.LanguageModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
@@ -15,7 +14,6 @@ sealed class ChosedLanguage {
     data class Value(val value: LanguageModel) : ChosedLanguage()
 }
 
-@ExperimentalCoroutinesApi
 class LanguageManager(private val apiService: RadioBrowserService) :
     CategoryManager<LanguageModel, LanguageManagerState, ChosedLanguage>, WithLogTag {
 

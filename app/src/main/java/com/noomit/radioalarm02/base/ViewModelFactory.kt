@@ -11,9 +11,8 @@ import com.noomit.radioalarm02.home.AlarmManagerViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.ServerManager
 import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageManager
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationManager
 
-@ExperimentalCoroutinesApi
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val apiService: RadioBrowserService) :
     ViewModelProvider.NewInstanceFactory() {
@@ -22,7 +21,8 @@ class ViewModelFactory(private val apiService: RadioBrowserService) :
             RadioBrowserViewModel::class.java -> {
                 val serverManager = ServerManager(apiService)
                 val languageManager = LanguageManager(apiService)
-                RadioBrowserViewModel(apiService, serverManager, languageManager) as T
+                val stationManager = StationManager(apiService)
+                RadioBrowserViewModel(serverManager, languageManager, stationManager) as T
             }
             else -> throw IllegalArgumentException("Cannot find ViewModel class to create from factory")
         }

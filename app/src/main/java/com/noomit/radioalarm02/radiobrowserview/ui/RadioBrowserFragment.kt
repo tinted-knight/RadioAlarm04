@@ -18,10 +18,8 @@ import com.noomit.radioalarm02.radiobrowserview.viewmodels.ServerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.viewHide
 import com.noomit.radioalarm02.viewShow
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
-@ExperimentalCoroutinesApi
 class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
 
     override val viewBinding: FragmentRadioBrowserBinding by viewBinding()
@@ -61,7 +59,7 @@ class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
 
     override fun listenUiEvents() = with(viewBinding) {
         btnLanguages.setOnClickListener {
-            viewModel.offer(Action.Show.LanguageList)
+            viewModel.offer(Action.Click.LanguageList)
             findNavController().navigate(R.id.action_radioBrowser_to_languageList)
         }
     }

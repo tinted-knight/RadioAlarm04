@@ -3,7 +3,6 @@ package com.example.radiobrowser
 import android.util.Log
 import com.example.radiobrowser.ServerListResponse.ServerListFailure
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +35,6 @@ sealed class ActiveServerState {
     data class Value(val serverInfo: ServerInfo) : ActiveServerState()
 }
 
-@ExperimentalCoroutinesApi
 class RadioBrowserService() {
 
     private lateinit var api: RadioBrowserApi
