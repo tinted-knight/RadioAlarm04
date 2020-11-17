@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.viewmodels.stations
+package com.noomit.radioalarm02.domain.station_manager
 
 import com.noomit.radioalarm02.model.LanguageModel
 

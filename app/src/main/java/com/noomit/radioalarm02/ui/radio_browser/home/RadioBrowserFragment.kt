@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.ui
+package com.noomit.radioalarm02.ui.radio_browser.home
 
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -11,11 +11,10 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentRadioBrowserBinding
-import com.noomit.radioalarm02.radiobrowserview.adapters.ServerListAdapter
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.Action
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.ServerState
+import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.radio_browser.Action
+import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.viewHide
 import com.noomit.radioalarm02.viewShow
 import kotlinx.coroutines.flow.collect

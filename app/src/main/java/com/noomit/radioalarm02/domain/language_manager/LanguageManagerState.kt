@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.viewmodels.categories
+package com.noomit.radioalarm02.domain.language_manager
 
 sealed class LanguageManagerState {
     object Loading : LanguageManagerState()

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".radiobrowserview.ui.LanguageListFragment">
+    tools:context=".ui.radio_browser.languagelist.LanguageListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_station_list"

@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.viewmodels.categories
+package com.noomit.radioalarm02.domain.language_manager
 
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
@@ -15,7 +15,7 @@ sealed class ChosedLanguage {
 }
 
 class LanguageManager(private val apiService: RadioBrowserService) :
-    CategoryManager<LanguageModel, LanguageManagerState, ChosedLanguage>, WithLogTag {
+    ICategoryManager<LanguageModel, LanguageManagerState, ChosedLanguage>, WithLogTag {
 
     override val logTag = "lang_manager"
 

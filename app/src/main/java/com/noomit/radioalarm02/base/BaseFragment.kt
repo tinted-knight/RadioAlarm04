@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import com.noomit.playerservice.BasePlayerServiceFragment
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
+import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import timber.log.Timber
 
 private fun plog(message: String) =

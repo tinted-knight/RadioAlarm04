@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.ui
+package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
 import android.os.Bundle
 import android.view.View
@@ -12,14 +12,13 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
+import com.noomit.radioalarm02.domain.station_manager.StationList
+import com.noomit.radioalarm02.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.model.StationModel
-import com.noomit.radioalarm02.radiobrowserview.adapters.StationListAdapter
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationList
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.stations.StationManagerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.flow.collect
 
 class StationListFragment() : PlayerBaseFragment(

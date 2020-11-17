@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.viewmodels
+package com.noomit.radioalarm02.domain.server_manager
 
 import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerInfo

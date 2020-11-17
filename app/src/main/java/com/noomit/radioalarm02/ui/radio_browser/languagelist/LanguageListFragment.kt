@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.radiobrowserview.ui
+package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -9,12 +9,11 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
-import com.noomit.radioalarm02.radiobrowserview.adapters.LanguageListAdapter
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.Action
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.RadioBrowserViewModel
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageList
-import com.noomit.radioalarm02.radiobrowserview.viewmodels.categories.LanguageManagerState
+import com.noomit.radioalarm02.domain.language_manager.LanguageList
+import com.noomit.radioalarm02.domain.language_manager.LanguageManagerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.radio_browser.Action
+import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 

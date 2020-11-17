@@ -45,7 +45,7 @@
         app:startDestination="@id/radioBrowserFragment">
         <fragment
             android:id="@+id/radioBrowserFragment"
-            android:name="com.noomit.radioalarm02.radiobrowserview.ui.RadioBrowserFragment"
+            android:name="com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserFragment"
             android:label="RadioBrowserFragment">
             <action
                 android:id="@+id/action_radioBrowser_to_languageList"
@@ -57,7 +57,7 @@
         </fragment>
         <fragment
             android:id="@+id/languageListFragment"
-            android:name="com.noomit.radioalarm02.radiobrowserview.ui.LanguageListFragment"
+            android:name="com.noomit.radioalarm02.ui.radio_browser.languagelist.LanguageListFragment"
             android:label="fragment_language_list"
             tools:layout="@layout/fragment_language_list">
             <action
@@ -70,7 +70,7 @@
         </fragment>
         <fragment
             android:id="@+id/stationListFragment"
-            android:name="com.noomit.radioalarm02.radiobrowserview.ui.StationListFragment"
+            android:name="com.noomit.radioalarm02.ui.radio_browser.stationlist.StationListFragment"
             android:label="StationListFragment" />
     </navigation>
 </navigation>
