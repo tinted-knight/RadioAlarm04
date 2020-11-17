@@ -15,10 +15,10 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.alarm.ui.AlarmActivity
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseFragment
+import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.home.AlarmManagerViewModel
 import com.noomit.radioalarm02.home.adapters.AlarmListAdapter
-import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.toast
 import timber.log.Timber
 

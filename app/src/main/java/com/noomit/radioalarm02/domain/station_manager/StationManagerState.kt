@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.domain.station_manager
 
-import com.noomit.radioalarm02.model.LanguageModel
+import com.noomit.radioalarm02.data.LanguageModel
 
 sealed class StationManagerState {
     object Loading : StationManagerState()

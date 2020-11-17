@@ -9,6 +9,7 @@ import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.home.AlarmManagerViewModel
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.StationViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val application: Application00) :
@@ -35,6 +36,17 @@ class DatabaseViewModelFactory(private val database: Database) :
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
             FavoritesViewModel::class.java -> FavoritesViewModel(database) as T
+            else -> throw IllegalArgumentException("Cannot find ViewModel class to create from factory")
+        }
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+class FavoritesViewModelFactory(private val application: Application00) :
+    ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return when (modelClass) {
+            StationViewModel::class.java -> StationViewModel(application.serviceProvider.favoritesManager) as T
             else -> throw IllegalArgumentException("Cannot find ViewModel class to create from factory")
         }
     }

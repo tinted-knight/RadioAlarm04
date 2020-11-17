@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.Favorite
-import com.noomit.radioalarm02.model.StationModel
+import com.noomit.radioalarm02.data.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.MutableStateFlow

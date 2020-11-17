@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.domain.language_manager
 
-import com.noomit.radioalarm02.model.CategoryModel
+import com.noomit.radioalarm02.data.CategoryModel
 import kotlinx.coroutines.flow.StateFlow
 
 interface ICategoryManager<Model : CategoryModel, State, ChosenState> {

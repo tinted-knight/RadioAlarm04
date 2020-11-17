@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
-import com.noomit.radioalarm02.model.LanguageModel
+import com.noomit.radioalarm02.data.LanguageModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.CategoryDiffUtil
 import com.noomit.radioalarm02.radiobrowserview.adapters.CategoryListAdapter
 

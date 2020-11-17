@@ -10,15 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.noomit.playerservice.MediaItem
+import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.DatabaseViewModelFactory
+import com.noomit.radioalarm02.base.FavoritesViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
+import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
 import com.noomit.radioalarm02.domain.station_manager.StationList
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
-import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
-import com.noomit.radioalarm02.model.AppDatabase
-import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.flow.collect
@@ -34,8 +33,8 @@ class StationListFragment() : PlayerBaseFragment(
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
-    private val favoritesViewModel: FavoritesViewModel by viewModels {
-        DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
+    private val stationViewModel: StationViewModel by viewModels {
+        FavoritesViewModelFactory(requireActivity().application as Application00)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,11 +50,11 @@ class StationListFragment() : PlayerBaseFragment(
             isVerticalScrollBarEnabled = true
             adapter = StationListAdapter(
                 onClick = { value ->
-                    favoritesViewModel.onClick(value)
+                    stationViewModel.onClick(value)
                 },
                 onLongClick = { value ->
                     requireContext().toast("long click: ${value.name}")
-                    favoritesViewModel.add(value)
+                    stationViewModel.onLongClick(value)
                 }
             )
             // #todo StationList restore state
@@ -77,7 +76,7 @@ class StationListFragment() : PlayerBaseFragment(
             }
         }
         lifecycleScope.launchWhenStarted {
-            favoritesViewModel.nowPlaying.filterNotNull().collect(::play)
+            stationViewModel.nowPlaying.filterNotNull().collect(::play)
         }
     }
 

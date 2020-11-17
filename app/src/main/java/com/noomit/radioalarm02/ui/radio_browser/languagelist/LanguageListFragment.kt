@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
+import com.noomit.radioalarm02.data.LanguageModel
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
-import com.noomit.radioalarm02.domain.language_manager.LanguageList
 import com.noomit.radioalarm02.domain.language_manager.LanguageManagerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.Action
@@ -55,7 +55,7 @@ class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
         }
     }
 
-    private fun showContent(values: LanguageList) = with(viewBinding) {
+    private fun showContent(values: List<LanguageModel>) = with(viewBinding) {
         progressIndicator.visibility = View.GONE
         (rvCategoryList.adapter as LanguageListAdapter).submitList(values)
         rvCategoryList.visibility = View.VISIBLE

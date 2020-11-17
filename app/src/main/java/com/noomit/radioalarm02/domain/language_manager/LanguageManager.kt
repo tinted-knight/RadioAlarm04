@@ -2,12 +2,10 @@ package com.noomit.radioalarm02.domain.language_manager
 
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
-import com.noomit.radioalarm02.model.LanguageModel
+import com.noomit.radioalarm02.data.LanguageModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-
-typealias LanguageList = List<LanguageModel>
 
 sealed class ChosedLanguage {
     object None : ChosedLanguage()

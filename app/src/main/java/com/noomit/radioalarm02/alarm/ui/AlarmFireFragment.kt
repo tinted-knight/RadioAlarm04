@@ -16,8 +16,8 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
+import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentAlarmFireBinding
-import com.noomit.radioalarm02.model.AppDatabase
 import timber.log.Timber
 
 private fun plog(message: String) = Timber.tag("tagg-alarm_activity").i(message)

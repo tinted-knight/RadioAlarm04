@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.model
+package com.noomit.radioalarm02.data
 
 import android.content.Context
 import com.noomit.radioalarm02.Database

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.model.StationModel
+import com.noomit.radioalarm02.data.StationModel
 
 typealias StationClick = ((StationModel) -> Unit)
 typealias StationLongClick = ((StationModel) -> Unit)

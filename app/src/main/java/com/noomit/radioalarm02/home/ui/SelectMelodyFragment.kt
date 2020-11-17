@@ -6,10 +6,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
+import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentSelectMelodyBinding
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.home.AlarmManagerViewModel
-import com.noomit.radioalarm02.model.AppDatabase
 
 class SelectMelodyFragment : BaseFragment(R.layout.fragment_select_melody) {
 

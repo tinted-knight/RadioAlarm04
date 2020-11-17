@@ -3,10 +3,10 @@ package com.noomit.radioalarm02.ui.radio_browser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
+import com.noomit.radioalarm02.data.LanguageModel
 import com.noomit.radioalarm02.domain.language_manager.LanguageManager
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
-import com.noomit.radioalarm02.model.LanguageModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

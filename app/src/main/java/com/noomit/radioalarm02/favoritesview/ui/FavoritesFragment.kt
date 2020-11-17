@@ -10,10 +10,10 @@ import com.noomit.radioalarm02.Favorite
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
+import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.favoritesview.adapters.FavoriteListAdapter
-import com.noomit.radioalarm02.model.AppDatabase
 import com.noomit.radioalarm02.toast
 
 class FavoritesFragment : PlayerBaseFragment(
