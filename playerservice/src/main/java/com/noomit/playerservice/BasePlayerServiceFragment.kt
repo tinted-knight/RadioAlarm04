@@ -25,12 +25,6 @@ abstract class BasePlayerServiceFragment(
 
     protected var service: PlayerService.PlayerServiceBinder? = null
 
-    protected var isPlaying = false
-        set(value) {
-            field = value
-            renderPlayingView()
-        }
-
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service is PlayerService.PlayerServiceBinder) {
@@ -51,13 +45,6 @@ abstract class BasePlayerServiceFragment(
      * Expected that here [service] should not be null
      */
     abstract fun onServiceConnected()
-
-    //  #deprecated Looks like no need in this method
-    //      since started to use PlayerControlView
-    /**
-     * Fires on [isPlaying] field changes value
-     */
-    abstract fun renderPlayingView()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindExoPlayerService()

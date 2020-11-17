@@ -75,16 +75,12 @@ class AlarmFireFragment : PlayerBaseFragment(
             service?.mediaItem = MediaItem(url = it, title = it)
             service?.play()
             viewBinding.tvStationName.text = it
-            isPlaying = true
         }
     }
 
     override fun listenUiEvents() {}
 
     override fun observeModel() {
-    }
-
-    override fun renderPlayingView() {
     }
 
     private fun playDefaultRingtone() {

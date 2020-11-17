@@ -78,15 +78,6 @@ class StationListFragment() : PlayerBaseFragment(
 
     override fun onServiceConnected() {}
 
-    override fun renderPlayingView() {
-        when (isPlaying) {
-            true -> {
-            }
-            false -> {
-            }
-        }
-    }
-
     private fun showContent(values: StationList) = with(viewBinding) {
         (rvStationList.adapter as StationListAdapter).submitList(values)
         rvStationList.visibility = View.VISIBLE
@@ -101,12 +92,5 @@ class StationListFragment() : PlayerBaseFragment(
     private fun play(station: StationModel) {
         service?.mediaItem = MediaItem(station.streamUrl, station.name)
         service?.play()
-        isPlaying = true
-    }
-
-    // #deprecated look like no need because of using controls
-    private fun stop() {
-        service?.stop()
-        isPlaying = false
     }
 }

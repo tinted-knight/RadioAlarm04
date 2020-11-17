@@ -65,8 +65,6 @@ class FavoritesFragment : PlayerBaseFragment(
 
     override fun onServiceConnected() {}
 
-    override fun renderPlayingView() {}
-
     private fun showLoading() = with(viewBinding) {
         progressIndicator.visibility = View.VISIBLE
         rvStationList.visibility = View.INVISIBLE
@@ -87,6 +85,5 @@ class FavoritesFragment : PlayerBaseFragment(
     private fun play(station: Favorite) {
         service?.mediaItem = MediaItem(station.stream_url, station.name)
         service?.play()
-        isPlaying = true
     }
 }
