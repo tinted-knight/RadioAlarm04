@@ -3,26 +3,26 @@ package com.noomit.radioalarm02.base
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.radiobrowser.RadioBrowserService
+import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
-import com.noomit.radioalarm02.domain.language_manager.LanguageManager
-import com.noomit.radioalarm02.domain.server_manager.ServerManager
-import com.noomit.radioalarm02.domain.station_manager.StationManager
 import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
 import com.noomit.radioalarm02.home.AlarmManagerViewModel
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val apiService: RadioBrowserService) :
+class ViewModelFactory(private val application: Application00) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
             RadioBrowserViewModel::class.java -> {
-                val serverManager = ServerManager(apiService)
-                val languageManager = LanguageManager(apiService)
-                val stationManager = StationManager(apiService)
-                RadioBrowserViewModel(serverManager, languageManager, stationManager) as T
+                application.serviceProvider.run {
+                    RadioBrowserViewModel(
+                        serverManager,
+                        languageManager,
+                        stationManager
+                    ) as T
+                }
             }
             else -> throw IllegalArgumentException("Cannot find ViewModel class to create from factory")
         }

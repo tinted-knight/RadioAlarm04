@@ -5,18 +5,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerInfo
-import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.*
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.databinding.FragmentRadioBrowserBinding
 import com.noomit.radioalarm02.domain.server_manager.ServerState
-import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.Action
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
-import com.noomit.radioalarm02.viewHide
-import com.noomit.radioalarm02.viewShow
 import kotlinx.coroutines.flow.collect
 
 class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
@@ -25,7 +21,7 @@ class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(
         navGraphId = R.id.nav_radio_browser,
-        factoryProducer = { ViewModelFactory(RadioBrowserService()) }
+        factoryProducer = { ViewModelFactory(requireActivity().application as Application00) }
     )
 
     override fun prepareUi() {
