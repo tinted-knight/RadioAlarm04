@@ -51,6 +51,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "app.cash.contour:contour:$contour"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
