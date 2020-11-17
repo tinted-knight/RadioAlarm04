@@ -43,6 +43,7 @@ abstract class PlayerBaseFragment(
         super.onViewCreated(view, savedInstanceState)
 
         prepareUi()
+        // #todo run in lifecycleScope.launchWhenStarted {...}
         observeModel()
         listenUiEvents()
     }

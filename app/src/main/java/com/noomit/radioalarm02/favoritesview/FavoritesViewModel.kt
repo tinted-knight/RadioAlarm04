@@ -9,6 +9,8 @@ import com.noomit.radioalarm02.Favorite
 import com.noomit.radioalarm02.model.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -22,6 +24,9 @@ class FavoritesViewModel(database: Database) : ViewModel() {
     private val _selected = MutableLiveData<Favorite>()
     val selected: LiveData<Favorite> = _selected
 
+    private val _nowPlaying = MutableStateFlow<StationModel?>(null)
+    val nowPlaying: StateFlow<StationModel?> = _nowPlaying
+
     init {
         plog("FavoritesViewModel::init")
     }
@@ -29,6 +34,10 @@ class FavoritesViewModel(database: Database) : ViewModel() {
     val selectAll = queries.selectAll().asFlow().mapToList().asLiveData()
 
     fun onClick(item: Favorite) = _selected.postValue(item)
+
+    fun onClick(station: StationModel) {
+        _nowPlaying.value = station
+    }
 
     fun add(station: StationModel) {
         plog("add favorite")

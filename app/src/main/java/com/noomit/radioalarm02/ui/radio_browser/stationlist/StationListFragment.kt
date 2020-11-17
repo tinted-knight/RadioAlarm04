@@ -2,11 +2,13 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.bumptech.glide.Glide
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
@@ -20,6 +22,7 @@ import com.noomit.radioalarm02.model.StationModel
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
 
 class StationListFragment() : PlayerBaseFragment(
     playerViewId = R.id.exo_player_view,
@@ -48,8 +51,7 @@ class StationListFragment() : PlayerBaseFragment(
             isVerticalScrollBarEnabled = true
             adapter = StationListAdapter(
                 onClick = { value ->
-                    requireContext().toast(value.name)
-                    play(value)
+                    favoritesViewModel.onClick(value)
                 },
                 onLongClick = { value ->
                     requireContext().toast("long click: ${value.name}")
@@ -74,6 +76,9 @@ class StationListFragment() : PlayerBaseFragment(
                 }
             }
         }
+        lifecycleScope.launchWhenStarted {
+            favoritesViewModel.nowPlaying.filterNotNull().collect(::play)
+        }
     }
 
     override fun onServiceConnected() {}
@@ -92,5 +97,24 @@ class StationListFragment() : PlayerBaseFragment(
     private fun play(station: StationModel) {
         service?.mediaItem = MediaItem(station.streamUrl, station.name)
         service?.play()
+        showNowPlaying(station)
+    }
+
+    private fun showNowPlaying(station: StationModel) {
+        with(viewBinding) {
+            tvStationName.text = station.name
+            Glide.with(requireActivity()).load(station.favicon)
+                .placeholder(R.drawable.ic_radio_24)
+                .into(ivStationIcon)
+            nowPlaying.apply {
+                alpha = 0f
+                translationY = 50f
+                isVisible = true
+                animate().setDuration(300L)
+                    .alpha(1.0f)
+                    .translationY(0f)
+                    .setListener(null)
+            }
+        }
     }
 }
