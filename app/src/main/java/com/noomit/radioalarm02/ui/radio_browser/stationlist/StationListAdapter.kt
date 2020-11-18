@@ -14,7 +14,7 @@ typealias StationClick = ((StationModel) -> Unit)
 typealias StationLongClick = ((StationModel) -> Unit)
 
 class StationListAdapter(
-    private val onClick: StationClick,
+    var onClick: StationClick,
     private val onLongClick: StationLongClick,
 ) :
     ListAdapter<StationModel, StationListViewHolder>(StationListDiffUtil()) {

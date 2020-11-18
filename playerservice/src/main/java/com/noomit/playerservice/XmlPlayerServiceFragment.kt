@@ -6,19 +6,39 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 
-abstract class BasePlayerServiceFragment(
+abstract class XmlPlayerServiceFragment(
     @IdRes private val playerViewId: Int,
     @IdRes private val playerControlId: Int,
-    @LayoutRes contentLayoutId: Int,
+    @LayoutRes private val contentLayoutId: Int,
 ) :
-    Fragment(contentLayoutId) {
+    PlayerServiceFragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(contentLayoutId, container, false)
+    }
+
+    override fun initPlayerViews() {
+        requireNotNull(view).apply {
+            playerView = findViewById(playerViewId)
+            playerControlView = findViewById(playerControlId)
+        }
+    }
+}
+
+abstract class PlayerServiceFragment : Fragment() {
 
     protected lateinit var playerView: PlayerView
     protected lateinit var playerControlView: PlayerControlView
@@ -30,7 +50,7 @@ abstract class BasePlayerServiceFragment(
             if (service is PlayerService.PlayerServiceBinder) {
                 playerView.player = service.exoPlayerInstance
                 playerControlView.player = playerView.player
-                this@BasePlayerServiceFragment.service = service
+                this@PlayerServiceFragment.service = service
                 onServiceConnected()
             }
         }
@@ -41,15 +61,16 @@ abstract class BasePlayerServiceFragment(
     }
 
     /**
-     * Fires when [service] connects to this [BasePlayerServiceFragment]
+     * Fires when [service] connects to this [XmlPlayerServiceFragment]
      * Expected that here [service] should not be null
      */
     abstract fun onServiceConnected()
 
+    protected abstract fun initPlayerViews()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initPlayerViews()
         bindExoPlayerService()
-        playerView = view.findViewById(playerViewId)
-        playerControlView = view.findViewById(playerControlId)
     }
 
     override fun onDestroyView() {

@@ -6,7 +6,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.noomit.playerservice.BasePlayerServiceFragment
+import com.noomit.playerservice.XmlPlayerServiceFragment
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -35,7 +35,7 @@ abstract class PlayerBaseFragment(
     @IdRes playerControlId: Int,
     @LayoutRes contentLayoutId: Int,
 ) :
-    BasePlayerServiceFragment(playerViewId, playerControlId, contentLayoutId) {
+    XmlPlayerServiceFragment(playerViewId, playerControlId, contentLayoutId) {
 
     protected abstract val viewBinding: ViewBinding
 

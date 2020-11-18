@@ -6,12 +6,13 @@ import com.noomit.radioalarm02.domain.favorite_manager.IFavoritesManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class StationViewModel(private val favoritesManager: IFavoritesManager) : ViewModel() {
+class StationViewModel(private val favoritesManager: IFavoritesManager) : ViewModel(),
+    StationListDelegate {
 
     private val _nowPlaying = MutableStateFlow<StationModel?>(null)
     val nowPlaying: StateFlow<StationModel?> = _nowPlaying
 
-    fun onClick(station: StationModel) {
+    override fun onClick(station: StationModel) {
         _nowPlaying.value = station
     }
 
