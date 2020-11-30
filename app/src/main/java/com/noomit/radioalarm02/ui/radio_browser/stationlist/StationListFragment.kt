@@ -127,7 +127,7 @@ class StationListFragment : PlayerServiceFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         return StationListLayout(requireContext())
     }
 

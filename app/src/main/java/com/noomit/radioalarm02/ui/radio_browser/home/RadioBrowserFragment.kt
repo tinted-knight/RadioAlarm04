@@ -24,7 +24,7 @@ private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
 //class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
-class RadioBrowserFragment() : Fragment() {
+class RadioBrowserFragment : Fragment() {
 
 //    override val viewBinding: FragmentRadioBrowserBinding by viewBinding()
 
@@ -46,7 +46,7 @@ class RadioBrowserFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         val scrollView = ScrollView(context)
         scrollView.addView(RadioBrowserHomeLayout(requireContext()))
         scrollView.isVerticalScrollBarEnabled = true

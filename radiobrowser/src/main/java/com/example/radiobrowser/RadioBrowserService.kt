@@ -35,7 +35,7 @@ sealed class ActiveServerState {
     data class Value(val serverInfo: ServerInfo) : ActiveServerState()
 }
 
-class RadioBrowserService() {
+class RadioBrowserService {
 
     private lateinit var api: RadioBrowserApi
 
@@ -50,7 +50,7 @@ class RadioBrowserService() {
         try {
             val socket = Socket()
             socket.connect(InetSocketAddress(addr, port), timeout)
-            return true;
+            return true
         } catch (e: IOException) {
             return false
         }
