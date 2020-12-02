@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,21 +21,54 @@ import timber.log.Timber
 
 private fun plog(message: String) = Timber.tag("tagg-contour").i(message)
 
+interface IViewTheme {
+    val bgColor: Int
+    val textColor: Int
+}
+
+data class Theme(
+    val nowPlaying: IViewTheme = object : IViewTheme {
+        override val bgColor = Color.parseColor("#EEEEEEEE")
+        override val textColor: Int = Color.parseColor("#FF414141")
+    },
+)
+
+val appTheme = Theme()
 
 class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet) {
 
     private val title = TextView(context).apply {
-        isVisible = false
-        text = "Station name"
         ellipsize = TextUtils.TruncateAt.MARQUEE
+        setTextColor(appTheme.nowPlaying.textColor)
+    }
+
+    private val streamUrl = TextView(context).apply {
+        setTextColor(appTheme.nowPlaying.textColor)
+    }
+
+    private val country = TextView(context).apply {
+        setTextColor(appTheme.nowPlaying.textColor)
     }
 
     private val nowPlayingIcon = ImageView(context)
 
     init {
+        plog("np init, isSelected = $isSelected")
+        registerBackpressListener()
         stateListAnimator = PushOnPressAnimator(this)
-        setBackgroundColor(Color.RED)
+        setBackgroundColor(appTheme.nowPlaying.bgColor)
+        elevation = 8.0f
+
+        collapsedLayout()
+    }
+
+    private fun collapsedLayout() {
+        title.isVisible = true
+        title.isSingleLine = true
+
+        streamUrl.isVisible = false
+        country.isVisible = false
 
         nowPlayingIcon.layoutBy(
             rightTo { parent.right() - 4.xdip },
@@ -42,18 +76,58 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         )
 
         title.layoutBy(
-            leftTo { parent.left() + 16.xdip },
+            leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 2.xdip },
             centerVerticallyTo { nowPlayingIcon.centerY() }
         )
     }
 
+    private fun expandedLayout() {
+        title.isSingleLine = false
+        streamUrl.isVisible = true
+        country.isVisible = true
+
+        title.updateLayoutBy(
+            leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 4.xdip },
+            topTo { nowPlayingIcon.top() + 16.ydip }
+        )
+        nowPlayingIcon.updateLayoutBy(
+            rightTo { parent.right() - 16.xdip }.widthOf { parent.width() / 3 },
+            topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
+        )
+        streamUrl.layoutBy(
+            matchParentX(marginLeft = 16, marginRight = 16),
+            topTo { nowPlayingIcon.bottom() + 8.ydip }
+        )
+        country.layoutBy(
+            matchParentX(marginLeft = 16, marginRight = 16),
+            topTo { streamUrl.bottom() + 8.ydip }
+        )
+    }
+
     override fun setSelected(selected: Boolean) {
+        plog("setSelected($selected), isSelected = $isSelected, isLaidOut = $isLaidOut")
         if (isLaidOut && selected == this.isSelected) return
         super.setSelected(selected)
+        if (!selected) collapsedLayout() else expandedLayout()
+    }
+
+    private fun registerBackpressListener() {
+        isFocusableInTouchMode = true
+        requestFocus()
+        setOnKeyListener { _, keyCode, keyEvent ->
+            if (isSelected && keyCode == KeyEvent.KEYCODE_BACK && keyEvent.action == KeyEvent.ACTION_UP) {
+                performClick()
+            } else {
+                false
+            }
+        }
     }
 
     fun update(station: StationModel) {
         loadStationIcon(station)
+
+        streamUrl.text = station.streamUrl
+        country.text = station.country
 
         title.text = station.name
         title.isVisible = true
