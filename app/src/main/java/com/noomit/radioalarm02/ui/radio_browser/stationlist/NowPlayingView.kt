@@ -1,8 +1,10 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.KeyEvent
@@ -55,15 +57,17 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     init {
         plog("np init, isSelected = $isSelected")
+
+        background = PaintDrawable(appTheme.nowPlaying.bgColor)
         registerBackpressListener()
         stateListAnimator = PushOnPressAnimator(this)
-        setBackgroundColor(appTheme.nowPlaying.bgColor)
         elevation = 8.0f
 
         collapsedLayout()
     }
 
     private fun collapsedLayout() {
+        toggleCornerRaduis(false)
         title.isVisible = true
         title.isSingleLine = true
 
@@ -82,6 +86,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private fun expandedLayout() {
+        toggleCornerRaduis(true)
         title.isSingleLine = false
         streamUrl.isVisible = true
         country.isVisible = true
@@ -120,6 +125,22 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             } else {
                 false
             }
+        }
+    }
+
+    override fun getBackground() = super.getBackground() as PaintDrawable
+
+    private fun toggleCornerRaduis(show: Boolean) {
+        val fromRadius = if (show) 0.01f else 12.0f.dip
+        val toRadius = if (show) 12.0f.dip else 0.01f
+
+        if (isLaidOut) {
+            ObjectAnimator.ofFloat(fromRadius, toRadius)
+                .apply { addUpdateListener { background.setCornerRadius(it.animatedValue as Float) } }
+                .setDuration(200)
+                .start()
+        } else {
+            background.setCornerRadius(toRadius)
         }
     }
 
