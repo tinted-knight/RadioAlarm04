@@ -45,11 +45,23 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         setTextColor(appTheme.nowPlaying.textColor)
     }
 
-    private val streamUrl = TextView(context).apply {
+    private val homePage = TextView(context).apply {
         setTextColor(appTheme.nowPlaying.textColor)
     }
 
     private val country = TextView(context).apply {
+        setTextColor(appTheme.nowPlaying.textColor)
+    }
+
+    private val codec = TextView(context).apply {
+        setTextColor(appTheme.nowPlaying.textColor)
+    }
+
+    private val bitrate = TextView(context).apply {
+        setTextColor(appTheme.nowPlaying.textColor)
+    }
+
+    private val tags = TextView(context).apply {
         setTextColor(appTheme.nowPlaying.textColor)
     }
 
@@ -59,7 +71,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         background = PaintDrawable(appTheme.nowPlaying.bgColor)
         registerBackpressListener()
         stateListAnimator = PushOnPressAnimator(this)
-        elevation = 8.0f
+        elevation = 4.0f
 
         collapsedLayout()
     }
@@ -69,25 +81,35 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         title.isVisible = true
         title.isSingleLine = true
 
-        streamUrl.isVisible = false
+        homePage.isVisible = false
         country.isVisible = false
+        codec.isVisible = false
+        bitrate.isVisible = false
+        tags.isVisible = false
 
         nowPlayingIcon.layoutBy(
             rightTo { parent.right() - 4.xdip },
             topTo { parent.top() + 2.ydip }.bottomTo { parent.bottom() - 2.ydip }
         )
-
         title.layoutBy(
             leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 2.xdip },
             centerVerticallyTo { nowPlayingIcon.centerY() }
         )
+        homePage.layoutBy(emptyX(), emptyY())
+        country.layoutBy(emptyX(), emptyY())
+        codec.layoutBy(emptyX(), emptyY())
+        bitrate.layoutBy(emptyX(), emptyY())
+        tags.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayout() {
         toggleCornerRaduis(true)
         title.isSingleLine = false
-        streamUrl.isVisible = true
+        homePage.isVisible = true
         country.isVisible = true
+        codec.isVisible = true
+        bitrate.isVisible = true
+        tags.isVisible = true
 
         title.updateLayoutBy(
             leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 4.xdip },
@@ -97,13 +119,25 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             rightTo { parent.right() - 16.xdip }.widthOf { parent.width() / 3 },
             topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
         )
-        streamUrl.layoutBy(
+        homePage.updateLayoutBy(
             matchParentX(marginLeft = 16, marginRight = 16),
             topTo { nowPlayingIcon.bottom() + 8.ydip }
         )
-        country.layoutBy(
+        country.updateLayoutBy(
             matchParentX(marginLeft = 16, marginRight = 16),
-            topTo { streamUrl.bottom() + 8.ydip }
+            topTo { homePage.bottom() + 8.ydip }
+        )
+        codec.updateLayoutBy(
+            leftTo { country.left() },
+            topTo { country.bottom() + 8.ydip }
+        )
+        bitrate.updateLayoutBy(
+            leftTo { codec.right() + 16.xdip },
+            topTo { country.bottom() + 8.ydip }
+        )
+        tags.updateLayoutBy(
+            matchParentX(marginLeft = 16, marginRight = 16),
+            topTo { codec.bottom() + 8.ydip }
         )
     }
 
@@ -144,8 +178,11 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     fun update(station: StationModel) {
         loadStationIcon(station)
 
-        streamUrl.text = station.streamUrl
+        homePage.text = station.homepage
         country.text = station.country
+        codec.text = station.codec
+        bitrate.text = station.bitrate
+        tags.text = station.tags
 
         title.text = station.name
         title.isVisible = true
