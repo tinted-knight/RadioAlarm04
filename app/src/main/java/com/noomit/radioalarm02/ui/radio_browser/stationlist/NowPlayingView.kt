@@ -30,7 +30,7 @@ interface IViewTheme {
 
 data class Theme(
     val nowPlaying: IViewTheme = object : IViewTheme {
-        override val bgColor = Color.parseColor("#EEEEEEEE")
+        override val bgColor = Color.parseColor("#ffFFFFFF")
         override val textColor: Int = Color.parseColor("#FF414141")
     },
 )
@@ -56,8 +56,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     private val nowPlayingIcon = ImageView(context)
 
     init {
-        plog("np init, isSelected = $isSelected")
-
         background = PaintDrawable(appTheme.nowPlaying.bgColor)
         registerBackpressListener()
         stateListAnimator = PushOnPressAnimator(this)
@@ -110,7 +108,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     override fun setSelected(selected: Boolean) {
-        plog("setSelected($selected), isSelected = $isSelected, isLaidOut = $isLaidOut")
         if (isLaidOut && selected == this.isSelected) return
         super.setSelected(selected)
         if (!selected) collapsedLayout() else expandedLayout()

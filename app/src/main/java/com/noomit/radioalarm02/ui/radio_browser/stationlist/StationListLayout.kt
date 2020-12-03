@@ -79,7 +79,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         )
 
         val xPadding = { if (!nowPlayingView.isSelected) 0.xdip else 32.xdip }
-        val yPadding = { if (!nowPlayingView.isSelected) 0.ydip else 32.ydip }
+        val yPadding = { if (!nowPlayingView.isSelected) 0.ydip else 64.ydip }
 
         nowPlayingView.layoutBy(
             leftTo { parent.left() + xPadding() }
