@@ -2,7 +2,6 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.text.TextUtils
@@ -18,24 +17,11 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.noomit.radioalarm02.data.StationModel
+import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 import timber.log.Timber
 
 private fun plog(message: String) = Timber.tag("tagg-contour").i(message)
-
-interface IViewTheme {
-    val bgColor: Int
-    val textColor: Int
-}
-
-data class Theme(
-    val nowPlaying: IViewTheme = object : IViewTheme {
-        override val bgColor = Color.parseColor("#ffFFFFFF")
-        override val textColor: Int = Color.parseColor("#FF414141")
-    },
-)
-
-val appTheme = Theme()
 
 class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet) {
