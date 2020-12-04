@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui.radio_browser.stationlist
+package com.noomit.radioalarm02.ui.radio_browser.stationlist.views
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.noomit.radioalarm02.data.StationModel
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 import timber.log.Timber
@@ -41,12 +42,12 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         setTextColor(appTheme.nowPlaying.textColor)
     }
 
-    private val codec = TextView(context).apply {
-        setTextColor(appTheme.nowPlaying.textColor)
+    private val codec = LabeledView(context).apply {
+        label = "Codec:"
     }
 
-    private val bitrate = TextView(context).apply {
-        setTextColor(appTheme.nowPlaying.textColor)
+    private val bitrate = LabeledView(context).apply {
+        label = "Bitrate:"
     }
 
     private val tagList = ChipGroup(context)
@@ -169,8 +170,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
         homePage.text = station.homepage
         country.text = station.country
-        codec.text = station.codec
-        bitrate.text = station.bitrate
+        codec.value = station.codec
+        bitrate.value = station.bitrate
         tagList.removeAllViews()
         station.tags.filter { it.isNotBlank() }.forEach {
             val chip = Chip(context).apply {

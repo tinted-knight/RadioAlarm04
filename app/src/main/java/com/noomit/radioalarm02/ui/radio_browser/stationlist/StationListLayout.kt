@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
 import com.squareup.contour.ContourLayout
 
 
