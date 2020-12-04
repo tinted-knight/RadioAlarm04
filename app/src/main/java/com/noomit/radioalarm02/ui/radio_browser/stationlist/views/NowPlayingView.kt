@@ -50,9 +50,18 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         label = "Bitrate:"
     }
 
-    private val tagList = ChipGroup(context)
+    private val tagList = ChipGroup(context).apply {
+        chipSpacingHorizontal = 4
+        chipSpacingVertical = 4
+    }
 
     private val nowPlayingIcon = ImageView(context)
+
+    private fun buildChip(value: String) = Chip(context).apply {
+        text = value
+        textSize = 12.0f
+        setEnsureMinTouchTargetSize(false)
+    }
 
     init {
         background = PaintDrawable(appTheme.nowPlaying.bgColor)
@@ -174,10 +183,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.value = station.bitrate
         tagList.removeAllViews()
         station.tags.filter { it.isNotBlank() }.forEach {
-            val chip = Chip(context).apply {
-                text = it
-                textSize = 12.0f
-            }
+            val chip = buildChip(it)
             tagList.addView(chip)
         }
 
