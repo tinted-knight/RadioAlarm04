@@ -16,6 +16,8 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -47,9 +49,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         setTextColor(appTheme.nowPlaying.textColor)
     }
 
-    private val tags = TextView(context).apply {
-        setTextColor(appTheme.nowPlaying.textColor)
-    }
+    private val tagList = ChipGroup(context)
 
     private val nowPlayingIcon = ImageView(context)
 
@@ -71,7 +71,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         country.isVisible = false
         codec.isVisible = false
         bitrate.isVisible = false
-        tags.isVisible = false
+        tagList.isVisible = false
 
         nowPlayingIcon.layoutBy(
             rightTo { parent.right() - 4.xdip },
@@ -85,7 +85,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         country.layoutBy(emptyX(), emptyY())
         codec.layoutBy(emptyX(), emptyY())
         bitrate.layoutBy(emptyX(), emptyY())
-        tags.layoutBy(emptyX(), emptyY())
+        tagList.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayout() {
@@ -95,7 +95,10 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         country.isVisible = true
         codec.isVisible = true
         bitrate.isVisible = true
-        tags.isVisible = true
+        tagList.isVisible = true
+
+        val fillParentWidth = matchParentX(marginLeft = 16, marginRight = 16)
+        val verticalSpacing = 8.ydip
 
         title.updateLayoutBy(
             leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 4.xdip },
@@ -106,24 +109,24 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
         )
         homePage.updateLayoutBy(
-            matchParentX(marginLeft = 16, marginRight = 16),
-            topTo { nowPlayingIcon.bottom() + 8.ydip }
+            fillParentWidth,
+            topTo { nowPlayingIcon.bottom() + verticalSpacing }
         )
         country.updateLayoutBy(
-            matchParentX(marginLeft = 16, marginRight = 16),
-            topTo { homePage.bottom() + 8.ydip }
+            fillParentWidth,
+            topTo { homePage.bottom() + verticalSpacing }
         )
         codec.updateLayoutBy(
             leftTo { country.left() },
-            topTo { country.bottom() + 8.ydip }
+            topTo { country.bottom() + verticalSpacing }
         )
         bitrate.updateLayoutBy(
             leftTo { codec.right() + 16.xdip },
             topTo { country.bottom() + 8.ydip }
         )
-        tags.updateLayoutBy(
-            matchParentX(marginLeft = 16, marginRight = 16),
-            topTo { codec.bottom() + 8.ydip }
+        tagList.updateLayoutBy(
+            fillParentWidth,
+            topTo { bitrate.bottom() + verticalSpacing }
         )
     }
 
@@ -168,7 +171,14 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         country.text = station.country
         codec.text = station.codec
         bitrate.text = station.bitrate
-        tags.text = station.tags
+        tagList.removeAllViews()
+        station.tags.filter { it.isNotBlank() }.forEach {
+            val chip = Chip(context).apply {
+                text = it
+                textSize = 12.0f
+            }
+            tagList.addView(chip)
+        }
 
         title.text = station.name
         title.isVisible = true

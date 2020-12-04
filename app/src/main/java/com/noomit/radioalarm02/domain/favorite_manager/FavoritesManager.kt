@@ -25,7 +25,7 @@ class FavoritesManager(database: Database) : IFavoritesManager {
                 country = station.country,
                 homepage = station.homepage,
                 favicon = station.favicon,
-                tags = station.tags,
+                tags = station.tags.reduce { acc, s -> acc + s },
             )
         )
     }

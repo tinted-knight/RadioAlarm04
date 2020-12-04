@@ -24,5 +24,5 @@ data class StationModel(
     val codec: String,
     val bitrate: String,
     val favicon: String,
-    val tags: String,
+    val tags: List<String>,
 )

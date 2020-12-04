@@ -33,6 +33,7 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
             .map { stationList ->
                 stationList.sortedByDescending { it.votes }
                     .map {
+                        val tagList = it.tags.split(",").onEach { tag -> tag.trim() }
                         StationModel(
                             name = it.name,
                             upvotes = it.votes.toString(),
@@ -42,7 +43,7 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
                             codec = it.codec,
                             bitrate = it.bitrate,
                             favicon = it.favicon,
-                            tags = it.tags,
+                            tags = tagList,
                         )
                     }
             }

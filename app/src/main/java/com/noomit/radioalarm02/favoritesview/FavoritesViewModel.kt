@@ -38,18 +38,4 @@ class FavoritesViewModel(database: Database) : ViewModel() {
     fun onClick(station: StationModel) {
         _nowPlaying.value = station
     }
-
-    fun add(station: StationModel) {
-        plog("add favorite")
-        queries.insert(
-            Favorite(
-                name = station.name,
-                stream_url = station.streamUrl,
-                country = station.country,
-                homepage = station.homepage,
-                favicon = station.favicon,
-                tags = station.tags,
-            )
-        )
-    }
 }
