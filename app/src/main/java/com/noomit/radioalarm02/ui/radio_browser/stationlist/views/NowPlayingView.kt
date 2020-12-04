@@ -67,16 +67,15 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         background = PaintDrawable(appTheme.nowPlaying.bgColor)
         registerBackpressListener()
         stateListAnimator = PushOnPressAnimator(this)
-        elevation = 4.0f
+        elevation = 6.0f
 
         collapsedLayout()
     }
 
     private fun collapsedLayout() {
         toggleCornerRaduis(false)
-        title.isVisible = true
-        title.isSingleLine = true
 
+        title.isSingleLine = true
         homePage.isVisible = false
         country.isVisible = false
         codec.isVisible = false
@@ -84,12 +83,12 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.isVisible = false
 
         nowPlayingIcon.layoutBy(
-            rightTo { parent.right() - 4.xdip },
-            topTo { parent.top() + 2.ydip }.bottomTo { parent.bottom() - 2.ydip }
+            x = rightTo { parent.right() - 4.xdip },
+            y = topTo { parent.top() + 2.ydip }.bottomTo { parent.bottom() - 2.ydip }
         )
         title.layoutBy(
-            leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 2.xdip },
-            centerVerticallyTo { nowPlayingIcon.centerY() }
+            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 2.xdip },
+            y = centerVerticallyTo { nowPlayingIcon.centerY() }
         )
         homePage.layoutBy(emptyX(), emptyY())
         country.layoutBy(emptyX(), emptyY())
@@ -100,6 +99,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private fun expandedLayout() {
         toggleCornerRaduis(true)
+
         title.isSingleLine = false
         homePage.isVisible = true
         country.isVisible = true
@@ -111,32 +111,32 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         val verticalSpacing = 8.ydip
 
         title.updateLayoutBy(
-            leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 4.xdip },
-            topTo { nowPlayingIcon.top() + 16.ydip }
+            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 4.xdip },
+            y = topTo { nowPlayingIcon.top() + 16.ydip }
         )
         nowPlayingIcon.updateLayoutBy(
-            rightTo { parent.right() - 16.xdip }.widthOf { parent.width() / 3 },
-            topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
+            x = rightTo { parent.right() - 16.xdip }.widthOf { parent.width() / 3 },
+            y = topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
         )
         homePage.updateLayoutBy(
-            fillParentWidth,
-            topTo { nowPlayingIcon.bottom() + verticalSpacing }
+            x = fillParentWidth,
+            y = topTo { nowPlayingIcon.bottom() + verticalSpacing }
         )
         country.updateLayoutBy(
-            fillParentWidth,
-            topTo { homePage.bottom() + verticalSpacing }
+            x = fillParentWidth,
+            y = topTo { homePage.bottom() + verticalSpacing }
         )
         codec.updateLayoutBy(
-            leftTo { country.left() },
-            topTo { country.bottom() + verticalSpacing }
+            x = leftTo { country.left() },
+            y = topTo { country.bottom() + verticalSpacing }
         )
         bitrate.updateLayoutBy(
-            leftTo { codec.right() + 16.xdip },
-            topTo { country.bottom() + 8.ydip }
+            x = leftTo { codec.right() + 16.xdip },
+            y = topTo { country.bottom() + 8.ydip }
         )
         tagList.updateLayoutBy(
-            fillParentWidth,
-            topTo { bitrate.bottom() + verticalSpacing }
+            x = fillParentWidth,
+            y = topTo { bitrate.bottom() + verticalSpacing }
         )
     }
 
@@ -181,6 +181,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         country.text = station.country
         codec.value = station.codec
         bitrate.value = station.bitrate
+        // #todo if collapsed, there is no need to create ChipGroup
         tagList.removeAllViews()
         station.tags.filter { it.isNotBlank() }.forEach {
             val chip = buildChip(it)
@@ -188,7 +189,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
 
         title.text = station.name
-        title.isVisible = true
         title.apply {
             alpha = 0f
             translationY = 50f

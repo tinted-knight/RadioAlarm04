@@ -83,7 +83,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         val yPadding = { if (!nowPlayingView.isSelected) 0.ydip else 64.ydip }
 
         nowPlayingView.layoutBy(
-            leftTo { parent.left() + xPadding() }
+            x = leftTo { parent.left() + xPadding() }
                 .rightTo {
                     if (!nowPlayingView.isSelected) {
                         playerControll.left() + xPadding()
@@ -91,7 +91,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
                         parent.right() - xPadding()
                     }
                 },
-            topTo {
+            y = topTo {
                 if (!nowPlayingView.isSelected) {
                     rvStationList.bottom()
                 } else {

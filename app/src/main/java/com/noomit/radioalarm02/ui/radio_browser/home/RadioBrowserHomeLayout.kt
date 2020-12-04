@@ -30,25 +30,6 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     override var delegate: RadioBrowserHomeDelegate? = null
 
-    override fun setServerAdapter(adapter: ServerListAdapter) {
-        rvServerList.adapter = adapter
-    }
-
-    override fun showLoading() {
-        rvServerList.isVisible = false
-        btnLanguages.isEnabled = false
-        btnTags.isEnabled = false
-        btnTopVoted.isEnabled = false
-    }
-
-    override fun showContent(values: List<ServerInfo>) {
-        (rvServerList.adapter as ServerListAdapter).submitList(values)
-        rvServerList.isVisible = true
-        btnLanguages.isEnabled = true
-        btnTags.isEnabled = true
-        btnTopVoted.isEnabled = true
-    }
-
     private val btnLanguages = MaterialButton(context).apply {
         text = "Languages"
         setOnClickListener {
@@ -133,5 +114,24 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
             x = matchParentWidth,
             y = topTo { searchTag.bottom() }
         )
+    }
+
+    override fun setServerAdapter(adapter: ServerListAdapter) {
+        rvServerList.adapter = adapter
+    }
+
+    override fun showLoading() {
+        rvServerList.isVisible = false
+        btnLanguages.isEnabled = false
+        btnTags.isEnabled = false
+        btnTopVoted.isEnabled = false
+    }
+
+    override fun showContent(values: List<ServerInfo>) {
+        (rvServerList.adapter as ServerListAdapter).submitList(values)
+        rvServerList.isVisible = true
+        btnLanguages.isEnabled = true
+        btnTags.isEnabled = true
+        btnTopVoted.isEnabled = true
     }
 }

@@ -28,12 +28,12 @@ class LabeledView(context: Context) : ContourLayout(context) {
         contourHeightWrapContent()
 
         labelView.layoutBy(
-            leftTo { parent.left() },
-            topTo { parent.top() }
+            x = leftTo { parent.left() },
+            y = topTo { parent.top() }
         )
         valueView.layoutBy(
-            leftTo { labelView.right() + 4.xdip },
-            topTo { parent.top() }
+            x = leftTo { labelView.right() + 4.xdip },
+            y = topTo { parent.top() }
         )
     }
 }

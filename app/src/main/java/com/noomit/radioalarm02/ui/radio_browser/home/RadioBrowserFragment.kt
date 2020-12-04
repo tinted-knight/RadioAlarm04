@@ -23,10 +23,7 @@ import timber.log.Timber
 private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
-//class RadioBrowserFragment() : BaseFragment(R.layout.fragment_radio_browser) {
 class RadioBrowserFragment : Fragment() {
-
-//    override val viewBinding: FragmentRadioBrowserBinding by viewBinding()
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(
         navGraphId = R.id.nav_radio_browser,
@@ -77,66 +74,4 @@ class RadioBrowserFragment : Fragment() {
             }
         }
     }
-
-//    override fun prepareUi() {
-//        showLoading()
-//        viewBinding.rvServers.apply {
-//            setHasFixedSize(true)
-//            layoutManager = LinearLayoutManager(requireContext())
-//            isVerticalScrollBarEnabled = true
-//            adapter = ServerListAdapter(
-//                onServerClick = { serverInfo ->
-//                    viewModel.setServer(serverInfo)
-//                }
-//            )
-//            // #todo StationList restore state
-////            layoutManager?.onRestoreInstanceState()
-//        }
-//    }
-//
-//    override fun observeModel() {
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.availableServers.collect {
-//                when (it) {
-//                    is ServerState.Loading -> showLoading()
-//                    is ServerState.Values -> showContent(it.values)
-//                    is ServerState.Failure -> requireContext().toast(it.e.localizedMessage)
-//                }
-//            }
-//        }
-//    }
-//
-//    override fun listenUiEvents() = with(viewBinding) {
-//        btnLanguages.setOnClickListener {
-//            viewModel.offer(Action.Click.LanguageList)
-//            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
-//        }
-//    }
-//
-//    private fun showContent(values: List<ServerInfo>) = with(viewBinding) {
-//        (rvServers.adapter as ServerListAdapter).submitList(values)
-//        rvServers.viewShow()
-//        progressIndicator.viewHide()
-//        btnLanguages.isEnabled = true
-//        btnTags.isEnabled = true
-//        btnTopVoted.isEnabled = true
-//        btnAllStations.isEnabled = true
-//
-//        btnSearch.isEnabled = true
-//        etSearchName.isEnabled = true
-//        etSearchTag.isEnabled = true
-//    }
-//
-//    private fun showLoading() = with(viewBinding) {
-//        progressIndicator.viewShow()
-//        rvServers.viewHide()
-//        btnLanguages.isEnabled = false
-//        btnTags.isEnabled = false
-//        btnTopVoted.isEnabled = false
-//        btnAllStations.isEnabled = false
-//
-//        btnSearch.isEnabled = false
-//        etSearchName.isEnabled = false
-//        etSearchTag.isEnabled = false
-//    }
 }
