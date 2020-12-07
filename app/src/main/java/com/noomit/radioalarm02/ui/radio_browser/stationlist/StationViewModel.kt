@@ -36,6 +36,7 @@ class StationViewModel(private val favoritesManager: IFavoritesManager) : ViewMo
         _nowPlaying.value?.let {
             favoritesManager.add(it.station)
             viewModelScope.launch { _message.emit("To favorites: ${it.station.name}") }
+            _nowPlaying.value = it.copy(inFavorites = true)
         }
     }
 }

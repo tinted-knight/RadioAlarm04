@@ -61,7 +61,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.nowPlaying.favoriteStyleId
     ).apply {
-        setImageResource(com.noomit.radioalarm02.R.drawable.ic_favorite_24)
+        setImageResource(appTheme.nowPlaying.iconNotFavorite)
     }
 
     private fun buildChip(value: String) = Chip(context).apply {
@@ -201,6 +201,11 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             val chip = buildChip(it)
             tagList.addView(chip)
         }
+
+        btnFav.setImageResource(when (inFavorites) {
+            true -> appTheme.nowPlaying.iconFavorite
+            false -> appTheme.nowPlaying.iconNotFavorite
+        })
 
         title.text = station.name
         title.apply {
