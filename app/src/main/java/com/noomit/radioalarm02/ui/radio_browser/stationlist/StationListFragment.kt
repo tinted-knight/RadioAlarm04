@@ -57,6 +57,7 @@ class StationListFragment : PlayerServiceFragment() {
             setStationsAdapter(adapter)
             showLoading()
         }
+        contour.delegate = stationViewModel
     }
 
     override fun observeViewModel() {
@@ -71,9 +72,9 @@ class StationListFragment : PlayerServiceFragment() {
         }
 
         collect(stationViewModel.nowPlaying.filterNotNull()) {
-            service?.mediaItem = MediaItem(url = it.streamUrl, title = it.name)
+            service?.mediaItem = MediaItem(url = it.station.streamUrl, title = it.station.name)
             service?.play()
-            contour.nowPlaying(it)
+            contour.nowPlaying(it.station, it.inFavorites)
         }
 
         collect(stationViewModel.popupMessage) {

@@ -18,19 +18,25 @@ import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListA
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
 import com.squareup.contour.ContourLayout
 
-
 interface IStationListLayout {
     val playerControll: PlayerControlView
     val playerView: PlayerView
+    var delegate: StationListViewListener?
 
     fun setStationsAdapter(adapter: StationListAdapter)
     fun showLoading()
     fun showContent(values: List<StationModel>)
-    fun nowPlaying(station: StationModel)
+    fun nowPlaying(station: StationModel, inFavorites: Boolean)
+}
+
+interface StationListViewListener {
+    fun onFavoriteClick()
 }
 
 class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     ContourLayout(context, attributeSet), IStationListLayout {
+
+    override var delegate: StationListViewListener? = null
 
     private val inflater = LayoutInflater.from(context)
 
@@ -48,7 +54,9 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         isVerticalScrollBarEnabled = true
     }
 
-    private val nowPlayingView = NowPlayingView(context)
+    private val nowPlayingView = NowPlayingView(context).apply {
+        btnFav.setOnClickListener { this@StationListLayout.delegate?.onFavoriteClick() }
+    }
 
     private val loadingIndicator = ProgressBar(context)
 
@@ -118,7 +126,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         rvStationList.isVisible = true
     }
 
-    override fun nowPlaying(station: StationModel) {
-        nowPlayingView.update(station)
+    override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
+        nowPlayingView.update(station, inFavorites)
     }
 }

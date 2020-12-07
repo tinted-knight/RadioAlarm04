@@ -6,8 +6,10 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.animation.OvershootInterpolator
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -54,6 +56,14 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private val nowPlayingIcon = ImageView(context)
 
+    val btnFav = ImageButton(
+        ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
+        null,
+        appTheme.nowPlaying.favoriteStyleId
+    ).apply {
+        setImageResource(com.noomit.radioalarm02.R.drawable.ic_favorite_24)
+    }
+
     private fun buildChip(value: String) = Chip(context).apply {
         text = value
         textSize = 12.0f
@@ -78,6 +88,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         codec.isVisible = false
         bitrate.isVisible = false
         tagList.isVisible = false
+        btnFav.isVisible = false
 
         nowPlayingIcon.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -92,6 +103,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         codec.layoutBy(emptyX(), emptyY())
         bitrate.layoutBy(emptyX(), emptyY())
         tagList.layoutBy(emptyX(), emptyY())
+        btnFav.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayout() {
@@ -103,6 +115,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         codec.isVisible = true
         bitrate.isVisible = true
         tagList.isVisible = true
+        btnFav.isVisible = true
 
         val fillParentWidth = matchParentX(marginLeft = 16, marginRight = 16)
         val verticalSpacing = 8.ydip
@@ -134,6 +147,10 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.updateLayoutBy(
             x = fillParentWidth,
             y = topTo { bitrate.bottom() + verticalSpacing }
+        )
+        btnFav.updateLayoutBy(
+            x = rightTo { parent.right() - 16.xdip },
+            y = bottomTo { parent.bottom() - 16.ydip }
         )
     }
 
@@ -171,7 +188,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    fun update(station: StationModel) {
+    fun update(station: StationModel, inFavorites: Boolean) {
         loadStationIcon(station)
 
         homePage.text = station.homepage

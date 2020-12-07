@@ -7,12 +7,12 @@ interface CategoryModel {
 
 data class LanguageModel(
     override val name: String,
-    override val stationCount: String
+    override val stationCount: String,
 ) : CategoryModel
 
 data class TagModel(
     override val name: String,
-    override val stationCount: String
+    override val stationCount: String,
 ) : CategoryModel
 
 data class StationModel(
