@@ -23,3 +23,7 @@ VALUES ?;
 insertOrUpdate:
 REPLACE INTO favorite(name, stream_url, country, homepage, favicon, tags)
 VALUES ?;
+
+delete:
+DELETE FROM favorite
+WHERE stream_url = :streamUrl;

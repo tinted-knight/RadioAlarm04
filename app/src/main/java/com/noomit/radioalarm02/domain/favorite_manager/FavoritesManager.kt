@@ -11,6 +11,7 @@ interface IFavoritesManager {
     val allEntries: Flow<List<Favorite>>
     fun add(station: StationModel)
     fun check(station: StationModel): Boolean
+    fun delete(station: StationModel)
 }
 
 class FavoritesManager(database: Database) : IFavoritesManager {
@@ -34,5 +35,9 @@ class FavoritesManager(database: Database) : IFavoritesManager {
     override fun check(station: StationModel): Boolean {
         val favorite = queries.selectByStreamUrl(station.streamUrl).executeAsOneOrNull()
         return favorite != null
+    }
+
+    override fun delete(station: StationModel) {
+        queries.delete(station.streamUrl)
     }
 }
