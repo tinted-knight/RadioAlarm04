@@ -25,7 +25,7 @@ abstract class XmlPlayerServiceFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(contentLayoutId, container, false)
     }
@@ -38,7 +38,21 @@ abstract class XmlPlayerServiceFragment(
     }
 }
 
-abstract class PlayerServiceFragment : Fragment() {
+abstract class ContourFragment : Fragment() {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        prepareView()
+        observeViewModel()
+    }
+
+    protected abstract fun prepareView()
+
+    protected abstract fun observeViewModel()
+}
+
+abstract class PlayerServiceFragment : ContourFragment() {
 
     protected lateinit var playerView: PlayerView
     protected lateinit var playerControlView: PlayerControlView
@@ -69,6 +83,8 @@ abstract class PlayerServiceFragment : Fragment() {
     protected abstract fun initPlayerViews()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         initPlayerViews()
         bindExoPlayerService()
     }

@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui.radio_browser.stationlist
+package com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 
-typealias StationClick = ((StationModel) -> Unit)
-typealias StationLongClick = ((StationModel) -> Unit)
-
 class StationListAdapter(
-    var onClick: StationClick,
-    private val onLongClick: StationLongClick,
+    private val delegate: ItemClickListener<StationModel>,
 ) :
     ListAdapter<StationModel, StationListViewHolder>(StationListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = StationListViewHolder(
@@ -31,10 +27,10 @@ class StationListAdapter(
     override fun onViewAttachedToWindow(holder: StationListViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.setOnClickListener {
-            onClick(getItem(holder.adapterPosition))
+            delegate.onClick(getItem(holder.adapterPosition))
         }
         holder.itemView.setOnLongClickListener {
-            onLongClick(getItem(holder.adapterPosition))
+            delegate.onLongClick(getItem(holder.adapterPosition))
             true
         }
     }

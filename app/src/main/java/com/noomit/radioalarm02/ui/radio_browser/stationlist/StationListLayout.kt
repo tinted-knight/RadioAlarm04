@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
 import com.squareup.contour.ContourLayout
 
@@ -22,22 +23,14 @@ interface IStationListLayout {
     val playerControll: PlayerControlView
     val playerView: PlayerView
 
-    var delegate: StationListDelegate?
-
     fun setStationsAdapter(adapter: StationListAdapter)
     fun showLoading()
     fun showContent(values: List<StationModel>)
     fun nowPlaying(station: StationModel)
 }
 
-interface StationListDelegate {
-    fun onClick(station: StationModel)
-}
-
 class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     ContourLayout(context, attributeSet), IStationListLayout {
-
-    override var delegate: StationListDelegate? = null
 
     private val inflater = LayoutInflater.from(context)
 
@@ -112,9 +105,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     override fun setStationsAdapter(adapter: StationListAdapter) {
         rvStationList.adapter = adapter
-        adapter.onClick = {
-            delegate?.onClick(it)
-        }
     }
 
     override fun showLoading() {

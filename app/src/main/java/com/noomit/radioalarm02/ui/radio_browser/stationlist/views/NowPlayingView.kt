@@ -22,9 +22,6 @@ import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
-import timber.log.Timber
-
-private fun plog(message: String) = Timber.tag("tagg-contour").i(message)
 
 class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet) {

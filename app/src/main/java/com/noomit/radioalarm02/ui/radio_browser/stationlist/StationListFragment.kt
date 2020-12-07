@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
@@ -15,8 +16,13 @@ import com.noomit.radioalarm02.base.FavoritesViewModelFactory
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
+import timber.log.Timber
+
+private fun plog(message: String) = Timber.tag("tagg-contour").i(message)
 
 class StationListFragment : PlayerServiceFragment() {
 
@@ -26,7 +32,7 @@ class StationListFragment : PlayerServiceFragment() {
         FavoritesViewModelFactory(requireActivity().application as Application00)
     }
 
-    private val adapter by lazy(LazyThreadSafetyMode.NONE) { StationListAdapter({}, {}) }
+    private val contour by lazy(LazyThreadSafetyMode.NONE) { view as IStationListLayout }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,32 +50,34 @@ class StationListFragment : PlayerServiceFragment() {
         playerView = view.playerView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun prepareView() {
+        val adapter = StationListAdapter(delegate = stationViewModel)
+        contour.apply {
+            setStationsAdapter(adapter)
+            showLoading()
+        }
+    }
 
-        val view = (view as IStationListLayout)
-        view.delegate = stationViewModel
-        view.setStationsAdapter(adapter)
-
-        view.showLoading()
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.stationList.collect {
-                when (it) {
-                    is StationManagerState.Loading -> {
-                    }
-                    is StationManagerState.Success -> view.showContent(it.values)
-                    is StationManagerState.Failure -> requireContext().toast(it.error.localizedMessage)
+    override fun observeViewModel() {
+        collect(viewModel.stationList) {
+            plog("collect stationList, $it")
+            when (it) {
+                is StationManagerState.Loading -> {
                 }
+                is StationManagerState.Success -> contour.showContent(it.values)
+                is StationManagerState.Failure -> requireContext().toast(it.error.localizedMessage)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
-            stationViewModel.nowPlaying.filterNotNull().collect {
-                service?.mediaItem = MediaItem(url = it.streamUrl, title = it.name)
-                service?.play()
-                view.nowPlaying(it)
-            }
+        collect(stationViewModel.nowPlaying.filterNotNull()) {
+            service?.mediaItem = MediaItem(url = it.streamUrl, title = it.name)
+            service?.play()
+            contour.nowPlaying(it)
         }
     }
 }
+
+fun <T> Fragment.collect(values: Flow<T>, block: suspend (T) -> Unit) =
+    lifecycleScope.launchWhenStarted {
+        values.collect { block(it) }
+    }

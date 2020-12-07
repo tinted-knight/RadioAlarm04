@@ -26,6 +26,7 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentL
 
     abstract fun prepareUi()
     abstract fun listenUiEvents()
+
     // #todo change to Job for StateFlow
     abstract fun observeModel()
 }
@@ -47,6 +48,9 @@ abstract class PlayerBaseFragment(
         observeModel()
         listenUiEvents()
     }
+
+    override fun prepareView() {}
+    override fun observeViewModel() {}
 
     abstract fun prepareUi()
     abstract fun listenUiEvents()
