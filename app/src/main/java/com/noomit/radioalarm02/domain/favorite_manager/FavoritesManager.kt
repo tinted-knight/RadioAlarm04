@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface IFavoritesManager {
     val allEntries: Flow<List<Favorite>>
     fun add(station: StationModel)
+    fun check(station: StationModel): Boolean
 }
 
 class FavoritesManager(database: Database) : IFavoritesManager {
@@ -18,7 +19,7 @@ class FavoritesManager(database: Database) : IFavoritesManager {
     override val allEntries = queries.selectAll().asFlow().mapToList()
 
     override fun add(station: StationModel) {
-        queries.insert(
+        queries.insertOrUpdate(
             Favorite(
                 name = station.name,
                 stream_url = station.streamUrl,
@@ -28,5 +29,10 @@ class FavoritesManager(database: Database) : IFavoritesManager {
                 tags = station.tags.reduce { acc, s -> acc + s },
             )
         )
+    }
+
+    override fun check(station: StationModel): Boolean {
+        val favorite = queries.selectByStreamUrl(station.streamUrl).executeAsOneOrNull()
+        return favorite != null
     }
 }
