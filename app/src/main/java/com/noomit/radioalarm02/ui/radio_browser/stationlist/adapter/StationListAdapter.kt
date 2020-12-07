@@ -1,13 +1,10 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 
 class StationListAdapter(
@@ -15,9 +12,7 @@ class StationListAdapter(
 ) :
     ListAdapter<StationModel, StationListViewHolder>(StationListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = StationListViewHolder(
-        LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.item_category, parent, false)
+        StationItemView(parent.context)
     )
 
     override fun onBindViewHolder(holder: StationListViewHolder, position: Int) {
@@ -54,8 +49,8 @@ private class StationListDiffUtil : DiffUtil.ItemCallback<StationModel>() {
 }
 
 class StationListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(value: StationModel) = with(itemView) {
-        findViewById<TextView>(R.id.tv_station_name).text = value.name
-        findViewById<TextView>(R.id.tv_station_count).text = value.upvotes
+    fun bind(value: StationModel) = (itemView as IStationItem).apply {
+        setName(value.name)
+        setCount(value.upvotes)
     }
 }
