@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.home.adapters
+package com.noomit.radioalarm02.ui.alarm_list.adapters
 
 import android.os.Build
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.home.ui
+package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -17,9 +17,8 @@ import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
-import com.noomit.radioalarm02.home.AlarmManagerViewModel
-import com.noomit.radioalarm02.home.adapters.AlarmListAdapter
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 import timber.log.Timber
 
 private fun plog(message: String) =

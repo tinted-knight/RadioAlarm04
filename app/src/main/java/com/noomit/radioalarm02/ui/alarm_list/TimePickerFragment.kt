@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.home.ui
+package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.Dialog
 import android.app.TimePickerDialog

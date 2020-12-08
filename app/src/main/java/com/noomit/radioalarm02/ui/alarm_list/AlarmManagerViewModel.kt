@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.home
+package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
