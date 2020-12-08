@@ -26,6 +26,8 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
             return
         }
 
+        _state.value = StationManagerState.Loading
+
         val flow: Flow<List<StationNetworkEntity>> = when (category) {
             is CategoryModel.Language -> apiService.stationsByLanguage(category.name)
             is CategoryModel.Tag -> apiService.stationsByTag(category.name)
@@ -33,7 +35,6 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
 
         flow.flowOn(Dispatchers.IO)
             // #fake delay
-            .onEach { _state.value = StationManagerState.Loading }
             .onEach { delay(250) }
             .map { stationList ->
                 stationList.sortedByDescending { it.votes }
