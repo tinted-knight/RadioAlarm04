@@ -5,8 +5,11 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.noomit.playerservice.XmlPlayerServiceFragment
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 private fun plog(message: String) =
@@ -56,3 +59,8 @@ abstract class PlayerBaseFragment(
     abstract fun listenUiEvents()
     abstract fun observeModel()
 }
+
+fun <T> Fragment.collect(values: Flow<T>, block: suspend (T) -> Unit) =
+    lifecycleScope.launchWhenStarted {
+        values.collect { block(it) }
+    }

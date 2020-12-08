@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerServiceFragment
 import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.FavoritesViewModelFactory
+import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.filterNotNull
 import timber.log.Timber
 
@@ -59,9 +57,9 @@ class StationListFragment : PlayerServiceFragment() {
         contour.delegate = stationViewModel
     }
 
+    @FlowPreview
     override fun observeViewModel() {
         collect(viewModel.stationList) {
-            plog("collect stationList, $it")
             when (it) {
                 is StationManagerState.Loading -> {
                 }
@@ -81,11 +79,6 @@ class StationListFragment : PlayerServiceFragment() {
         }
     }
 
-    private infix fun <T> Flow<T>.observe(block: suspend (T) -> Unit) =
-        lifecycleScope.launchWhenStarted {
-            this@observe.collect { block(it) }
-        }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
@@ -101,11 +94,13 @@ class StationListFragment : PlayerServiceFragment() {
             }
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
+                    viewModel.filterStation(query)
+                    return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
+                    viewModel.filterStation(newText)
+                    return true
                 }
             })
         }
@@ -113,7 +108,3 @@ class StationListFragment : PlayerServiceFragment() {
     }
 }
 
-fun <T> Fragment.collect(values: Flow<T>, block: suspend (T) -> Unit) =
-    lifecycleScope.launchWhenStarted {
-        values.collect { block(it) }
-    }
