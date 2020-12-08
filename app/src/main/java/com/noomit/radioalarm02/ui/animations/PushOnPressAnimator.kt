@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui.radio_browser.stationlist
+package com.noomit.radioalarm02.ui.animations
 
 import android.animation.Animator
 import android.animation.ObjectAnimator

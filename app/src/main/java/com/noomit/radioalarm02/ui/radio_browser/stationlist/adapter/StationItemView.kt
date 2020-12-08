@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.widget.TextView
+import com.noomit.radioalarm02.ui.animations.ItemListAnimator
 import com.squareup.contour.ContourLayout
 
 interface IStationItem {
@@ -27,6 +28,8 @@ class StationItemView(
     }
 
     init {
+        stateListAnimator = ItemListAnimator(this)
+
         val hPadding = 16.xdip
         val vPadding = 16.ydip
 
