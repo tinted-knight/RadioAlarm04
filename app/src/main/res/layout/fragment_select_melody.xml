@@ -6,7 +6,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment2"
-        android:name="com.noomit.radioalarm02.favoritesview.ui.FavoritesFragment"
+        android:name="com.noomit.radioalarm02.ui.favorites.FavoritesFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
