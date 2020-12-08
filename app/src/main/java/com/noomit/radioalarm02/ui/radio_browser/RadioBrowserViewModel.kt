@@ -3,7 +3,7 @@ package com.noomit.radioalarm02.ui.radio_browser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
-import com.noomit.radioalarm02.data.LanguageModel
+import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.language_manager.LanguageManager
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
@@ -18,13 +18,11 @@ import java.util.*
 private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
-enum class Categories { Language, Tag }
-
 sealed class Action {
     sealed class Click : Action() {
         object LanguageList : Click()
         object TagList : Click()
-        data class StationsByLanguage(val value: LanguageModel) : Click()
+        data class StationsByLanguage(val value: CategoryModel.Language) : Click()
     }
 
     data class SetServer(val value: ServerInfo) : Action()
@@ -38,7 +36,7 @@ class RadioBrowserViewModel(
 
     val availableServers = serverManager.state
 
-    val languageList = languageManager.state
+    val categoryList = languageManager.state
 
     private val filter = MutableStateFlow("")
 
@@ -54,16 +52,17 @@ class RadioBrowserViewModel(
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
-    fun offer(action: Action) {
-        when (action) {
-            Action.Click.LanguageList -> viewModelScope.launch { languageManager.getLanguages() }
-            Action.Click.TagList -> TODO()
-            is Action.Click.StationsByLanguage -> viewModelScope.launch {
-                clearFilter()
-                stationManager.stationsBy(action.value)
-            }
-            is Action.SetServer -> TODO()
-        }
+    fun getLanguageList() = viewModelScope.launch {
+        languageManager.getLanguages()
+    }
+
+    fun getTagList() = viewModelScope.launch {
+        languageManager.getTags()
+    }
+
+    fun showStations(category: CategoryModel) = viewModelScope.launch {
+        clearFilter()
+        stationManager.stationsBy(category)
     }
 
     /**
@@ -81,7 +80,7 @@ class RadioBrowserViewModel(
                     val list = state.values.filter {
                         it.name.toLowerCase(Locale.getDefault()).contains(filter)
                     }
-                    emit(StationManagerState.Success(list, state.language))
+                    emit(StationManagerState.Success(list, state.category))
                 }
             } else {
                 emit(state)
@@ -89,12 +88,8 @@ class RadioBrowserViewModel(
         }
         .flowOn(Dispatchers.Default)
 
-    fun filterStation(name: String?) {
-        if (name != null) {
-            viewModelScope.launch { filter.emit(name.toLowerCase(Locale.getDefault())) }
-        } else {
-            viewModelScope.launch { filter.emit("") }
-        }
+    fun filterStation(name: String?) = viewModelScope.launch {
+        filter.emit(name?.toLowerCase(Locale.getDefault()) ?: "")
     }
 
     private fun clearFilter() = filterStation("")

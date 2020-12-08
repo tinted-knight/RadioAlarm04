@@ -1,54 +1,50 @@
 package com.noomit.radioalarm02.domain.language_manager
 
+import com.example.radiobrowser.CategoryNetworkEntity
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
-import com.noomit.radioalarm02.data.LanguageModel
+import com.noomit.radioalarm02.data.CategoryModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
-sealed class ChosedLanguage {
-    object None : ChosedLanguage()
-    data class Value(val value: LanguageModel) : ChosedLanguage()
-}
-
-class LanguageManager(private val apiService: RadioBrowserService) :
-    ICategoryManager<LanguageModel, LanguageManagerState, ChosedLanguage>, WithLogTag {
+class LanguageManager(private val apiService: RadioBrowserService) : WithLogTag {
 
     override val logTag = "lang_manager"
 
-    private val _state = MutableStateFlow<LanguageManagerState>(LanguageManagerState.Loading)
-    override val state: StateFlow<LanguageManagerState> = _state
+    private val _state = MutableStateFlow<CategoryManagerState>(CategoryManagerState.Loading)
+    val state: StateFlow<CategoryManagerState> = _state
 
-    suspend fun getLanguages() {
-        apiService.getLanguageListFlow()
+    suspend fun getLanguages() = getCategory(apiService.getLanguageListFlow()) {
+        CategoryModel.Language(it.name, it.stationcount.toString())
+    }
+
+    suspend fun getTags() = getCategory(apiService.getTagListFlow()) {
+        CategoryModel.Tag(it.name, it.stationcount.toString())
+    }
+
+    private suspend fun getCategory(
+        flow: Flow<List<CategoryNetworkEntity>>,
+        mapper: (CategoryNetworkEntity) -> CategoryModel,
+    ) {
+        flow.onStart { _state.value = CategoryManagerState.Loading }
             .flowOn(Dispatchers.IO)
             // #fake delay
-            .onEach { delay(500) }
+            .onEach { delay(250) }
             .map { languageList ->
                 languageList.sortedByDescending { it.stationcount }
-                    .map {
-                        LanguageModel(
-                            name = it.name,
-                            stationCount = it.stationcount.toString(),
-                        )
-                    }
+                    .map(mapper)
             }
             .flowOn(Dispatchers.Default)
             .catch { e ->
                 plog("LanguageManager.catch: ${e.localizedMessage}")
-                _state.value = LanguageManagerState.Failure(e)
+                _state.value = CategoryManagerState.Failure(e)
             }
             .collect {
                 _state.value = when {
-                    it.isEmpty() -> LanguageManagerState.Empty
-                    else -> LanguageManagerState.Values(it)
+                    it.isEmpty() -> CategoryManagerState.Empty
+                    else -> CategoryManagerState.Values(it)
                 }
             }
     }
-
-//    override fun onCategoryChoosed(value: LanguageModel) {
-//        _chosenCategory.value = ChosedLanguage.Value(value)
-//    }
-
 }

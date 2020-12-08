@@ -1,19 +1,19 @@
 package com.noomit.radioalarm02.data
 
-interface CategoryModel {
-    val name: String
-    val stationCount: String
+sealed class CategoryModel {
+    abstract val name: String
+    abstract val stationCount: String
+
+    data class Language(
+        override val name: String,
+        override val stationCount: String,
+    ) : CategoryModel()
+
+    data class Tag(
+        override val name: String,
+        override val stationCount: String,
+    ) : CategoryModel()
 }
-
-data class LanguageModel(
-    override val name: String,
-    override val stationCount: String,
-) : CategoryModel
-
-data class TagModel(
-    override val name: String,
-    override val stationCount: String,
-) : CategoryModel
 
 data class StationModel(
     val name: String,

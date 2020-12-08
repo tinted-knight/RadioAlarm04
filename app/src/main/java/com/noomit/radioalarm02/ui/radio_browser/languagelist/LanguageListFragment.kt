@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
-import com.noomit.radioalarm02.data.LanguageModel
+import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
-import com.noomit.radioalarm02.domain.language_manager.LanguageManagerState
+import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.ui.radio_browser.Action
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -31,7 +30,7 @@ class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
             adapter = LanguageListAdapter { value ->
-                viewModel.offer(Action.Click.StationsByLanguage(value))
+                viewModel.showStations(value)
                 findNavController().navigate(R.id.action_languageList_to_stationList)
             }
             // #todo LanguageList restore state
@@ -44,18 +43,18 @@ class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
 
     override fun observeModel() {
         lifecycleScope.launchWhenStarted {
-            viewModel.languageList.collect {
+            viewModel.categoryList.collect {
                 when (it) {
-                    is LanguageManagerState.Loading -> showLoading()
-                    is LanguageManagerState.Empty -> showContent(emptyList())
-                    is LanguageManagerState.Values -> showContent(it.values)
-                    is LanguageManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
+                    is CategoryManagerState.Loading -> showLoading()
+                    is CategoryManagerState.Empty -> showContent(emptyList())
+                    is CategoryManagerState.Values -> showContent(it.values)
+                    is CategoryManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
                 }
             }
         }
     }
 
-    private fun showContent(values: List<LanguageModel>) = with(viewBinding) {
+    private fun showContent(values: List<CategoryModel>) = with(viewBinding) {
         progressIndicator.visibility = View.GONE
         (rvCategoryList.adapter as LanguageListAdapter).submitList(values)
         rvCategoryList.visibility = View.VISIBLE

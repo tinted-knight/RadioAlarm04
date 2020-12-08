@@ -1,8 +1,9 @@
 package com.noomit.radioalarm02.domain.station_manager
 
 import com.example.radiobrowser.RadioBrowserService
+import com.example.radiobrowser.StationNetworkEntity
 import com.noomit.radioalarm02.base.WithLogTag
-import com.noomit.radioalarm02.data.LanguageModel
+import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.data.StationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -19,17 +20,21 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
     private val _state = MutableStateFlow<StationManagerState>(StationManagerState.Loading)
     val state: StateFlow<StationManagerState> = _state
 
-    suspend fun stationsBy(language: LanguageModel) {
+    suspend fun stationsBy(category: CategoryModel) {
         val last = state.value
-        if (last is StationManagerState.Success && last.language == language) {
+        if (last is StationManagerState.Success && last.category == category) {
             return
         }
-        _state.value = StationManagerState.Loading
-        apiService.stationsByLanguage(language.name)
+
+        val flow: Flow<List<StationNetworkEntity>> = when (category) {
+            is CategoryModel.Language -> apiService.stationsByLanguage(category.name)
+            is CategoryModel.Tag -> apiService.stationsByTag(category.name)
+        }
+
+        flow.flowOn(Dispatchers.IO)
             // #fake delay
-            .onEach { delay(500) }
-            .flowOn(Dispatchers.IO)
-            .onEach { plog("${it.size}") }
+            .onEach { _state.value = StationManagerState.Loading }
+            .onEach { delay(250) }
             .map { stationList ->
                 stationList.sortedByDescending { it.votes }
                     .map {
@@ -49,6 +54,6 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
             }
             .flowOn(Dispatchers.Default)
             .catch { e -> _state.value = StationManagerState.Failure(e) }
-            .collect { _state.value = StationManagerState.Success(it, language) }
+            .collect { _state.value = StationManagerState.Success(it, category) }
     }
 }

@@ -14,7 +14,6 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.ui.radio_browser.Action
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
 import kotlinx.coroutines.flow.collect
@@ -32,7 +31,12 @@ class RadioBrowserFragment : Fragment() {
 
     private val listener = object : RadioBrowserHomeDelegate {
         override fun onLanguageClick() {
-            viewModel.offer(Action.Click.LanguageList)
+            viewModel.getLanguageList()
+            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
+        }
+
+        override fun onTagClick() {
+            viewModel.getTagList()
             findNavController().navigate(R.id.action_radioBrowser_to_languageList)
         }
     }

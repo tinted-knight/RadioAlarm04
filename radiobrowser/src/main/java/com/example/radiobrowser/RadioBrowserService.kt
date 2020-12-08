@@ -104,11 +104,11 @@ class RadioBrowserService {
         return api.getTopVoted()
     }
 
-    suspend fun getTags(): List<LanguageNetworkEntity> {
+    suspend fun getTags(): List<CategoryNetworkEntity> {
         return api.getTagList()
     }
 
-    suspend fun getLanguageList(): List<LanguageNetworkEntity> {
+    suspend fun getLanguageList(): List<CategoryNetworkEntity> {
         plog("getLanguageList")
         // #todo wrapper for every method that calls [api] field
         if (::api.isInitialized) {
@@ -118,7 +118,9 @@ class RadioBrowserService {
         }
     }
 
-    fun getLanguageListFlow(): Flow<List<LanguageNetworkEntity>> = flow { emit(getLanguageList()) }
+    fun getLanguageListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(getLanguageList()) }
+
+    fun getTagListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(api.getTagList()) }
 
     suspend fun getStationsByLanguage(langString: String): List<StationNetworkEntity> {
         return api.getStationsByLanguage(langString)
@@ -126,9 +128,7 @@ class RadioBrowserService {
 
     fun stationsByLanguage(langString: String) = flow { emit(getStationsByLanguage(langString)) }
 
-    suspend fun getStationsByTag(tag: String): List<StationNetworkEntity> {
-        return api.getStationsByTag(tag)
-    }
+    fun stationsByTag(tagString: String) = flow { emit(api.getStationsByTag(tagString)) }
 
     suspend fun search(name: String, tag: String): List<StationNetworkEntity> {
         return api.search(SearchRequest(name, tag))

@@ -1,10 +1,10 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
-import com.noomit.radioalarm02.data.LanguageModel
+import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.radiobrowserview.adapters.CategoryDiffUtil
 import com.noomit.radioalarm02.radiobrowserview.adapters.CategoryListAdapter
 
-class LanguageListAdapter(onClick: (LanguageModel) -> Unit) :
-    CategoryListAdapter<LanguageModel>(onClick, LanguageDiffUtil())
+class LanguageListAdapter(onClick: (CategoryModel) -> Unit) :
+    CategoryListAdapter<CategoryModel>(onClick, LanguageDiffUtil())
 
-class LanguageDiffUtil : CategoryDiffUtil<LanguageModel>()
+class LanguageDiffUtil : CategoryDiffUtil<CategoryModel>()

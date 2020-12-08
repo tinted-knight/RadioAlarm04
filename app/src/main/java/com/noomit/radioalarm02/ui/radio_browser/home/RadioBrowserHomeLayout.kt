@@ -15,6 +15,7 @@ import com.squareup.contour.ContourLayout
 
 interface RadioBrowserHomeDelegate {
     fun onLanguageClick()
+    fun onTagClick()
 }
 
 interface IRadioBrowserHomeLayout {
@@ -39,6 +40,9 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     private val btnTags = MaterialButton(context).apply {
         text = "Tags"
+        setOnClickListener {
+            delegate?.onTagClick()
+        }
     }
 
     private val btnTopVoted = MaterialButton(context).apply {
