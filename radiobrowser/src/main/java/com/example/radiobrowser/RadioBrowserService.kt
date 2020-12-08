@@ -96,6 +96,18 @@ class RadioBrowserService {
         _activeServer.value = ActiveServerState.Value(serverInfo)
     }
 
+    fun getLanguageListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(getLanguageList()) }
+
+    fun getTagListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(api.getTagList()) }
+
+    fun stationsByLanguage(langString: String) = flow {
+        emit(api.getStationsByLanguage(langString))
+    }
+
+    fun stationsByTag(tagString: String) = flow {
+        emit(api.getStationsByTag(tagString))
+    }
+
     suspend fun getAllStations(): List<StationNetworkEntity> {
         return api.getAllStations()
     }
@@ -104,11 +116,7 @@ class RadioBrowserService {
         return api.getTopVoted()
     }
 
-    suspend fun getTags(): List<CategoryNetworkEntity> {
-        return api.getTagList()
-    }
-
-    suspend fun getLanguageList(): List<CategoryNetworkEntity> {
+    private suspend fun getLanguageList(): List<CategoryNetworkEntity> {
         plog("getLanguageList")
         // #todo wrapper for every method that calls [api] field
         if (::api.isInitialized) {
@@ -117,18 +125,6 @@ class RadioBrowserService {
             throw UninitializedPropertyAccessException("lateinit errrrror")
         }
     }
-
-    fun getLanguageListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(getLanguageList()) }
-
-    fun getTagListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(api.getTagList()) }
-
-    suspend fun getStationsByLanguage(langString: String): List<StationNetworkEntity> {
-        return api.getStationsByLanguage(langString)
-    }
-
-    fun stationsByLanguage(langString: String) = flow { emit(getStationsByLanguage(langString)) }
-
-    fun stationsByTag(tagString: String) = flow { emit(api.getStationsByTag(tagString)) }
 
     suspend fun search(name: String, tag: String): List<StationNetworkEntity> {
         return api.search(SearchRequest(name, tag))
