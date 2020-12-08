@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.favoritesview.adapters
+package com.noomit.radioalarm02.ui.favorites.adapters
 
 import android.view.LayoutInflater
 import android.view.View

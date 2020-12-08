@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.favoritesview
+package com.noomit.radioalarm02.ui.favorites
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.favoritesview.ui
+package com.noomit.radioalarm02.ui.favorites
 
 import android.os.Bundle
 import android.view.View
@@ -12,9 +12,8 @@ import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentStationListBinding
-import com.noomit.radioalarm02.favoritesview.FavoritesViewModel
-import com.noomit.radioalarm02.favoritesview.adapters.FavoriteListAdapter
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.favorites.adapters.FavoriteListAdapter
 
 class FavoritesFragment : PlayerBaseFragment(
     playerViewId = R.id.exo_player_view,

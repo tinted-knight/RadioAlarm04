@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.noomit.radioalarm02.favoritesview.ui.FavoritesFragment"
+        android:name="com.noomit.radioalarm02.ui.favorites.FavoritesFragment"
         android:label="FavoritesFragment" />
     <fragment
         android:id="@+id/selectMelodyFragment"
