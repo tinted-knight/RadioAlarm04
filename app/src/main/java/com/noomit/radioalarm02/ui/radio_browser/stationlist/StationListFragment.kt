@@ -1,9 +1,8 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -86,6 +85,32 @@ class StationListFragment : PlayerServiceFragment() {
         lifecycleScope.launchWhenStarted {
             this@observe.collect { block(it) }
         }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_searchview, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnCloseListener {
+                return@setOnCloseListener true
+            }
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 }
 
 fun <T> Fragment.collect(values: Flow<T>, block: suspend (T) -> Unit) =
