@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.radio_browser.languagelist.LanguageListFragment">
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_station_list"
@@ -67,10 +66,10 @@
         tools:visibility="visible" />
 
     <LinearLayout
-        android:elevation="4dp"
         android:id="@+id/now_playing"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:elevation="4dp"
         android:orientation="horizontal"
         android:padding="4dp"
         android:visibility="invisible"
