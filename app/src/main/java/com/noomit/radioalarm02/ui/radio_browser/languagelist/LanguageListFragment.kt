@@ -1,67 +1,59 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.noomit.playerservice.ContourFragment
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.data.CategoryModel
-import com.noomit.radioalarm02.databinding.FragmentLanguageListBinding
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
-@ExperimentalCoroutinesApi
-class LanguageListFragment : BaseFragment(R.layout.fragment_language_list) {
+class LanguageListFragment : ContourFragment() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
-    override val viewBinding: FragmentLanguageListBinding by viewBinding()
+    private val contour: ICategoryLayout
+        get() = view as ICategoryLayout
 
-    override fun prepareUi() {
-        showLoading()
-        viewBinding.rvCategoryList.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-            isVerticalScrollBarEnabled = true
-            adapter = LanguageListAdapter { value ->
-                viewModel.showStations(value)
-                findNavController().navigate(R.id.action_languageList_to_stationList)
-            }
-            // #todo LanguageList restore state
-//            layoutManager?.onRestoreInstanceState()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return CategoryListLayout(requireContext())
+    }
+
+    private val categoryClick = { model: CategoryModel ->
+        viewModel.showStations(model)
+        findNavController().navigate(R.id.action_languageList_to_stationList)
+    }
+
+    private val adapter by lazy(LazyThreadSafetyMode.NONE) { LanguageListAdapter(categoryClick) }
+
+    override fun prepareView() {
+        (view as ICategoryLayout).apply {
+            setAdapter(adapter)
+            showLoading()
         }
     }
 
-    override fun listenUiEvents() {
-    }
-
-    override fun observeModel() {
+    override fun observeViewModel() {
         lifecycleScope.launchWhenStarted {
             viewModel.categoryList.collect {
                 when (it) {
-                    is CategoryManagerState.Loading -> showLoading()
-                    is CategoryManagerState.Empty -> showContent(emptyList())
-                    is CategoryManagerState.Values -> showContent(it.values)
+                    is CategoryManagerState.Loading -> contour.showLoading()
+                    is CategoryManagerState.Empty -> contour.showContent(emptyList())
+                    is CategoryManagerState.Values -> contour.showContent(it.values)
                     is CategoryManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
                 }
             }
         }
-    }
-
-    private fun showContent(values: List<CategoryModel>) = with(viewBinding) {
-        progressIndicator.visibility = View.GONE
-        (rvCategoryList.adapter as LanguageListAdapter).submitList(values)
-        rvCategoryList.visibility = View.VISIBLE
-    }
-
-    private fun showLoading() = with(viewBinding) {
-        progressIndicator.visibility = View.VISIBLE
-        rvCategoryList.visibility = View.INVISIBLE
     }
 }
