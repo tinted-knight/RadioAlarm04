@@ -28,6 +28,8 @@ class RadioBrowserViewModel(
 
     val availableServers = serverManager.state
 
+    val activeServer = serverManager.activeServer
+
     private val filter = MutableStateFlow("")
 
     init {

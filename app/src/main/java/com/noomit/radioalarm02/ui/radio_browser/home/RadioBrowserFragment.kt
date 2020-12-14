@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import com.example.radiobrowser.ActiveServerState
 import com.noomit.playerservice.ContourFragment
 import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
@@ -14,6 +15,7 @@ import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
@@ -71,13 +73,17 @@ class RadioBrowserFragment : ContourFragment() {
     override fun observeViewModel() {
         collect(viewModel.availableServers) {
             when (it) {
-                is ServerState.Loading -> {
-                }
-                is ServerState.Values -> {
-                    plog("server list")
-                    contour.showContent(it.values)
-                }
+                is ServerState.Loading -> contour.showLoading()
+                is ServerState.Values -> contour.update(content = it.values)
                 is ServerState.Failure -> requireContext().toast(it.e.localizedMessage)
+            }
+        }
+
+        collect(viewModel.activeServer) {
+            tplog("collect active, $it")
+            when (it) {
+                is ActiveServerState.None -> contour.update(activerServer = null)
+                is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
             }
         }
     }

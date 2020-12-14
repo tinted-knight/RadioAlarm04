@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.domain.server_manager
 
+import com.example.radiobrowser.ActiveServerState
 import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.ServerInfo
 import com.example.radiobrowser.ServerListResponse
@@ -21,6 +22,8 @@ class ServerManager(private val apiService: RadioBrowserService) : WithLogTag {
 
     private val _state = MutableStateFlow<ServerState>(ServerState.Loading)
     val state: StateFlow<ServerState> = _state
+
+    var activeServer: StateFlow<ActiveServerState> = apiService.activeServer
 
     fun getAvalilable(scope: CoroutineScope) {
         scope.launch(Dispatchers.IO) {
