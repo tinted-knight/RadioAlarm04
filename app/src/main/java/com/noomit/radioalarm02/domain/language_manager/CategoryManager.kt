@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
-class LanguageManager(private val apiService: RadioBrowserService) : WithLogTag {
+class CategoryManager(private val apiService: RadioBrowserService) : WithLogTag {
 
     override val logTag = "lang_manager"
 

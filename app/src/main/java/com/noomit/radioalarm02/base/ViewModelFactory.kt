@@ -10,7 +10,9 @@ import com.noomit.radioalarm02.ui.alarm_list.AlarmManagerViewModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.StationViewModel
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val application: Application00) :
     ViewModelProvider.NewInstanceFactory() {
@@ -20,7 +22,7 @@ class ViewModelFactory(private val application: Application00) :
                 application.serviceProvider.run {
                     RadioBrowserViewModel(
                         serverManager,
-                        languageManager,
+                        categoryManager,
                         stationManager
                     ) as T
                 }

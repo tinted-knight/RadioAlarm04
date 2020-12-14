@@ -50,15 +50,15 @@
             android:label="RadioBrowserFragment">
             <action
                 android:id="@+id/action_radioBrowser_to_languageList"
-                app:destination="@id/languageListFragment"
+                app:destination="@id/categoryListFragment"
                 app:enterAnim="@anim/to_in"
                 app:exitAnim="@anim/from_out"
                 app:popEnterAnim="@anim/from_in"
                 app:popExitAnim="@anim/to_out" />
         </fragment>
         <fragment
-            android:id="@+id/languageListFragment"
-            android:name="com.noomit.radioalarm02.ui.radio_browser.languagelist.LanguageListFragment"
+            android:id="@+id/categoryListFragment"
+            android:name="com.noomit.radioalarm02.ui.radio_browser.languagelist.CategoryListFragment"
             android:label="fragment_language_list"
             tools:layout="@layout/fragment_language_list">
             <action

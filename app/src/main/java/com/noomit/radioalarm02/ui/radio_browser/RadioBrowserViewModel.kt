@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.data.CategoryModel
+import com.noomit.radioalarm02.domain.language_manager.CategoryManager
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
-import com.noomit.radioalarm02.domain.language_manager.LanguageManager
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
@@ -19,20 +19,10 @@ import java.util.*
 private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
-sealed class Action {
-    sealed class Click : Action() {
-        object LanguageList : Click()
-        object TagList : Click()
-        data class StationsByLanguage(val value: CategoryModel.Language) : Click()
-    }
-
-    data class SetServer(val value: ServerInfo) : Action()
-}
-
 @FlowPreview
 class RadioBrowserViewModel(
     private val serverManager: ServerManager,
-    private val languageManager: LanguageManager,
+    private val categoryManager: CategoryManager,
     private val stationManager: StationManager,
 ) : ViewModel() {
 
@@ -87,12 +77,12 @@ class RadioBrowserViewModel(
     // Categories
     fun getTagList() = viewModelScope.launch {
         clearFilter()
-        languageManager.getTags()
+        categoryManager.getTags()
     }
 
     fun getLanguageList() = viewModelScope.launch {
         clearFilter()
-        languageManager.getLanguages()
+        categoryManager.getLanguages()
     }
 
     /**
@@ -101,7 +91,7 @@ class RadioBrowserViewModel(
      */
     val categoryList: Flow<CategoryManagerState> = filter
         .debounce(500)
-        .combineTransform(languageManager.state) { filter, state ->
+        .combineTransform(categoryManager.state) { filter, state ->
             if (state !is CategoryManagerState.Values || filter.isBlank()) {
                 emit(state)
             } else {

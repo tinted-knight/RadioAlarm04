@@ -22,6 +22,7 @@ import timber.log.Timber
 
 private fun plog(message: String) = Timber.tag("tagg-contour").i(message)
 
+@FlowPreview
 class StationListFragment : PlayerServiceFragment() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)

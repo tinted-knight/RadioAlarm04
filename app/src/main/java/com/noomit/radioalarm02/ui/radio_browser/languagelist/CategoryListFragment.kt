@@ -16,7 +16,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 
 @FlowPreview
-class LanguageListFragment : ContourFragment() {
+class CategoryListFragment : ContourFragment() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
