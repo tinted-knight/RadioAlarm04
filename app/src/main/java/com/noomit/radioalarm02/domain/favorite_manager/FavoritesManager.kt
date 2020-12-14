@@ -6,9 +6,10 @@ import com.noomit.radioalarm02.data.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface IFavoritesManager {
-    val allEntries: Flow<List<Favorite>>
+    val allEntries: Flow<List<StationModel>>
     fun add(station: StationModel)
     fun check(station: StationModel): Boolean
     fun delete(station: StationModel)
@@ -18,6 +19,22 @@ class FavoritesManager(database: Database) : IFavoritesManager {
     private val queries = database.favoriteQueries
 
     override val allEntries = queries.selectAll().asFlow().mapToList()
+        .map {
+            it.map { fav ->
+                val tagList = fav.tags.split(",").onEach { tag -> tag.trim() }
+                StationModel(
+                    name = fav.name,
+                    upvotes = "no",
+                    streamUrl = fav.stream_url,
+                    country = fav.country,
+                    homepage = fav.homepage,
+                    codec = "no",
+                    bitrate = "no",
+                    favicon = fav.favicon,
+                    tags = tagList,
+                )
+            }
+        }
 
     override fun add(station: StationModel) {
         queries.insertOrUpdate(
@@ -27,7 +44,7 @@ class FavoritesManager(database: Database) : IFavoritesManager {
                 country = station.country,
                 homepage = station.homepage,
                 favicon = station.favicon,
-                tags = station.tags.reduce { acc, s -> acc + s },
+                tags = station.tags.reduce { acc, s -> "$acc,$s" },
             )
         )
     }

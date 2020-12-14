@@ -33,11 +33,11 @@ class ViewModelFactory(private val application: Application00) :
 }
 
 @Suppress("UNCHECKED_CAST")
-class DatabaseViewModelFactory(private val database: Database) :
+class DatabaseViewModelFactory(private val application: Application00) :
     ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
-            FavoritesViewModel::class.java -> FavoritesViewModel(database) as T
+            FavoritesViewModel::class.java -> FavoritesViewModel(application.serviceProvider.favoritesManager) as T
             else -> throw IllegalArgumentException("Cannot find ViewModel class to create from factory")
         }
     }

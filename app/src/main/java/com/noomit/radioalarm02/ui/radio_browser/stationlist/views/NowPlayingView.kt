@@ -220,6 +220,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
+    fun updateEmpty() {
+        title.text = ""
+        nowPlayingIcon.setImageDrawable(null)
+        homePage.text = ""
+        country.text = ""
+        codec.value = ""
+        bitrate.value = ""
+        tagList.removeAllViews()
+        isSelected = false
+    }
 
     private fun loadStationIcon(station: StationModel) {
         Glide.with(this).load(station.favicon)

@@ -42,14 +42,14 @@ class RadioBrowserViewModel(
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
+    fun applyFilter(name: String?) = viewModelScope.launch {
+        filter.emit(name?.toLowerCase(Locale.getDefault()) ?: "")
+    }
+
     // Stations
     fun showStations(category: CategoryModel) = viewModelScope.launch {
         clearFilter()
         stationManager.stationsBy(category)
-    }
-
-    fun applyFilter(name: String?) = viewModelScope.launch {
-        filter.emit(name?.toLowerCase(Locale.getDefault()) ?: "")
     }
 
     /**

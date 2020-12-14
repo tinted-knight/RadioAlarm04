@@ -80,6 +80,10 @@ abstract class PlayerServiceFragment : ContourFragment() {
      */
     abstract fun onServiceConnected()
 
+    /**
+     * Here [playerView] and [playerControlView] need to be initialized with
+     * views in fragment's layout
+     */
     protected abstract fun initPlayerViews()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

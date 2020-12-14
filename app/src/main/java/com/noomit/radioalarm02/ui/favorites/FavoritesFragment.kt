@@ -1,88 +1,63 @@
 package com.noomit.radioalarm02.ui.favorites
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
-import com.noomit.radioalarm02.Favorite
-import com.noomit.radioalarm02.R
+import com.noomit.playerservice.PlayerServiceFragment
+import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
-import com.noomit.radioalarm02.base.PlayerBaseFragment
-import com.noomit.radioalarm02.data.AppDatabase
-import com.noomit.radioalarm02.databinding.FragmentStationListBinding
-import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.ui.favorites.adapters.FavoriteListAdapter
+import com.noomit.radioalarm02.base.collect
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 
-class FavoritesFragment : PlayerBaseFragment(
-    playerViewId = R.id.exo_player_view,
-    playerControlId = R.id.exo_player_controls,
-    contentLayoutId = R.layout.fragment_station_list,
-) {
-
-    override val viewBinding: FragmentStationListBinding by viewBinding()
+class FavoritesFragment : PlayerServiceFragment() {
 
     private val favoritesViewModel: FavoritesViewModel by activityViewModels {
-        DatabaseViewModelFactory(AppDatabase.getInstance(requireActivity()))
+        DatabaseViewModelFactory(requireActivity().application as Application00)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewBinding.exoPlayerControls.player = playerView.player
-    }
+    private val contour by lazy(LazyThreadSafetyMode.NONE) { view as IFavoritesLayout }
 
-    override fun prepareUi() {
-        showLoading()
-        viewBinding.rvStationList.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-            isVerticalScrollBarEnabled = true
-            adapter = FavoriteListAdapter(
-                onClick = { value ->
-                    requireContext().toast(value.name)
-                    favoritesViewModel.onClick(value)
-                    play(value)
-                },
-            )
-            // #todo StationList restore state
-//            layoutManager?.onRestoreInstanceState()
-        }
-    }
-
-    override fun listenUiEvents() {}
-
-    override fun observeModel() = with(favoritesViewModel) {
-        selectAll.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                showContent(it)
-            } else {
-                showEmpty()
-            }
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return FavoritesLayout(requireContext())
     }
 
     override fun onServiceConnected() {}
 
-    private fun showLoading() = with(viewBinding) {
-        progressIndicator.visibility = View.VISIBLE
-        rvStationList.visibility = View.INVISIBLE
+    override fun initPlayerViews() {
+        playerControlView = contour.playerControll
+        playerView = contour.playerView
     }
 
-    private fun showContent(values: List<Favorite>) = with(viewBinding) {
-        (rvStationList.adapter as FavoriteListAdapter).submitList(values)
-        rvStationList.visibility = View.VISIBLE
-        progressIndicator.visibility = View.GONE
+    override fun prepareView() {
+        val adapter = StationListAdapter(delegate = favoritesViewModel)
+        contour.apply {
+            setStationsAdapter(adapter)
+            showLoading()
+        }
+        contour.delegate = favoritesViewModel
     }
 
-    private fun showEmpty() = with(viewBinding) {
-        progressIndicator.visibility = View.INVISIBLE
-        rvStationList.visibility = View.INVISIBLE
-        tvEmpty.visibility = View.VISIBLE
-    }
+    override fun observeViewModel() {
+        collect(favoritesViewModel.selectAll) {
+            contour.showContent(it)
+        }
 
-    private fun play(station: Favorite) {
-        service?.mediaItem = MediaItem(station.stream_url, station.name)
-        service?.play()
+        collect(favoritesViewModel.nowPlaying) {
+            if (it != null) {
+                service?.mediaItem = MediaItem(url = it.station.streamUrl, title = it.station.name)
+                service?.play()
+                contour.nowPlaying(it.station, it.inFavorites)
+            } else {
+                service?.stop()
+                contour.nowPlayingEmpty()
+            }
+        }
     }
 }
