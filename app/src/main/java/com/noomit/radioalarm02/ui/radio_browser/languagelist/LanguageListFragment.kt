@@ -1,9 +1,8 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -13,8 +12,10 @@ import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 
+@FlowPreview
 class LanguageListFragment : ContourFragment() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
@@ -55,5 +56,33 @@ class LanguageListFragment : ContourFragment() {
                 }
             }
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_searchview, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnCloseListener {
+                return@setOnCloseListener true
+            }
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.applyFilter(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.applyFilter(newText)
+                    return true
+                }
+            })
+        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

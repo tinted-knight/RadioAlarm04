@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.data.CategoryModel
+import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.domain.language_manager.LanguageManager
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
@@ -28,6 +29,7 @@ sealed class Action {
     data class SetServer(val value: ServerInfo) : Action()
 }
 
+@FlowPreview
 class RadioBrowserViewModel(
     private val serverManager: ServerManager,
     private val languageManager: LanguageManager,
@@ -35,8 +37,6 @@ class RadioBrowserViewModel(
 ) : ViewModel() {
 
     val availableServers = serverManager.state
-
-    val categoryList = languageManager.state
 
     private val filter = MutableStateFlow("")
 
@@ -52,24 +52,20 @@ class RadioBrowserViewModel(
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
-    fun getLanguageList() = viewModelScope.launch {
-        languageManager.getLanguages()
-    }
-
-    fun getTagList() = viewModelScope.launch {
-        languageManager.getTags()
-    }
-
+    // Stations
     fun showStations(category: CategoryModel) = viewModelScope.launch {
         clearFilter()
         stationManager.stationsBy(category)
     }
 
+    fun applyFilter(name: String?) = viewModelScope.launch {
+        filter.emit(name?.toLowerCase(Locale.getDefault()) ?: "")
+    }
+
     /**
      * List of stations by category (i.e. language, tag), filtered by **station name** set up with
-     * [filterStation] method
+     * [applyFilter] method
      */
-    @FlowPreview
     val stationList: Flow<StationManagerState> = filter
         .debounce(500)
         .combineTransform(stationManager.state) { filter, state ->
@@ -88,9 +84,33 @@ class RadioBrowserViewModel(
         }
         .flowOn(Dispatchers.Default)
 
-    fun filterStation(name: String?) = viewModelScope.launch {
-        filter.emit(name?.toLowerCase(Locale.getDefault()) ?: "")
+    // Categories
+    fun getTagList() = viewModelScope.launch {
+        clearFilter()
+        languageManager.getTags()
     }
 
-    private fun clearFilter() = filterStation("")
+    fun getLanguageList() = viewModelScope.launch {
+        clearFilter()
+        languageManager.getLanguages()
+    }
+
+    /**
+     * List of categories(languages or tags), filtered by **category name** set up with
+     * [applyFilter] method
+     */
+    val categoryList: Flow<CategoryManagerState> = filter
+        .debounce(500)
+        .combineTransform(languageManager.state) { filter, state ->
+            if (state !is CategoryManagerState.Values || filter.isBlank()) {
+                emit(state)
+            } else {
+                val filtered = state.values.filter {
+                    it.name.toLowerCase(Locale.getDefault()).contains(filter)
+                }
+                emit(CategoryManagerState.Values(filtered))
+            }
+        }
+
+    private fun clearFilter() = applyFilter("")
 }

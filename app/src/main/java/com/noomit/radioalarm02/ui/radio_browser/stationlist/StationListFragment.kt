@@ -94,12 +94,12 @@ class StationListFragment : PlayerServiceFragment() {
             }
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.filterStation(query)
+                    viewModel.applyFilter(query)
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    viewModel.filterStation(newText)
+                    viewModel.applyFilter(newText)
                     return true
                 }
             })
