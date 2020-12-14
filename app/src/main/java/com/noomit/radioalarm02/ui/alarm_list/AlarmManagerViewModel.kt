@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
-import com.noomit.radioalarm02.Favorite
+import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -96,11 +96,11 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         selectMelodyFor = alarm
     }
 
-    fun setMelody(favorite: Favorite) {
+    fun setMelody(favorite: StationModel) {
         selectMelodyFor?.let {
             queries.updateMelody(
                 alarmId = it.id,
-                melodyUrl = favorite.stream_url,
+                melodyUrl = favorite.streamUrl,
                 melodyName = favorite.name,
             )
         }

@@ -7,8 +7,10 @@ import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
+import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.databinding.FragmentSelectMelodyBinding
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
+import kotlinx.coroutines.flow.filterNotNull
 
 class SelectMelodyFragment : BaseFragment(R.layout.fragment_select_melody) {
 
@@ -25,14 +27,16 @@ class SelectMelodyFragment : BaseFragment(R.layout.fragment_select_melody) {
 
     override fun listenUiEvents() = with(viewBinding) {
         btnSetAsMelody.setOnClickListener {
-//            favViewModel.selected.value?.let { alarmViewModel.setMelody(it) }
+            favViewModel.nowPlaying.value?.let {
+                alarmViewModel.setMelody(it.station)
+            }
             findNavController().popBackStack()
         }
     }
 
     override fun observeModel() {
-//        favViewModel.selected.observe(viewLifecycleOwner) {
-//            viewBinding.btnSetAsMelody.text = it.name
-//        }
+        collect(favViewModel.nowPlaying.filterNotNull()) {
+            viewBinding.btnSetAsMelody.text = it.station.name
+        }
     }
 }
