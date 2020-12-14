@@ -16,12 +16,14 @@ import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 private fun plog(message: String) =
     Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
+@FlowPreview
 class RadioBrowserFragment : Fragment() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(

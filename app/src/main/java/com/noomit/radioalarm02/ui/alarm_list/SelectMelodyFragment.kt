@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.Application00
@@ -16,7 +17,7 @@ class SelectMelodyFragment : BaseFragment(R.layout.fragment_select_melody) {
 
     override val viewBinding: FragmentSelectMelodyBinding by viewBinding()
 
-    private val favViewModel: FavoritesViewModel by activityViewModels {
+    private val favViewModel: FavoritesViewModel by viewModels {
         DatabaseViewModelFactory(requireActivity().application as Application00)
     }
 
