@@ -40,6 +40,8 @@ abstract class XmlPlayerServiceFragment(
 
 abstract class ContourFragment : Fragment() {
 
+    // #todo protected abstract val contour: LayoutInterface
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

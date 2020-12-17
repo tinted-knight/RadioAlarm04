@@ -18,7 +18,8 @@ class FavoritesFragment : PlayerServiceFragment() {
         DatabaseViewModelFactory(requireActivity().application as Application00)
     }
 
-    private val contour by lazy(LazyThreadSafetyMode.NONE) { view as IFavoritesLayout }
+    private val contour: IFavoritesLayout
+        get() = view as IFavoritesLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,

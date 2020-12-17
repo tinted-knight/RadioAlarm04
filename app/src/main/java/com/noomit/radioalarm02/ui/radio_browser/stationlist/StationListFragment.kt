@@ -31,7 +31,8 @@ class StationListFragment : PlayerServiceFragment() {
         FavoritesViewModelFactory(requireActivity().application as Application00)
     }
 
-    private val contour by lazy(LazyThreadSafetyMode.NONE) { view as IStationListLayout }
+    private val contour: IStationListLayout
+        get() = view as IStationListLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
