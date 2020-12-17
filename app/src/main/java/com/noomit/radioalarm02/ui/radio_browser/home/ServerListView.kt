@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.ui.radio_browser.home
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.PaintDrawable
@@ -34,7 +35,7 @@ class ServerListView(context: Context) : ContourLayout(context) {
     }
 
     private fun collapsedLayout() {
-        toggleCornerRaduis(false)
+        animateLayout(false)
         active.layoutBy(
             x = matchParentX(marginLeft = 16, marginRight = 16),
             y = topTo { parent.top() }
@@ -46,10 +47,9 @@ class ServerListView(context: Context) : ContourLayout(context) {
     }
 
     private fun expandedLayout() {
-        toggleCornerRaduis(true)
+        animateLayout(true)
         recycler.isVisible = true
         active.isVisible = false
-        elevation = 6.0f
 
         recycler.updateLayoutBy(
             x = matchParentX(marginLeft = 8, marginRight = 8),
@@ -65,15 +65,23 @@ class ServerListView(context: Context) : ContourLayout(context) {
 
     override fun getBackground() = super.getBackground() as PaintDrawable
 
-    private fun toggleCornerRaduis(show: Boolean) {
+    private fun animateLayout(show: Boolean) {
         val fromRadius = if (show) 0.01f else 12.0f.dip
         val toRadius = if (show) 12.0f.dip else 0.01f
 
+        val fromElevation = if (show) 0.0f else 6.0f
+        val toElevation = if (show) 6.0f else 0.0f
+
         if (isLaidOut) {
-            ObjectAnimator.ofFloat(fromRadius, toRadius)
+            val cornerAnimator = ObjectAnimator.ofFloat(fromRadius, toRadius)
                 .apply { addUpdateListener { background.setCornerRadius(it.animatedValue as Float) } }
-                .setDuration(200)
-                .start()
+            val elevationAnimator = ObjectAnimator.ofFloat(fromElevation, toElevation)
+                .apply { addUpdateListener { elevation = it.animatedValue as Float } }
+
+            AnimatorSet().apply {
+                playTogether(cornerAnimator, elevationAnimator)
+                duration = 200
+            }.start()
         } else {
             background.setCornerRadius(toRadius)
         }

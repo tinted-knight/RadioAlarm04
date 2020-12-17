@@ -13,7 +13,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.tplog
 import com.squareup.contour.ContourLayout
 
 interface RadioBrowserHomeDelegate {
@@ -114,14 +113,13 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
             y = topTo { searchName.bottom() }
         )
 
-        val xPadding = { if (!serverList.isSelected) 0.xdip else 32.xdip }
-        val yPadding = { if (!serverList.isSelected) 0.ydip else 64.ydip }
+        val xPadding = { if (!serverList.isSelected) 8.xdip else 16.xdip }
 
         serverList.layoutBy(
             x = leftTo { parent.left() + xPadding() }.rightTo { parent.right() - xPadding() },
             y = topTo {
                 when {
-                    serverList.isSelected -> parent.top() + yPadding()
+                    serverList.isSelected -> parent.top()
                     else -> searchTag.bottom()
                 }
             }
@@ -150,7 +148,6 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     override fun update(activerServer: ServerInfo?) {
-        tplog("update, $activerServer")
         serverList.active.text = activerServer?.urlString ?: "No activer server..."
     }
 

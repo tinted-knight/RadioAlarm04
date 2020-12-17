@@ -15,7 +15,6 @@ import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
@@ -46,9 +45,8 @@ class RadioBrowserFragment : ContourFragment() {
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) { ServerListAdapter(viewModel::setServer) }
 
-    private val contour by lazy(LazyThreadSafetyMode.NONE) {
-        ((view as ViewGroup).children.first() as IRadioBrowserHomeLayout)
-    }
+    private val contour: IRadioBrowserHomeLayout
+        get() = (view as ViewGroup).children.first() as IRadioBrowserHomeLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,7 +78,6 @@ class RadioBrowserFragment : ContourFragment() {
         }
 
         collect(viewModel.activeServer) {
-            tplog("collect active, $it")
             when (it) {
                 is ActiveServerState.None -> contour.update(activerServer = null)
                 is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
