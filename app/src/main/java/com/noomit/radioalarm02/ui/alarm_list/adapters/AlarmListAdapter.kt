@@ -1,17 +1,11 @@
 package com.noomit.radioalarm02.ui.alarm_list.adapters
 
-import android.os.Build
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.Alarm
-import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.model.hourString
 import com.noomit.radioalarm02.model.isDayBitOn
 import com.noomit.radioalarm02.model.minuteString
@@ -19,26 +13,21 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-typealias TimeClick = ((Alarm) -> Unit)
-typealias DeleteClick = ((Alarm) -> Unit)
-typealias DeleteLongClick = ((Alarm) -> Unit)
-typealias MelodyClick = ((Alarm) -> Unit)
-typealias MelodyLongClick = ((Alarm) -> Unit)
-typealias DayOfWeekClick = ((Int, Alarm) -> Unit)
-typealias EnabledSwitch = ((Alarm, Boolean) -> Unit)
+interface AlarmAdapterActions {
+    fun onDeleteClick(alarm: Alarm)
+    fun onDeleteLongClick(alarm: Alarm)
+    fun onEnabledChecked(alarm: Alarm, isChecked: Boolean)
+    fun onTimeClick(alarm: Alarm)
+    fun onMelodyClick(alarm: Alarm)
+    fun onMelodyLongClick(alarm: Alarm)
+    fun onDayOfWeekClick(day: Int, alarm: Alarm)
+}
 
 class AlarmListAdapter(
-    private val onDeleteClick: DeleteClick,
-    private val onDeleteLongClick: DeleteLongClick,
-    private val onDayClick: DayOfWeekClick,
-    private val onTimeClick: TimeClick,
-    private val onEnabledChecked: EnabledSwitch,
-    private val onMelodyClick: MelodyClick,
-    private val onMelodyLongClick: MelodyLongClick,
+    private val delegate: AlarmAdapterActions,
 ) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_alarm, parent, false)
+        AlarmItemView(parent.context)
     )
 
     override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int) {
@@ -47,58 +36,31 @@ class AlarmListAdapter(
 
     override fun onViewAttachedToWindow(holder: AlarmListViewHolder) {
         super.onViewAttachedToWindow(holder)
-        holder.apply {
-            val alarm = getItem(adapterPosition)
-            btnDelete.setOnClickListener { onDeleteClick(alarm) }
-            btnDelete.setOnLongClickListener {
-                onDeleteLongClick(alarm)
-                return@setOnLongClickListener true
-            }
-            tvSun.setOnClickListener { onDayClick(1, alarm) }
-            tvMon.setOnClickListener { onDayClick(2, alarm) }
-            tvTue.setOnClickListener { onDayClick(3, alarm) }
-            tvWed.setOnClickListener { onDayClick(4, alarm) }
-            tvThu.setOnClickListener { onDayClick(5, alarm) }
-            tvFri.setOnClickListener { onDayClick(6, alarm) }
-            tvSat.setOnClickListener { onDayClick(7, alarm) }
+        val alarm = getItem(holder.adapterPosition)
+        holder.contour.delegate = object : IAlarmItemActions {
+            override fun onDeleteClick() = delegate.onDeleteClick(alarm)
 
-            swEnabled.setOnCheckedChangeListener { _, isChecked ->
-                onEnabledChecked(alarm, isChecked)
-            }
+            override fun onDeleteLongClick() = delegate.onDeleteLongClick(alarm)
 
-            tvTime.setOnClickListener { onTimeClick(alarm) }
-            tvDay.setOnClickListener { onTimeClick(alarm) }
+            override fun onSwitchChange(isChecked: Boolean) =
+                delegate.onEnabledChecked(alarm, isChecked)
 
-            tvMelody.setOnClickListener { onMelodyClick(alarm) }
-            tvMelody.setOnLongClickListener {
-                onMelodyLongClick(alarm)
-                return@setOnLongClickListener true
-            }
+            override fun onTimeClick() = delegate.onTimeClick(alarm)
+
+            override fun onDayClick() = delegate.onTimeClick(alarm)
+
+            override fun onMelodyClick() = delegate.onMelodyClick(alarm)
+
+            override fun onMelodyLongClick() = delegate.onMelodyLongClick(alarm)
+
+            override fun onDayOfWeekClick(day: Int) = delegate.onDayOfWeekClick(day, alarm)
+
         }
     }
 
     override fun onViewDetachedFromWindow(holder: AlarmListViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        holder.apply {
-            btnDelete.setOnClickListener(null)
-            btnDelete.setOnLongClickListener(null)
-
-            tvSun.setOnClickListener(null)
-            tvMon.setOnClickListener(null)
-            tvTue.setOnClickListener(null)
-            tvWed.setOnClickListener(null)
-            tvThu.setOnClickListener(null)
-            tvFri.setOnClickListener(null)
-            tvSat.setOnClickListener(null)
-
-            swEnabled.setOnCheckedChangeListener(null)
-
-            tvTime.setOnClickListener(null)
-            tvDay.setOnClickListener(null)
-
-            tvMelody.setOnClickListener(null)
-            tvMelody.setOnLongClickListener(null)
-        }
+        holder.contour.delegate = null
     }
 }
 
@@ -118,60 +80,27 @@ class AlarmListDiffUtil : DiffUtil.ItemCallback<Alarm>() {
 
 class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val tvTime: TextView = itemView.findViewById(R.id.tv_time)
-    val tvDay: TextView = itemView.findViewById(R.id.tv_day)
-    val tvMelody: TextView = itemView.findViewById(R.id.tv_melody)
-    val swEnabled: SwitchCompat = itemView.findViewById(R.id.sw_enabled)
-    val btnDelete: ImageButton = itemView.findViewById(R.id.imbtn_delete)
-
-    // days of week
-    val tvMon: TextView = itemView.findViewById(R.id.tv_mon)
-    val tvTue: TextView = itemView.findViewById(R.id.tv_tue)
-    val tvWed: TextView = itemView.findViewById(R.id.tv_wed)
-    val tvThu: TextView = itemView.findViewById(R.id.tv_thu)
-    val tvFri: TextView = itemView.findViewById(R.id.tv_fri)
-    val tvSat: TextView = itemView.findViewById(R.id.tv_sat)
-    val tvSun: TextView = itemView.findViewById(R.id.tv_sun)
-
-    private val dayViews = listOf(tvMon, tvTue, tvWed, tvThu, tvFri, tvSat, tvSun)
-
-    // #think should not be here
     private val dateFormat = SimpleDateFormat("MMM, d", Locale.getDefault())
     private val timeFormat = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
 
+    val contour: IAlarmItem
+        get() = itemView as IAlarmItem
+
     fun bind(value: Alarm) {
         if (value.time_in_millis == 0L || !value.is_enabled) {
-            tvDay.text = ""
-            tvTime.text = "${value.hourString}:${value.minuteString}"
+            contour time "${value.hourString}:${value.minuteString}"
+            contour day ""
         } else {
             val date = Date(value.time_in_millis)
-            tvTime.text = timeFormat.format(date)
-            tvDay.text = dateFormat.format(date)
+            contour time timeFormat.format(date)
+            contour day dateFormat.format(date)
         }
-        tvMelody.text = value.bell_name
-        swEnabled.isChecked = value.is_enabled ?: false
+        contour melody value.bell_name
+        contour switch value.is_enabled
         processDaysOfWeek(value.days_of_week)
     }
 
     private fun processDaysOfWeek(daysOfWeek: Int) {
-        days.forEachIndexed { index, day ->
-            val isBitOn = daysOfWeek.isDayBitOn(day)
-            val textColor = when {
-                isBitOn -> R.color.colorDayTextActive
-                else -> R.color.colorDayTextInactive
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                dayViews[index].setTextColor(itemView.resources.getColor(textColor, null))
-            } else {
-                dayViews[index].setTextColor(itemView.resources.getColor(textColor))
-            }
-        }
-    }
-
-    companion object {
-        val days = listOf(
-            Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
-            Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
-        )
+        IAlarmItem.days.forEach { day -> contour.checkDay(day, daysOfWeek.isDayBitOn(day)) }
     }
 }

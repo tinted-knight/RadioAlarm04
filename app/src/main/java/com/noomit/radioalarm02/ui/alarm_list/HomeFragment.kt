@@ -18,6 +18,7 @@ import com.noomit.radioalarm02.base.BaseFragment
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 import timber.log.Timber
 
@@ -51,36 +52,44 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             // #fake
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
             adapter = AlarmListAdapter(
-                onDeleteClick = { alarm ->
-                    requireContext().toast("delete click")
-                    plog("delete click: $alarm")
-                },
-                onDeleteLongClick = { alarm ->
-                    requireContext().toast("delete long click")
-                    alarmManager.delete(alarm)
-                },
-                onDayClick = { dayToSwitch, alarm ->
-                    alarmManager.updateDayOfWeek(dayToSwitch, alarm)
-                },
-                onEnabledChecked = { alarm, isEnabled ->
-                    alarmManager.setEnabled(alarm, isEnabled)
-                },
-                onTimeClick = { alarm ->
-                    pickTime { _, hour, minute -> alarmManager.updateTime(alarm, hour, minute) }
-                },
-                onMelodyClick = { alarm ->
-                    alarmManager.selectMelodyFor(alarm)
-                    findNavController().navigate(R.id.action_home_to_selectMelody)
-                },
-                onMelodyLongClick = { alarm ->
-                    startActivity(
-                        Intent(requireActivity(), AlarmActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                            action = AlarmActivity.ACTION_TEST
-                            putExtra(AlarmReceiver.ALARM_ID, alarm.id)
-                            putExtra(AlarmReceiver.BELL_URL, alarm.bell_url)
-                        }
-                    )
+                delegate = object : AlarmAdapterActions {
+                    override fun onDeleteClick(alarm: Alarm) {
+                        requireContext().toast("delete click")
+                        plog("delete click: $alarm")
+                    }
+
+                    override fun onDeleteLongClick(alarm: Alarm) {
+                        requireContext().toast("delete long click")
+                        alarmManager.delete(alarm)
+                    }
+
+                    override fun onEnabledChecked(alarm: Alarm, isChecked: Boolean) =
+                        alarmManager.setEnabled(alarm, isChecked)
+
+                    override fun onTimeClick(alarm: Alarm) {
+                        pickTime { _, hour, minute -> alarmManager.updateTime(alarm, hour, minute) }
+                    }
+
+                    override fun onMelodyClick(alarm: Alarm) {
+                        alarmManager.selectMelodyFor(alarm)
+                        findNavController().navigate(R.id.action_home_to_selectMelody)
+                    }
+
+                    override fun onMelodyLongClick(alarm: Alarm) {
+                        startActivity(
+                            Intent(requireActivity(), AlarmActivity::class.java).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                                action = AlarmActivity.ACTION_TEST
+                                putExtra(AlarmReceiver.ALARM_ID, alarm.id)
+                                putExtra(AlarmReceiver.BELL_URL, alarm.bell_url)
+                            }
+                        )
+                    }
+
+                    override fun onDayOfWeekClick(day: Int, alarm: Alarm) {
+                        alarmManager.updateDayOfWeek(day, alarm)
+                    }
+
                 }
             )
             // #todo StationList restore state

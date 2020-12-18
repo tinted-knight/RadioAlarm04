@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.model
 
-val days = listOf(1, 2, 4, 8, 16, 32, 64)
+private val days = listOf(1, 2, 4, 8, 16, 32, 64)
 
 fun zipDaysInBits(daysOfWeek: List<Int>): Int {
     var bits = 0

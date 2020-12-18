@@ -27,4 +27,4 @@ class Application00 : Application() {
 
 fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-fun tplog(message: String) = Timber.tag("tmain").i(message)
+fun tplog(message: String) = Timber.tag("tagg-main").i(message)

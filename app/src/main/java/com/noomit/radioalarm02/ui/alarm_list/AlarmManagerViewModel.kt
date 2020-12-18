@@ -75,6 +75,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
     }
 
     fun setEnabled(alarm: Alarm, isEnabled: Boolean) {
+        plog("setEnabled, $isEnabled")
         if (!isEnabled || alarm.days_of_week != 0) {
             queries.updateEnabled(alarmId = alarm.id, isEnabled = isEnabled)
             return
