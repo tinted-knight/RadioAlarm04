@@ -7,10 +7,6 @@ import com.noomit.radioalarm02.ui.radio_browser.stationlist.NowPlaying
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.ItemClickListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import timber.log.Timber
-
-private fun plog(message: String) =
-    Timber.tag("tagg-app-favorites").i("$message [${Thread.currentThread().name}]")
 
 // #think rewrite all to states
 class FavoritesViewModel(private val favoritesManager: IFavoritesManager) : ViewModel(),

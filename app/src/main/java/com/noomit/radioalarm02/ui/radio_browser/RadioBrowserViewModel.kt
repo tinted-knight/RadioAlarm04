@@ -13,11 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
-
-private fun plog(message: String) =
-    Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
 @FlowPreview
 class RadioBrowserViewModel(
@@ -35,12 +31,10 @@ class RadioBrowserViewModel(
     private val stationFilter = MutableStateFlow<Filter>(Filter.None)
 
     init {
-        plog("RadioBrowserViewModel.init")
         serverManager.getAvalilable(viewModelScope)
     }
 
     override fun onCleared() {
-        plog("RadioBrowserViewModel.onCleared")
         super.onCleared()
     }
 
@@ -48,7 +42,6 @@ class RadioBrowserViewModel(
 
     fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
         stringFlow.filterNotNull().collect {
-            plog("stringFlow, $it")
             if (it.isBlank()) {
                 caterogyFilter.emit(Filter.None)
             } else {
@@ -108,10 +101,8 @@ class RadioBrowserViewModel(
     val categoryList: Flow<CategoryManagerState> = caterogyFilter
         .combineTransform(categoryManager.state) { filter, state ->
             if (state !is CategoryManagerState.Values || filter !is Filter.Value) {
-                plog("catlist, no filter")
                 emit(state)
             } else {
-                plog("catlist, filter = ${filter.value}")
                 val filtered = state.values.filter {
                     it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
                 }

@@ -10,9 +10,6 @@ import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseWakelockActivity
 import com.noomit.radioalarm02.data.AppDatabase
-import timber.log.Timber
-
-private fun plog(message: String) = Timber.tag("tagg-alarm_activity").i(message)
 
 class AlarmActivity : BaseWakelockActivity() {
 

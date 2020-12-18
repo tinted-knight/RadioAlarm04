@@ -20,10 +20,6 @@ import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
-import timber.log.Timber
-
-private fun plog(message: String) =
-    Timber.tag("tagg-app-home").i("$message [${Thread.currentThread().name}]")
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
@@ -55,7 +51,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 delegate = object : AlarmAdapterActions {
                     override fun onDeleteClick(alarm: Alarm) {
                         requireContext().toast("delete click")
-                        plog("delete click: $alarm")
                     }
 
                     override fun onDeleteLongClick(alarm: Alarm) {

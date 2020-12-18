@@ -20,9 +20,6 @@ import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.filterNotNull
-import timber.log.Timber
-
-private fun plog(message: String) = Timber.tag("tagg-contour").i(message)
 
 @FlowPreview
 class StationListFragment : PlayerServiceFragment() {

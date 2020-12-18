@@ -10,10 +10,6 @@ import androidx.viewbinding.ViewBinding
 import com.noomit.playerservice.XmlPlayerServiceFragment
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import timber.log.Timber
-
-private fun plog(message: String) =
-    Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
 abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
 

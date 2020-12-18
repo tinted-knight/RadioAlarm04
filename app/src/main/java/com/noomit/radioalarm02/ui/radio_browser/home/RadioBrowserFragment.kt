@@ -18,10 +18,6 @@ import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
-import timber.log.Timber
-
-private fun plog(message: String) =
-    Timber.tag("tagg-app").i("$message [${Thread.currentThread().name}]")
 
 @FlowPreview
 class RadioBrowserFragment : ContourFragment() {

@@ -42,10 +42,6 @@ class RadioBrowserService {
     private val _activeServer = MutableStateFlow<ActiveServerState>(ActiveServerState.None)
     val activeServer: StateFlow<ActiveServerState> = _activeServer
 
-    init {
-        plog("RadioBrowserService::init")
-    }
-
     private fun isReachable(addr: String, port: Int, timeout: Int): Boolean {
         try {
             val socket = Socket()
@@ -81,11 +77,9 @@ class RadioBrowserService {
             return@withContext ServerListResponse.Failure(ServerListFailure.NoReachableServers)
 
         } catch (e: UnknownHostException) {
-            plog("RadioBrowserService.UnknownHostException")
             return@withContext ServerListResponse.Failure(ServerListFailure.UnknownHost)
 
         } catch (e: IOException) {
-            plog("RadioBrowserService.IOException")
             return@withContext ServerListResponse.Failure(ServerListFailure.NetworkError)
         }
     }
@@ -117,7 +111,6 @@ class RadioBrowserService {
     }
 
     private suspend fun getLanguageList(): List<CategoryNetworkEntity> {
-        plog("getLanguageList")
         // #todo wrapper for every method that calls [api] field
         if (::api.isInitialized) {
             return api.getLanguageList()
