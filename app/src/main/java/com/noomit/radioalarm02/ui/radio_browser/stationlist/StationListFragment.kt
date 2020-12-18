@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerServiceFragment
@@ -14,6 +15,7 @@ import com.noomit.radioalarm02.base.FavoritesViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import kotlinx.coroutines.FlowPreview
@@ -94,17 +96,7 @@ class StationListFragment : PlayerServiceFragment() {
             searchView.setOnCloseListener {
                 return@setOnCloseListener true
             }
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.applyFilter(query)
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    viewModel.applyFilter(newText)
-                    return true
-                }
-            })
+            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope))
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

@@ -8,12 +8,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.noomit.playerservice.ContourFragment
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 
 @FlowPreview
 class CategoryListFragment : ContourFragment() {
@@ -39,21 +41,19 @@ class CategoryListFragment : ContourFragment() {
     private val adapter by lazy(LazyThreadSafetyMode.NONE) { LanguageListAdapter(categoryClick) }
 
     override fun prepareView() {
-        (view as ICategoryLayout).apply {
+        contour.apply {
             setAdapter(adapter)
             showLoading()
         }
     }
 
     override fun observeViewModel() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.categoryList.collect {
-                when (it) {
-                    is CategoryManagerState.Loading -> contour.showLoading()
-                    is CategoryManagerState.Empty -> contour.showContent(emptyList())
-                    is CategoryManagerState.Values -> contour.showContent(it.values)
-                    is CategoryManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
-                }
+        collect(viewModel.categoryList) {
+            when (it) {
+                is CategoryManagerState.Loading -> contour.showLoading()
+                is CategoryManagerState.Empty -> contour.showContent(emptyList())
+                is CategoryManagerState.Values -> contour.showContent(it.values)
+                is CategoryManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
             }
         }
     }
@@ -71,17 +71,7 @@ class CategoryListFragment : ContourFragment() {
             searchView.setOnCloseListener {
                 return@setOnCloseListener true
             }
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.applyFilter(query)
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    viewModel.applyFilter(newText)
-                    return true
-                }
-            })
+            viewModel.applyCategoryFilter(searchView.textFlow(lifecycleScope).debounce(500))
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

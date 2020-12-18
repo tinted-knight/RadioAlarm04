@@ -30,7 +30,9 @@ class RadioBrowserViewModel(
 
     val activeServer = serverManager.activeServer
 
-    private val filter = MutableStateFlow("")
+    private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
+
+    private val stationFilter = MutableStateFlow<Filter>(Filter.None)
 
     init {
         plog("RadioBrowserViewModel.init")
@@ -44,65 +46,85 @@ class RadioBrowserViewModel(
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
-    fun applyFilter(name: String?) = viewModelScope.launch {
-        filter.emit(name?.toLowerCase(Locale.getDefault()) ?: "")
+    fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
+        stringFlow.filterNotNull().collect {
+            plog("stringFlow, $it")
+            if (it.isBlank()) {
+                caterogyFilter.emit(Filter.None)
+            } else {
+                caterogyFilter.emit(Filter.Value(it))
+            }
+        }
+    }
+
+    fun applyStationFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
+        stringFlow.collect {
+            if (it.isNullOrBlank()) {
+                stationFilter.emit(Filter.None)
+            } else {
+                stationFilter.emit(Filter.Value(it))
+            }
+        }
     }
 
     // Stations
     fun showStations(category: CategoryModel) = viewModelScope.launch {
-        clearFilter()
+        clearStationFilter()
         stationManager.stationsBy(category)
     }
 
     /**
      * List of stations by category (i.e. language, tag), filtered by **station name** set up with
-     * [applyFilter] method
+     * [applyCategoryFilter] method
      */
-    val stationList: Flow<StationManagerState> = filter
-        .debounce(500)
+    val stationList: Flow<StationManagerState> = stationFilter
         .combineTransform(stationManager.state) { filter, state ->
-            if (state is StationManagerState.Success) {
-                if (filter.isBlank()) {
-                    emit(state)
-                } else {
-                    val list = state.values.filter {
-                        it.name.toLowerCase(Locale.getDefault()).contains(filter)
-                    }
-                    emit(StationManagerState.Success(list, state.category))
-                }
-            } else {
+            if (state !is StationManagerState.Success || filter !is Filter.Value) {
                 emit(state)
+            } else {
+                val list = state.values.filter {
+                    it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
+                }
+                emit(StationManagerState.Success(list, state.category))
             }
         }
         .flowOn(Dispatchers.Default)
 
     // Categories
     fun getTagList() = viewModelScope.launch {
-        clearFilter()
+        clearCategoryFilter()
         categoryManager.getTags()
     }
 
     fun getLanguageList() = viewModelScope.launch {
-        clearFilter()
+        clearCategoryFilter()
         categoryManager.getLanguages()
     }
 
     /**
      * List of categories(languages or tags), filtered by **category name** set up with
-     * [applyFilter] method
+     * [applyCategoryFilter] method
      */
-    val categoryList: Flow<CategoryManagerState> = filter
-        .debounce(500)
+    val categoryList: Flow<CategoryManagerState> = caterogyFilter
         .combineTransform(categoryManager.state) { filter, state ->
-            if (state !is CategoryManagerState.Values || filter.isBlank()) {
+            if (state !is CategoryManagerState.Values || filter !is Filter.Value) {
+                plog("catlist, no filter")
                 emit(state)
             } else {
+                plog("catlist, filter = ${filter.value}")
                 val filtered = state.values.filter {
-                    it.name.toLowerCase(Locale.getDefault()).contains(filter)
+                    it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
                 }
                 emit(CategoryManagerState.Values(filtered))
             }
         }
 
-    private fun clearFilter() = applyFilter("")
+    private fun clearCategoryFilter() = viewModelScope.launch { caterogyFilter.emit(Filter.None) }
+
+    private fun clearStationFilter() = viewModelScope.launch { stationFilter.emit(Filter.None) }
+}
+
+private sealed class Filter {
+    object None : Filter()
+    data class Value(val value: String) : Filter()
 }

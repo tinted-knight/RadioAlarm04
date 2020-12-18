@@ -5,7 +5,6 @@ import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.data.CategoryModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 class CategoryManager(private val apiService: RadioBrowserService) : WithLogTag {
@@ -29,8 +28,6 @@ class CategoryManager(private val apiService: RadioBrowserService) : WithLogTag 
     ) {
         flow.onStart { _state.value = CategoryManagerState.Loading }
             .flowOn(Dispatchers.IO)
-            // #fake delay
-            .onEach { delay(250) }
             .map { languageList ->
                 languageList.sortedByDescending { it.stationcount }
                     .map(mapper)
