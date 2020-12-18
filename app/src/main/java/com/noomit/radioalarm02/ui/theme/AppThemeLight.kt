@@ -11,14 +11,21 @@ interface ThemeNowPlaying {
     val iconNotFavorite: Int
 }
 
+interface ThemeServerList {
+    val bgColor: Int
+}
+
 val appTheme = AppThemeLight()
 
 data class AppThemeLight(
     val nowPlaying: ThemeNowPlaying = object : ThemeNowPlaying {
         override val bgColor = Color.parseColor("#ffFFFFFA")
-        override val textColor: Int = Color.parseColor("#FF414141")
-        override val favoriteStyleId: Int = R.style.LightTheme_ActionButton
-        override val iconFavorite: Int = R.drawable.ic_favorite_24
-        override val iconNotFavorite: Int = R.drawable.ic_favorite_border_24
+        override val textColor = Color.parseColor("#FF414141")
+        override val favoriteStyleId = R.style.LightTheme_ActionButton
+        override val iconFavorite = R.drawable.ic_favorite_24
+        override val iconNotFavorite = R.drawable.ic_favorite_border_24
+    },
+    val serverList: ThemeServerList = object : ThemeServerList {
+        override val bgColor = Color.parseColor("#ffFFFFFF")
     },
 )

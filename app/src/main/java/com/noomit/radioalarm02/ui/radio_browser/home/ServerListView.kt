@@ -27,7 +27,7 @@ class ServerListView(context: Context) : ContourLayout(context) {
 
     init {
         contourHeightWrapContent()
-        background = PaintDrawable(appTheme.nowPlaying.bgColor)
+        background = PaintDrawable(appTheme.serverList.bgColor)
         stateListAnimator = PushOnPressAnimator(this)
         registerBackpressListener()
 
@@ -79,7 +79,10 @@ class ServerListView(context: Context) : ContourLayout(context) {
                 .apply { addUpdateListener { elevation = it.animatedValue as Float } }
 
             AnimatorSet().apply {
-                playTogether(cornerAnimator, elevationAnimator)
+                when {
+                    show -> playSequentially(elevationAnimator, cornerAnimator)
+                    else -> playSequentially(cornerAnimator, elevationAnimator)
+                }
                 duration = 200
             }.start()
         } else {

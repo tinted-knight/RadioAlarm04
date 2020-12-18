@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.OvershootInterpolator
+import android.view.animation.LinearInterpolator
 import androidx.core.view.isVisible
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -153,7 +153,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     private fun serverListClick(view: View) {
         TransitionManager.beginDelayedTransition(this, ChangeBounds()
-            .setInterpolator(OvershootInterpolator(1f))
+            .setInterpolator(LinearInterpolator())
             .setDuration(400)
         )
         serverList.isSelected = !serverList.isSelected
