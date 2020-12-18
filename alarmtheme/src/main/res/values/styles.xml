@@ -21,6 +21,7 @@
     <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />
 
     <style name="LightTheme.DayOfWeek" parent="Widget.MaterialComponents.TextView">
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textAlignment">center</item>
         <item name="android:padding">4dp</item>
     </style>

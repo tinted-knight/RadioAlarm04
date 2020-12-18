@@ -59,8 +59,7 @@
         <fragment
             android:id="@+id/categoryListFragment"
             android:name="com.noomit.radioalarm02.ui.radio_browser.languagelist.CategoryListFragment"
-            android:label="fragment_language_list"
-            tools:layout="@layout/fragment_language_list">
+            android:label="fragment_language_list">
             <action
                 android:id="@+id/action_languageList_to_stationList"
                 app:destination="@id/stationListFragment"

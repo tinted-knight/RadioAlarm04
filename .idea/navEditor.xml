@@ -62,12 +62,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="languageListFragment">
+                            <entry key="categoryListFragment">
                               <value>
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="292" />
+                                      <option name="x" value="12" />
                                       <option name="y" value="12" />
                                     </Point>
                                   </option>
