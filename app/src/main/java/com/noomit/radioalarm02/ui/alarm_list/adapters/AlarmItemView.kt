@@ -10,6 +10,7 @@ import android.view.ContextThemeWrapper
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
@@ -149,13 +150,15 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         background.setStroke(1, Color.parseColor("#12000000"))
         background.cornerRadius = 16.0f
 
-        contourHeightWrapContent()
-
         val x = 8
         val y = 8
 
         val xPadding = x.xdip
         val yPadding = y.ydip
+
+        contourHeightOf { _ ->
+            week.bottom() + yPadding
+        }
 
         switch.layoutBy(
             rightTo { parent.right() - xPadding },
@@ -216,11 +219,18 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             isActive -> R.color.colorDayTextActive
             else -> R.color.colorDayTextInactive
         }
+        val bgDrawable = when {
+            isActive && day == days.first() -> R.drawable.day_active_start
+            isActive && day == days.last() -> R.drawable.day_active_end
+            isActive -> R.drawable.day_active_middle
+            else -> R.drawable.day_ripple_ltd
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             dayViews[day]?.setTextColor(resources.getColor(textColor, null))
         } else {
             dayViews[day]?.setTextColor(resources.getColor(textColor))
         }
+        dayViews[day]?.background = ResourcesCompat.getDrawable(resources, bgDrawable, null)
     }
 
     override fun getBackground() = super.getBackground() as GradientDrawable

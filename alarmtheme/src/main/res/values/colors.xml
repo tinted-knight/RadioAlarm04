@@ -6,4 +6,9 @@
     <color name="colorOnSurface">#FF0000</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>
+    <!-- Alarm card  -->
+    <color name="clDayBgActive">#0F109113</color>
+    <color name="clDayRippleActive">#FFFF0000</color>
+    <color name="clDayRippleNotActive">#54000000</color>
+    <color name="clCardBackground">#ffffff</color>
 </resources>
