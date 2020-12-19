@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.radioalarm02.Alarm
@@ -20,6 +19,7 @@ import com.noomit.radioalarm02.databinding.FragmentHomeBinding
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
+import com.noomit.radioalarm02.ui.alarm_list.adapters.MarginItemDecoration
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             layoutManager = LinearLayoutManager(requireContext())
             isVerticalScrollBarEnabled = true
             // #fake
-            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+            addItemDecoration(MarginItemDecoration(R.dimen.recyclerAlarmVertical))
             adapter = AlarmListAdapter(adapterListener)
             // #todo StationList restore state
 //            layoutManager?.onRestoreInstanceState()

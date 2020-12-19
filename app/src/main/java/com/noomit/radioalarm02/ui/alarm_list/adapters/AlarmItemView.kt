@@ -1,6 +1,8 @@
 package com.noomit.radioalarm02.ui.alarm_list.adapters
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -140,6 +142,13 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     init {
+        background = GradientDrawable(
+            GradientDrawable.Orientation.BOTTOM_TOP,
+            intArrayOf(Color.WHITE, Color.WHITE),
+        )
+        background.setStroke(1, Color.parseColor("#12000000"))
+        background.cornerRadius = 16.0f
+
         contourHeightWrapContent()
 
         val x = 8
@@ -213,4 +222,6 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             dayViews[day]?.setTextColor(resources.getColor(textColor))
         }
     }
+
+    override fun getBackground() = super.getBackground() as GradientDrawable
 }
