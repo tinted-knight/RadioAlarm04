@@ -38,7 +38,7 @@
         android:label="FavoritesFragment" />
     <fragment
         android:id="@+id/selectMelodyFragment"
-        android:name="com.noomit.radioalarm02.ui.alarm_list.SelectMelodyFragment"
+        android:name="com.noomit.radioalarm02.ui.alarm_list.select_melody.SelectMelodyFragment"
         android:label="SelectMelodyFragment" />
 
     <navigation

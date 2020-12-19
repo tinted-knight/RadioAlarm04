@@ -107,6 +107,16 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         }
     }
 
+    fun setDefaultRingtone() {
+        selectMelodyFor?.let {
+            queries.updateMelody(
+                alarmId = it.id,
+                melodyUrl = "",
+                melodyName = "system",
+            )
+        }
+    }
+
     private fun observeNextActive() = viewModelScope.launch {
         queries.nextActive()
             .asFlow()
