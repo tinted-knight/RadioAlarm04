@@ -6,9 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--        <item name="colorOnSurface">@color/colorOnSurface</item>-->
         <item name="radioBrowserCategory">@style/LightTheme.MaterialButton</item>
         <item name="buttonBarButtonSide">@style/LightTheme.BBar.Side</item>
         <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
+        <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
     </style>
 
     <style name="LightTheme.MaterialButton" parent="Widget.MaterialComponents.Button">
@@ -16,6 +18,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
+    <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton"></style>
 
     <!-- Alarm Card -->
     <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />

@@ -2,12 +2,16 @@ package com.noomit.radioalarm02.ui.alarm_list.select_melody
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import com.google.android.material.button.MaterialButton
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesLayout
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewListener
 import com.noomit.radioalarm02.ui.favorites.IFavoritesLayout
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface ISelectMelodyLayout : IFavoritesLayout {
@@ -15,7 +19,8 @@ interface ISelectMelodyLayout : IFavoritesLayout {
     var onSetDefaultRingtone: (() -> Unit)?
 }
 
-class SelectMelodyLayout(context: Context) : ContourLayout(context), ISelectMelodyLayout {
+class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
+    ContourLayout(context, attrSet), ISelectMelodyLayout {
 
     override var onSetMelodyClick: (() -> Unit)? = null
 
@@ -31,7 +36,11 @@ class SelectMelodyLayout(context: Context) : ContourLayout(context), ISelectMelo
         setOnClickListener { onSetMelodyClick?.invoke() }
     }
 
-    private val btnSystem = MaterialButton(context).apply {
+    private val btnSystem = MaterialButton(
+        ContextThemeWrapper(context, appTheme.common.buttonText),
+        null,
+        R.attr.buttonText,
+    ).apply {
         text = "Set system"
         setOnClickListener { onSetDefaultRingtone?.invoke() }
     }

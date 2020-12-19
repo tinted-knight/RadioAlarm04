@@ -3,4 +3,5 @@
     <attr name="radioBrowserCategory" format="reference"/>
     <attr name="buttonBarButtonSide" format="reference"/>
     <attr name="buttonBarButtonCenter" format="reference"/>
+    <attr name="buttonText" format="reference" />
 </resources>
