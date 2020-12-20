@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.noomit.radioalarm02.ui.alarm_list.HomeFragment"
-        android:label="fragment_home"
+        android:label="Alarms"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_radioBrowser"
@@ -35,11 +35,11 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.noomit.radioalarm02.ui.favorites.FavoritesFragment"
-        android:label="FavoritesFragment" />
+        android:label="Favorites" />
     <fragment
         android:id="@+id/selectMelodyFragment"
         android:name="com.noomit.radioalarm02.ui.alarm_list.select_melody.SelectMelodyFragment"
-        android:label="SelectMelodyFragment" />
+        android:label="Select alarm melody" />
 
     <navigation
         android:id="@+id/nav_radio_browser"
@@ -47,7 +47,7 @@
         <fragment
             android:id="@+id/radioBrowserFragment"
             android:name="com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserFragment"
-            android:label="RadioBrowserFragment">
+            android:label="Radio browser">
             <action
                 android:id="@+id/action_radioBrowser_to_languageList"
                 app:destination="@id/categoryListFragment"
@@ -59,7 +59,10 @@
         <fragment
             android:id="@+id/categoryListFragment"
             android:name="com.noomit.radioalarm02.ui.radio_browser.languagelist.CategoryListFragment"
-            android:label="fragment_language_list">
+            android:label="{title}">
+            <argument
+                android:name="title"
+                app:argType="string" />
             <action
                 android:id="@+id/action_languageList_to_stationList"
                 app:destination="@id/stationListFragment"
@@ -71,6 +74,10 @@
         <fragment
             android:id="@+id/stationListFragment"
             android:name="com.noomit.radioalarm02.ui.radio_browser.stationlist.StationListFragment"
-            android:label="StationListFragment" />
+            android:label="{title}">
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </fragment>
     </navigation>
 </navigation>

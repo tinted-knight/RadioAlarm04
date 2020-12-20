@@ -72,12 +72,18 @@ class RadioBrowserFragment : ContourFragment() {
     private val listener = object : RadioBrowserHomeDelegate {
         override fun onLanguageClick() {
             viewModel.getLanguageList()
-            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
+            findNavController().navigate(
+                R.id.action_radioBrowser_to_languageList,
+                Bundle().apply { putString("title", "Languages") }
+            )
         }
 
         override fun onTagClick() {
             viewModel.getTagList()
-            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
+            findNavController().navigate(
+                R.id.action_radioBrowser_to_languageList,
+                Bundle().apply { putString("title", "Tags") }
+            )
         }
     }
 

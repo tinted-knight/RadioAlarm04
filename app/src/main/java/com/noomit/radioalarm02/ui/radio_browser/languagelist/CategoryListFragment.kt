@@ -35,7 +35,10 @@ class CategoryListFragment : ContourFragment() {
 
     private val categoryClick = { model: CategoryModel ->
         viewModel.showStations(model)
-        findNavController().navigate(R.id.action_languageList_to_stationList)
+        findNavController().navigate(
+            R.id.action_languageList_to_stationList,
+            Bundle().apply { putString("title", model.name) }
+        )
     }
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) { LanguageListAdapter(categoryClick) }
