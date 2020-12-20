@@ -52,7 +52,11 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
 
     override var delegate: IAlarmItemActions? = null
 
-    private val time = MaterialTextView(context).apply {
+    private val time = MaterialTextView(
+        ContextThemeWrapper(context, appTheme.alarmItem.timeTextStyle),
+        null,
+        R.attr.textAlarmTime,
+    ).apply {
         text = "08:00"
         setOnClickListener { delegate?.onTimeClick() }
     }
@@ -234,4 +238,12 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     override fun getBackground() = super.getBackground() as GradientDrawable
+}
+
+inline fun buildVersion23(more: () -> Unit, less: () -> Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        more()
+    } else {
+        less()
+    }
 }

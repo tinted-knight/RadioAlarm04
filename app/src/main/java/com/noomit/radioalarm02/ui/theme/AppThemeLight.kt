@@ -22,6 +22,7 @@ interface ThemeAlarmItem {
     val dayOfWeekStyle: Int
     val dayColorInactive: Int
     val dayColorActive: Int
+    val timeTextStyle: Int
 }
 
 interface ThemeCommon {
@@ -48,6 +49,7 @@ data class AppThemeLight(
         override val dayOfWeekStyle = R.style.LightTheme_DayOfWeek
         override val dayColorInactive = R.color.colorDayTextInactive
         override val dayColorActive = R.color.colorDayTextActive
+        override val timeTextStyle = R.style.LightTheme_TextTime
     },
     val common: ThemeCommon = object : ThemeCommon {
         override val buttonText = R.style.LightTheme_MaterialButtonText

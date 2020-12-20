@@ -11,6 +11,7 @@
         <item name="buttonBarButtonSide">@style/LightTheme.BBar.Side</item>
         <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
         <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
+        <item name="textAlarmTime">@style/LightTheme.TextTime</item>
     </style>
 
     <style name="LightTheme.MaterialButton" parent="Widget.MaterialComponents.Button">
@@ -28,6 +29,13 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textAlignment">center</item>
         <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="LightTheme.TextTime" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/allerta_stencil</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/clTimeText</item>
+        <item name="android:background">@drawable/ripple_colored_unlim</item>
     </style>
 
     <!-- Bottom Bar  -->
