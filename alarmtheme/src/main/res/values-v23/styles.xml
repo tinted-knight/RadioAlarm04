@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LightTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/clPrimary</item>
+        <item name="colorPrimaryDark">@color/clPrimaryDark</item>
+        <item name="colorAccent">@color/clAccent</item>
+        <item name="colorSecondary">@color/clSecondary</item>
+        <item name="radioBrowserCategory">@style/LightTheme.MaterialButton</item>
+        <item name="buttonBarButtonSide">@style/LightTheme.BBar.Side</item>
+        <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
+        <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
+        <item name="textAlarmTime">@style/LightTheme.TextTime</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/clStausBarBackground</item>
+    </style>
+</resources>

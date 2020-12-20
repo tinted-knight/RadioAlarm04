@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="colorOnSurface">#FF0000</color>
+    <color name="clPrimary">#607D88</color>
+    <color name="clPrimaryDark">#3F535C</color>
+    <color name="clAccent">#3949AB</color>
+    <color name="clSecondary">#039BE5</color>
+    <color name="clStausBarBackground">#FFFFFF</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>
     <!-- Alarm card  -->
