@@ -15,7 +15,7 @@ import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.debounce
 
 @FlowPreview
 class CategoryListFragment : ContourFragment() {
@@ -71,9 +71,7 @@ class CategoryListFragment : ContourFragment() {
         val searchItem = menu.findItem(R.id.action_search)
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
-            searchView.setOnCloseListener {
-                return@setOnCloseListener true
-            }
+            searchView.setOnCloseListener { false }
             viewModel.applyCategoryFilter(searchView.textFlow(lifecycleScope).debounce(500))
         }
         super.onCreateOptionsMenu(menu, inflater)

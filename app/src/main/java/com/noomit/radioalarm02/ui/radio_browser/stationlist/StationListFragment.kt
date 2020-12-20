@@ -90,9 +90,7 @@ class StationListFragment : PlayerServiceFragment() {
         val searchItem = menu.findItem(R.id.action_search)
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
-            searchView.setOnCloseListener {
-                return@setOnCloseListener true
-            }
+            searchView.setOnCloseListener { false }
             viewModel.applyStationFilter(searchView.textFlow(lifecycleScope))
         }
         super.onCreateOptionsMenu(menu, inflater)
