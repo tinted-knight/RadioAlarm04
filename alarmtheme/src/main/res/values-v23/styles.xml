@@ -11,6 +11,7 @@
         <item name="buttonBarButtonSide">@style/LightTheme.BBar.Side</item>
         <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
         <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
+        <item name="buttonOutline">@style/LightTheme.ButtonOutline</item>
         <item name="textAlarmTime">@style/LightTheme.TextTime</item>
         <item name="android:windowBackground">@color/clBackground</item>
 <!--        <item name="android:windowLightStatusBar">true</item>-->

@@ -3,6 +3,7 @@ package com.noomit.radioalarm02.ui.radio_browser.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.view.isVisible
@@ -13,6 +14,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface RadioBrowserHomeDelegate {
@@ -34,25 +36,25 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     override var delegate: RadioBrowserHomeDelegate? = null
 
-    private val btnLanguages = MaterialButton(context).apply {
+    private val btnLanguages = materialButton.apply {
         text = "Languages"
         setOnClickListener {
             delegate?.onLanguageClick()
         }
     }
 
-    private val btnTags = MaterialButton(context).apply {
+    private val btnTags = materialButton.apply {
         text = "Tags"
         setOnClickListener {
             delegate?.onTagClick()
         }
     }
 
-    private val btnTopVoted = MaterialButton(context).apply {
+    private val btnTopVoted = materialButton.apply {
         text = "Top Voted"
     }
 
-    private val btnStations = MaterialButton(context).apply {
+    private val btnStations = materialButton.apply {
         text = "Stations"
     }
 
@@ -159,4 +161,11 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         serverList.isSelected = !serverList.isSelected
         requestLayout()
     }
+
+    private val materialButton: MaterialButton
+        get() = MaterialButton(
+            ContextThemeWrapper(context, appTheme.btns.text.style),
+            null,
+            appTheme.btns.text.attr
+        )
 }

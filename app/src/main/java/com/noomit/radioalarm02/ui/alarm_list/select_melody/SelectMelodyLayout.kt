@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import com.google.android.material.button.MaterialButton
-import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesLayout
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewListener
@@ -37,9 +36,9 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private val btnSystem = MaterialButton(
-        ContextThemeWrapper(context, appTheme.common.buttonText),
+        ContextThemeWrapper(context, appTheme.btns.text.style),
         null,
-        R.attr.buttonText,
+        appTheme.btns.text.attr,
     ).apply {
         text = "Set system"
         setOnClickListener { onSetDefaultRingtone?.invoke() }

@@ -11,6 +11,7 @@
         <item name="buttonBarButtonSide">@style/LightTheme.BBar.Side</item>
         <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
         <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
+        <item name="buttonOutline">@style/LightTheme.ButtonOutline</item>
         <item name="textAlarmTime">@style/LightTheme.TextTime</item>
         <item name="android:windowBackground">@color/clBackground</item>
     </style>
@@ -22,6 +23,8 @@
     </style>
 
     <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton"></style>
+
+    <style name="LightTheme.ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
 
     <!-- Alarm Card -->
     <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />
@@ -35,7 +38,7 @@
     <style name="LightTheme.TextTime" parent="Widget.MaterialComponents.TextView">
         <item name="fontFamily">@font/allerta_stencil</item>
         <item name="android:textSize">28sp</item>
-<!--        <item name="android:textColor">@color/clTimeText</item>-->
+        <!--        <item name="android:textColor">@color/clTimeText</item>-->
         <item name="android:background">@drawable/ripple_colored_unlim</item>
     </style>
 

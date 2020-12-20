@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="clPrimary">#B0BEC5</color>
+    <color name="clPrimary">#ffea00</color>
     <color name="clPrimaryDark">#90A4AE</color>
     <color name="clAccent">#90CAF9</color>
     <color name="clSecondary">#039BE5</color>

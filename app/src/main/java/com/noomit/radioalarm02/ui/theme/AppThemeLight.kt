@@ -1,7 +1,17 @@
 package com.noomit.radioalarm02.ui.theme
 
 import android.graphics.Color
-import com.noomit.radioalarm02.R
+import androidx.annotation.AttrRes
+import androidx.annotation.StyleRes
+import com.noomit.radioalarm02.R.attr as A
+import com.noomit.radioalarm02.R.color as C
+import com.noomit.radioalarm02.R.drawable as D
+import com.noomit.radioalarm02.R.style as S
+
+data class ViewStyle(
+    @StyleRes val style: Int,
+    @AttrRes val attr: Int,
+)
 
 interface ThemeNowPlaying {
     val bgColor: Int
@@ -25,8 +35,9 @@ interface ThemeAlarmItem {
     val timeTextStyle: Int
 }
 
-interface ThemeCommon {
-    val buttonText: Int
+interface ThemeButton {
+    val text: ViewStyle
+    val outline: ViewStyle
 }
 
 val appTheme = AppThemeLight()
@@ -35,23 +46,24 @@ data class AppThemeLight(
     val nowPlaying: ThemeNowPlaying = object : ThemeNowPlaying {
         override val bgColor = Color.parseColor("#ffFFFFFA")
         override val textColor = Color.parseColor("#FF414141")
-        override val favoriteStyleId = R.style.LightTheme_ActionButton
-        override val iconFavorite = R.drawable.ic_favorite_24
-        override val iconNotFavorite = R.drawable.ic_favorite_border_24
+        override val favoriteStyleId = S.LightTheme_ActionButton
+        override val iconFavorite = D.ic_favorite_24
+        override val iconNotFavorite = D.ic_favorite_border_24
     },
     val serverList: ThemeServerList = object : ThemeServerList {
         override val bgColor = Color.parseColor("#ffFFFFFF")
     },
     val alarmItem: ThemeAlarmItem = object : ThemeAlarmItem {
-        override val bgColor = R.color.clCardBackground
-        override val favoriteStyleId = R.style.LightTheme_ActionButton
-        override val iconFavorite = R.drawable.ic_delete_24
-        override val dayOfWeekStyle = R.style.LightTheme_DayOfWeek
-        override val dayColorInactive = R.color.colorDayTextInactive
-        override val dayColorActive = R.color.colorDayTextActive
-        override val timeTextStyle = R.style.LightTheme_TextTime
+        override val bgColor = C.clCardBackground
+        override val favoriteStyleId = S.LightTheme_ActionButton
+        override val iconFavorite = D.ic_delete_24
+        override val dayOfWeekStyle = S.LightTheme_DayOfWeek
+        override val dayColorInactive = C.colorDayTextInactive
+        override val dayColorActive = C.colorDayTextActive
+        override val timeTextStyle = S.LightTheme_TextTime
     },
-    val common: ThemeCommon = object : ThemeCommon {
-        override val buttonText = R.style.LightTheme_MaterialButtonText
-    }
+    val btns: ThemeButton = object : ThemeButton {
+        override val text = ViewStyle(S.LightTheme_MaterialButtonText, A.buttonText)
+        override val outline = ViewStyle(S.LightTheme_ButtonOutline, A.buttonOutline)
+    },
 )
