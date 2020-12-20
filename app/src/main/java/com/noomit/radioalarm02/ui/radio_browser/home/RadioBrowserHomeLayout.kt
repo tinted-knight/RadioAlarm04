@@ -156,7 +156,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     private fun serverListClick(view: View) {
         TransitionManager.beginDelayedTransition(this, ChangeBounds()
             .setInterpolator(LinearInterpolator())
-            .setDuration(400)
+            .setDuration(200)
         )
         serverList.isSelected = !serverList.isSelected
         requestLayout()

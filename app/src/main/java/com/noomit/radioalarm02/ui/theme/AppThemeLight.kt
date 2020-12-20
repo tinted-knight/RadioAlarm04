@@ -44,14 +44,14 @@ val appTheme = AppThemeLight()
 
 data class AppThemeLight(
     val nowPlaying: ThemeNowPlaying = object : ThemeNowPlaying {
-        override val bgColor = Color.parseColor("#ffFFFFFA")
+        override val bgColor = C.clCardBackground
         override val textColor = Color.parseColor("#FF414141")
         override val favoriteStyleId = S.LightTheme_ActionButton
         override val iconFavorite = D.ic_favorite_24
         override val iconNotFavorite = D.ic_favorite_border_24
     },
     val serverList: ThemeServerList = object : ThemeServerList {
-        override val bgColor = Color.parseColor("#ffFFFFFF")
+        override val bgColor = C.clCardBackground
     },
     val alarmItem: ThemeAlarmItem = object : ThemeAlarmItem {
         override val bgColor = C.clCardBackground

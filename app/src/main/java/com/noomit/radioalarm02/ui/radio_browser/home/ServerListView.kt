@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.drawable.PaintDrawable
 import android.view.KeyEvent
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@ class ServerListView(context: Context) : ContourLayout(context) {
 
     init {
         contourHeightWrapContent()
-        background = PaintDrawable(appTheme.serverList.bgColor)
+        background = PaintDrawable(getColor(resources, appTheme.serverList.bgColor, null))
         stateListAnimator = PushOnPressAnimator(this)
         registerBackpressListener()
 
