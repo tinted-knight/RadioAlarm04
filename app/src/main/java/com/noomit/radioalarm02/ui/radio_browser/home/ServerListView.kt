@@ -81,7 +81,7 @@ class ServerListView(context: Context) : ContourLayout(context) {
 
             AnimatorSet().apply {
                 when {
-                    show -> playSequentially(elevationAnimator, cornerAnimator)
+                    show -> playTogether(elevationAnimator, cornerAnimator)
                     else -> playSequentially(cornerAnimator, elevationAnimator)
                 }
                 duration = 200

@@ -1,14 +1,13 @@
 package com.noomit.radioalarm02.ui.radio_browser.adapters
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.CategoryModel
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.IStationItem
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationItemView
 
 abstract class CategoryListAdapter<Model : CategoryModel>(
     private val onClick: (Model) -> Unit,
@@ -16,11 +15,7 @@ abstract class CategoryListAdapter<Model : CategoryModel>(
 ) :
     ListAdapter<Model, CategoryListViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryListViewHolder {
-        return CategoryListViewHolder(
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.item_category, parent, false)
-        )
+        return CategoryListViewHolder(StationItemView(parent.context))
     }
 
     override fun onBindViewHolder(holder: CategoryListViewHolder, position: Int) {
@@ -52,8 +47,8 @@ abstract class CategoryDiffUtil<Model : CategoryModel> : DiffUtil.ItemCallback<M
 }
 
 class CategoryListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(value: CategoryModel) = with(itemView) {
-        findViewById<TextView>(R.id.tv_station_name).text = value.name
-        findViewById<TextView>(R.id.tv_station_count).text = value.stationCount
+    fun bind(value: CategoryModel) = with(itemView as IStationItem) {
+        setName(value.name)
+        setCount(value.stationCount)
     }
 }

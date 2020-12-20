@@ -25,6 +25,7 @@ interface RadioBrowserHomeDelegate {
 interface IRadioBrowserHomeLayout {
     var delegate: RadioBrowserHomeDelegate?
     fun setServerAdapter(adapter: ServerListAdapter)
+    fun serverListCollapse()
     fun showLoading()
     fun update(content: List<ServerInfo>)
     fun update(activerServer: ServerInfo?)
@@ -132,6 +133,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     override fun setServerAdapter(adapter: ServerListAdapter) {
         serverList.recycler.adapter = adapter
+    }
+
+    override fun serverListCollapse() {
+        serverListClick(serverList)
     }
 
     override fun showLoading() {

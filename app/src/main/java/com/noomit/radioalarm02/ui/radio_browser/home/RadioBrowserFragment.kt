@@ -27,19 +27,7 @@ class RadioBrowserFragment : ContourFragment() {
         factoryProducer = { ViewModelFactory(requireActivity().application as Application00) }
     )
 
-    private val listener = object : RadioBrowserHomeDelegate {
-        override fun onLanguageClick() {
-            viewModel.getLanguageList()
-            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
-        }
-
-        override fun onTagClick() {
-            viewModel.getTagList()
-            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
-        }
-    }
-
-    private val adapter by lazy(LazyThreadSafetyMode.NONE) { ServerListAdapter(viewModel::setServer) }
+    private val adapter by lazy(LazyThreadSafetyMode.NONE) { ServerListAdapter(adapterListener) }
 
     private val contour: IRadioBrowserHomeLayout
         get() = (view as ViewGroup).children.first() as IRadioBrowserHomeLayout
@@ -79,5 +67,22 @@ class RadioBrowserFragment : ContourFragment() {
                 is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
             }
         }
+    }
+
+    private val listener = object : RadioBrowserHomeDelegate {
+        override fun onLanguageClick() {
+            viewModel.getLanguageList()
+            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
+        }
+
+        override fun onTagClick() {
+            viewModel.getTagList()
+            findNavController().navigate(R.id.action_radioBrowser_to_languageList)
+        }
+    }
+
+    private val adapterListener: ServerClick = {
+        viewModel.setServer(it)
+        contour.serverListCollapse()
     }
 }

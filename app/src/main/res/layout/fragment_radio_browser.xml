@@ -82,8 +82,7 @@
             android:id="@+id/rv_servers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_server" />
+            tools:itemCount="3" />
 
         <ProgressBar
             android:id="@+id/progress_indicator"
