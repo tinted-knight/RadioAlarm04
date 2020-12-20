@@ -43,7 +43,7 @@ data class AppThemeLight(
         override val bgColor = Color.parseColor("#ffFFFFFF")
     },
     val alarmItem: ThemeAlarmItem = object : ThemeAlarmItem {
-        override val bgColor = Color.parseColor("#ffFFFFFF")
+        override val bgColor = R.color.clCardBackground
         override val favoriteStyleId = R.style.LightTheme_ActionButton
         override val iconFavorite = R.drawable.ic_delete_24
         override val dayOfWeekStyle = R.style.LightTheme_DayOfWeek

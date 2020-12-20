@@ -4,6 +4,7 @@
     <color name="clPrimaryDark">#3F535C</color>
     <color name="clAccent">#3949AB</color>
     <color name="clSecondary">#039BE5</color>
+    <color name="clBackground">#ffFFFFFF</color>
     <color name="clStausBarBackground">#FFFFFF</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>

@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.getResourceApi23
 import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.days
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -147,9 +148,13 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     init {
+        val bgColor = getResourceApi23(
+            more = { resources.getColor(appTheme.alarmItem.bgColor, null) },
+            less = { resources.getColor(appTheme.alarmItem.bgColor) },
+        )
         background = GradientDrawable(
             GradientDrawable.Orientation.BOTTOM_TOP,
-            intArrayOf(Color.WHITE, Color.WHITE),
+            intArrayOf(bgColor, bgColor),
         )
         background.setStroke(1, Color.parseColor("#12000000"))
         background.cornerRadius = 16.0f
