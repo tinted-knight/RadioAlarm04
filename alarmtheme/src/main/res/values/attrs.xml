@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="radioBrowserCategory" format="reference"/>
-    <attr name="buttonBarButtonSide" format="reference"/>
-    <attr name="buttonBarButtonCenter" format="reference"/>
+    <attr name="radioBrowserCategory" format="reference" />
+    <attr name="buttonBarButtonSide" format="reference" />
+    <attr name="buttonBarButtonCenter" format="reference" />
     <attr name="buttonText" format="reference" />
     <attr name="buttonOutline" format="reference" />
     <attr name="textAlarmTime" format="reference" />
+    <attr name="textInputOutlined" format="reference" />
 </resources>

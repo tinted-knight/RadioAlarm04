@@ -40,6 +40,10 @@ interface ThemeButton {
     val outline: ViewStyle
 }
 
+interface ThemeTextInput {
+    val layout: ViewStyle
+}
+
 val appTheme = AppThemeLight()
 
 data class AppThemeLight(
@@ -65,5 +69,8 @@ data class AppThemeLight(
     val btns: ThemeButton = object : ThemeButton {
         override val text = ViewStyle(S.LightTheme_MaterialButtonText, A.buttonText)
         override val outline = ViewStyle(S.LightTheme_ButtonOutline, A.buttonOutline)
+    },
+    val textInput: ThemeTextInput = object : ThemeTextInput {
+        override val layout = ViewStyle(S.LightTheme_TextInputOutlined, A.textInputOutlined)
     },
 )

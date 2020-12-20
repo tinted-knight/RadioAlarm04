@@ -13,6 +13,7 @@
         <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
         <item name="buttonOutline">@style/LightTheme.ButtonOutline</item>
         <item name="textAlarmTime">@style/LightTheme.TextTime</item>
+        <item name="textInputOutlined">@style/LightTheme.TextInputOutlined</item>
         <item name="android:windowBackground">@color/clBackground</item>
     </style>
 
@@ -20,6 +21,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="LightTheme.TextInputOutlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
     </style>
 
     <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton"></style>

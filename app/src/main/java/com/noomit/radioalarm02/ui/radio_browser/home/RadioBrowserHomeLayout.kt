@@ -13,7 +13,6 @@ import com.example.radiobrowser.ServerInfo
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
@@ -59,24 +58,20 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         text = "Stations"
     }
 
-    private val etName = TextInputEditText(context)
-
-    private val searchName = TextInputLayout(context,
-        null,
-        R.style.Widget_MaterialComponents_TextInputLayout_OutlinedBox).apply {
+    private val searchName = textInputLayout.apply {
         hint = "name hint"
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
-        addView(etName)
+        val cornerRadius = 12.0f
+        setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        addView(TextInputEditText(this.context))
     }
 
-    private val etTag = TextInputEditText(context)
-
-    private val searchTag = TextInputLayout(context,
-        null,
-        R.style.Widget_MaterialComponents_TextInputLayout_OutlinedBox).apply {
+    private val searchTag = textInputLayout.apply {
         hint = "tag hint"
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
-        addView(etTag)
+        val cornerRadius = 12.0f
+        setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+        addView(TextInputEditText(this.context))
     }
 
     private val serverList = ServerListView(context)
@@ -172,5 +167,12 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
             ContextThemeWrapper(context, appTheme.btns.text.style),
             null,
             appTheme.btns.text.attr
+        )
+
+    private val textInputLayout: TextInputLayout
+        get() = TextInputLayout(
+            ContextThemeWrapper(context, appTheme.textInput.layout.style),
+            null,
+            appTheme.textInput.layout.attr
         )
 }
