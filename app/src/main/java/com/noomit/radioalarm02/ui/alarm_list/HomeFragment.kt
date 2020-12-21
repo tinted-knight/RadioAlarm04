@@ -14,6 +14,7 @@ import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.alarm.ui.AlarmActivity
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
+import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
@@ -45,7 +46,7 @@ class HomeFragment : ContourFragment() {
     }
 
     override fun observeViewModel() {
-        alarmManager.alarms.observe(viewLifecycleOwner) {
+        collect(alarmManager.alarms) {
             if (it.isNotEmpty()) {
                 contour.showContent(it)
             } else {

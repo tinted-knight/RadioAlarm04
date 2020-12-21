@@ -2,7 +2,6 @@ package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
@@ -11,7 +10,9 @@ import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -30,7 +31,9 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         observeNextActive()
     }
 
-    val alarms = queries.selectAll().asFlow().mapToList().asLiveData()
+    val alarms = queries.selectAll().asFlow()
+        .flowOn(Dispatchers.IO)
+        .mapToList()
 
     fun insert(hour: Int, minute: Int) {
         val alarm = composeAlarmEntity(hour, minute)
