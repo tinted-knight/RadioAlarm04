@@ -42,6 +42,8 @@ abstract class ContourFragment : Fragment() {
 
     // #todo protected abstract val contour: LayoutInterface
 
+    // #todo val layout: ContourLayout
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

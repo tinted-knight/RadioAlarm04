@@ -38,6 +38,9 @@ interface ThemeAlarmItem {
 interface ThemeButton {
     val text: ViewStyle
     val outline: ViewStyle
+    val bbarFav: ViewStyle
+    val bbarBrowse: ViewStyle
+    val bbarAddAlarm: ViewStyle
 }
 
 interface ThemeTextInput {
@@ -69,6 +72,9 @@ data class AppThemeLight(
     val btns: ThemeButton = object : ThemeButton {
         override val text = ViewStyle(S.LightTheme_MaterialButtonText, A.buttonText)
         override val outline = ViewStyle(S.LightTheme_ButtonOutline, A.buttonOutline)
+        override val bbarFav = ViewStyle(S.LightTheme_BBar_Favorites, A.buttonBarButtonFavorites)
+        override val bbarBrowse = ViewStyle(S.LightTheme_BBar_Browse, A.buttonBarButtonBrowse)
+        override val bbarAddAlarm = ViewStyle(S.LightTheme_BBar_Center, A.buttonBarButtonCenter)
     },
     val textInput: ThemeTextInput = object : ThemeTextInput {
         override val layout = ViewStyle(S.LightTheme_TextInputOutlined, A.textInputOutlined)

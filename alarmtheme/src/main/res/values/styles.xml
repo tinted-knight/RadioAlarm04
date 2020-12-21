@@ -8,7 +8,8 @@
         <item name="colorAccent">@color/clAccent</item>
         <item name="colorSecondary">@color/clSecondary</item>
         <item name="radioBrowserCategory">@style/LightTheme.MaterialButton</item>
-        <item name="buttonBarButtonSide">@style/LightTheme.BBar.Side</item>
+        <item name="buttonBarButtonFavorites">@style/LightTheme.BBar.Favorites</item>
+        <item name="buttonBarButtonBrowse">@style/LightTheme.BBar.Browse</item>
         <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
         <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
         <item name="buttonOutline">@style/LightTheme.ButtonOutline</item>
@@ -56,11 +57,18 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="LightTheme.BBar.Side" parent="LightTheme.BBar">
+    <style name="LightTheme.BBar.Favorites" parent="LightTheme.BBar">
         <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="drawableTopCompat">@drawable/ic_favorite_border_24</item>
+    </style>
+
+    <style name="LightTheme.BBar.Browse" parent="LightTheme.BBar">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="drawableTopCompat">@drawable/ic_search_24</item>
     </style>
 
     <style name="LightTheme.BBar.Center" parent="LightTheme.BBar">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="drawableTopCompat">@drawable/ic_add_alarm_24</item>
     </style>
 </resources>

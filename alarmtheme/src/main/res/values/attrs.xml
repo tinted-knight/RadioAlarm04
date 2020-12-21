@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="radioBrowserCategory" format="reference" />
-    <attr name="buttonBarButtonSide" format="reference" />
+    <attr name="buttonBarButtonFavorites" format="reference" />
+    <attr name="buttonBarButtonBrowse" format="reference" />
     <attr name="buttonBarButtonCenter" format="reference" />
     <attr name="buttonText" format="reference" />
     <attr name="buttonOutline" format="reference" />
