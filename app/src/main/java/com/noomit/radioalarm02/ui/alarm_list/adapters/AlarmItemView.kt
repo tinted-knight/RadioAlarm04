@@ -156,7 +156,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             GradientDrawable.Orientation.BOTTOM_TOP,
             intArrayOf(bgColor, bgColor),
         )
-        background.setStroke(1, Color.parseColor("#12000000"))
+        background.setStroke(2, Color.parseColor("#12000000"))
         background.cornerRadius = 16.0f
 
         val x = 8
