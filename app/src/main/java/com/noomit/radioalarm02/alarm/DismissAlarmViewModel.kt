@@ -6,7 +6,11 @@ import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.reComposeFired
 import com.noomit.radioalarm02.model.scheduleAlarm
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 private fun plog(message: String) =
@@ -14,11 +18,23 @@ private fun plog(message: String) =
 
 class DismissAlarmViewModel(database: Database, application: Application) :
     AndroidViewModel(application) {
+    companion object {
+        private const val TIMER_TICK_DELAY = 1_000L * 30
+    }
 
     private val queries = database.alarmQueries
 
     var alarmId: Long? = null
     var melodyUrl: String? = null
+
+    var time = flow<String> {
+        val df = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
+        while (true) {
+            val now = Calendar.getInstance()
+            emit(df.format(now.time))
+            delay(TIMER_TICK_DELAY)
+        }
+    }
 
     init {
         plog("DismissAlarmViewModel")
@@ -49,5 +65,4 @@ class DismissAlarmViewModel(database: Database, application: Application) :
             clearScheduledAlarms(getApplication())
         }
     }
-
 }

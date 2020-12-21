@@ -1,7 +1,9 @@
 package com.noomit.radioalarm02.alarm.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.activity.viewModels
 import com.noomit.radioalarm02.AlarmReceiver
@@ -20,6 +22,7 @@ class AlarmActivity : BaseWakelockActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm)
+        setWindowTransparency()
 
         viewModel.alarmId = intent.getLongExtra(AlarmReceiver.ALARM_ID, -1)
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
@@ -43,6 +46,16 @@ class AlarmActivity : BaseWakelockActivity() {
             viewModel.alarmId = it.getLongExtra(AlarmReceiver.ALARM_ID, -1)
             viewModel.melodyUrl = it.getStringExtra(AlarmReceiver.BELL_URL)
         }
+    }
+
+    private fun setWindowTransparency() {
+        window.decorView.apply {
+            systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    View.SYSTEM_UI_FLAG_LOW_PROFILE
+        }
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
     }
 
     companion object {

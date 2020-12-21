@@ -73,11 +73,11 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             bottomTo { parent.bottom() }
         )
         btnFavorites.layoutBy(
-            leftTo { parent.left() }.rightTo { btnAddAlarm.left() },
+            leftTo { parent.left() }.rightTo { btnAddAlarm.left() - 8.xdip },
             bottomTo { parent.bottom() }
         )
         btnBrowse.layoutBy(
-            rightTo { parent.right() }.leftTo { btnAddAlarm.right() },
+            rightTo { parent.right() }.leftTo { btnAddAlarm.right() + 8.xdip },
             bottomTo { parent.bottom() }
         )
         recycler.layoutBy(

@@ -16,6 +16,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
+import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentAlarmFireBinding
 import com.noomit.radioalarm02.tplog
@@ -84,6 +85,9 @@ class AlarmFireFragment : PlayerBaseFragment(
     override fun listenUiEvents() {}
 
     override fun observeModel() {
+        collect(viewModel.time) {
+            viewBinding.tvTime.text = it
+        }
     }
 
     private fun playDefaultRingtone() {
