@@ -17,14 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".alarm.ui.AlarmActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
 
-        <service
-            android:name="com.noomit.playerservice.PlayerService"
-            android:enabled="true"
-            android:exported="true" />
+        <activity android:name=".alarm.ui.AlarmActivity"></activity>
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -35,6 +29,15 @@
         </activity>
 
         <receiver android:name=".AlarmReceiver" />
+
+        <service
+            android:name="com.noomit.playerservice.PlayerService"
+            android:exported="true" />
+        <!--        <service-->
+        <!--            android:name="com.noomit.playerservice.PlayerService"-->
+        <!--            android:enabled="true"-->
+        <!--            android:exported="true" />-->
+
     </application>
 
 </manifest>

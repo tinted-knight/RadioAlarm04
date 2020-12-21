@@ -18,6 +18,7 @@ import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.databinding.FragmentAlarmFireBinding
+import com.noomit.radioalarm02.tplog
 import timber.log.Timber
 
 private fun plog(message: String) = Timber.tag("tagg-alarm_activity").i(message)
@@ -42,6 +43,8 @@ class AlarmFireFragment : PlayerBaseFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tplog("AlarmFireFrag::onViewCreated")
 
         playerBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
