@@ -8,4 +8,6 @@
     <attr name="buttonOutline" format="reference" />
     <attr name="textAlarmTime" format="reference" />
     <attr name="textInputOutlined" format="reference" />
+    <attr name="textAlarmFireStation" format="reference" />
+    <attr name="textAlarmFireTime" format="reference" />
 </resources>

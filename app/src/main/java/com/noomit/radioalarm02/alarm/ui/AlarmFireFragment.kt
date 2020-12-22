@@ -7,30 +7,19 @@ import android.content.IntentFilter
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerService
-import com.noomit.radioalarm02.R
+import com.noomit.playerservice.PlayerServiceFragment
 import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
-import com.noomit.radioalarm02.base.PlayerBaseFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
-import com.noomit.radioalarm02.databinding.FragmentAlarmFireBinding
-import com.noomit.radioalarm02.tplog
-import timber.log.Timber
 
-private fun plog(message: String) = Timber.tag("tagg-alarm_activity").i(message)
-
-class AlarmFireFragment : PlayerBaseFragment(
-    playerViewId = R.id.exo_player_view,
-    playerControlId = R.id.exo_player_controls,
-    contentLayoutId = R.layout.fragment_alarm_fire,
-) {
-    override val viewBinding: FragmentAlarmFireBinding by viewBinding()
-
+class AlarmFireFragment : PlayerServiceFragment() {
     private var ringtone: Ringtone? = null
 
     private val viewModel: DismissAlarmViewModel by activityViewModels {
@@ -42,10 +31,19 @@ class AlarmFireFragment : PlayerBaseFragment(
 
     private lateinit var playerBroadcastReceiver: BroadcastReceiver
 
+    private val contour: IAlarmFireLayout
+        get() = view as IAlarmFireLayout
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return AlarmFireLayout(requireContext())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        tplog("AlarmFireFrag::onViewCreated")
 
         playerBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -61,14 +59,12 @@ class AlarmFireFragment : PlayerBaseFragment(
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         stopRingtone()
         requireActivity().unregisterReceiver(playerBroadcastReceiver)
+        super.onDestroyView()
     }
 
-    override fun prepareUi() {
-//        viewModel.alarmFired()
-    }
+    override fun prepareView() {}
 
     override fun onServiceConnected() {
         if (viewModel.melodyUrl.isNullOrEmpty()) {
@@ -78,16 +74,17 @@ class AlarmFireFragment : PlayerBaseFragment(
         viewModel.melodyUrl?.let {
             service?.mediaItem = MediaItem(url = it, title = it)
             service?.play()
-            viewBinding.tvStationName.text = it
+            contour.setStationName(it)
         }
     }
 
-    override fun listenUiEvents() {}
+    override fun initPlayerViews() {
+        playerControlView = contour.playerControll
+        playerView = contour.playerView
+    }
 
-    override fun observeModel() {
-        collect(viewModel.time) {
-            viewBinding.tvTime.text = it
-        }
+    override fun observeViewModel() {
+        collect(viewModel.time) { contour.setTime(it) }
     }
 
     private fun playDefaultRingtone() {
