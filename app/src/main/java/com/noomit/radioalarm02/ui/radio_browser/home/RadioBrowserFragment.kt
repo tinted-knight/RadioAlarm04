@@ -1,16 +1,15 @@
 package com.noomit.radioalarm02.ui.radio_browser.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.radiobrowser.ActiveServerState
-import com.noomit.playerservice.ContourFragment
 import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.ContourFragmentNew
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
@@ -20,7 +19,7 @@ import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
 
 @FlowPreview
-class RadioBrowserFragment : ContourFragment() {
+class RadioBrowserFragment : ContourFragmentNew<IRadioBrowserHomeLayout>() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(
         navGraphId = R.id.nav_radio_browser,
@@ -29,20 +28,17 @@ class RadioBrowserFragment : ContourFragment() {
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) { ServerListAdapter(adapterListener) }
 
-    private val contour: IRadioBrowserHomeLayout
+    override val contour: IRadioBrowserHomeLayout
         get() = (view as ViewGroup).children.first() as IRadioBrowserHomeLayout
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        val scrollView = ScrollView(context)
-        scrollView.addView(RadioBrowserHomeLayout(requireContext()))
-        scrollView.isVerticalScrollBarEnabled = true
+    override val layout: View
+        get() {
+            val scrollView = ScrollView(context)
+            scrollView.addView(RadioBrowserHomeLayout(requireContext()))
+            scrollView.isVerticalScrollBarEnabled = true
 
-        return scrollView
-    }
+            return scrollView
+        }
 
     override fun prepareView() {
         contour.apply {

@@ -1,4 +1,4 @@
-package com.noomit.playerservice
+package com.noomit.radioalarm02.base
 
 import android.content.ComponentName
 import android.content.Context
@@ -9,40 +9,12 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
-
-abstract class XmlPlayerServiceFragment(
-    @IdRes private val playerViewId: Int,
-    @IdRes private val playerControlId: Int,
-    @LayoutRes private val contentLayoutId: Int,
-) :
-    PlayerServiceFragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(contentLayoutId, container, false)
-    }
-
-    override fun initPlayerViews() {
-        requireNotNull(view).apply {
-            playerView = findViewById(playerViewId)
-            playerControlView = findViewById(playerControlId)
-        }
-    }
-}
+import com.noomit.playerservice.PlayerService
 
 abstract class ContourFragment : Fragment() {
-
-    // #todo protected abstract val contour: LayoutInterface
-
-    // #todo val layout: ContourLayout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,6 +25,56 @@ abstract class ContourFragment : Fragment() {
 
     protected abstract fun prepareView()
 
+    protected abstract fun observeViewModel()
+}
+
+abstract class ContourFragmentNew<L> : Fragment() {
+    /**
+     * Layout, that will just be returned by [onCreateView] method
+     *
+     * __Important notice__: use `get() = syntax`
+     */
+    protected abstract val layout: View
+
+    /**
+     * Property to access layout, most likely something like this:
+     * ```kotlin
+     * val contour: ILayoutInterface
+     *  get() = this.view as ILayoutInterface
+     * ```
+     * __Important notice__: always use __get() =__ syntax instead of
+     *
+     * ```val contour: L = view as L```
+     *
+     * to avoid exceptions when fragment's view was recreated
+     */
+    protected abstract val contour: L
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) = layout
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        prepareView()
+        observeViewModel()
+    }
+
+    /**
+     * Called at the end of [onViewCreated] before [observeViewModel]
+     *
+     * Typically set here recycler view adapter, layout event listeners and delegates etc.
+     */
+    protected abstract fun prepareView()
+
+    /**
+     * Called at the end of [onViewCreated] after [prepareView]
+     *
+     * Observe viewmodel and update layout
+     */
     protected abstract fun observeViewModel()
 }
 
@@ -79,7 +101,7 @@ abstract class PlayerServiceFragment : ContourFragment() {
     }
 
     /**
-     * Fires when [service] connects to this [XmlPlayerServiceFragment]
+     * Fires when [service] connects to this [PlayerServiceFragment]
      * Expected that here [service] should not be null
      */
     abstract fun onServiceConnected()

@@ -1,13 +1,15 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.noomit.playerservice.ContourFragment
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.base.ContourFragmentNew
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
@@ -18,20 +20,15 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
 @FlowPreview
-class CategoryListFragment : ContourFragment() {
+class CategoryListFragment : ContourFragmentNew<ICategoryLayout>() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
-    private val contour: ICategoryLayout
-        get() = view as ICategoryLayout
+    override val layout: View
+        get() = CategoryListLayout(requireContext())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return CategoryListLayout(requireContext())
-    }
+    override val contour: ICategoryLayout
+        get() = view as ICategoryLayout
 
     private val categoryClick = { model: CategoryModel ->
         viewModel.showStations(model)
