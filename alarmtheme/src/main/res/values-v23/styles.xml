@@ -17,6 +17,7 @@
         <item name="textInputOutlined">@style/LightTheme.TextInputOutlined</item>
         <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
         <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
+        <item name="slideToWake">@style/LightTheme.SlideToWake</item>
         <item name="android:statusBarColor">@color/clStausBarBackground</item>
     </style>
 </resources>

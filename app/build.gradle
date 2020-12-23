@@ -89,6 +89,7 @@ dependencies {
     implementation "com.squareup.sqldelight:android-driver:$sql_delight"
     implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
 //    //swipe button
+    implementation "com.ncorti:slidetoact:$slide_to_act"
 //    implementation 'com.github.stfalcon:swipeable-button:0.1.0'
 //    //Room
 //    implementation "androidx.room:room-runtime:$room"

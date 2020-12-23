@@ -4,8 +4,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.activity.viewModels
+import com.ncorti.slidetoact.SlideToActView
 import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
@@ -28,14 +28,15 @@ class AlarmActivity : BaseWakelockActivity() {
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
 
         val action = intent.action ?: ACTION_TEST
-        if (action == ACTION_FIRE) {
-            findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
-                viewModel.alarmFired()
-                onBackPressed()
-            }
-        } else {
-            findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
-                onBackPressed()
+        findViewById<SlideToActView>(R.id.slide_to_wake).onSlideCompleteListener = object :
+            SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(view: SlideToActView) {
+                if (action == ACTION_FIRE) {
+                    viewModel.alarmFired()
+                    onBackPressed()
+                } else {
+                    onBackPressed()
+                }
             }
         }
     }

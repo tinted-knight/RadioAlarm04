@@ -22,6 +22,7 @@ buildscript {
         sql_delight = '1.4.3'
         constraint_layout = '2.0.2'
         contour = '1.0.0'
+        slide_to_act = '0.9.0'
     }
 
     dependencies {
