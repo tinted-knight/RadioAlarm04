@@ -15,7 +15,7 @@ import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.ui.alarm_fire.ui.AlarmActivity
+import com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 

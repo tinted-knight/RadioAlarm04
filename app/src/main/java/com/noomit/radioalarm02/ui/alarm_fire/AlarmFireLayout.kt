@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui.alarm_fire.ui
+package com.noomit.radioalarm02.ui.alarm_fire
 
 import android.content.Context
 import android.util.AttributeSet

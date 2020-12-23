@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.ui.alarm_fire.ui
+package com.noomit.radioalarm02.ui.alarm_fire
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,6 @@ import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseWakelockActivity
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.tplog
-import com.noomit.radioalarm02.ui.alarm_fire.DismissAlarmViewModel
 
 class AlarmActivity : BaseWakelockActivity() {
 

@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     tools:background="@drawable/hipster_bg_gradient"
-    tools:context=".ui.alarm_fire.ui.AlarmActivity">
+    tools:context=".ui.alarm_fire.AlarmActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"
-        android:name="com.noomit.radioalarm02.alarm.ui.AlarmFireFragment"
+        android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmFireFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.noomit.radioalarm02.ui.alarm_fire.ui.AlarmActivity
+import com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
