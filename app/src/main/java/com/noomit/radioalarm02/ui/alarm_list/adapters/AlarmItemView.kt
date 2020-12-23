@@ -48,6 +48,7 @@ interface IAlarmItem {
     }
 }
 
+// #achtung flashes when click on day
 class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet), IAlarmItem {
 

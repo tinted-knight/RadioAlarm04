@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.playerservice.PlayerService
 
+// #todo migrate to ContourFragmentNew
 abstract class ContourFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ abstract class ContourFragmentNew<L> : Fragment() {
     /**
      * Layout, that will just be returned by [onCreateView] method
      *
-     * __Important notice__: use `get() = syntax`
+     * __Important notice__: use _get() =_ syntax
      */
     protected abstract val layout: View
 
@@ -42,7 +43,7 @@ abstract class ContourFragmentNew<L> : Fragment() {
      * val contour: ILayoutInterface
      *  get() = this.view as ILayoutInterface
      * ```
-     * __Important notice__: always use __get() =__ syntax instead of
+     * __Important notice__: always use _get() =_ syntax instead of
      *
      * ```val contour: L = view as L```
      *
