@@ -51,6 +51,7 @@ private class StationListDiffUtil : DiffUtil.ItemCallback<StationModel>() {
 class StationListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(value: StationModel) = (itemView as IStationItem).apply {
         setName(value.name)
+        // #todo count not needed for favorites screen
         setCount(value.upvotes)
     }
 }

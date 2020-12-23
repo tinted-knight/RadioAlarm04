@@ -28,7 +28,8 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmFire.station.attr
     ).apply {
-        text = "1 SUD FRANCE Aquitaine Occitanie Provence"
+        text = ""
+        // #todo maxLines + elliplsize
     }
 
     private val time = TextView(
@@ -55,6 +56,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },
         )
+        // #todo increase top padding
         stationName.layoutBy(
             matchParentX(16, 16),
             topTo { parent.top() + 16.ydip }
