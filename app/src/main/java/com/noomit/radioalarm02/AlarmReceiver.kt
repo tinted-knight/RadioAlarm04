@@ -10,26 +10,24 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.noomit.radioalarm02.alarm.ui.AlarmActivity
 
-//private fun plog(message: String) = Timber.tag("tagg-broadcast_receiver").i(message)
-private fun plog(message: String) {}
-
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        plog("onReceive")
         if (intent?.action == ALARM_ACTION) {
             val alarmId = intent.getLongExtra(ALARM_ID, -1)
             val melodyUrl = intent.getStringExtra(BELL_URL)
-            plog("alarmId = $alarmId")
-            plog("bellId = $melodyUrl")
-            context?.run {
+            val melodyName = intent.getStringExtra(BELL_NAME)
+            context?.apply {
                 val pendingIntent = PendingIntent.getActivity(
                     context,
                     102, // #fake
-                    Intent(context, AlarmActivity::class.java).apply {
-                        action = AlarmActivity.ACTION_FIRE
-                        putExtra(ALARM_ID, alarmId)
-                        putExtra(BELL_URL, melodyUrl)
-                    },
+                    AlarmActivity.composeIntent(
+                        context = context,
+                        id = alarmId,
+                        url = melodyUrl,
+                        name = melodyName,
+                        action = AlarmActivity.ACTION_FIRE,
+                        flags = 0
+                    ),
                     PendingIntent.FLAG_UPDATE_CURRENT,
                 )
                 val builder = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -56,6 +54,7 @@ class AlarmReceiver : BroadcastReceiver() {
         const val ALARM_ACTION = "alarm-action"
         const val ALARM_ID = "alarm-id"
         const val BELL_URL = "bell-id"
+        const val BELL_NAME = "bell-name"
         const val CHANNEL_ID = "channel-id"
         const val NOTIF_ID = 1002
     }

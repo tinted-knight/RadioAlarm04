@@ -26,6 +26,7 @@ class DismissAlarmViewModel(database: Database, application: Application) :
 
     var alarmId: Long? = null
     var melodyUrl: String? = null
+    var melodyName: String? = null
 
     var time = flow<String> {
         val df = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
@@ -59,6 +60,7 @@ class DismissAlarmViewModel(database: Database, application: Application) :
                 context = getApplication(),
                 alarmId = nextAlarm.id,
                 bellUrl = nextAlarm.bell_url,
+                bellName = nextAlarm.bell_name,
                 timeInMillis = nextAlarm.time_in_millis,
             )
         } else {

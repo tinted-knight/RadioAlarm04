@@ -27,7 +27,6 @@ class AlarmManagerViewModel(database: Database, application: Application) :
     private val queries = database.alarmQueries
 
     init {
-        plog("AlarmManagerViewModel::init")
         observeNextActive()
     }
 
@@ -132,6 +131,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
                         context = getApplication(),
                         alarmId = it.id,
                         bellUrl = it.bell_url,
+                        bellName = it.bell_name,
                         timeInMillis = it.time_in_millis,
                     )
                 } else {

@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.alarm.ui
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +13,7 @@ import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseWakelockActivity
 import com.noomit.radioalarm02.data.AppDatabase
+import com.noomit.radioalarm02.tplog
 
 class AlarmActivity : BaseWakelockActivity() {
 
@@ -26,6 +28,10 @@ class AlarmActivity : BaseWakelockActivity() {
 
         viewModel.alarmId = intent.getLongExtra(AlarmReceiver.ALARM_ID, -1)
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
+        viewModel.melodyName = intent.getStringExtra(AlarmReceiver.BELL_NAME)
+
+        tplog("bellurl: ${viewModel.melodyUrl}")
+        tplog("melodyname: ${viewModel.melodyName}")
 
         val action = intent.action ?: ACTION_TEST
         findViewById<SlideToActView>(R.id.slide_to_wake).onSlideCompleteListener = object :
@@ -46,6 +52,7 @@ class AlarmActivity : BaseWakelockActivity() {
         intent?.let {
             viewModel.alarmId = it.getLongExtra(AlarmReceiver.ALARM_ID, -1)
             viewModel.melodyUrl = it.getStringExtra(AlarmReceiver.BELL_URL)
+            viewModel.melodyName = it.getStringExtra(AlarmReceiver.BELL_NAME)
         }
     }
 
@@ -62,5 +69,21 @@ class AlarmActivity : BaseWakelockActivity() {
     companion object {
         const val ACTION_FIRE = "alarm-action"
         const val ACTION_TEST = "alarm-test"
+
+        fun composeIntent(
+            context: Context,
+            id: Long,
+            url: String?,
+            name: String?,
+            action: String,
+            flags: Int,
+        ) = Intent(context, AlarmActivity::class.java).apply {
+            addFlags(flags)
+            this.action = action
+            putExtra(AlarmReceiver.ALARM_ID, id)
+            putExtra(AlarmReceiver.BELL_URL, url)
+            putExtra(AlarmReceiver.BELL_NAME, name)
+        }
+
     }
 }

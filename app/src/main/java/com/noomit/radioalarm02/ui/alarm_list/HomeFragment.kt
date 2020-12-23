@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.radioalarm02.Alarm
-import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.alarm.ui.AlarmActivity
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
@@ -93,14 +92,14 @@ class HomeFragment : ContourFragment() {
         }
 
         override fun onMelodyLongClick(alarm: Alarm) {
-            startActivity(
-                Intent(requireActivity(), AlarmActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    action = AlarmActivity.ACTION_TEST
-                    putExtra(AlarmReceiver.ALARM_ID, alarm.id)
-                    putExtra(AlarmReceiver.BELL_URL, alarm.bell_url)
-                }
-            )
+            startActivity(AlarmActivity.composeIntent(
+                context = requireContext(),
+                id = alarm.id,
+                url = alarm.bell_url,
+                name = alarm.bell_name,
+                action = AlarmActivity.ACTION_TEST,
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+            ))
         }
 
         override fun onDayOfWeekClick(day: Int, alarm: Alarm) {

@@ -75,7 +75,7 @@ class AlarmFireFragment : PlayerServiceFragment() {
         viewModel.melodyUrl?.let {
             service?.mediaItem = MediaItem(url = it, title = it)
             service?.play()
-            contour.setStationName(it)
+            contour.setStationName(viewModel.melodyName ?: "")
         }
     }
 
