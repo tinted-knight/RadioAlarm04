@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.alarm.ui
+package com.noomit.radioalarm02.ui.alarm_fire.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -60,8 +60,8 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
             topTo { parent.top() + 16.ydip }
         )
         playerControll.layoutBy(
-            rightTo { parent.right() - 8.xdip },
-            bottomTo { parent.bottom() - 8.ydip }
+            emptyX(),
+            emptyY()
         )
     }
 

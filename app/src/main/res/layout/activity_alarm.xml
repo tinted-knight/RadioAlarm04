@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     tools:background="@drawable/hipster_bg_gradient"
-    tools:context=".alarm.ui.AlarmActivity">
+    tools:context=".ui.alarm_fire.ui.AlarmActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"

@@ -11,6 +11,7 @@ import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 import com.noomit.radioalarm02.ui.alarm_list.adapters.MarginItemDecoration
+import com.noomit.radioalarm02.ui.animations.ItemListAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
@@ -47,6 +48,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     ).apply {
         text = "Favorites"
         setOnClickListener { delegate?.onFavoriteClick() }
+        stateListAnimator = ItemListAnimator(this)
     }
 
     private val btnBrowse = MaterialTextView(
@@ -54,8 +56,9 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         null,
         appTheme.btns.bbarBrowse.attr
     ).apply {
-        text = "Browse"
+        text = "Browse radio"
         setOnClickListener { delegate?.onBrowseClick() }
+        stateListAnimator = ItemListAnimator(this)
     }
 
     private val btnAddAlarm = MaterialTextView(
@@ -65,23 +68,24 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     ).apply {
         text = "Add alarm"
         setOnClickListener { delegate?.onAddAlarmClick() }
+        stateListAnimator = ItemListAnimator(this)
     }
 
     init {
         btnAddAlarm.layoutBy(
-            centerHorizontallyTo { parent.centerX() },
+            leftTo { btnFavorites.right() }.rightTo { btnBrowse.left() },
             bottomTo { parent.bottom() }
         )
         btnFavorites.layoutBy(
-            leftTo { parent.left() }.rightTo { btnAddAlarm.left() - 8.xdip },
+            leftTo { parent.left() }.rightTo { parent.width() / 3 },
             bottomTo { parent.bottom() }
         )
         btnBrowse.layoutBy(
-            rightTo { parent.right() }.leftTo { btnAddAlarm.right() + 8.xdip },
+            rightTo { parent.right() }.leftTo { parent.width() * 2 / 3 },
             bottomTo { parent.bottom() }
         )
         recycler.layoutBy(
-            matchParentX(8, 8),
+            matchParentX(16, 16),
             topTo { parent.top() }.bottomTo { btnAddAlarm.top() }
         )
     }

@@ -78,15 +78,18 @@
     <style name="LightTheme.BBar.Favorites" parent="LightTheme.BBar">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="drawableTopCompat">@drawable/ic_favorite_border_24</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="LightTheme.BBar.Browse" parent="LightTheme.BBar">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="drawableTopCompat">@drawable/ic_search_24</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="LightTheme.BBar.Center" parent="LightTheme.BBar">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="drawableTopCompat">@drawable/ic_add_alarm_24</item>
+        <item name="android:padding">8dp</item>
     </style>
 </resources>

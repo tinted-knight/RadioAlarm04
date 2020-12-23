@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.Database
-import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
+import com.noomit.radioalarm02.ui.alarm_fire.DismissAlarmViewModel
 import com.noomit.radioalarm02.ui.alarm_list.AlarmManagerViewModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel

@@ -10,12 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.alarm.ui.AlarmActivity
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.alarm_fire.ui.AlarmActivity
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 

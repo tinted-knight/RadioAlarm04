@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.alarm.ui
+package com.noomit.radioalarm02.ui.alarm_fire.ui
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,11 +13,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerService
-import com.noomit.radioalarm02.alarm.DismissAlarmViewModel
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
+import com.noomit.radioalarm02.ui.alarm_fire.DismissAlarmViewModel
 
 
 class AlarmFireFragment : PlayerServiceFragment() {
