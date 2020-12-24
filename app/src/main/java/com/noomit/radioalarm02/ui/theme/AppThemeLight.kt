@@ -1,6 +1,5 @@
 package com.noomit.radioalarm02.ui.theme
 
-import android.graphics.Color
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import com.noomit.radioalarm02.R.attr as A
@@ -13,9 +12,12 @@ data class ViewStyle(
     @AttrRes val attr: Int,
 )
 
+interface ThemeCommon {
+    val clPrimary: Int
+}
+
 interface ThemeNowPlaying {
     val bgColor: Int
-    val textColor: Int
     val favoriteStyleId: Int
     val iconFavorite: Int
     val iconNotFavorite: Int
@@ -55,9 +57,11 @@ interface ThemeAlarmFire {
 val appTheme = AppThemeLight()
 
 data class AppThemeLight(
+    val common: ThemeCommon = object : ThemeCommon {
+        override val clPrimary = C.clPrimary
+    },
     val nowPlaying: ThemeNowPlaying = object : ThemeNowPlaying {
         override val bgColor = C.clCardBackground
-        override val textColor = Color.parseColor("#FF414141")
         override val favoriteStyleId = S.LightTheme_ActionButton
         override val iconFavorite = D.ic_favorite_24
         override val iconNotFavorite = D.ic_favorite_border_24

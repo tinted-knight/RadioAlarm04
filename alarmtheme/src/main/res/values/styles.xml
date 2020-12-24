@@ -82,7 +82,8 @@
     </style>
 
     <style name="LightTheme.BBar.Browse" parent="LightTheme.BBar">
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <!--        <item name="android:background">?attr/selectableItemBackground</item>-->
+        <item name="android:background">@color/clBackground</item>
         <item name="drawableTopCompat">@drawable/ic_search_24</item>
         <item name="android:padding">8dp</item>
     </style>

@@ -1,8 +1,10 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +13,7 @@ import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 import com.noomit.radioalarm02.ui.alarm_list.adapters.MarginItemDecoration
+import com.noomit.radioalarm02.ui.animations.BBarAnimator
 import com.noomit.radioalarm02.ui.animations.ItemListAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -30,6 +33,7 @@ interface IHomeLayout {
 }
 
 // #todo help fab
+// #todo bbar as separate layout
 class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayout(context),
     IHomeLayout {
 
@@ -58,8 +62,12 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         appTheme.btns.bbarBrowse.attr
     ).apply {
         text = "Browse radio"
+
+        val strokeColor = ResourcesCompat.getColor(resources, appTheme.common.clPrimary, null)
+        stateListAnimator = BBarAnimator(this, strokeColor)
+        background = GradientDrawable()
+
         setOnClickListener { delegate?.onBrowseClick() }
-        stateListAnimator = ItemListAnimator(this)
     }
 
     private val btnAddAlarm = MaterialTextView(

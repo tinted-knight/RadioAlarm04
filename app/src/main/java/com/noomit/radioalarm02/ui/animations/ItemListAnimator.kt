@@ -4,7 +4,6 @@ import android.animation.*
 import android.view.View
 import android.view.animation.LinearInterpolator
 
-// #todo for bbar + semitransparent border like youtube
 class ItemListAnimator(private val view: View) : StateListAnimator() {
 
     private val animationDuration = 60L
