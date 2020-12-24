@@ -1,7 +1,9 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -22,7 +24,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.filterNotNull
 
 @FlowPreview
-class StationListFragment : PlayerServiceFragment() {
+class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 
@@ -30,16 +32,12 @@ class StationListFragment : PlayerServiceFragment() {
         FavoritesViewModelFactory(requireActivity().application as Application00)
     }
 
-    private val contour: IStationListLayout
-        get() = view as IStationListLayout
+            ;
+    override val layout: View
+        get() = StationListLayout(requireContext())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return StationListLayout(requireContext())
-    }
+    override val contour: IStationListLayout
+        get() = view as IStationListLayout
 
     override fun onServiceConnected() {}
 

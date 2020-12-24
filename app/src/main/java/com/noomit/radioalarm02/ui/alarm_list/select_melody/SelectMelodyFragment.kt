@@ -1,9 +1,6 @@
 package com.noomit.radioalarm02.ui.alarm_list.select_melody
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,7 +13,7 @@ import com.noomit.radioalarm02.ui.alarm_list.AlarmManagerViewModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 
-class SelectMelodyFragment : PlayerServiceFragment() {
+class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
 
     private val favoritesViewModel: FavoritesViewModel by viewModels {
         DatabaseViewModelFactory(requireActivity().application as Application00)
@@ -24,16 +21,11 @@ class SelectMelodyFragment : PlayerServiceFragment() {
 
     private val alarmViewModel: AlarmManagerViewModel by activityViewModels()
 
-    private val contour: ISelectMelodyLayout
-        get() = view as ISelectMelodyLayout
+    override val layout: View
+        get() = SelectMelodyLayout(requireContext())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return SelectMelodyLayout(requireContext())
-    }
+    override val contour: ISelectMelodyLayout
+        get() = view as ISelectMelodyLayout
 
     override fun onServiceConnected() {}
 

@@ -2,16 +2,13 @@ package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
-import com.noomit.radioalarm02.base.ContourFragment
+import com.noomit.radioalarm02.base.ContourFragmentNew
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.toast
@@ -19,7 +16,7 @@ import com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 
-class HomeFragment : ContourFragment() {
+class HomeFragment : ContourFragmentNew<IHomeLayout>() {
 
     private val alarmManager: AlarmManagerViewModel by activityViewModels {
         AndroidViewModelFactory(
@@ -28,16 +25,11 @@ class HomeFragment : ContourFragment() {
         )
     }
 
-    private val contour: IHomeLayout
-        get() = view as IHomeLayout
+    override val layout: View
+        get() = HomeLayout(requireContext())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return HomeLayout(requireContext())
-    }
+    override val contour: IHomeLayout
+        get() = view as IHomeLayout
 
     override fun prepareView() {
         contour.setAdapter(AlarmListAdapter(adapterListener))

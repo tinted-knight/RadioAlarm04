@@ -7,9 +7,7 @@ import android.content.IntentFilter
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerService
@@ -19,7 +17,7 @@ import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.AppDatabase
 
 
-class AlarmFireFragment : PlayerServiceFragment() {
+class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
     private var ringtone: Ringtone? = null
 
     private val viewModel: DismissAlarmViewModel by activityViewModels {
@@ -31,16 +29,11 @@ class AlarmFireFragment : PlayerServiceFragment() {
 
     private lateinit var playerBroadcastReceiver: BroadcastReceiver
 
-    private val contour: IAlarmFireLayout
-        get() = view as IAlarmFireLayout
+    override val layout: View
+        get() = AlarmFireLayout(requireContext())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return AlarmFireLayout(requireContext())
-    }
+    override val contour: IAlarmFireLayout
+        get() = view as IAlarmFireLayout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

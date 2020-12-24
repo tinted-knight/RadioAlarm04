@@ -14,21 +14,9 @@ import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.playerservice.PlayerService
 
-// #todo migrate to ContourFragmentNew
-abstract class ContourFragment : Fragment() {
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        prepareView()
-        observeViewModel()
-    }
-
-    protected abstract fun prepareView()
-
-    protected abstract fun observeViewModel()
-}
-
+/**
+ * Generic parameter [L] is supposed to be your layout's interface
+ */
 abstract class ContourFragmentNew<L> : Fragment() {
     /**
      * Layout, that will just be returned by [onCreateView] method
@@ -79,7 +67,7 @@ abstract class ContourFragmentNew<L> : Fragment() {
     protected abstract fun observeViewModel()
 }
 
-abstract class PlayerServiceFragment : ContourFragment() {
+abstract class PlayerServiceFragment<L> : ContourFragmentNew<L>() {
 
     protected lateinit var playerView: PlayerView
     protected lateinit var playerControlView: PlayerControlView

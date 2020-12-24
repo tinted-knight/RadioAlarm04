@@ -29,6 +29,7 @@ interface IHomeLayout {
     fun showEmpty()
 }
 
+// #todo help fab
 class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayout(context),
     IHomeLayout {
 
