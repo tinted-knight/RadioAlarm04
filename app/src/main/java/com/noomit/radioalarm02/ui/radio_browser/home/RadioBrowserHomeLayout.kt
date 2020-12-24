@@ -2,6 +2,7 @@ package com.noomit.radioalarm02.ui.radio_browser.home
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.radiobrowser.ServerInfo
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -72,16 +74,29 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     private val serverList = ServerListView(context)
 
-    private val loadingIndicator = ProgressBar(context)
+    private val loadingIndicator = ProgressBar(
+        ContextThemeWrapper(context, R.style.LightTheme_ProgressBar),
+        null,
+        R.attr.progressBarColors
+    )
+
+    private val loadingBackground = View(context).apply {
+        setBackgroundColor(Color.parseColor("#12000000"))
+    }
 
     init {
         contourHeightWrapContent()
 
         val matchParentWidth = matchParentX(marginLeft = 16.dip, marginRight = 16.dip)
 
+        loadingBackground.layoutBy(
+            leftTo { loadingIndicator.left() - 16.xdip }.rightTo { loadingIndicator.right() + 16.xdip },
+            topTo { loadingIndicator.top() - 16.ydip }.bottomTo { loadingIndicator.bottom() + 16.ydip }
+        )
+
         loadingIndicator.layoutBy(
-            centerHorizontallyTo { parent.centerX() },
-            topTo { parent.top() + 100.ydip }
+            centerHorizontallyTo { parent.centerX() }.widthOf { 60.xdip },
+            topTo { parent.top() + 100.ydip }.heightOf { 60.ydip }
         )
 
         btnLanguages.layoutBy(
@@ -134,6 +149,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     override fun showLoading() {
         loadingIndicator.isVisible = true
+        loadingBackground.isVisible = false
 
         serverList.recycler.isVisible = false
         btnLanguages.isEnabled = false
@@ -152,24 +168,24 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     override fun update(content: List<ServerInfo>) {
-        loadingIndicator.isVisible = false
+//        loadingIndicator.isVisible = false
 
-        (serverList.recycler.adapter as ServerListAdapter).submitList(content)
-        serverList.recycler.isVisible = true
-
-        btnLanguages.isEnabled = true
-        btnLanguages.isVisible = true
-
-        btnTags.isEnabled = true
-        btnTags.isVisible = true
-
-        btnTopVoted.isEnabled = true
-        btnTopVoted.isVisible = true
-
-        searchName.isVisible = true
-        searchTag.isVisible = true
-
-        serverList.isVisible = true
+//        (serverList.recycler.adapter as ServerListAdapter).submitList(content)
+//        serverList.recycler.isVisible = true
+//
+//        btnLanguages.isEnabled = true
+//        btnLanguages.isVisible = true
+//
+//        btnTags.isEnabled = true
+//        btnTags.isVisible = true
+//
+//        btnTopVoted.isEnabled = true
+//        btnTopVoted.isVisible = true
+//
+//        searchName.isVisible = true
+//        searchTag.isVisible = true
+//
+//        serverList.isVisible = true
     }
 
     override fun update(activerServer: ServerInfo?) {

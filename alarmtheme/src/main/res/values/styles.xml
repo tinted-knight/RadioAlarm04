@@ -18,7 +18,15 @@
         <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
         <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
+        <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:windowBackground">@color/clBackground</item>
+    </style>
+
+    <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
+<!--        <item name="android:indeterminateBehavior">repeat</item>-->
+<!--        <item name="android:indeterminateDuration">1000</item>-->
+        <item name="android:indeterminate">true</item>
+<!--        <item name="android:indeterminateDrawable">@drawable/progress_bar</item>-->
     </style>
 
     <style name="LightTheme.MaterialButton" parent="Widget.MaterialComponents.Button">

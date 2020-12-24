@@ -11,4 +11,5 @@
     <attr name="textAlarmFireStation" format="reference" />
     <attr name="textAlarmFireTime" format="reference" />
     <attr name="stationCountText" format="reference" />
+    <attr name="progressBarColors" format="reference" />
 </resources>
