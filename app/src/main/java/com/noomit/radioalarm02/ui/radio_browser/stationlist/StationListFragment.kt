@@ -32,7 +32,6 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         FavoritesViewModelFactory(requireActivity().application as Application00)
     }
 
-            ;
     override val layout: View
         get() = StationListLayout(requireContext())
 

@@ -193,6 +193,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
+    // #todo when changing favorite update only icon
     fun update(station: StationModel, inFavorites: Boolean) {
         loadStationIcon(station)
 
