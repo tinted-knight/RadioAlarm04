@@ -40,7 +40,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.btns.text.attr,
     ).apply {
-        text = "Set system"
+        text = "Set default"
         setOnClickListener { onSetDefaultRingtone?.invoke() }
     }
 

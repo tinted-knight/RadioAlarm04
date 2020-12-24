@@ -24,12 +24,12 @@ class FavoritesManager(database: Database) : IFavoritesManager {
                 val tagList = fav.tags.split(",").onEach { tag -> tag.trim() }
                 StationModel(
                     name = fav.name,
-                    upvotes = "no",
+                    upvotes = "",
                     streamUrl = fav.stream_url,
                     country = fav.country,
                     homepage = fav.homepage,
-                    codec = "no",
-                    bitrate = "no",
+                    codec = "",
+                    bitrate = "",
                     favicon = fav.favicon,
                     tags = tagList,
                 )

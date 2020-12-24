@@ -24,7 +24,7 @@ class StationItemView(
     }
 
     private val stationCount = TextView(context).apply {
-        text = "101"
+        text = ""
     }
 
     init {

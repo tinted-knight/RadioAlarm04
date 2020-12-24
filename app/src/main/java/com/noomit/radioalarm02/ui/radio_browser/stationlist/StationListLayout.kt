@@ -17,6 +17,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
+import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface IStationListLayout {
@@ -58,7 +59,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     private val stationsCount = TextView(
         context,
         null,
-        R.attr.stationCountText
+        appTheme.nowPlaying.stationCount.attr
     ).apply {
         isVisible = false
     }
