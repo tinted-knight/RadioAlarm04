@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -52,10 +53,6 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         setOnClickListener { delegate?.onTopVotedClick() }
     }
 
-    private val btnStations = materialButton.apply {
-        text = "Stations"
-    }
-
     private val searchName = textInputLayout.apply {
         hint = "name hint"
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
@@ -74,10 +71,17 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     private val serverList = ServerListView(context)
 
+    private val loadingIndicator = ProgressBar(context)
+
     init {
         contourHeightWrapContent()
 
         val matchParentWidth = matchParentX(marginLeft = 16.dip, marginRight = 16.dip)
+
+        loadingIndicator.layoutBy(
+            centerHorizontallyTo { parent.centerX() },
+            topTo { parent.top() + 100.ydip }
+        )
 
         btnLanguages.layoutBy(
             x = matchParentWidth,
@@ -94,14 +98,9 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
             y = topTo { btnTags.bottom() }
         )
 
-        btnStations.layoutBy(
-            x = matchParentWidth,
-            y = topTo { btnTopVoted.bottom() }
-        )
-
         searchName.layoutBy(
             x = matchParentWidth,
-            y = topTo { btnStations.bottom() }
+            y = topTo { btnTopVoted.bottom() }
         )
 
         searchTag.layoutBy(
@@ -133,18 +132,43 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     override fun showLoading() {
+        loadingIndicator.isVisible = true
+
         serverList.recycler.isVisible = false
         btnLanguages.isEnabled = false
+        btnLanguages.isVisible = false
+
         btnTags.isEnabled = false
+        btnTags.isVisible = false
+
         btnTopVoted.isEnabled = false
+        btnTopVoted.isVisible = false
+
+        searchName.isVisible = false
+        searchTag.isVisible = false
+
+        serverList.isVisible = false
     }
 
     override fun update(content: List<ServerInfo>) {
+        loadingIndicator.isVisible = false
+
         (serverList.recycler.adapter as ServerListAdapter).submitList(content)
         serverList.recycler.isVisible = true
+
         btnLanguages.isEnabled = true
+        btnLanguages.isVisible = true
+
         btnTags.isEnabled = true
+        btnTags.isVisible = true
+
         btnTopVoted.isEnabled = true
+        btnTopVoted.isVisible = true
+
+        searchName.isVisible = true
+        searchTag.isVisible = true
+
+        serverList.isVisible = true
     }
 
     override fun update(activerServer: ServerInfo?) {
