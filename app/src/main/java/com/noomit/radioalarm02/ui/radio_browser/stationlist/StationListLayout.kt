@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.animation.OvershootInterpolator
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,6 +55,14 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         isVerticalScrollBarEnabled = true
     }
 
+    private val stationsCount = TextView(
+        context,
+        null,
+        R.attr.stationCountText
+    ).apply {
+        isVisible = false
+    }
+
     private val nowPlayingView = NowPlayingView(context).apply {
         btnFav.setOnClickListener { this@StationListLayout.delegate?.onFavoriteClick() }
     }
@@ -70,9 +79,14 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             bottomTo { parent.bottom() }
         )
 
+        stationsCount.layoutBy(
+            rightTo { parent.right() - 16.xdip },
+            topTo { parent.top() }
+        )
+
         rvStationList.layoutBy(
             matchParentWidth,
-            bottomTo { playerControll.top() }.topTo { parent.top() }
+            bottomTo { playerControll.top() }.topTo { stationsCount.bottom() }
         )
 
         loadingIndicator.layoutBy(
@@ -124,6 +138,8 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         (rvStationList.adapter as StationListAdapter).submitList(values)
         loadingIndicator.isVisible = false
         rvStationList.isVisible = true
+        stationsCount.text = "Station count: ${values.size}"
+        stationsCount.isVisible = true
     }
 
     override fun nowPlaying(station: StationModel, inFavorites: Boolean) {

@@ -21,6 +21,7 @@ interface ThemeNowPlaying {
     val favoriteStyleId: Int
     val iconFavorite: Int
     val iconNotFavorite: Int
+//    val stationCount: ViewStyle
 }
 
 interface ThemeServerList {
