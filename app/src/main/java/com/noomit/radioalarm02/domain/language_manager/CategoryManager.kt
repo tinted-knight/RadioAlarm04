@@ -14,19 +14,20 @@ class CategoryManager(private val apiService: RadioBrowserService) : WithLogTag 
     private val _state = MutableStateFlow<CategoryManagerState>(CategoryManagerState.Loading)
     val state: StateFlow<CategoryManagerState> = _state
 
-    suspend fun getLanguages() = getCategory(flow { emit(apiService.getLanguageList()) }) {
+    suspend fun getLanguages() = getCategory(apiService::getLanguageList) {
         CategoryModel.Language(it.name, it.stationcount.toString())
     }
 
-    suspend fun getTags() = getCategory(flow { emit(apiService.getTagList()) }) {
+    suspend fun getTags() = getCategory(apiService::getTagList) {
         CategoryModel.Tag(it.name, it.stationcount.toString())
     }
 
     private suspend fun getCategory(
-        flow: Flow<List<CategoryNetworkEntity>>,
+        apiMethod: suspend () -> List<CategoryNetworkEntity>,
         mapper: (CategoryNetworkEntity) -> CategoryModel,
     ) {
-        flow.onStart { _state.value = CategoryManagerState.Loading }
+        flow { emit(apiMethod()) }
+            .onStart { _state.value = CategoryManagerState.Loading }
             .flowOn(Dispatchers.IO)
             .map { categoryList ->
                 categoryList.sortedByDescending { it.stationcount }
