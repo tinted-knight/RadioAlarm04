@@ -94,6 +94,11 @@
                                   </option>
                                   <option name="myPositions">
                                     <map>
+                                      <entry key="action_radioBrowserFragment_to_stationListFragment">
+                                        <value>
+                                          <LayoutPositions />
+                                        </value>
+                                      </entry>
                                       <entry key="action_radioBrowser_to_languageList">
                                         <value>
                                           <LayoutPositions />
@@ -109,8 +114,8 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="910" />
-                                      <option name="y" value="27" />
+                                      <option name="x" value="646" />
+                                      <option name="y" value="-436" />
                                     </Point>
                                   </option>
                                 </LayoutPositions>

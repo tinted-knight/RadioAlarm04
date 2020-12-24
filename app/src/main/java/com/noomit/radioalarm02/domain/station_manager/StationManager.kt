@@ -31,6 +31,7 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
         val flow: Flow<List<StationNetworkEntity>> = when (category) {
             is CategoryModel.Language -> apiService.stationsByLanguage(category.name)
             is CategoryModel.Tag -> apiService.stationsByTag(category.name)
+            is CategoryModel.TopVoted -> flowOf(apiService.getTopVoted())
         }
 
         flow.flowOn(Dispatchers.IO)

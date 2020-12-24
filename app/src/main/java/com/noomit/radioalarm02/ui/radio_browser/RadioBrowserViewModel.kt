@@ -34,10 +34,6 @@ class RadioBrowserViewModel(
         serverManager.getAvalilable(viewModelScope)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
     fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
@@ -60,7 +56,9 @@ class RadioBrowserViewModel(
         }
     }
 
-    // Stations
+    /**
+     * Request stations by [category]. Observe result by [stationList]
+     */
     fun showStations(category: CategoryModel) = viewModelScope.launch {
         clearStationFilter()
         stationManager.stationsBy(category)

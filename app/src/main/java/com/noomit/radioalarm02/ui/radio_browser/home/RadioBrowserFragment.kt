@@ -12,6 +12,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
+import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
@@ -79,6 +80,14 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             findNavController().navigate(
                 R.id.action_radioBrowser_to_languageList,
                 Bundle().apply { putString("title", "Tags") }
+            )
+        }
+
+        override fun onTopVotedClick() {
+            viewModel.showStations(CategoryModel.TopVoted())
+            findNavController().navigate(
+                R.id.action_radioBrowser_to_stationList,
+                Bundle().apply { putString("title", "Top voted") }
             )
         }
     }

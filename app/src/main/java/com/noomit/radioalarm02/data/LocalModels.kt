@@ -13,6 +13,11 @@ sealed class CategoryModel {
         override val name: String,
         override val stationCount: String,
     ) : CategoryModel()
+
+    data class TopVoted(
+        override val name: String = "Top voted",
+        override val stationCount: String = "-1",
+    ) : CategoryModel()
 }
 
 data class StationModel(

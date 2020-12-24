@@ -106,9 +106,7 @@ class RadioBrowserService {
         return api.getAllStations()
     }
 
-    suspend fun getTopVote(): List<StationNetworkEntity> {
-        return api.getTopVoted()
-    }
+    suspend fun getTopVoted() = api.getTopVoted()
 
     private suspend fun getLanguageList(): List<CategoryNetworkEntity> {
         // #todo wrapper for every method that calls [api] field

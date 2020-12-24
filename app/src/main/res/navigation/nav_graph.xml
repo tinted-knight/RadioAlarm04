@@ -53,6 +53,9 @@
                 app:exitAnim="@anim/from_out"
                 app:popEnterAnim="@anim/from_in"
                 app:popExitAnim="@anim/to_out" />
+            <action
+                android:id="@+id/action_radioBrowser_to_stationList"
+                app:destination="@id/stationListFragment" />
         </fragment>
         <fragment
             android:id="@+id/categoryListFragment"
