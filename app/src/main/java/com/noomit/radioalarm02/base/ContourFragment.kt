@@ -17,7 +17,7 @@ import com.noomit.playerservice.PlayerService
 /**
  * Generic parameter [L] is supposed to be your layout's interface
  */
-abstract class ContourFragmentNew<L> : Fragment() {
+abstract class ContourFragment<L> : Fragment() {
     /**
      * Layout, that will just be returned by [onCreateView] method
      *
@@ -67,7 +67,7 @@ abstract class ContourFragmentNew<L> : Fragment() {
     protected abstract fun observeViewModel()
 }
 
-abstract class PlayerServiceFragment<L> : ContourFragmentNew<L>() {
+abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
 
     protected lateinit var playerView: PlayerView
     protected lateinit var playerControlView: PlayerControlView

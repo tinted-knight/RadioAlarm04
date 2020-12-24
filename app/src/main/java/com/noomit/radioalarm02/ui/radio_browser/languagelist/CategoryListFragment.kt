@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.ContourFragmentNew
+import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
@@ -20,7 +20,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
 @FlowPreview
-class CategoryListFragment : ContourFragmentNew<ICategoryLayout>() {
+class CategoryListFragment : ContourFragment<ICategoryLayout>() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
 

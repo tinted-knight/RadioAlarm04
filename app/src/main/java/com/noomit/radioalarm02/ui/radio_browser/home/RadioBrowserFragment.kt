@@ -9,7 +9,7 @@ import androidx.navigation.navGraphViewModels
 import com.example.radiobrowser.ActiveServerState
 import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.ContourFragmentNew
+import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
@@ -19,7 +19,7 @@ import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
 
 @FlowPreview
-class RadioBrowserFragment : ContourFragmentNew<IRadioBrowserHomeLayout>() {
+class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
 
     private val viewModel: RadioBrowserViewModel by navGraphViewModels(
         navGraphId = R.id.nav_radio_browser,
