@@ -3,10 +3,8 @@ package com.example.radiobrowser
 import android.util.Log
 import com.example.radiobrowser.ServerListResponse.ServerListFailure
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.InetAddress
@@ -90,25 +88,19 @@ class RadioBrowserService {
         _activeServer.value = ActiveServerState.Value(serverInfo)
     }
 
-    fun getLanguageListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(getLanguageList()) }
+    suspend fun getLanguageList() = getLanguageListOrThrow()
 
-    fun getTagListFlow(): Flow<List<CategoryNetworkEntity>> = flow { emit(api.getTagList()) }
+    suspend fun getTagList() = api.getTagList()
 
-    fun stationsByLanguage(langString: String) = flow {
-        emit(api.getStationsByLanguage(langString))
-    }
+    suspend fun stationsByLanguage(langString: String) = api.getStationsByLanguage(langString)
 
-    fun stationsByTag(tagString: String) = flow {
-        emit(api.getStationsByTag(tagString))
-    }
+    suspend fun stationsByTag(tagString: String) = api.getStationsByTag(tagString)
 
-    suspend fun getAllStations(): List<StationNetworkEntity> {
-        return api.getAllStations()
-    }
+    suspend fun getAllStations() = api.getAllStations()
 
     suspend fun getTopVoted() = api.getTopVoted()
 
-    private suspend fun getLanguageList(): List<CategoryNetworkEntity> {
+    private suspend fun getLanguageListOrThrow(): List<CategoryNetworkEntity> {
         // #todo wrapper for every method that calls [api] field
         if (::api.isInitialized) {
             return api.getLanguageList()
