@@ -115,7 +115,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         val verticalSpacing = 8.ydip
 
         title.updateLayoutBy(
-            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 4.xdip },
+            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 8.xdip },
             y = topTo { nowPlayingIcon.top() + 16.ydip }
         )
         nowPlayingIcon.updateLayoutBy(

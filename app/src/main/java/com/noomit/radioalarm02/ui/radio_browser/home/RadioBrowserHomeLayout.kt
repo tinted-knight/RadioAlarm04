@@ -14,6 +14,7 @@ import com.example.radiobrowser.ServerInfo
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
@@ -39,17 +40,17 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     override var delegate: RadioBrowserHomeDelegate? = null
 
     private val btnLanguages = materialButton.apply {
-        text = "Languages"
+        text = "Language list"
         setOnClickListener { delegate?.onLanguageClick() }
     }
 
     private val btnTags = materialButton.apply {
-        text = "Tags"
+        text = "Tag list"
         setOnClickListener { delegate?.onTagClick() }
     }
 
     private val btnTopVoted = materialButton.apply {
-        text = "Top Voted"
+        text = "Top Voted Stations"
         setOnClickListener { delegate?.onTopVotedClick() }
     }
 
@@ -189,7 +190,9 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
             ContextThemeWrapper(context, appTheme.btns.text.style),
             null,
             appTheme.btns.text.attr
-        )
+        ).apply {
+            stateListAnimator = PushOnPressAnimator(this)
+        }
 
     private val textInputLayout: TextInputLayout
         get() = TextInputLayout(

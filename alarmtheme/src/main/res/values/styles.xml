@@ -35,7 +35,10 @@
         <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton"></style>
+    <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
 
     <style name="LightTheme.ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
 
