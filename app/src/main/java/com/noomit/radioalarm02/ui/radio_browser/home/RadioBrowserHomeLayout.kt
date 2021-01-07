@@ -168,24 +168,24 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     override fun update(content: List<ServerInfo>) {
-//        loadingIndicator.isVisible = false
+        loadingIndicator.isVisible = false
 
-//        (serverList.recycler.adapter as ServerListAdapter).submitList(content)
-//        serverList.recycler.isVisible = true
-//
-//        btnLanguages.isEnabled = true
-//        btnLanguages.isVisible = true
-//
-//        btnTags.isEnabled = true
-//        btnTags.isVisible = true
-//
-//        btnTopVoted.isEnabled = true
-//        btnTopVoted.isVisible = true
-//
-//        searchName.isVisible = true
-//        searchTag.isVisible = true
-//
-//        serverList.isVisible = true
+        (serverList.recycler.adapter as ServerListAdapter).submitList(content)
+        serverList.recycler.isVisible = true
+
+        btnLanguages.isEnabled = true
+        btnLanguages.isVisible = true
+
+        btnTags.isEnabled = true
+        btnTags.isVisible = true
+
+        btnTopVoted.isEnabled = true
+        btnTopVoted.isVisible = true
+
+        searchName.isVisible = true
+        searchTag.isVisible = true
+
+        serverList.isVisible = true
     }
 
     override fun update(activerServer: ServerInfo?) {
