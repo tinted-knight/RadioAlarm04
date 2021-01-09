@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -74,7 +75,11 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val melody = MaterialTextView(context).apply {
+    private val melody = MaterialTextView(
+        context,
+        null,
+        appTheme.alarmItem.melodyText.attr,
+    ).apply {
         text = "Long title of radio station, Long title of radio station, Long title of radio"
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.END
@@ -84,6 +89,12 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             true
         }
     }
+
+    private val alarmIcon = ImageView(
+        context,
+        null,
+        appTheme.alarmItem.alarmIcon.attr,
+    )
 
     private val btnDelete = ImageButton(
         ContextThemeWrapper(context, appTheme.alarmItem.favoriteStyleId),
@@ -186,8 +197,12 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             rightTo { parent.right() - xPadding },
             topTo { switch.bottom() + yPadding }
         )
+        alarmIcon.layoutBy(
+            leftTo { parent.left() + xPadding }.widthOf { 16.xdip },
+            centerVerticallyTo { melody.centerY() }.heightOf { 16.ydip }
+        )
         melody.layoutBy(
-            leftTo { parent.left() + xPadding }.rightTo { btnDelete.left() - xPadding },
+            leftTo { alarmIcon.right() }.rightTo { btnDelete.left() - xPadding },
             centerVerticallyTo { btnDelete.centerY() }
         )
         week.layoutBy(

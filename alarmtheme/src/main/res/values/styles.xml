@@ -18,6 +18,8 @@
         <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
         <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
         <item name="textAlarmFireDay">@style/LightTheme.AlarmFireDay</item>
+        <item name="alarmCardMelody">@style/LightTheme.MelodyText</item>
+        <item name="alarmCardAlarmIcon">@style/LightTheme.AlarmIcon</item>
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:windowBackground">@color/clBackground</item>
@@ -53,6 +55,16 @@
 
     <!-- Alarm Card -->
     <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />
+
+    <style name="LightTheme.MelodyText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="LightTheme.AlarmIcon">
+        <item name="android:src">@drawable/ic_add_alarm_24</item>
+        <item name="android:tint">@color/clAccent</item>
+    </style>
 
     <style name="LightTheme.DayOfWeek">
         <item name="android:background">?attr/selectableItemBackground</item>

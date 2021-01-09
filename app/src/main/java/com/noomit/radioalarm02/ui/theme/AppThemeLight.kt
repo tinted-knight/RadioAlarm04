@@ -36,6 +36,8 @@ interface ThemeAlarmItem {
     val dayColorInactive: Int
     val dayColorActive: Int
     val timeTextStyle: Int
+    val melodyText: ViewStyle
+    val alarmIcon: ViewStyle
 }
 
 interface ThemeButton {
@@ -80,6 +82,8 @@ data class AppThemeLight(
         override val dayColorInactive = C.colorDayTextInactive
         override val dayColorActive = C.colorDayTextActive
         override val timeTextStyle = S.LightTheme_TextTime
+        override val melodyText = ViewStyle(S.LightTheme_MelodyText, A.alarmCardMelody)
+        override val alarmIcon = ViewStyle(S.LightTheme_AlarmIcon, A.alarmCardAlarmIcon)
     },
     val btns: ThemeButton = object : ThemeButton {
         override val text = ViewStyle(S.LightTheme_MaterialButtonText, A.buttonText)
