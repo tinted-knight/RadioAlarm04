@@ -51,11 +51,11 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         )
         btnSetup.layoutBy(
             leftTo { btnSystem.right() + 8.xdip }.rightTo { parent.right() - 8.xdip },
-            bottomTo { parent.bottom() }
+            bottomTo { parent.bottom() }.topTo { btnSystem.top() }
         )
         favorites.layoutBy(
             matchParentX(8, 8),
-            topTo { parent.top() }.bottomTo { btnSetup.top() }
+            topTo { parent.top() }.bottomTo { btnSystem.top() }
         )
     }
 
