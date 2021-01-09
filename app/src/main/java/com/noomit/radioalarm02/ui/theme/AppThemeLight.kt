@@ -53,6 +53,7 @@ interface ThemeTextInput {
 interface ThemeAlarmFire {
     val station: ViewStyle
     val time: ViewStyle
+    val day: ViewStyle
 }
 
 val appTheme = AppThemeLight()
@@ -93,5 +94,6 @@ data class AppThemeLight(
     val alarmFire: ThemeAlarmFire = object : ThemeAlarmFire {
         override val station = ViewStyle(S.LightTheme_AlarmFireStation, A.textAlarmFireStation)
         override val time = ViewStyle(S.LightTheme_AlarmFireTime, A.textAlarmFireTime)
+        override val day = ViewStyle(S.LightTheme_AlarmFireDay, A.textAlarmFireDay)
     },
 )

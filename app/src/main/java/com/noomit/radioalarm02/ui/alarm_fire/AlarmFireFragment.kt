@@ -57,7 +57,9 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
         super.onDestroyView()
     }
 
-    override fun prepareView() {}
+    override fun prepareView() {
+        contour.setDay(viewModel.day)
+    }
 
     override fun onServiceConnected() {
         if (viewModel.melodyUrl.isNullOrEmpty()) {

@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.TextView
@@ -18,6 +19,7 @@ interface IAlarmFireLayout {
 
     fun setStationName(value: String)
     fun setTime(value: String)
+    fun setDay(value: String)
 }
 
 class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
@@ -26,19 +28,28 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
     private val stationName = TextView(
         context,
         null,
-        appTheme.alarmFire.station.attr
+        appTheme.alarmFire.station.attr,
     ).apply {
         text = ""
-        // #todo maxLines + elliplsize
+        maxLines = 2
+        ellipsize = TextUtils.TruncateAt.END
     }
 
     private val time = TextView(
         context,
         null,
-        appTheme.alarmFire.time.attr
+        appTheme.alarmFire.time.attr,
     ).apply {
         text = "9:00"
         background = ResourcesCompat.getDrawable(resources, R.drawable.alarm_bg_time, null)
+    }
+
+    private val dayOfWeek = TextView(
+        context,
+        null,
+        appTheme.alarmFire.day.attr,
+    ).apply {
+        text = "Monday"
     }
 
     override val playerControll =
@@ -51,15 +62,19 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
     }
 
     init {
+        fitsSystemWindows = true
         background = ResourcesCompat.getDrawable(resources, R.drawable.hipster_bg_gradient, null)
         time.layoutBy(
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },
         )
-        // #todo increase top padding
         stationName.layoutBy(
             matchParentX(16, 16),
-            topTo { parent.top() + 16.ydip }
+            topTo { parent.top() + 8.ydip }
+        )
+        dayOfWeek.layoutBy(
+            centerHorizontallyTo { parent.centerX() },
+            topTo { time.bottom() + 16.ydip }
         )
         playerControll.layoutBy(
             emptyX(),
@@ -73,5 +88,9 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
 
     override fun setTime(value: String) {
         time.text = value
+    }
+
+    override fun setDay(value: String) {
+        dayOfWeek.text = value
     }
 }

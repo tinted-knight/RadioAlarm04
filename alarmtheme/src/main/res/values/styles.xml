@@ -17,6 +17,7 @@
         <item name="textInputOutlined">@style/LightTheme.TextInputOutlined</item>
         <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
         <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
+        <item name="textAlarmFireDay">@style/LightTheme.AlarmFireDay</item>
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:windowBackground">@color/clBackground</item>
@@ -78,8 +79,15 @@
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="background">@drawable/alarm_bg_time</item>
         <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="LightTheme.AlarmFireDay" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <!-- Bottom Bar  -->

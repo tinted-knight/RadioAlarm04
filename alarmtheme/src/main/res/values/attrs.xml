@@ -10,6 +10,7 @@
     <attr name="textInputOutlined" format="reference" />
     <attr name="textAlarmFireStation" format="reference" />
     <attr name="textAlarmFireTime" format="reference" />
+    <attr name="textAlarmFireDay" format="reference" />
     <attr name="stationCountText" format="reference" />
     <attr name="progressBarColors" format="reference" />
 </resources>

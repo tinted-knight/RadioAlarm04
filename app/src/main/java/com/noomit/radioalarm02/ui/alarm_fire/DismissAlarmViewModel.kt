@@ -28,7 +28,7 @@ class DismissAlarmViewModel(database: Database, application: Application) :
     var melodyUrl: String? = null
     var melodyName: String? = null
 
-    var time = flow<String> {
+    val time = flow<String> {
         val df = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
         while (true) {
             val now = Calendar.getInstance()
@@ -36,6 +36,13 @@ class DismissAlarmViewModel(database: Database, application: Application) :
             delay(TIMER_TICK_DELAY)
         }
     }
+
+    val day: String
+        get() {
+            val df = SimpleDateFormat("EEEE", Locale.getDefault())
+            val now = Date(Calendar.getInstance().timeInMillis)
+            return df.format(now)
+        }
 
     init {
         plog("DismissAlarmViewModel")

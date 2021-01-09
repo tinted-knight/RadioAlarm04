@@ -17,6 +17,7 @@
         <item name="textInputOutlined">@style/LightTheme.TextInputOutlined</item>
         <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
         <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
+        <item name="textAlarmFireDay">@style/LightTheme.AlarmFireDay</item>
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:statusBarColor">@color/clStausBarBackground</item>
