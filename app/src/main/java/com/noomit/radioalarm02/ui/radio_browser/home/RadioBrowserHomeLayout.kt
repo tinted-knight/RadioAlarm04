@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -56,6 +57,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         setOnClickListener { delegate?.onTopVotedClick() }
     }
 
+    private val searchLabel = TextView(context).apply {
+        text = "Try to search by station name and(or) tag:"
+    }
+
     private val searchName = textInputLayout.apply {
         hint = "name hint"
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
@@ -72,6 +77,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         addView(TextInputEditText(this.context))
     }
 
+    private val btnSearch = MaterialButton(context).apply {
+        text = "Search"
+    }
+
     private val serverList = ServerListView(context)
 
     private val loadingIndicator = ProgressBar(
@@ -86,42 +95,43 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     init {
         contourHeightWrapContent()
-
-        val matchParentWidth = matchParentX(marginLeft = 16.dip, marginRight = 16.dip)
+        setPadding(16.dip, 0.dip, 16.dip, 0.dip)
 
         loadingBackground.layoutBy(
             leftTo { loadingIndicator.left() - 16.xdip }.rightTo { loadingIndicator.right() + 16.xdip },
             topTo { loadingIndicator.top() - 16.ydip }.bottomTo { loadingIndicator.bottom() + 16.ydip }
         )
-
         loadingIndicator.layoutBy(
             centerHorizontallyTo { parent.centerX() }.widthOf { 60.xdip },
             topTo { parent.top() + 100.ydip }.heightOf { 60.ydip }
         )
-
         btnLanguages.layoutBy(
-            x = matchParentWidth,
+            x = matchParentX(),
             y = topTo { parent.top() }
         )
-
         btnTags.layoutBy(
-            x = matchParentWidth,
+            x = matchParentX(),
             y = topTo { btnLanguages.bottom() }
         )
-
         btnTopVoted.layoutBy(
-            x = matchParentWidth,
+            x = matchParentX(),
             y = topTo { btnTags.bottom() }
         )
-
-        searchName.layoutBy(
-            x = matchParentWidth,
-            y = topTo { btnTopVoted.bottom() }
+        searchLabel.layoutBy(
+            x = matchParentX(),
+            topTo { btnTopVoted.bottom() }
         )
-
+        searchName.layoutBy(
+            x = matchParentX(),
+            y = topTo { searchLabel.bottom() }
+        )
         searchTag.layoutBy(
-            x = matchParentWidth,
+            x = matchParentX(),
             y = topTo { searchName.bottom() }
+        )
+        btnSearch.layoutBy(
+            x = rightTo { parent.right() },
+            y = topTo { searchTag.bottom() }
         )
 
         val xPadding = { if (!serverList.isSelected) 8.xdip else 16.xdip }
@@ -161,8 +171,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         btnTopVoted.isEnabled = false
         btnTopVoted.isVisible = false
 
+        searchLabel.isVisible = false
         searchName.isVisible = false
         searchTag.isVisible = false
+        btnSearch.isVisible = false
 
         serverList.isVisible = false
     }
@@ -172,7 +184,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
         (serverList.recycler.adapter as ServerListAdapter).submitList(content)
         serverList.recycler.isVisible = true
-        serverList.isVisible = true
+//        serverList.isVisible = true
 
         btnLanguages.isEnabled = true
         btnLanguages.isVisible = true
@@ -183,8 +195,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         btnTopVoted.isEnabled = true
         btnTopVoted.isVisible = true
 
+        searchLabel.isVisible = true
         searchName.isVisible = true
         searchTag.isVisible = true
+        btnSearch.isVisible = true
     }
 
     override fun update(activerServer: ServerInfo?) {
