@@ -172,6 +172,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
         (serverList.recycler.adapter as ServerListAdapter).submitList(content)
         serverList.recycler.isVisible = true
+        serverList.isVisible = true
 
         btnLanguages.isEnabled = true
         btnLanguages.isVisible = true
@@ -184,8 +185,6 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
         searchName.isVisible = true
         searchTag.isVisible = true
-
-        serverList.isVisible = true
     }
 
     override fun update(activerServer: ServerInfo?) {

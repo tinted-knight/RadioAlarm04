@@ -67,6 +67,13 @@ class RadioBrowserService {
                 }
             )
 
+            // fisrt try to find out if there is "good" server available and return
+            serverList.filter { it.urlString.contains("de1") || it.urlString.contains("nl1") }
+                .firstOrNull { it.isReachable }?.let {
+                setActiveServer(it)
+                return@withContext ServerListResponse.Success(serverList)
+            }
+            // if not return first available
             serverList.firstOrNull { it.isReachable }?.let {
                 setActiveServer(it)
                 return@withContext ServerListResponse.Success(serverList)
