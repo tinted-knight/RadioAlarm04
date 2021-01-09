@@ -31,7 +31,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet) {
 
     private val title = TextView(context).apply {
-        ellipsize = TextUtils.TruncateAt.MARQUEE
+        ellipsize = TextUtils.TruncateAt.END
     }
 
     private val homePage = TextView(context)

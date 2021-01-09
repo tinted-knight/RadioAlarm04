@@ -69,6 +69,7 @@
     <style name="LightTheme.DayOfWeek">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:padding">4dp</item>
     </style>
 
@@ -82,7 +83,7 @@
     <!-- Alarm fire  -->
     <style name="LightTheme.AlarmFireStation" parent="TextAppearance.AppCompat.Display1">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">@color/clFireTextColor</item>
         <item name="android:textAlignment">center</item>
     </style>
 
@@ -90,7 +91,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">@color/clFireTextColor</item>
         <item name="android:padding">16dp</item>
     </style>
 
@@ -98,7 +99,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">@color/clFireTextColor</item>
         <item name="android:padding">8dp</item>
     </style>
 

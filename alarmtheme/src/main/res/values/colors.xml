@@ -8,6 +8,7 @@
     <color name="clStausBarBackground">#FFFFFF</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>
+    <color name="clFireTextColor">#FFFFFF</color>
     <!-- Alarm card  -->
     <color name="clDayBgActive">#0F109113</color>
     <color name="clDayRippleActive">#FFFF0000</color>
