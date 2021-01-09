@@ -38,15 +38,17 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private val country = TextView(context)
 
-    private val codec = LabeledView(context)
+    private val codec = LabeledView(context).apply {
+        label = "Codec:"
+    }
 
     private val bitrate = LabeledView(context).apply {
         label = "Bitrate:"
     }
 
     private val tagList = ChipGroup(context).apply {
-        chipSpacingHorizontal = 4
-        chipSpacingVertical = 4
+        chipSpacingHorizontal = 2
+        chipSpacingVertical = 2
     }
 
     private val nowPlayingIcon = ImageView(context)
@@ -75,6 +77,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private fun collapsedLayout() {
         toggleCornerRaduis(false)
+        setPadding(4.dip, 2.dip, 4.dip, 2.dip)
 
         title.isSingleLine = true
         homePage.isVisible = false
@@ -98,6 +101,52 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.layoutBy(emptyX(), emptyY())
         tagList.layoutBy(emptyX(), emptyY())
         btnFav.layoutBy(emptyX(), emptyY())
+    }
+
+    private fun expandedLayoutNew() {
+        toggleCornerRaduis(true)
+        setPadding(16.dip, 16.dip, 16.dip, 16.dip)
+
+        title.isSingleLine = false
+        title.maxLines = 4
+        homePage.isVisible = true
+        country.isVisible = true
+        codec.isVisible = codec.value.isNotBlank()
+        bitrate.isVisible = bitrate.value.isNotBlank()
+        tagList.isVisible = true
+        btnFav.isVisible = true
+
+        val vSpacing = 8.ydip
+        val hSpacing = 8.xdip
+
+        nowPlayingIcon.updateLayoutBy(
+            x = rightTo { parent.right() }.widthOf { parent.width() / 3 },
+            y = topTo { parent.top() }.heightOf { (parent.width() / 3).toY() }
+        )
+        codec.updateLayoutBy(
+            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
+            topTo { nowPlayingIcon.top() + vSpacing }
+        )
+        bitrate.updateLayoutBy(
+            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
+            topTo { codec.bottom() + vSpacing }
+        )
+        btnFav.updateLayoutBy(
+            rightTo { parent.right() },
+            topTo { nowPlayingIcon.bottom() + vSpacing }
+        )
+        homePage.updateLayoutBy(
+            leftTo { parent.left() }.rightTo { btnFav.left() - hSpacing },
+            centerVerticallyTo { btnFav.centerY() }
+        )
+        title.updateLayoutBy(
+            matchParentX(),
+            topTo { btnFav.bottom() + vSpacing }
+        )
+        tagList.updateLayoutBy(
+            matchParentX(),
+            topTo { title.bottom() + vSpacing }
+        )
     }
 
     private fun expandedLayout() {
@@ -151,7 +200,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     override fun setSelected(selected: Boolean) {
         if (isLaidOut && selected == this.isSelected) return
         super.setSelected(selected)
-        if (!selected) collapsedLayout() else expandedLayout()
+        if (!selected) collapsedLayout() else expandedLayoutNew()
     }
 
     private fun registerBackpressListener() {
