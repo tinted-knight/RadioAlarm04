@@ -17,4 +17,11 @@
     <string name="saturday">сб</string>
     <string name="sunday">вс</string>
     <string name="melody_system">системный рингтон</string>
+    <string name="lang_list">Список языков</string>
+    <string name="tag_list">Список тегов</string>
+    <string name="top_voted">Популярные станции</string>
+    <string name="attr_search_label">Поиск станций по названию и (или) тегам:</string>
+    <string name="name_hint">Имя (не обязательно)</string>
+    <string name="tag_hint">Тег (не обязательно)</string>
+    <string name="btn_search">Поиск</string>
 </resources>

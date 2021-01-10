@@ -44,26 +44,26 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     override var delegate: RadioBrowserHomeDelegate? = null
 
     private val btnLanguages = materialButton.apply {
-        text = "Language list"
+        text = context.getString(R.string.lang_list)
         setOnClickListener { delegate?.onLanguageClick() }
     }
 
     private val btnTags = materialButton.apply {
-        text = "Tag list"
+        text = context.getString(R.string.tag_list)
         setOnClickListener { delegate?.onTagClick() }
     }
 
     private val btnTopVoted = materialButton.apply {
-        text = "Top Voted Stations"
+        text = context.getString(R.string.top_voted)
         setOnClickListener { delegate?.onTopVotedClick() }
     }
 
     private val searchLabel = TextView(context).apply {
-        text = "Try to search by station name and(or) tag:"
+        text = context.getString(R.string.attr_search_label)
     }
 
     private val searchName = textInputLayout.apply {
-        hint = "name hint"
+        hint = context.getString(R.string.name_hint)
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
@@ -73,7 +73,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     private val searchTag = textInputLayout.apply {
-        hint = "tag hint"
+        hint = context.getString(R.string.tag_hint)
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
@@ -83,7 +83,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     private val btnSearch = MaterialButton(context).apply {
-        text = "Search"
+        text = context.getString(R.string.btn_search)
         setOnClickListener {
             delegate?.onSearchClick(
                 name = searchName.editText?.text.toString(),

@@ -17,4 +17,11 @@
     <string name="saturday">sat</string>
     <string name="sunday">sun</string>
     <string name="melody_system">system default</string>
+    <string name="lang_list">Language list</string>
+    <string name="tag_list">Tag list</string>
+    <string name="top_voted">Top voted stations</string>
+    <string name="attr_search_label">Search by station name and (or) tag:</string>
+    <string name="name_hint">Station name (optional)</string>
+    <string name="tag_hint">Station tag (optional)</string>
+    <string name="btn_search">Search</string>
 </resources>
