@@ -30,6 +30,9 @@ class RadioBrowserViewModel(
 
     private val stationFilter = MutableStateFlow<Filter>(Filter.None)
 
+    private val _toast = MutableSharedFlow<String>()
+    val toast: Flow<String> = _toast
+
     init {
         serverManager.getAvalilable(viewModelScope)
     }
@@ -56,10 +59,30 @@ class RadioBrowserViewModel(
         }
     }
 
+    fun requestGlobalSearch(name: String, tag: String): Boolean {
+        if (name.isBlank() && tag.isBlank()) {
+            viewModelScope.launch { _toast.emit("Try to enter name or tag") }
+            return false
+        }
+        showStations(CategoryModel.GlobalSearch(
+            searchName = name.toLowerCase(Locale.getDefault()),
+            searchTag = tag.toLowerCase(Locale.getDefault())
+        ))
+        return true
+    }
+
+    fun requestTopVoted() {
+        showStations(CategoryModel.TopVoted())
+    }
+
+    fun requestCategory(model: CategoryModel) {
+        showStations(model)
+    }
+
     /**
      * Request stations by [category]. Observe result by [stationList]
      */
-    fun showStations(category: CategoryModel) = viewModelScope.launch {
+    private fun showStations(category: CategoryModel) = viewModelScope.launch {
         clearStationFilter()
         stationManager.stationsBy(category)
     }

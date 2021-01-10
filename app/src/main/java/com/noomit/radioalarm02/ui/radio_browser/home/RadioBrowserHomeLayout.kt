@@ -25,6 +25,7 @@ interface RadioBrowserHomeDelegate {
     fun onLanguageClick()
     fun onTagClick()
     fun onTopVotedClick()
+    fun onSearchClick(name: String, tag: String)
 }
 
 interface IRadioBrowserHomeLayout {
@@ -79,6 +80,12 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     private val btnSearch = MaterialButton(context).apply {
         text = "Search"
+        setOnClickListener {
+            delegate?.onSearchClick(
+                name = searchName.editText?.text.toString(),
+                tag = searchTag.editText?.text.toString()
+            )
+        }
     }
 
     private val serverList = ServerListView(context)
@@ -119,7 +126,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         )
         searchLabel.layoutBy(
             x = matchParentX(),
-            topTo { btnTopVoted.bottom() }
+            topTo { btnTopVoted.bottom() + 16.ydip }
         )
         searchName.layoutBy(
             x = matchParentX(),

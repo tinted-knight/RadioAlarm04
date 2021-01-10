@@ -12,7 +12,6 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
-import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
@@ -64,6 +63,10 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
                 is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
             }
         }
+
+        collect(viewModel.toast) {
+            requireActivity().toast(it)
+        }
     }
 
     private val listener = object : RadioBrowserHomeDelegate {
@@ -84,11 +87,20 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
         }
 
         override fun onTopVotedClick() {
-            viewModel.showStations(CategoryModel.TopVoted())
+            viewModel.requestTopVoted()
             findNavController().navigate(
                 R.id.action_radioBrowser_to_stationList,
                 Bundle().apply { putString("title", "Top voted") }
             )
+        }
+
+        override fun onSearchClick(name: String, tag: String) {
+            if (viewModel.requestGlobalSearch(name, tag)) {
+                findNavController().navigate(
+                    R.id.action_radioBrowser_to_stationList,
+                    Bundle().apply { putString("title", "Global search") }
+                )
+            }
         }
     }
 

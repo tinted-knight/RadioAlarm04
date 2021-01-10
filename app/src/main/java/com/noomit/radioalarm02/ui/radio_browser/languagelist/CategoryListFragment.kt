@@ -31,7 +31,7 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
         get() = view as ICategoryLayout
 
     private val categoryClick = { model: CategoryModel ->
-        viewModel.showStations(model)
+        viewModel.requestCategory(model)
         findNavController().navigate(
             R.id.action_languageList_to_stationList,
             Bundle().apply { putString("title", model.name) }

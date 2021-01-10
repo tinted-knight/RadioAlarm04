@@ -18,6 +18,13 @@ sealed class CategoryModel {
         override val name: String = "Top voted",
         override val stationCount: String = "-1",
     ) : CategoryModel()
+
+    data class GlobalSearch(
+        override val name: String = "Global search",
+        override val stationCount: String = "-1",
+        val searchName: String,
+        val searchTag: String,
+    ) : CategoryModel()
 }
 
 data class StationModel(

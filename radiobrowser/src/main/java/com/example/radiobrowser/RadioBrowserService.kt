@@ -70,9 +70,9 @@ class RadioBrowserService {
             // fisrt try to find out if there is "good" server available and return
             serverList.filter { it.urlString.contains("de1") || it.urlString.contains("nl1") }
                 .firstOrNull { it.isReachable }?.let {
-                setActiveServer(it)
-                return@withContext ServerListResponse.Success(serverList)
-            }
+                    setActiveServer(it)
+                    return@withContext ServerListResponse.Success(serverList)
+                }
             // if not return first available
             serverList.firstOrNull { it.isReachable }?.let {
                 setActiveServer(it)
@@ -116,8 +116,5 @@ class RadioBrowserService {
         }
     }
 
-    suspend fun search(name: String, tag: String): List<StationNetworkEntity> {
-        return api.search(SearchRequest(name, tag))
-    }
-
+    suspend fun search(name: String, tag: String) = api.search(SearchRequest(name, tag))
 }

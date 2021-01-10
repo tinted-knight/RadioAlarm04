@@ -32,6 +32,7 @@ class StationManager(via: RadioBrowserService) : WithLogTag {
             is CategoryModel.Language -> flowOf(apiService.stationsByLanguage(category.name))
             is CategoryModel.Tag -> flowOf(apiService.stationsByTag(category.name))
             is CategoryModel.TopVoted -> flowOf(apiService.getTopVoted())
+            is CategoryModel.GlobalSearch -> flowOf(apiService.search(category.searchName, category.searchTag))
         }
 
         flow.flowOn(Dispatchers.IO)
