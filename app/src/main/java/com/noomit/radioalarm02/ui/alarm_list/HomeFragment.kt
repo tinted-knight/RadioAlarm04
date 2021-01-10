@@ -63,11 +63,10 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
 
     private val adapterListener = object : AlarmAdapterActions {
         override fun onDeleteClick(alarm: Alarm) {
-            requireContext().toast("delete click")
+            context?.toast(getString(R.string.toast_hold_to_del))
         }
 
         override fun onDeleteLongClick(alarm: Alarm) {
-            requireContext().toast("delete long click")
             alarmManager.delete(alarm)
         }
 

@@ -139,7 +139,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         (rvStationList.adapter as StationListAdapter).submitList(values)
         loadingIndicator.isVisible = false
         rvStationList.isVisible = true
-        stationsCount.text = "Station count: ${values.size}"
+        stationsCount.text = context.getString(R.string.station_count, values.size)
         stationsCount.isVisible = true
     }
 

@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
@@ -62,18 +61,21 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
                 is StationManagerState.Loading -> {
                 }
                 is StationManagerState.Success -> contour.showContent(it.values)
-                is StationManagerState.Failure -> requireContext().toast(it.error.localizedMessage)
+                is StationManagerState.Failure -> context?.toast(it.error.localizedMessage)
             }
         }
-
         collect(stationViewModel.nowPlaying.filterNotNull()) {
             service?.mediaItem = MediaItem(url = it.station.streamUrl, title = it.station.name)
             service?.play()
             contour.nowPlaying(it.station, it.inFavorites)
         }
-
-        collect(stationViewModel.popupMessage) {
-            Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+        collect(stationViewModel.uiMessage) {
+            context?.toast(
+                when (it) {
+                    is UIMessage.Added -> getString(R.string.toast_added, it.value)
+                    is UIMessage.Removed -> getString(R.string.toast_removed, it.value)
+                }
+            )
         }
     }
 

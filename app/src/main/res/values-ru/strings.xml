@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Радио будильник</string>
     <string name="hello_blank_fragment">Пустой фрагмент</string>
     <string name="favorites">Избранные</string>
@@ -24,4 +24,8 @@
     <string name="name_hint">Имя (не обязательно)</string>
     <string name="tag_hint">Тег (не обязательно)</string>
     <string name="btn_search">Поиск</string>
+    <string name="station_count">Всего станций: <xliff:g example="100" id="count">%1$d</xliff:g></string>
+    <string name="toast_added">В избранное: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+    <string name="toast_removed">Удалено: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+    <string name="toast_hold_to_del">Удерживайте для удаления</string>
 </resources>
