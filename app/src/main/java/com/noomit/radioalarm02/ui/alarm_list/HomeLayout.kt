@@ -51,7 +51,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         null,
         appTheme.btns.bbarFav.attr
     ).apply {
-        text = "Favorites"
+        text = context.getString(R.string.favorites)
         setOnClickListener { delegate?.onFavoriteClick() }
         stateListAnimator = ItemListAnimator(this)
     }
@@ -61,7 +61,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         null,
         appTheme.btns.bbarBrowse.attr
     ).apply {
-        text = "Browse radio"
+        text = context.getString(R.string.browse_radio)
 
         val strokeColor = ResourcesCompat.getColor(resources, appTheme.common.clPrimary, null)
         stateListAnimator = BBarAnimator(this, strokeColor)
@@ -75,7 +75,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         null,
         appTheme.btns.bbarAddAlarm.attr
     ).apply {
-        text = "Add alarm"
+        text = context.getString(R.string.add_alarm)
         setOnClickListener { delegate?.onAddAlarmClick() }
         stateListAnimator = ItemListAnimator(this)
     }

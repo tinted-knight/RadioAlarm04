@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.noomit.radioalarm02.ui.alarm_list.HomeFragment"
-        android:label="Alarms">
+        android:label="@string/nav_label_alarms">
         <action
             android:id="@+id/action_home_to_radioBrowser"
             app:destination="@id/nav_radio_browser"
@@ -33,11 +33,11 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.noomit.radioalarm02.ui.favorites.FavoritesFragment"
-        android:label="Favorites" />
+        android:label="@string/nav_label_favorites" />
     <fragment
         android:id="@+id/selectMelodyFragment"
         android:name="com.noomit.radioalarm02.ui.alarm_list.select_melody.SelectMelodyFragment"
-        android:label="Select alarm melody" />
+        android:label="@string/nav_label_select_melody" />
 
     <navigation
         android:id="@+id/nav_radio_browser"
@@ -45,7 +45,7 @@
         <fragment
             android:id="@+id/radioBrowserFragment"
             android:name="com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserFragment"
-            android:label="Radio browser">
+            android:label="@string/nav_label_rbrowser">
             <action
                 android:id="@+id/action_radioBrowser_to_languageList"
                 app:destination="@id/categoryListFragment"
