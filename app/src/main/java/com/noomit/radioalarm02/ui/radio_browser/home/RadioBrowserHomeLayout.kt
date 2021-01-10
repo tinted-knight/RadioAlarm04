@@ -67,7 +67,9 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        addView(TextInputEditText(this.context))
+        addView(TextInputEditText(this.context).apply {
+            isSingleLine = true
+        })
     }
 
     private val searchTag = textInputLayout.apply {
@@ -75,7 +77,9 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        addView(TextInputEditText(this.context))
+        addView(TextInputEditText(this.context).apply {
+            isSingleLine = true
+        })
     }
 
     private val btnSearch = MaterialButton(context).apply {
