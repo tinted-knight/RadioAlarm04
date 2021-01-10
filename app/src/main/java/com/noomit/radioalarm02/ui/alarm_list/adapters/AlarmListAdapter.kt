@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.Alarm
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.model.hourString
 import com.noomit.radioalarm02.model.isDayBitOn
 import com.noomit.radioalarm02.model.minuteString
@@ -95,7 +96,7 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             contour time timeFormat.format(date)
             contour day dateFormat.format(date)
         }
-        contour melody value.bell_name
+        contour melody if (value.bell_url.isNotBlank()) value.bell_name else itemView.context.getString(R.string.melody_system)
         contour switch value.is_enabled
         processDaysOfWeek(value.days_of_week)
     }

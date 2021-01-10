@@ -60,12 +60,10 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         null,
         R.attr.textAlarmTime,
     ).apply {
-        text = "08:00"
         setOnClickListener { delegate?.onTimeClick() }
     }
 
     private val day = MaterialTextView(context).apply {
-        text = "Dec, 42"
         setOnClickListener { delegate?.onDayClick() }
     }
 
@@ -80,7 +78,6 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmItem.melodyText.attr,
     ).apply {
-        text = "Long title of radio station, Long title of radio station, Long title of radio"
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.END
         setOnClickListener { delegate?.onMelodyClick() }
@@ -110,31 +107,31 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private val monday = dayOfWeek().apply {
-        text = "mon"
+        text = context.getString(R.string.monday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[0]) }
     }
     private val tuesday = dayOfWeek().apply {
-        text = "tue"
+        text = context.getString(R.string.tuesday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[1]) }
     }
     private val wednesday = dayOfWeek().apply {
-        text = "wed"
+        text = context.getString(R.string.wednesday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[2]) }
     }
     private val thursday = dayOfWeek().apply {
-        text = "thu"
+        text = context.getString(R.string.thursday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[3]) }
     }
     private val friday = dayOfWeek().apply {
-        text = "fri"
+        text = context.getString(R.string.friday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[4]) }
     }
     private val saturday = dayOfWeek().apply {
-        text = "sat"
+        text = context.getString(R.string.saturday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[5]) }
     }
     private val sunday = dayOfWeek().apply {
-        text = "sun"
+        text = context.getString(R.string.sunday)
         setOnClickListener { delegate?.onDayOfWeekClick(days[6]) }
     }
 
