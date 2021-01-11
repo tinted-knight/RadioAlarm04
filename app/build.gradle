@@ -49,9 +49,8 @@ dependencies {
     implementation project(":playerservice")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "app.cash.contour:contour:$contour"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
@@ -67,7 +66,7 @@ dependencies {
     implementation "com.google.android.material:material:$material"
     // ViewModel, LiveData & Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+//    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -79,8 +78,6 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
-    //ViewBinding helper
-    implementation "com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:$view_binding_delegate"
     //ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer-core:$exo_payer"
     implementation "com.google.android.exoplayer:exoplayer-dash:$exo_payer"
@@ -88,10 +85,8 @@ dependencies {
     //SQLDelight
     implementation "com.squareup.sqldelight:android-driver:$sql_delight"
     implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
-//    //swipe button
+    //swipe button
     implementation "com.ncorti:slidetoact:$slide_to_act"
-//    implementation 'com.github.stfalcon:swipeable-button:0.1.0'
-//    //Room
-//    implementation "androidx.room:room-runtime:$room"
-//    kapt "androidx.room:room-compiler:$room"
+    // Contour layout
+    implementation "app.cash.contour:contour:$contour"
 }
