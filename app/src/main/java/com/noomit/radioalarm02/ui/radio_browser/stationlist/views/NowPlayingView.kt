@@ -20,7 +20,6 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
@@ -47,7 +46,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private val tagList = ChipGroup(context).apply {
-        chipSpacingHorizontal = 2
+        chipSpacingHorizontal = 4
         chipSpacingVertical = 2
     }
 
@@ -61,10 +60,10 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         setImageResource(appTheme.nowPlaying.iconNotFavorite)
     }
 
-    private fun buildChip(value: String) = Chip(context).apply {
+    private fun buildChip(value: String, even: Boolean) = TextView(context).apply {
         text = value
         textSize = 12.0f
-        setEnsureMinTouchTargetSize(false)
+        if (!even) setTextColor(getColor(resources, appTheme.nowPlaying.tagAlt, null))
     }
 
     init {
@@ -252,8 +251,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.value = station.bitrate
         // #todo if collapsed, there is no need to create ChipGroup
         tagList.removeAllViews()
-        station.tags.filter { it.isNotBlank() }.forEach {
-            val chip = buildChip(it)
+        station.tags.filter { it.isNotBlank() }.forEachIndexed { index, value ->
+            val chip = buildChip(value, index % 2 == 0)
             tagList.addView(chip)
         }
 

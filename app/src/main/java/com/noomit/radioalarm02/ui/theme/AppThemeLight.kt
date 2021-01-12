@@ -23,6 +23,7 @@ interface ThemeNowPlaying {
     val iconNotFavorite: Int
     val stationCount: ViewStyle
     val dimmColor: Int
+    val tagAlt: Int
 }
 
 interface ThemeServerList {
@@ -72,6 +73,7 @@ data class AppThemeLight(
         override val iconNotFavorite = D.ic_favorite_border_24
         override val stationCount = ViewStyle(S.LightTheme_TextStationCount, A.stationCountText)
         override val dimmColor = C.clNowplayingDimm
+        override val tagAlt = C.clTagAlternative
     },
     val serverList: ThemeServerList = object : ThemeServerList {
         override val bgColor = C.clCardBackground

@@ -17,4 +17,5 @@
     <color name="clTimeText">#8a000000</color>
     <!--    -->
     <color name="clNowplayingDimm">#54ffffff</color>
+    <color name="clTagAlternative">#9fa8da</color>
 </resources>
