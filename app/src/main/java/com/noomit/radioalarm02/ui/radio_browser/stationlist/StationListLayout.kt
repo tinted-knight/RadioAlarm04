@@ -88,8 +88,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     init {
         contourHeightMatchParent()
 
-        val matchParentWidth = matchParentX(marginLeft = 16.dip, marginRight = 16.dip)
-
         playerControll.layoutBy(
             rightTo { parent.right() },
             bottomTo { parent.bottom() }
@@ -101,7 +99,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         )
 
         rvStationList.layoutBy(
-            matchParentWidth,
+            matchParentX(),
             bottomTo { playerControll.top() }.topTo { stationsCount.bottom() }
         )
 
