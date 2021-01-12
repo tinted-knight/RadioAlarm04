@@ -37,7 +37,8 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
     override val contour: IStationListLayout
         get() = view as IStationListLayout
 
-    override fun onServiceConnected() {}
+    override val notificationCaption: String
+        get() = getString(R.string.app_name)
 
     override fun initPlayerViews() {
         val view = (view as IStationListLayout)

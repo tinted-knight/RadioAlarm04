@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.Application00
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
@@ -27,7 +28,8 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
     override val contour: ISelectMelodyLayout
         get() = view as ISelectMelodyLayout
 
-    override fun onServiceConnected() {}
+    override val notificationCaption: String
+        get() = getString(R.string.app_name)
 
     override fun initPlayerViews() {
         playerControlView = contour.playerControll

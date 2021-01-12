@@ -11,6 +11,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerService
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
@@ -34,6 +35,9 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
 
     override val contour: IAlarmFireLayout
         get() = view as IAlarmFireLayout
+
+    override val notificationCaption: String
+        get() = getString(R.string.app_name)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,7 +71,10 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
             return
         }
         viewModel.melodyUrl?.let {
-            service?.mediaItem = MediaItem(url = it, title = it)
+            service?.mediaItem = MediaItem(
+                url = it,
+                title = viewModel.melodyName ?: it
+            )
             service?.play()
             contour.setStationName(viewModel.melodyName ?: "")
         }

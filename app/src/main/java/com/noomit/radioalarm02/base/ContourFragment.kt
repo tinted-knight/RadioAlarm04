@@ -94,6 +94,7 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
                 playerView.player = service.exoPlayerInstance
                 playerControlView.player = playerView.player
                 this@PlayerServiceFragment.service = service
+                service.setCaption(notificationCaption)
                 onServiceConnected()
             }
         }
@@ -103,11 +104,13 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
 
     }
 
+    abstract val notificationCaption: String
+
     /**
      * Fires when [service] connects to this [PlayerServiceFragment]
      * Expected that here [service] should not be null
      */
-    abstract fun onServiceConnected()
+    open fun onServiceConnected() {}
 
     /**
      * Here [playerView] and [playerControlView] need to be initialized with

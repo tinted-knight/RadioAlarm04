@@ -32,6 +32,7 @@ class PlayerService : Service() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private var mediaTitle: String? = null
+    private var caption: String? = null
 
     override fun onBind(intent: Intent): IBinder {
         intent.let {
@@ -145,6 +146,10 @@ class PlayerService : Service() {
             R.id.tv_title,
             mediaTitle ?: "Nothig is playing..."
         )
+        setTextViewText(
+            R.id.tv_caption,
+            caption ?: ""
+        )
     }
 
     private fun playMedia(mediaUrl: String) {
@@ -180,6 +185,11 @@ class PlayerService : Service() {
                 playMedia(value.url)
                 field = mediaItem
             }
+
+        fun setCaption(value: String) {
+            caption = value
+            updateRemoteViews()
+        }
     }
 
     companion object {
