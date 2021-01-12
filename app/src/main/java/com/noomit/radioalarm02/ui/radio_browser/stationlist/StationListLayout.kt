@@ -82,7 +82,9 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     private val dimmingView = View(context).apply {
         setBackgroundColor(ResourcesCompat.getColor(resources, appTheme.nowPlaying.dimmColor, null))
         isVisible = false
-        setOnClickListener { nowPlayingClick(nowPlayingView) }
+        setOnClickListener {
+            if (nowPlayingView.isSelected) nowPlayingClick(nowPlayingView)
+        }
     }
 
     init {

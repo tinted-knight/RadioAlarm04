@@ -1,9 +1,17 @@
 package com.noomit.radioalarm02.ui.favorites
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.ProgressBar
+import androidx.core.animation.addListener
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +23,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
+import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface IFavoritesLayout {
@@ -60,6 +69,14 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
         }
     }
 
+    private val dimmingView = View(context).apply {
+        setBackgroundColor(ResourcesCompat.getColor(resources, appTheme.nowPlaying.dimmColor, null))
+        isVisible = false
+        setOnClickListener {
+            if (nowPlayingView.isSelected) nowPlayingClick(nowPlayingView)
+        }
+    }
+
     private val loadingIndicator = ProgressBar(context)
 
     init {
@@ -80,6 +97,11 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
         loadingIndicator.layoutBy(
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },
+        )
+
+        dimmingView.layoutBy(
+            x = matchParentX(),
+            y = matchParentY()
         )
 
         val xPadding = { if (!nowPlayingView.isSelected) 0.xdip else 32.xdip }
@@ -103,14 +125,7 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
             }.bottomTo { parent.bottom() - yPadding() }
         )
 
-        nowPlayingView.setOnClickListener {
-            TransitionManager.beginDelayedTransition(this, ChangeBounds()
-                .setInterpolator(OvershootInterpolator(1f))
-                .setDuration(400)
-            )
-            nowPlayingView.isSelected = !nowPlayingView.isSelected
-            requestLayout()
-        }
+        nowPlayingView.setOnClickListener(::nowPlayingClick)
     }
 
     override fun setStationsAdapter(adapter: StationListAdapter) {
@@ -134,5 +149,32 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
 
     override fun nowPlayingEmpty() {
         nowPlayingView.updateEmpty()
+    }
+
+    // #achtung copypasting from StationListLayout
+    private fun nowPlayingClick(view: View) {
+        TransitionManager.beginDelayedTransition(this, ChangeBounds()
+            .setInterpolator(OvershootInterpolator(1f))
+            .setDuration(400)
+        )
+        view.isSelected = !view.isSelected
+
+        val anim = dimmigViewAnimator(view.isSelected)
+        anim.start()
+
+        requestLayout()
+    }
+
+    private fun dimmigViewAnimator(show: Boolean): Animator {
+        dimmingView.alpha = if (show) 0.0f else 0.5f
+        dimmingView.isVisible = true
+        val toAlpha = if (show) 0.5f else 0.0f
+        val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, toAlpha)
+        val alphaAnim = ObjectAnimator.ofPropertyValuesHolder(dimmingView, alpha).apply {
+            duration = 400
+            interpolator = LinearInterpolator()
+            addListener(onEnd = { dimmingView.isVisible = show })
+        }
+        return AnimatorSet().apply { play(alphaAnim) }
     }
 }
