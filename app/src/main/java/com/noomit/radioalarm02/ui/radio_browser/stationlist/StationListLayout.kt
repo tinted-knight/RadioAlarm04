@@ -3,6 +3,7 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -65,6 +66,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     }
 
     private val nowPlayingView = NowPlayingView(context).apply {
+        setOnClickListener(::nowPlayingClick)
         btnFav.setOnClickListener { this@StationListLayout.delegate?.onFavoriteClick() }
     }
 
@@ -115,15 +117,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
                 }
             }.bottomTo { parent.bottom() - yPadding() }
         )
-
-        nowPlayingView.setOnClickListener {
-            TransitionManager.beginDelayedTransition(this, ChangeBounds()
-                .setInterpolator(OvershootInterpolator(1f))
-                .setDuration(400)
-            )
-            nowPlayingView.isSelected = !nowPlayingView.isSelected
-            requestLayout()
-        }
     }
 
     override fun setStationsAdapter(adapter: StationListAdapter) {
@@ -145,5 +138,14 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
         nowPlayingView.update(station, inFavorites)
+    }
+
+    private fun nowPlayingClick(view: View) {
+        TransitionManager.beginDelayedTransition(this, ChangeBounds()
+            .setInterpolator(OvershootInterpolator(1f))
+            .setDuration(400)
+        )
+        view.isSelected = !view.isSelected
+        requestLayout()
     }
 }
