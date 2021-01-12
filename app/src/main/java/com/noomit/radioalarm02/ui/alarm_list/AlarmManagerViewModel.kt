@@ -78,10 +78,11 @@ class AlarmManagerViewModel(database: Database, application: Application) :
 
     fun setEnabled(alarm: Alarm, isEnabled: Boolean) {
         plog("setEnabled, $isEnabled")
-        if (!isEnabled || alarm.days_of_week != 0) {
-            queries.updateEnabled(alarmId = alarm.id, isEnabled = isEnabled)
+        if (!isEnabled) {
+            queries.updateEnabled(alarmId = alarm.id, isEnabled = false)
             return
         }
+
         if (alarm.days_of_week == 0) {
             val composed = composeAlarmEntity(alarm.hour, alarm.minute)
             queries.updateDays(
@@ -89,6 +90,17 @@ class AlarmManagerViewModel(database: Database, application: Application) :
                 daysOfWeek = composed.daysOfWeek,
                 timeInMillis = composed.timeInMillis,
                 isEnabled = true,
+            )
+            return
+        }
+
+        if (isEnabled && alarm.days_of_week != 0) {
+            val reEnabled = reComposeFired(alarm)
+            queries.updateDays(
+                daysOfWeek = reEnabled.days_of_week,
+                isEnabled = true,
+                timeInMillis = reEnabled.time_in_millis,
+                alarmId = reEnabled.id,
             )
         }
     }

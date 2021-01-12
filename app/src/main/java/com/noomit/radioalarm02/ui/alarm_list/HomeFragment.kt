@@ -58,7 +58,6 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
         override fun onBrowseClick() {
             findNavController().navigate(R.id.action_home_to_radioBrowser)
         }
-
     }
 
     private val adapterListener = object : AlarmAdapterActions {
