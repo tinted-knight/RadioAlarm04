@@ -9,10 +9,12 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.playerservice.PlayerService
+import com.noomit.radioalarm02.tplog
 
 /**
  * Generic parameter [L] is supposed to be your layout's interface
@@ -65,6 +67,18 @@ abstract class ContourFragment<L> : Fragment() {
      * Observe viewmodel and update layout
      */
     protected abstract fun observeViewModel()
+
+    /**
+     * Hides software keyboard when fragment view is going to be destroyed
+     */
+    override fun onDestroyView() {
+        view?.let { view ->
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            tplog("hide keyboard")
+        }
+        super.onDestroyView()
+    }
 }
 
 abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
