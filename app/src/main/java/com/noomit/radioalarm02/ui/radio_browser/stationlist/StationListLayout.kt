@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
@@ -81,8 +82,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     private val dimmingView = View(context).apply {
         setBackgroundColor(ResourcesCompat.getColor(resources, appTheme.nowPlaying.dimmColor, null))
         isVisible = false
-        // is needed to prevent clicks for underlying views
-        setOnClickListener { }
+        setOnClickListener { nowPlayingClick(nowPlayingView) }
     }
 
     init {
@@ -163,16 +163,22 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         )
         view.isSelected = !view.isSelected
 
-        dimmingView.alpha = if (view.isSelected) 0.0f else 0.5f
+        val anim = dimmigViewAnimator(view.isSelected)
+        anim.start()
+
+        requestLayout()
+    }
+
+    private fun dimmigViewAnimator(show: Boolean): Animator {
+        dimmingView.alpha = if (show) 0.0f else 0.5f
         dimmingView.isVisible = true
-        val toAlpha = if (view.isSelected) 0.5f else 0.0f
+        val toAlpha = if (show) 0.5f else 0.0f
         val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, toAlpha)
         val alphaAnim = ObjectAnimator.ofPropertyValuesHolder(dimmingView, alpha).apply {
             duration = 400
             interpolator = LinearInterpolator()
-            addListener(onEnd = { dimmingView.isVisible = view.isSelected })
+            addListener(onEnd = { dimmingView.isVisible = show })
         }
-        AnimatorSet().apply { play(alphaAnim) }.start()
-        requestLayout()
+        return AnimatorSet().apply { play(alphaAnim) }
     }
 }
