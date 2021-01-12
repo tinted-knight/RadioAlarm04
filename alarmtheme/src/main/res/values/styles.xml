@@ -46,7 +46,8 @@
         <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="fontFamily">@font/pt_sans_caption</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
     </style>

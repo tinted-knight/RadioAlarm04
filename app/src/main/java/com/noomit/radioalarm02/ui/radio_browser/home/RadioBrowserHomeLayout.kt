@@ -101,7 +101,11 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     )
 
     private val loadingBackground = View(context).apply {
-        setBackgroundColor(Color.parseColor("#12000000"))
+        setBackgroundColor(Color.parseColor("#12ff0000"))
+    }
+
+    private val divider = View(context).apply {
+        setBackgroundColor(Color.parseColor("#575757"))
     }
 
     init {
@@ -128,9 +132,15 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
             x = matchParentX(),
             y = topTo { btnTags.bottom() }
         )
+
+        divider.layoutBy(
+            x = matchParentX(16, 16),
+            y = topTo { btnTopVoted.bottom() + 8.ydip }.heightOf { 1.ydip }
+        )
+
         searchLabel.layoutBy(
             x = matchParentX(),
-            topTo { btnTopVoted.bottom() + 16.ydip }
+            topTo { divider.bottom() + 16.ydip }
         )
         searchName.layoutBy(
             x = matchParentX(),
@@ -182,6 +192,8 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         btnTopVoted.isEnabled = false
         btnTopVoted.isVisible = false
 
+        divider.isVisible = false
+
         searchLabel.isVisible = false
         searchName.isVisible = false
         searchTag.isVisible = false
@@ -205,6 +217,8 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
         btnTopVoted.isEnabled = true
         btnTopVoted.isVisible = true
+
+        divider.isVisible = true
 
         searchLabel.isVisible = true
         searchName.isVisible = true
