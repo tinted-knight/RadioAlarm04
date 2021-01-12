@@ -15,4 +15,6 @@
     <color name="clDayRippleNotActive">#54000000</color>
     <color name="clCardBackground">#ff212121</color>
     <color name="clTimeText">#8a000000</color>
+    <!--    -->
+    <color name="clNowplayingDimm">#54ffffff</color>
 </resources>

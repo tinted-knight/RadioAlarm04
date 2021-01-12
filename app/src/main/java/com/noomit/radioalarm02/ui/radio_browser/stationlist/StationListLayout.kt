@@ -1,12 +1,18 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.animation.addListener
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -72,6 +78,13 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     private val loadingIndicator = ProgressBar(context)
 
+    private val dimmingView = View(context).apply {
+        setBackgroundColor(ResourcesCompat.getColor(resources, appTheme.nowPlaying.dimmColor, null))
+        isVisible = false
+        // is needed to prevent clicks for underlying views
+        setOnClickListener { }
+    }
+
     init {
         contourHeightMatchParent()
 
@@ -95,6 +108,11 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         loadingIndicator.layoutBy(
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },
+        )
+
+        dimmingView.layoutBy(
+            x = matchParentX(),
+            y = matchParentY()
         )
 
         val xPadding = { if (!nowPlayingView.isSelected) 0.xdip else 32.xdip }
@@ -146,6 +164,17 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             .setDuration(400)
         )
         view.isSelected = !view.isSelected
+
+        dimmingView.alpha = if (view.isSelected) 0.0f else 0.5f
+        dimmingView.isVisible = true
+        val toAlpha = if (view.isSelected) 0.5f else 0.0f
+        val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, toAlpha)
+        val alphaAnim = ObjectAnimator.ofPropertyValuesHolder(dimmingView, alpha).apply {
+            duration = 400
+            interpolator = LinearInterpolator()
+            addListener(onEnd = { dimmingView.isVisible = view.isSelected })
+        }
+        AnimatorSet().apply { play(alphaAnim) }.start()
         requestLayout()
     }
 }
