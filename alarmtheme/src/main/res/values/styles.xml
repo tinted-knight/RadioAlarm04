@@ -21,15 +21,16 @@
         <item name="alarmCardMelody">@style/LightTheme.MelodyText</item>
         <item name="alarmCardAlarmIcon">@style/LightTheme.AlarmIcon</item>
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
+        <item name="stationTag">@style/LightTheme.StationTag</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:windowBackground">@color/clBackground</item>
     </style>
 
     <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
-<!--        <item name="android:indeterminateBehavior">repeat</item>-->
-<!--        <item name="android:indeterminateDuration">1000</item>-->
+        <!--        <item name="android:indeterminateBehavior">repeat</item>-->
+        <!--        <item name="android:indeterminateDuration">1000</item>-->
         <item name="android:indeterminate">true</item>
-<!--        <item name="android:indeterminateDrawable">@drawable/progress_bar</item>-->
+        <!--        <item name="android:indeterminateDrawable">@drawable/progress_bar</item>-->
     </style>
 
     <style name="LightTheme.MaterialButton" parent="Widget.MaterialComponents.Button">
@@ -114,7 +115,8 @@
     </style>
 
     <style name="LightTheme.BBar.Favorites" parent="LightTheme.BBar">
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <!--        <item name="android:background">?attr/selectableItemBackground</item>-->
+        <item name="android:background">@color/clBackground</item>
         <item name="drawableTopCompat">@drawable/ic_favorite_border_24</item>
         <item name="android:padding">8dp</item>
     </style>
@@ -130,5 +132,16 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="drawableTopCompat">@drawable/ic_add_alarm_24</item>
         <item name="android:padding">8dp</item>
+    </style>
+
+    <!-- NowPlaying card   -->
+    <style name="LightTheme.StationTag" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/pt_sans_narrow</item>
+        <item name="android:background">@drawable/tag_background</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
     </style>
 </resources>

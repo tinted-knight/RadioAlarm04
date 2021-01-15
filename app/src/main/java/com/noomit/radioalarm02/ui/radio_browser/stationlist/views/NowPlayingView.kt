@@ -60,10 +60,12 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         setImageResource(appTheme.nowPlaying.iconNotFavorite)
     }
 
-    private fun buildChip(value: String, even: Boolean) = TextView(context).apply {
+    private fun buildChip(value: String, even: Boolean) = TextView(
+        context,
+        null,
+        appTheme.nowPlaying.tag.attr
+    ).apply {
         text = value
-        textSize = 12.0f
-        if (!even) setTextColor(getColor(resources, appTheme.nowPlaying.tagAlt, null))
     }
 
     init {
