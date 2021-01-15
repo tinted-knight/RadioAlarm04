@@ -10,6 +10,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.example.radiobrowser.ServerInfo
@@ -25,7 +26,9 @@ interface RadioBrowserHomeDelegate {
     fun onLanguageClick()
     fun onTagClick()
     fun onTopVotedClick()
-    fun onSearchClick(name: String, tag: String)
+    fun onSearchClick()
+    fun onSearchNameChanged(value: String?)
+    fun onSearchTagChanged(value: String?)
 }
 
 interface IRadioBrowserHomeLayout {
@@ -33,6 +36,7 @@ interface IRadioBrowserHomeLayout {
     fun setServerAdapter(adapter: ServerListAdapter)
     fun serverListCollapse()
     fun showLoading()
+    fun btnSearchEnabled(isEnabled: Boolean)
     fun update(content: List<ServerInfo>)
     fun update(activerServer: ServerInfo?)
 }
@@ -67,9 +71,13 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        addView(TextInputEditText(this.context).apply {
+        val editText = TextInputEditText(this.context).apply {
             isSingleLine = true
-        })
+            addTextChangedListener(
+                onTextChanged = { text, _, _, _ -> delegate?.onSearchNameChanged(text.toString()) }
+            )
+        }
+        addView(editText)
     }
 
     private val searchTag = textInputLayout.apply {
@@ -77,19 +85,18 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        addView(TextInputEditText(this.context).apply {
+        val editText = TextInputEditText(this.context).apply {
             isSingleLine = true
-        })
+            addTextChangedListener(
+                onTextChanged = { text, _, _, _ -> delegate?.onSearchTagChanged(text.toString()) }
+            )
+        }
+        addView(editText)
     }
 
     private val btnSearch = MaterialButton(context).apply {
         text = context.getString(R.string.btn_search)
-        setOnClickListener {
-            delegate?.onSearchClick(
-                name = searchName.editText?.text.toString(),
-                tag = searchTag.editText?.text.toString()
-            )
-        }
+        setOnClickListener { delegate?.onSearchClick() }
     }
 
     private val serverList = ServerListView(context)
@@ -200,6 +207,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         btnSearch.isVisible = false
 
         serverList.isVisible = false
+    }
+
+    override fun btnSearchEnabled(isEnabled: Boolean) {
+        btnSearch.isEnabled = isEnabled
     }
 
     override fun update(content: List<ServerInfo>) {

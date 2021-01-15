@@ -33,6 +33,7 @@ class RadioBrowserViewModel(
     private val _toast = MutableSharedFlow<String>()
     val toast: Flow<String> = _toast
 
+
     init {
         serverManager.getAvalilable(viewModelScope)
     }

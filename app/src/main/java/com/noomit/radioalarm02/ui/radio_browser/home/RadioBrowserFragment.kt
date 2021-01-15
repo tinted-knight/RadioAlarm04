@@ -45,6 +45,7 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             delegate = listener
             setServerAdapter(adapter)
             showLoading()
+            btnSearchEnabled(false)
         }
     }
 
@@ -70,6 +71,9 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
     }
 
     private val listener = object : RadioBrowserHomeDelegate {
+        private var name = ""
+        private var tag = ""
+
         override fun onLanguageClick() {
             viewModel.getLanguageList()
             findNavController().navigate(
@@ -94,13 +98,30 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             )
         }
 
-        override fun onSearchClick(name: String, tag: String) {
+        // #todo this should be in viewmodel
+        override fun onSearchNameChanged(value: String?) {
+            name = value ?: ""
+            updateSearchBtn()
+        }
+        // #todo this should be in viewmodel
+
+        override fun onSearchTagChanged(value: String?) {
+            tag = value ?: ""
+            updateSearchBtn()
+        }
+        // #todo this should be in viewmodel
+
+        override fun onSearchClick() {
             if (viewModel.requestGlobalSearch(name, tag)) {
                 findNavController().navigate(
                     R.id.action_radioBrowser_to_stationList,
                     Bundle().apply { putString("title", "Global search") }
                 )
             }
+        }
+
+        private fun updateSearchBtn() {
+            contour.btnSearchEnabled(name.isNotBlank() || tag.isNotBlank())
         }
     }
 
