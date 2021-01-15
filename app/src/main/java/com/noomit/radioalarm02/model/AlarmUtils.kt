@@ -1,10 +1,8 @@
 package com.noomit.radioalarm02.model
 
 import com.noomit.radioalarm02.Alarm
-import timber.log.Timber
+import com.noomit.radioalarm02.tplog
 import java.util.*
-
-private fun plog(message: String) = Timber.tag("tagg-alarmutils").i(message)
 
 // #think temporary
 data class Alarma(
@@ -47,7 +45,7 @@ fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
  */
 fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
     val newDays = switchBitByDay(dayOfWeek, alarm.days_of_week)
-    plog("newDays = $newDays, current = ${alarm.days_of_week}")
+    tplog("newDays = $newDays, current = ${alarm.days_of_week}")
     if (newDays == 0) return alarm.copy(
         days_of_week = 0,
         time_in_millis = 0,

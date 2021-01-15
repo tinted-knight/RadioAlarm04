@@ -4,25 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".alarm.ui.AlarmActivity">
+    android:clipChildren="false"
+    tools:background="@drawable/hipster_bg_gradient"
+    tools:context=".ui.alarm_fire.AlarmActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"
-        android:name="com.noomit.radioalarm02.alarm.ui.AlarmFireFragment"
+        android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmFireFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_dismiss"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_dismiss"
-        android:layout_width="wrap_content"
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slide_to_wake"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dismiss"
+        android:layout_marginHorizontal="16dp"
+        android:elevation="12dp"
+        app:animation_duration="150"
+        app:inner_color="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85"
+        app:outer_color="#9a1b8b"
+        app:text="Wake up"
+        app:text_size="28sp"
+        app:text_style="bold" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

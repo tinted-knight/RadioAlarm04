@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_pause">Остановить</string>
+    <string name="action_play">Играть</string>
+    <string name="state_paused">Пауза</string>
+    <string name="state_playing">Играет</string>
+    <string name="state_playing_nothing">Станция не выбрана…</string>
+</resources>

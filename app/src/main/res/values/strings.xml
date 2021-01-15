@@ -1,5 +1,31 @@
-<resources>
-    <string name="app_name">RadioAlarm02</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">RadioAlarm</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favorites">Favorites</string>
+    <string name="add_alarm">Add alarm</string>
+    <string name="browse_radio">Browse radio</string>
+    <string name="nav_label_alarms">Alarms</string>
+    <string name="nav_label_favorites">Favorites</string>
+    <string name="nav_label_select_melody">Select alarm melody</string>
+    <string name="nav_label_rbrowser">Radio browser</string>
+    <string name="monday">mon</string>
+    <string name="tuesday">tue</string>
+    <string name="wednesday">wed</string>
+    <string name="thursday">thu</string>
+    <string name="friday">fri</string>
+    <string name="saturday">sat</string>
+    <string name="sunday">sun</string>
+    <string name="melody_system">system default</string>
+    <string name="lang_list">Language list</string>
+    <string name="tag_list">Tag list</string>
+    <string name="top_voted">Top voted stations</string>
+    <string name="attr_search_label">Search by station name and (or) tag:</string>
+    <string name="name_hint">Station name (optional)</string>
+    <string name="tag_hint">Station tag (optional)</string>
+    <string name="btn_search">Search</string>
+    <string name="station_count">Station count: <xliff:g example="100" id="count">%1$d</xliff:g></string>
+    <string name="toast_added">To favorites: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+    <string name="toast_removed">Removed: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+    <string name="toast_hold_to_del">Hold icon to delete alarm</string>
 </resources>

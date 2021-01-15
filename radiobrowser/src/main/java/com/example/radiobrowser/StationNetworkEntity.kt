@@ -10,15 +10,15 @@ data class StationNetworkEntity(
     val country: String,
     val homepage: String,
     val tags: String,
-    val votes: Int
+    val votes: Int,
 )
 
-data class LanguageNetworkEntity(
+data class CategoryNetworkEntity(
     val name: String,
-    val stationcount: Int
+    val stationcount: Int,
 )
 
 data class SearchRequest(
     val name: String,
-    val tag: String
+    val tag: String,
 )

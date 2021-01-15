@@ -7,14 +7,14 @@ import android.content.Intent
 import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.MainActivity
 
-fun scheduleAlarm(context: Context, alarmId: Long, bellUrl: String, timeInMillis: Long) {
-    val operation = composePendingIntent(context, alarmId, bellUrl)
+fun scheduleAlarm(context: Context, alarmId: Long, bellUrl: String, bellName: String, timeInMillis: Long) {
+    val operation = composePendingIntent(context, alarmId, bellUrl, bellName)
     cancelAlarm(context, operation)
     setWithAlarmClock(context, timeInMillis, operation)
 }
 
 fun clearScheduledAlarms(context: Context) {
-    cancelAlarm(context, composePendingIntent(context, -1, ""))
+    cancelAlarm(context, composePendingIntent(context, -1, "", ""))
 }
 
 private fun setWithAlarmClock(context: Context, timeInMillis: Long, operation: PendingIntent) {
@@ -37,7 +37,7 @@ private fun cancelAlarm(context: Context, operation: PendingIntent) {
     systemAlarmManager.cancel(operation)
 }
 
-private fun composePendingIntent(context: Context, alarmId: Long, bellUrl: String) =
+private fun composePendingIntent(context: Context, alarmId: Long, bellUrl: String, bellName: String) =
     PendingIntent.getBroadcast(
         context,
         101, // #fake
@@ -45,6 +45,7 @@ private fun composePendingIntent(context: Context, alarmId: Long, bellUrl: Strin
             action = AlarmReceiver.ALARM_ACTION
             putExtra(AlarmReceiver.ALARM_ID, alarmId)
             putExtra(AlarmReceiver.BELL_URL, bellUrl)
+            putExtra(AlarmReceiver.BELL_NAME, bellName)
         },
         PendingIntent.FLAG_UPDATE_CURRENT,
     )

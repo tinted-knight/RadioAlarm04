@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="clPrimary">#ffea00</color>
+    <color name="clPrimaryDark">#90A4AE</color>
+    <color name="clAccent">#90CAF9</color>
+    <color name="clSecondary">#039BE5</color>
+    <color name="clBackground">#ff121212</color>
+    <color name="clStausBarBackground">#121212</color>
+    <color name="colorDayTextInactive">#57FFFFFF</color>
+    <color name="colorDayTextActive">#A5D6A7</color>
+    <color name="clFireTextColor">#95FFFFFF</color>
+    <!-- Alarm card  -->
+    <color name="clDayBgActive">#0F109113</color>
+    <color name="clDayRippleActive">#FFFF0000</color>
+    <color name="clDayRippleNotActive">#54000000</color>
+    <color name="clCardBackground">#ff212121</color>
+    <color name="clTimeText">#8a000000</color>
+    <!--    -->
+    <color name="clNowplayingDimm">#CC000000</color>
+    <color name="clTagAlternative">#9fa8da</color>
+</resources>

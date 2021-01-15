@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Радио будильник</string>
+    <string name="hello_blank_fragment">Пустой фрагмент</string>
+    <string name="favorites">Избранные</string>
+    <string name="add_alarm">Добавить</string>
+    <string name="browse_radio">Поиск радио</string>
+    <string name="nav_label_alarms">Будильники</string>
+    <string name="nav_label_favorites">Избранные</string>
+    <string name="nav_label_select_melody">Выбор мелодии</string>
+    <string name="nav_label_rbrowser">Поиск радио</string>
+    <string name="monday">пн</string>
+    <string name="tuesday">вт</string>
+    <string name="wednesday">ср</string>
+    <string name="thursday">чт</string>
+    <string name="friday">пт</string>
+    <string name="saturday">сб</string>
+    <string name="sunday">вс</string>
+    <string name="melody_system">системный рингтон</string>
+    <string name="lang_list">Список языков</string>
+    <string name="tag_list">Список тегов</string>
+    <string name="top_voted">Популярные станции</string>
+    <string name="attr_search_label">Поиск станций по названию и (или) тегам:</string>
+    <string name="name_hint">Имя (не обязательно)</string>
+    <string name="tag_hint">Тег (не обязательно)</string>
+    <string name="btn_search">Поиск</string>
+    <string name="station_count">Всего станций: <xliff:g example="100" id="count">%1$d</xliff:g></string>
+    <string name="toast_added">В избранное: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+    <string name="toast_removed">Удалено: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+    <string name="toast_hold_to_del">Удерживайте для удаления</string>
+</resources>

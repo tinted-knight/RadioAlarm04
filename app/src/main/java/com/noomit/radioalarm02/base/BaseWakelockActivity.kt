@@ -3,7 +3,6 @@ package com.noomit.radioalarm02.base
 import android.app.KeyguardManager
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.os.PowerManager
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
@@ -16,8 +15,8 @@ abstract class BaseWakelockActivity : AppCompatActivity() {
 
     private lateinit var wakeLock: PowerManager.WakeLock
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             plog("wakeup version >= 27")
@@ -51,6 +50,7 @@ abstract class BaseWakelockActivity : AppCompatActivity() {
         val powerManager = getSystemService(POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
                 or PowerManager.ACQUIRE_CAUSES_WAKEUP, WAKELOCK_TAG)
+//        wakeLock.acquire()
         wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/)
     }
 

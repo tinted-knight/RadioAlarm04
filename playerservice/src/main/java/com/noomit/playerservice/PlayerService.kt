@@ -32,6 +32,7 @@ class PlayerService : Service() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private var mediaTitle: String? = null
+    private var caption: String? = null
 
     override fun onBind(intent: Intent): IBinder {
         intent.let {
@@ -95,10 +96,25 @@ class PlayerService : Service() {
     }
 
     private fun displayNotification(content: RemoteViews = this.remoteViews) {
+        val intentPlayPause = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, PlayerService::class.java).apply {
+                putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
+            },
+            0,
+        )
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, NOTIF_CHANNEL_ID).apply {
-            setContent(content)
+            setContentTitle(mediaTitle)
+            setContentText(if (exoPlayer.playWhenReady) getString(R.string.state_playing) else getString(R.string.state_paused))
+            addAction(
+                R.drawable.ic_play_arrow_24,
+                if (exoPlayer.playWhenReady) getString(R.string.action_pause) else getString(R.string.action_play),
+                intentPlayPause
+            )
             setSmallIcon(R.drawable.ic_radio_24)
+//            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_radio_24))
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(
@@ -143,7 +159,11 @@ class PlayerService : Service() {
         )
         setTextViewText(
             R.id.tv_title,
-            mediaTitle ?: "Nothig is playing..."
+            mediaTitle ?: getString(R.string.state_playing_nothing)
+        )
+        setTextViewText(
+            R.id.tv_caption,
+            caption ?: ""
         )
     }
 
@@ -180,6 +200,11 @@ class PlayerService : Service() {
                 playMedia(value.url)
                 field = mediaItem
             }
+
+        fun setCaption(value: String) {
+            caption = value
+            updateRemoteViews()
+        }
     }
 
     companion object {

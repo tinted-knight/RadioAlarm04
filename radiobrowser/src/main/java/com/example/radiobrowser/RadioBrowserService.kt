@@ -3,6 +3,8 @@ package com.example.radiobrowser
 import android.util.Log
 import com.example.radiobrowser.ServerListResponse.ServerListFailure
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.InetAddress
@@ -26,19 +28,23 @@ sealed class ServerListResponse {
     class Failure(val error: ServerListFailure) : ServerListResponse()
 }
 
-class RadioBrowserService() {
+sealed class ActiveServerState {
+    object None : ActiveServerState()
+    data class Value(val serverInfo: ServerInfo) : ActiveServerState()
+}
+
+class RadioBrowserService {
 
     private lateinit var api: RadioBrowserApi
 
-    init {
-        plog("RadioBrowserService::init")
-    }
+    private val _activeServer = MutableStateFlow<ActiveServerState>(ActiveServerState.None)
+    val activeServer: StateFlow<ActiveServerState> = _activeServer
 
     private fun isReachable(addr: String, port: Int, timeout: Int): Boolean {
         try {
             val socket = Socket()
             socket.connect(InetSocketAddress(addr, port), timeout)
-            return true;
+            return true
         } catch (e: IOException) {
             return false
         }
@@ -61,6 +67,13 @@ class RadioBrowserService() {
                 }
             )
 
+            // fisrt try to find out if there is "good" server available and return
+            serverList.filter { it.urlString.contains("de1") || it.urlString.contains("nl1") }
+                .firstOrNull { it.isReachable }?.let {
+                    setActiveServer(it)
+                    return@withContext ServerListResponse.Success(serverList)
+                }
+            // if not return first available
             serverList.firstOrNull { it.isReachable }?.let {
                 setActiveServer(it)
                 return@withContext ServerListResponse.Success(serverList)
@@ -69,11 +82,9 @@ class RadioBrowserService() {
             return@withContext ServerListResponse.Failure(ServerListFailure.NoReachableServers)
 
         } catch (e: UnknownHostException) {
-            plog("RadioBrowserService.UnknownHostException")
             return@withContext ServerListResponse.Failure(ServerListFailure.UnknownHost)
 
         } catch (e: IOException) {
-            plog("RadioBrowserService.IOException")
             return@withContext ServerListResponse.Failure(ServerListFailure.NetworkError)
         }
     }
@@ -81,34 +92,29 @@ class RadioBrowserService() {
     fun setActiveServer(serverInfo: ServerInfo) {
         api = getApi("https://${serverInfo.urlString}/json/")
         plog("setActiveServer: ${serverInfo.urlString}")
+        _activeServer.value = ActiveServerState.Value(serverInfo)
     }
 
-    suspend fun getAllStations(): List<StationNetworkEntity> {
-        return api.getAllStations()
+    suspend fun getLanguageList() = getLanguageListOrThrow()
+
+    suspend fun getTagList() = api.getTagList()
+
+    suspend fun stationsByLanguage(langString: String) = api.getStationsByLanguage(langString)
+
+    suspend fun stationsByTag(tagString: String) = api.getStationsByTag(tagString)
+
+    suspend fun getAllStations() = api.getAllStations()
+
+    suspend fun getTopVoted() = api.getTopVoted()
+
+    private suspend fun getLanguageListOrThrow(): List<CategoryNetworkEntity> {
+        // #todo wrapper for every method that calls [api] field
+        if (::api.isInitialized) {
+            return api.getLanguageList()
+        } else {
+            throw UninitializedPropertyAccessException("lateinit errrrror")
+        }
     }
 
-    suspend fun getTopVote(): List<StationNetworkEntity> {
-        return api.getTopVoted()
-    }
-
-    suspend fun getTags(): List<LanguageNetworkEntity> {
-        return api.getTagList()
-    }
-
-    suspend fun getLanguageList(): List<LanguageNetworkEntity> {
-        return api.getLanguageList()
-    }
-
-    suspend fun getStationsByLanguage(langString: String): List<StationNetworkEntity> {
-        return api.getStationsByLanguage(langString)
-    }
-
-    suspend fun getStationsByTag(tag: String): List<StationNetworkEntity> {
-        return api.getStationsByTag(tag)
-    }
-
-    suspend fun search(name: String, tag: String): List<StationNetworkEntity> {
-        return api.search(SearchRequest(name, tag))
-    }
-
+    suspend fun search(name: String, tag: String) = api.search(SearchRequest(name, tag))
 }
