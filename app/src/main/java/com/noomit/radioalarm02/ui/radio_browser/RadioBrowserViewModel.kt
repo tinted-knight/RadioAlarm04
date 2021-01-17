@@ -1,7 +1,5 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.data.CategoryModel
@@ -11,7 +9,7 @@ import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.ui.navigation.NavCommand
-import com.noomit.radioalarm02.ui.navigation.SingleLiveEvent
+import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -24,15 +22,6 @@ sealed class RadioBrowserDirections : NavCommand {
     object TagList : RadioBrowserDirections()
     object TopVoted : RadioBrowserDirections()
     object Search : RadioBrowserDirections()
-}
-
-abstract class NavigationViewModel<T : NavCommand> : ViewModel() {
-    private val navigation = SingleLiveEvent<T>()
-    val commands = navigation as LiveData<T>
-
-    protected fun navigateTo(destination: T) {
-        navigation.value = destination
-    }
 }
 
 @FlowPreview
