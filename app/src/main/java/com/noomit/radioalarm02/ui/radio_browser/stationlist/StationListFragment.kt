@@ -3,6 +3,7 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -42,6 +43,8 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
     override val notificationCaption: String
         get() = getString(R.string.app_name)
 
+    private var recyclerState: Parcelable? = null
+
     override fun initPlayerViews() {
         val view = (view as IStationListLayout)
         playerControlView = view.playerControll
@@ -53,6 +56,15 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         contour.apply {
             setStationsAdapter(adapter)
             showLoading()
+            recyclerState?.let {
+                contour.setRecyclerState(it)
+                return@apply
+            }
+            savedState?.let { bundle ->
+                bundle.getParcelable<Parcelable>(RECYCLER_STATE)?.let { state ->
+                    contour.setRecyclerState(state)
+                }
+            }
         }
         contour.listener = stationViewModel
     }
@@ -83,6 +95,17 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
                 )
             }
         }
+    }
+
+    override fun onPause() {
+        val state = contour.getRecyclerState()
+        recyclerState = state
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(RECYCLER_STATE, recyclerState)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -77,6 +77,10 @@ abstract class ContourFragment<L> : Fragment() {
         }
         super.onDestroyView()
     }
+
+    companion object {
+        const val RECYCLER_STATE = "recycler-state"
+    }
 }
 
 abstract class PlayerServiceFragment<L> : ContourFragment<L>() {

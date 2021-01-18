@@ -43,12 +43,6 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
 
     private var recyclerState: Parcelable? = null
 
-    override fun onPause() {
-        val state = contour.getRecyclerState()
-        recyclerState = state
-        super.onPause()
-    }
-
     override fun prepareView(savedState: Bundle?) {
         contour.apply {
             setAdapter(adapter)
@@ -58,7 +52,7 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
                 return@apply
             }
             savedState?.let { bundle ->
-                bundle.getParcelable<Parcelable>("recycler-state")?.let { state ->
+                bundle.getParcelable<Parcelable>(RECYCLER_STATE)?.let { state ->
                     contour.setRecyclerState(state)
                 }
             }
@@ -76,8 +70,14 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
         }
     }
 
+    override fun onPause() {
+        val state = contour.getRecyclerState()
+        recyclerState = state
+        super.onPause()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable("recycler-state", recyclerState)
+        outState.putParcelable(RECYCLER_STATE, recyclerState)
         super.onSaveInstanceState(outState)
     }
 
