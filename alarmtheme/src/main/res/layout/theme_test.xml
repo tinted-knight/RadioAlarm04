@@ -5,9 +5,22 @@
     android:orientation="vertical"
     android:theme="@style/LightTheme">
 
-    <ImageView
-        android:src="@drawable/ic_add_alarm_24"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+    <TextView
+        style="@style/LightTheme.StationTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:text="Rock tag" />
+
+    <TextView
+        style="@style/LightTheme.StationTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:text="Rock tag Alt" />
 
 </LinearLayout>

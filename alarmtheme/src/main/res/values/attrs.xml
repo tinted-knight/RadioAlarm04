@@ -15,4 +15,5 @@
     <attr name="alarmCardAlarmIcon" format="reference" />
     <attr name="stationCountText" format="reference" />
     <attr name="progressBarColors" format="reference" />
+    <attr name="stationTag" format="reference" />
 </resources>

@@ -1,16 +1,23 @@
 package com.noomit.radioalarm02.ui.favorites
 
-import androidx.lifecycle.ViewModel
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.domain.favorite_manager.IFavoritesManager
+import com.noomit.radioalarm02.ui.navigation.NavCommand
+import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.NowPlaying
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.ItemClickListener
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+sealed class FavoritesDirections : NavCommand {
+    data class OpenExternalLink(val url: String) : FavoritesDirections()
+}
+
 // #think rewrite all to states
-class FavoritesViewModel(private val favoritesManager: IFavoritesManager) : ViewModel(),
-    ItemClickListener<StationModel>, FavoritesViewListener {
+class FavoritesViewModel(private val favoritesManager: IFavoritesManager) :
+    NavigationViewModel<FavoritesDirections>(),
+    ItemClickListener<StationModel>, NowPlayingListener {
 
     val selectAll = favoritesManager.allEntries
 
@@ -32,4 +39,14 @@ class FavoritesViewModel(private val favoritesManager: IFavoritesManager) : View
             _nowPlaying.value = null
         }
     }
+
+    override fun onFavoriteLongClick() {}
+
+    override fun onHomePageClick() {
+        _nowPlaying.value?.let {
+            navigateTo(FavoritesDirections.OpenExternalLink(it.station.homepage))
+        }
+    }
+
+    override fun onHomePageLongClick() {}
 }

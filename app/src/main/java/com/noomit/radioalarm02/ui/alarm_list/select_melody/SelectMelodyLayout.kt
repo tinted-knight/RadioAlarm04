@@ -7,9 +7,9 @@ import android.view.ContextThemeWrapper
 import com.google.android.material.button.MaterialButton
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesLayout
-import com.noomit.radioalarm02.ui.favorites.FavoritesViewListener
 import com.noomit.radioalarm02.ui.favorites.IFavoritesLayout
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
@@ -63,7 +63,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
 
     override val playerView = favorites.playerView
 
-    override var delegate: FavoritesViewListener? = null
+    override var listener: NowPlayingListener? = null
 
     override fun setStationsAdapter(adapter: StationListAdapter) =
         favorites.setStationsAdapter(adapter)

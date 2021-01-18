@@ -1,5 +1,7 @@
 package com.noomit.radioalarm02.ui.favorites
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.noomit.playerservice.MediaItem
@@ -36,7 +38,7 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
             setStationsAdapter(adapter)
             showLoading()
         }
-        contour.delegate = favoritesViewModel
+        contour.listener = favoritesViewModel
     }
 
     override fun observeViewModel() {
@@ -52,6 +54,15 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
             } else {
                 service?.stop()
                 contour.nowPlayingEmpty()
+            }
+        }
+
+        favoritesViewModel.commands.observe(viewLifecycleOwner) { command ->
+            when (command) {
+                is FavoritesDirections.OpenExternalLink -> startActivity(
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(command.url)
+                    })
             }
         }
     }

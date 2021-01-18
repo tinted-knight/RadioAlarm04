@@ -1,6 +1,5 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.data.CategoryModel
@@ -9,18 +8,28 @@ import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
+import com.noomit.radioalarm02.ui.navigation.NavCommand
+import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
+import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
+sealed class RadioBrowserDirections : NavCommand {
+    object LanguageList : RadioBrowserDirections()
+    object TagList : RadioBrowserDirections()
+    object TopVoted : RadioBrowserDirections()
+    object Search : RadioBrowserDirections()
+}
+
 @FlowPreview
 class RadioBrowserViewModel(
     private val serverManager: ServerManager,
     private val categoryManager: CategoryManager,
     private val stationManager: StationManager,
-) : ViewModel() {
+) : NavigationViewModel<RadioBrowserDirections>(), RadioBrowserHomeDelegate {
 
     val availableServers = serverManager.state
 
@@ -29,10 +38,6 @@ class RadioBrowserViewModel(
     private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
 
     private val stationFilter = MutableStateFlow<Filter>(Filter.None)
-
-    private val _toast = MutableSharedFlow<String>()
-    val toast: Flow<String> = _toast
-
 
     init {
         serverManager.getAvalilable(viewModelScope)
@@ -60,30 +65,14 @@ class RadioBrowserViewModel(
         }
     }
 
-    fun requestGlobalSearch(name: String, tag: String): Boolean {
-        if (name.isBlank() && tag.isBlank()) {
-            viewModelScope.launch { _toast.emit("Try to enter name or tag") }
-            return false
-        }
-        showStations(CategoryModel.GlobalSearch(
-            searchName = name.toLowerCase(Locale.getDefault()),
-            searchTag = tag.toLowerCase(Locale.getDefault())
-        ))
-        return true
-    }
-
-    fun requestTopVoted() {
-        showStations(CategoryModel.TopVoted())
-    }
-
     fun requestCategory(model: CategoryModel) {
-        showStations(model)
+        loadStations(model)
     }
 
     /**
      * Request stations by [category]. Observe result by [stationList]
      */
-    private fun showStations(category: CategoryModel) = viewModelScope.launch {
+    private fun loadStations(category: CategoryModel) = viewModelScope.launch {
         clearStationFilter()
         stationManager.stationsBy(category)
     }
@@ -105,17 +94,6 @@ class RadioBrowserViewModel(
         }
         .flowOn(Dispatchers.Default)
 
-    // Categories
-    fun getTagList() = viewModelScope.launch {
-        clearCategoryFilter()
-        categoryManager.getTags()
-    }
-
-    fun getLanguageList() = viewModelScope.launch {
-        clearCategoryFilter()
-        categoryManager.getLanguages()
-    }
-
     /**
      * List of categories(languages or tags), filtered by **category name** set up with
      * [applyCategoryFilter] method
@@ -135,6 +113,54 @@ class RadioBrowserViewModel(
     private fun clearCategoryFilter() = viewModelScope.launch { caterogyFilter.emit(Filter.None) }
 
     private fun clearStationFilter() = viewModelScope.launch { stationFilter.emit(Filter.None) }
+
+    override fun onLanguageClick() {
+        viewModelScope.launch {
+            clearCategoryFilter()
+            categoryManager.getLanguages()
+        }
+        navigateTo(RadioBrowserDirections.LanguageList)
+    }
+
+    override fun onTagClick() {
+        viewModelScope.launch {
+            clearCategoryFilter()
+            categoryManager.getTags()
+        }
+        navigateTo(RadioBrowserDirections.TagList)
+    }
+
+    override fun onTopVotedClick() {
+        loadStations(CategoryModel.TopVoted())
+        navigateTo(RadioBrowserDirections.TopVoted)
+    }
+
+    data class SearchState(
+        val name: String = "",
+        val tag: String = "",
+    ) {
+        val isValid: Boolean
+            get() = name.isNotBlank() || tag.isNotBlank()
+    }
+
+    private val _searchState = MutableStateFlow(SearchState())
+    val searchState: StateFlow<SearchState> = _searchState
+
+    override fun onSearchClick() {
+        loadStations(CategoryModel.GlobalSearch(
+            searchName = _searchState.value.name.toLowerCase(Locale.getDefault()),
+            searchTag = _searchState.value.tag.toLowerCase(Locale.getDefault())
+        ))
+        navigateTo(RadioBrowserDirections.Search)
+    }
+
+    override fun onSearchNameChanged(value: String?) {
+        _searchState.value = _searchState.value.copy(name = value ?: "")
+    }
+
+    override fun onSearchTagChanged(value: String?) {
+        _searchState.value = _searchState.value.copy(tag = value ?: "")
+    }
 }
 
 private sealed class Filter {

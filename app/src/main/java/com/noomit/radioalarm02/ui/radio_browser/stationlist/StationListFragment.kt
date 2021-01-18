@@ -1,5 +1,7 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -52,7 +54,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
             setStationsAdapter(adapter)
             showLoading()
         }
-        contour.delegate = stationViewModel
+        contour.listener = stationViewModel
     }
 
     @FlowPreview
@@ -70,13 +72,16 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
             service?.play()
             contour.nowPlaying(it.station, it.inFavorites)
         }
-        collect(stationViewModel.uiMessage) {
-            context?.toast(
-                when (it) {
-                    is UIMessage.Added -> getString(R.string.toast_added, it.value)
-                    is UIMessage.Removed -> getString(R.string.toast_removed, it.value)
-                }
-            )
+        collect(stationViewModel.uiMessage) { message ->
+            when (message) {
+                is UIMessage.Added -> context?.toast(getString(R.string.toast_added, message.value))
+                is UIMessage.Removed -> context?.toast(getString(R.string.toast_removed, message.value))
+                is UIMessage.OpenExternalLink -> startActivity(
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(message.url)
+                    }
+                )
+            }
         }
     }
 

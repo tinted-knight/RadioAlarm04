@@ -18,4 +18,5 @@
     <!--    -->
     <color name="clNowplayingDimm">#CC000000</color>
     <color name="clTagAlternative">#9fa8da</color>
+    <color name="clTagBg">#54CCCCCC</color>
 </resources>

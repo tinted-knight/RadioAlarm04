@@ -37,6 +37,7 @@ interface IRadioBrowserHomeLayout {
     fun serverListCollapse()
     fun showLoading()
     fun btnSearchEnabled(isEnabled: Boolean)
+    fun setSearchFields(name: String, tag: String)
     fun update(content: List<ServerInfo>)
     fun update(activerServer: ServerInfo?)
 }
@@ -70,8 +71,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         hint = context.getString(R.string.name_hint)
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
+        this.id = View.generateViewId()
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
         val editText = TextInputEditText(this.context).apply {
+            this.id = View.generateViewId()
             isSingleLine = true
             addTextChangedListener(
                 onTextChanged = { text, _, _, _ -> delegate?.onSearchNameChanged(text.toString()) }
@@ -84,8 +87,10 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         hint = context.getString(R.string.tag_hint)
         boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
         val cornerRadius = 12.0f
+        this.id = View.generateViewId()
         setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
         val editText = TextInputEditText(this.context).apply {
+            this.id = View.generateViewId()
             isSingleLine = true
             addTextChangedListener(
                 onTextChanged = { text, _, _, _ -> delegate?.onSearchTagChanged(text.toString()) }
@@ -116,6 +121,8 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     init {
+        id = View.generateViewId()
+
         contourHeightWrapContent()
         setPadding(16.dip, 0.dip, 16.dip, 0.dip)
 
@@ -207,6 +214,11 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         btnSearch.isVisible = false
 
         serverList.isVisible = false
+    }
+
+    override fun setSearchFields(name: String, tag: String) {
+        searchName.editText?.setText(name)
+        searchTag.editText?.setText(tag)
     }
 
     override fun btnSearchEnabled(isEnabled: Boolean) {

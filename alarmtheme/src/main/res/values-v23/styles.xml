@@ -21,6 +21,7 @@
         <item name="alarmCardMelody">@style/LightTheme.MelodyText</item>
         <item name="alarmCardAlarmIcon">@style/LightTheme.AlarmIcon</item>
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
+        <item name="stationTag">@style/LightTheme.StationTag</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:statusBarColor">@color/clStausBarBackground</item>
     </style>

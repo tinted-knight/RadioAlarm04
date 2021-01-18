@@ -24,14 +24,15 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
-import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView2
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface IStationListLayout {
     val playerControll: PlayerControlView
     val playerView: PlayerView
-    var delegate: StationListViewListener?
+    var listener: NowPlayingListener?
 
     fun setStationsAdapter(adapter: StationListAdapter)
     fun showLoading()
@@ -39,14 +40,14 @@ interface IStationListLayout {
     fun nowPlaying(station: StationModel, inFavorites: Boolean)
 }
 
-interface StationListViewListener {
-    fun onFavoriteClick()
-}
-
 class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     ContourLayout(context, attributeSet), IStationListLayout {
 
-    override var delegate: StationListViewListener? = null
+    override var listener: NowPlayingListener? = null
+        set(value) {
+            field = value
+            nowPlayingView.nowPlayingListener = value
+        }
 
     private val inflater = LayoutInflater.from(context)
 
@@ -72,9 +73,8 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         isVisible = false
     }
 
-    private val nowPlayingView = NowPlayingView(context).apply {
+    private val nowPlayingView = NowPlayingView2(context).apply {
         setOnClickListener(::nowPlayingClick)
-        btnFav.setOnClickListener { this@StationListLayout.delegate?.onFavoriteClick() }
     }
 
     private val loadingIndicator = ProgressBar(context)
