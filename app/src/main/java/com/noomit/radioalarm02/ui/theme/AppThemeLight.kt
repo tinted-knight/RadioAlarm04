@@ -21,6 +21,7 @@ interface ThemeNowPlaying {
     val favoriteStyleId: Int
     val iconFavorite: Int
     val iconNotFavorite: Int
+    val iconHomepage: Int
     val stationCount: ViewStyle
     val dimmColor: Int
     val tag: ViewStyle
@@ -71,6 +72,7 @@ data class AppThemeLight(
         override val favoriteStyleId = S.LightTheme_ActionButton
         override val iconFavorite = D.ic_favorite_24
         override val iconNotFavorite = D.ic_favorite_border_24
+        override val iconHomepage = D.ic_home_24
         override val stationCount = ViewStyle(S.LightTheme_TextStationCount, A.stationCountText)
         override val dimmColor = C.clNowplayingDimm
         override val tag = ViewStyle(S.LightTheme_StationTag, A.stationTag)

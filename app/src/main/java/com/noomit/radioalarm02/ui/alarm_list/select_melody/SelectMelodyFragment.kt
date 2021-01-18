@@ -42,7 +42,7 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
             setStationsAdapter(adapter)
             showLoading()
         }
-        contour.delegate = favoritesViewModel
+        contour.listener = favoritesViewModel
         contour.onSetMelodyClick = {
             favoritesViewModel.nowPlaying.value?.let {
                 alarmViewModel.setMelody(it.station)

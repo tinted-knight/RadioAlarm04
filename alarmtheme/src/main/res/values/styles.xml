@@ -138,10 +138,10 @@
     <style name="LightTheme.StationTag" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/pt_sans_narrow</item>
         <item name="android:background">@drawable/tag_background</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:paddingStart">6dp</item>
         <item name="android:paddingEnd">6dp</item>
-        <item name="android:paddingTop">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
+<!--        <item name="android:paddingTop">2dp</item>-->
+<!--        <item name="android:paddingBottom">2dp</item>-->
     </style>
 </resources>

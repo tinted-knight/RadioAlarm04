@@ -22,14 +22,15 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
-import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingView2
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface IFavoritesLayout {
     val playerControll: PlayerControlView
     val playerView: PlayerView
-    var delegate: FavoritesViewListener?
+    var listener: NowPlayingListener?
 
     fun setStationsAdapter(adapter: StationListAdapter)
     fun showLoading()
@@ -38,13 +39,13 @@ interface IFavoritesLayout {
     fun nowPlayingEmpty()
 }
 
-interface FavoritesViewListener {
-    fun onFavoriteClick()
-}
-
 class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayout {
 
-    override var delegate: FavoritesViewListener? = null
+    override var listener: NowPlayingListener? = null
+        set(value) {
+            field = value
+            nowPlayingView.nowPlayingListener = value
+        }
 
     private val inflater = LayoutInflater.from(context)
 
@@ -62,11 +63,8 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
         isVerticalScrollBarEnabled = true
     }
 
-    private val nowPlayingView = NowPlayingView(context).apply {
-        btnFav.setOnLongClickListener {
-            this@FavoritesLayout.delegate?.onFavoriteClick()
-            true
-        }
+    private val nowPlayingView = NowPlayingView2(context).apply {
+        setOnClickListener(::nowPlayingClick)
     }
 
     private val dimmingView = View(context).apply {
@@ -124,8 +122,6 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
                 }
             }.bottomTo { parent.bottom() - yPadding() }
         )
-
-        nowPlayingView.setOnClickListener(::nowPlayingClick)
     }
 
     override fun setStationsAdapter(adapter: StationListAdapter) {
@@ -149,6 +145,7 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
 
     override fun nowPlayingEmpty() {
         nowPlayingView.updateEmpty()
+        dimmingView.isVisible = false
     }
 
     // #achtung copypasting from StationListLayout

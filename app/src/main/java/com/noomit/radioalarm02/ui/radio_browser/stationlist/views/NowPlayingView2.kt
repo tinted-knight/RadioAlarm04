@@ -26,8 +26,17 @@ import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
-class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
+interface NowPlayingListener {
+    fun onFavoriteClick()
+    fun onFavoriteLongClick()
+    fun onHomePageClick()
+    fun onHomePageLongClick()
+}
+
+class NowPlayingView2(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet) {
+
+    var nowPlayingListener: NowPlayingListener? = null
 
     private val title = TextView(context).apply {
         ellipsize = TextUtils.TruncateAt.END
@@ -58,6 +67,24 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         appTheme.nowPlaying.favoriteStyleId
     ).apply {
         setImageResource(appTheme.nowPlaying.iconNotFavorite)
+        setOnClickListener { nowPlayingListener?.onFavoriteClick() }
+        setOnLongClickListener {
+            nowPlayingListener?.onFavoriteLongClick()
+            true
+        }
+    }
+
+    private val btnHomePage = ImageButton(
+        ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
+        null,
+        appTheme.nowPlaying.favoriteStyleId
+    ).apply {
+        setImageResource(appTheme.nowPlaying.iconHomepage)
+        setOnClickListener { nowPlayingListener?.onHomePageClick() }
+        setOnLongClickListener {
+            nowPlayingListener?.onHomePageLongClick()
+            true
+        }
     }
 
     private fun buildChip(value: String, even: Boolean) = TextView(
@@ -87,6 +114,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.isVisible = false
         tagList.isVisible = false
         btnFav.isVisible = false
+        btnHomePage.isVisible = false
 
         nowPlayingIcon.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -102,6 +130,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.layoutBy(emptyX(), emptyY())
         tagList.layoutBy(emptyX(), emptyY())
         btnFav.layoutBy(emptyX(), emptyY())
+        btnHomePage.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayoutNew() {
@@ -109,92 +138,45 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         setPadding(16.dip, 16.dip, 16.dip, 16.dip)
 
         title.isSingleLine = false
-        title.maxLines = 4
+        title.maxLines = 2
         homePage.isVisible = true
         country.isVisible = true
         codec.isVisible = codec.value.isNotBlank()
         bitrate.isVisible = bitrate.value.isNotBlank()
         tagList.isVisible = true
         btnFav.isVisible = true
+        btnHomePage.isVisible = true
 
         val vSpacing = 8.ydip
         val hSpacing = 8.xdip
 
         nowPlayingIcon.updateLayoutBy(
-            x = rightTo { parent.right() }.widthOf { parent.width() / 3 },
-            y = topTo { parent.top() }.heightOf { (parent.width() / 3).toY() }
+            x = rightTo { parent.right() }.widthOf { parent.width() / 4 },
+            y = topTo { parent.top() }.heightOf { (parent.width() / 4).toY() }
         )
-        codec.updateLayoutBy(
+        title.updateLayoutBy(
             leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
-            topTo { nowPlayingIcon.top() + vSpacing }
+            topTo { parent.top() }
         )
         bitrate.updateLayoutBy(
             leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
-            topTo { codec.bottom() + vSpacing }
+            topTo { title.bottom() + vSpacing }
+        )
+        codec.updateLayoutBy(
+            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
+            topTo { bitrate.bottom() + vSpacing }
         )
         btnFav.updateLayoutBy(
             rightTo { parent.right() },
             topTo { nowPlayingIcon.bottom() + vSpacing }
         )
-        homePage.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { btnFav.left() - hSpacing },
-            centerVerticallyTo { btnFav.centerY() }
+        btnHomePage.updateLayoutBy(
+            rightTo { btnFav.left() },
+            topTo { nowPlayingIcon.bottom() + vSpacing }
         )
-        title.updateLayoutBy(
+        tagList.updateLayoutBy(
             matchParentX(),
             topTo { btnFav.bottom() + vSpacing }
-        )
-        tagList.updateLayoutBy(
-            matchParentX(),
-            topTo { title.bottom() + vSpacing }
-        )
-    }
-
-    private fun expandedLayout() {
-        toggleCornerRaduis(true)
-
-        title.isSingleLine = false
-        homePage.isVisible = true
-        country.isVisible = true
-        codec.isVisible = true
-        bitrate.isVisible = true
-        tagList.isVisible = true
-        btnFav.isVisible = true
-
-        val fillParentWidth = matchParentX(marginLeft = 16, marginRight = 16)
-        val verticalSpacing = 8.ydip
-
-        title.updateLayoutBy(
-            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 8.xdip },
-            y = topTo { nowPlayingIcon.top() + 16.ydip }
-        )
-        nowPlayingIcon.updateLayoutBy(
-            x = rightTo { parent.right() - 16.xdip }.widthOf { parent.width() / 3 },
-            y = topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
-        )
-        homePage.updateLayoutBy(
-            x = fillParentWidth,
-            y = topTo { nowPlayingIcon.bottom() + verticalSpacing }
-        )
-        country.updateLayoutBy(
-            x = fillParentWidth,
-            y = topTo { homePage.bottom() + verticalSpacing }
-        )
-        codec.updateLayoutBy(
-            x = leftTo { country.left() },
-            y = topTo { country.bottom() + verticalSpacing }
-        )
-        bitrate.updateLayoutBy(
-            x = leftTo { codec.right() + 16.xdip },
-            y = topTo { country.bottom() + 8.ydip }
-        )
-        tagList.updateLayoutBy(
-            x = fillParentWidth,
-            y = topTo { bitrate.bottom() + verticalSpacing }
-        )
-        btnFav.updateLayoutBy(
-            x = rightTo { parent.right() - 16.xdip },
-            y = bottomTo { parent.bottom() - 16.ydip }
         )
     }
 
