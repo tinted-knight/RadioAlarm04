@@ -40,6 +40,11 @@ abstract class ContourFragment<L> : Fragment() {
      */
     protected abstract val contour: L
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeCommands()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +71,8 @@ abstract class ContourFragment<L> : Fragment() {
      * Observe viewmodel and update layout
      */
     protected abstract fun observeViewModel()
+
+    protected open fun observeCommands() {}
 
     /**
      * Hides software keyboard when fragment view is going to be destroyed

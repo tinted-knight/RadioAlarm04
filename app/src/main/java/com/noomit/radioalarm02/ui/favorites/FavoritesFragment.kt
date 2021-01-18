@@ -57,8 +57,10 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
                 contour.nowPlayingEmpty()
             }
         }
+    }
 
-        favoritesViewModel.commands.observe(viewLifecycleOwner) { command ->
+    override fun observeCommands() {
+        collect(favoritesViewModel.commands) { command ->
             when (command) {
                 is FavoritesDirections.OpenExternalLink -> startActivity(
                     Intent(Intent.ACTION_VIEW).apply {

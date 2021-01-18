@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.radiobrowser.ActiveServerState
@@ -18,6 +19,7 @@ import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
 
 @FlowPreview
 class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
@@ -72,28 +74,53 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.commands.observe(viewLifecycleOwner) { command ->
-            when (command) {
-                RadioBrowserDirections.LanguageList -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_languageList,
-                    Bundle().apply { putString("title", "Languages") }
-                )
-                RadioBrowserDirections.TagList -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_languageList,
-                    Bundle().apply { putString("title", "Tags") }
-                )
-                RadioBrowserDirections.TopVoted -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_stationList,
-                    Bundle().apply { putString("title", "Top voted") }
-                )
-                RadioBrowserDirections.Search -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_stationList,
-                    Bundle().apply { putString("title", "Global search") }
-                )
+    override fun observeCommands() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.commands.collect() { command ->
+                when (command) {
+                    is RadioBrowserDirections.LanguageList -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_languageList,
+                        Bundle().apply { putString("title", "Languages") }
+                    )
+                    is RadioBrowserDirections.TagList -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_languageList,
+                        Bundle().apply { putString("title", "Tags") }
+                    )
+                    is RadioBrowserDirections.TopVoted -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_stationList,
+                        Bundle().apply { putString("title", "Top voted") }
+                    )
+                    is RadioBrowserDirections.Search -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_stationList,
+                        Bundle().apply { putString("title", "Global search") }
+                    )
+                }
             }
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+//        viewModel.commands.observe(viewLifecycleOwner) { command ->
+//            when (command) {
+//                is RadioBrowserDirections.LanguageList -> findNavController().navigate(
+//                    R.id.action_radioBrowser_to_languageList,
+//                    Bundle().apply { putString("title", "Languages") }
+//                )
+//                is RadioBrowserDirections.TagList -> findNavController().navigate(
+//                    R.id.action_radioBrowser_to_languageList,
+//                    Bundle().apply { putString("title", "Tags") }
+//                )
+//                is RadioBrowserDirections.TopVoted -> findNavController().navigate(
+//                    R.id.action_radioBrowser_to_stationList,
+//                    Bundle().apply { putString("title", "Top voted") }
+//                )
+//                is RadioBrowserDirections.Search -> findNavController().navigate(
+//                    R.id.action_radioBrowser_to_stationList,
+//                    Bundle().apply { putString("title", "Global search") }
+//                )
+//            }
+//        }
     }
 
     private val adapterListener: ServerClick = {
