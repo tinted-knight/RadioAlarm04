@@ -135,31 +135,32 @@ class RadioBrowserViewModel(
         navigateTo(RadioBrowserDirections.TopVoted)
     }
 
-    private var name = ""
-    private var tag = ""
+    data class SearchState(
+        val name: String = "",
+        val tag: String = "",
+    ) {
+        val isValid: Boolean
+            get() = name.isNotBlank() || tag.isNotBlank()
+    }
 
-    private val _searchState = MutableStateFlow(false)
-    val searchState: Flow<Boolean> = _searchState
+    private val _searchState = MutableStateFlow(SearchState())
+    val searchState: StateFlow<SearchState> = _searchState
 
     override fun onSearchClick() {
         loadStations(CategoryModel.GlobalSearch(
-            searchName = name.toLowerCase(Locale.getDefault()),
-            searchTag = tag.toLowerCase(Locale.getDefault())
+            searchName = _searchState.value.name.toLowerCase(Locale.getDefault()),
+            searchTag = _searchState.value.tag.toLowerCase(Locale.getDefault())
         ))
         navigateTo(RadioBrowserDirections.Search)
     }
 
     override fun onSearchNameChanged(value: String?) {
-        name = value ?: ""
-        _searchState.value = isValid()
+        _searchState.value = _searchState.value.copy(name = value ?: "")
     }
 
     override fun onSearchTagChanged(value: String?) {
-        tag = value ?: ""
-        _searchState.value = isValid()
+        _searchState.value = _searchState.value.copy(tag = value ?: "")
     }
-
-    private fun isValid(): Boolean = name.isNotBlank() || tag.isNotBlank()
 }
 
 private sealed class Filter {
