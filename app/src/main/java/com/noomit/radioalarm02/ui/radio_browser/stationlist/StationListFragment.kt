@@ -48,7 +48,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         playerView = view.playerView
     }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         val adapter = StationListAdapter(delegate = stationViewModel)
         contour.apply {
             setStationsAdapter(adapter)

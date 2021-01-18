@@ -2,6 +2,7 @@ package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -31,7 +32,7 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
     override val contour: IHomeLayout
         get() = view as IHomeLayout
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         contour.setAdapter(AlarmListAdapter(adapterListener))
         contour.delegate = listener
     }

@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.playerservice.PlayerService
-import com.noomit.radioalarm02.tplog
 
 /**
  * Generic parameter [L] is supposed to be your layout's interface
@@ -50,7 +49,7 @@ abstract class ContourFragment<L> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        prepareView()
+        prepareView(savedInstanceState)
         observeViewModel()
     }
 
@@ -59,7 +58,7 @@ abstract class ContourFragment<L> : Fragment() {
      *
      * Typically set here recycler view adapter, layout event listeners and delegates etc.
      */
-    protected abstract fun prepareView()
+    protected abstract fun prepareView(savedState: Bundle?)
 
     /**
      * Called at the end of [onViewCreated] after [prepareView]
@@ -75,7 +74,6 @@ abstract class ContourFragment<L> : Fragment() {
         view?.let { view ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
-            tplog("hide keyboard")
         }
         super.onDestroyView()
     }

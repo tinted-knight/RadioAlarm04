@@ -2,6 +2,7 @@ package com.noomit.radioalarm02.ui.favorites
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.noomit.playerservice.MediaItem
@@ -32,7 +33,7 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
         playerView = contour.playerView
     }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         val adapter = StationListAdapter(delegate = favoritesViewModel)
         contour.apply {
             setStationsAdapter(adapter)

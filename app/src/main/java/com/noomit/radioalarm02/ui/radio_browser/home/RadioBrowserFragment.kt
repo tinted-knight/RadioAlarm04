@@ -14,7 +14,6 @@ import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
@@ -42,7 +41,7 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             return scrollView
         }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         contour.apply {
             delegate = viewModel
             setServerAdapter(adapter)
@@ -69,29 +68,9 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
         }
 
         collect(viewModel.searchState) {
-            tplog("searchState: $it")
             contour.btnSearchEnabled(it.isValid)
         }
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        tplog("saveState")
-        outState.putString("name", viewModel.searchState.value.name)
-        outState.putString("tag", viewModel.searchState.value.tag)
-        super.onSaveInstanceState(outState)
-    }
-
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        tplog("stateRestored")
-//        val name = savedInstanceState?.getString("name")
-//        val tag = savedInstanceState?.getString("tag")
-//        name?.let { viewModel.onSearchNameChanged(it) }
-//        tag?.let { viewModel.onSearchTagChanged(it) }
-//
-//        contour.setSearchState(name, tag)
-//
-//        super.onViewStateRestored(savedInstanceState)
-//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
