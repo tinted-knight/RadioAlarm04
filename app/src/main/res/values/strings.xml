@@ -9,6 +9,10 @@
     <string name="nav_label_favorites">Favorites</string>
     <string name="nav_label_select_melody">Select alarm melody</string>
     <string name="nav_label_rbrowser">Radio browser</string>
+    <string name="nav_label_languages">Languages</string>
+    <string name="nav_label_tags">Tags</string>
+    <string name="nav_label_topvoted">Top voted</string>
+    <string name="nav_label_search">Global search</string>
     <string name="monday">mon</string>
     <string name="tuesday">tue</string>
     <string name="wednesday">wed</string>

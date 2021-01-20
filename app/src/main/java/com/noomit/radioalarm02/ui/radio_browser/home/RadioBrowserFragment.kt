@@ -15,6 +15,7 @@ import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
+import com.noomit.radioalarm02.ui.navigation.NavHelper
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
@@ -80,47 +81,23 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
                 when (command) {
                     is RadioBrowserDirections.LanguageList -> findNavController().navigate(
                         R.id.action_radioBrowser_to_languageList,
-                        Bundle().apply { putString("title", "Languages") }
+                        Bundle().apply { putString(NavHelper.title, getString(R.string.lang_list)) }
                     )
                     is RadioBrowserDirections.TagList -> findNavController().navigate(
                         R.id.action_radioBrowser_to_languageList,
-                        Bundle().apply { putString("title", "Tags") }
+                        Bundle().apply { putString("title", getString(R.string.nav_label_tags)) }
                     )
                     is RadioBrowserDirections.TopVoted -> findNavController().navigate(
                         R.id.action_radioBrowser_to_stationList,
-                        Bundle().apply { putString("title", "Top voted") }
+                        Bundle().apply { putString("title", getString(R.string.nav_label_topvoted)) }
                     )
                     is RadioBrowserDirections.Search -> findNavController().navigate(
                         R.id.action_radioBrowser_to_stationList,
-                        Bundle().apply { putString("title", "Global search") }
+                        Bundle().apply { putString("title", getString(R.string.nav_label_search)) }
                     )
                 }
             }
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        viewModel.commands.observe(viewLifecycleOwner) { command ->
-//            when (command) {
-//                is RadioBrowserDirections.LanguageList -> findNavController().navigate(
-//                    R.id.action_radioBrowser_to_languageList,
-//                    Bundle().apply { putString("title", "Languages") }
-//                )
-//                is RadioBrowserDirections.TagList -> findNavController().navigate(
-//                    R.id.action_radioBrowser_to_languageList,
-//                    Bundle().apply { putString("title", "Tags") }
-//                )
-//                is RadioBrowserDirections.TopVoted -> findNavController().navigate(
-//                    R.id.action_radioBrowser_to_stationList,
-//                    Bundle().apply { putString("title", "Top voted") }
-//                )
-//                is RadioBrowserDirections.Search -> findNavController().navigate(
-//                    R.id.action_radioBrowser_to_stationList,
-//                    Bundle().apply { putString("title", "Global search") }
-//                )
-//            }
-//        }
     }
 
     private val adapterListener: ServerClick = {

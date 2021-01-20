@@ -28,4 +28,8 @@
     <string name="toast_added">В избранное: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
     <string name="toast_removed">Удалено: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
     <string name="toast_hold_to_del">Удерживайте для удаления</string>
+    <string name="nav_label_languages">Список языков</string>
+    <string name="nav_label_tags">Список тегов</string>
+    <string name="nav_label_topvoted">Самые популярные</string>
+    <string name="nav_label_search">Поиск</string>
 </resources>
