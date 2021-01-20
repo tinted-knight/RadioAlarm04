@@ -26,6 +26,8 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
         )
     }
 
+    private val viewmodel: HomeViewModel by activityViewModels()
+
     override val layout: View
         get() = HomeLayout(requireContext())
 
@@ -34,7 +36,7 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
 
     override fun prepareView(savedState: Bundle?) {
         contour.setAdapter(AlarmListAdapter(adapterListener))
-        contour.delegate = listener
+        contour.delegate = viewmodel
     }
 
     override fun observeViewModel() {
@@ -47,17 +49,13 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
         }
     }
 
-    private val listener: IHomeLayoutDelegate = object : IHomeLayoutDelegate {
-        override fun onFavoriteClick() {
-            findNavController().navigate(R.id.action_home_to_favorites)
-        }
-
-        override fun onAddAlarmClick() {
-            pickTime { _, hour, minute -> alarmManager.insert(hour, minute) }
-        }
-
-        override fun onBrowseClick() {
-            findNavController().navigate(R.id.action_home_to_radioBrowser)
+    override fun observeCommands() {
+        collect(viewmodel.commands) { command ->
+            when (command) {
+                is AlarmListDirections.Favorites -> findNavController().navigate(R.id.action_home_to_favorites)
+                is AlarmListDirections.AddAlarm -> pickTime { _, hour, minute -> alarmManager.insert(hour, minute) }
+                is AlarmListDirections.RadioBrowser -> findNavController().navigate(R.id.action_home_to_radioBrowser)
+            }
         }
     }
 
