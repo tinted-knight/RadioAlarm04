@@ -23,6 +23,7 @@ import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
 @FlowPreview
@@ -119,7 +120,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
             searchView.setOnCloseListener { false }
-            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope))
+            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope).debounce(500))
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

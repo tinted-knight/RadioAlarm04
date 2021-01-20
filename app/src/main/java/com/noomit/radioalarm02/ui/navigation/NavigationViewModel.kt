@@ -18,6 +18,7 @@ abstract class NavigationViewModel<T : NavCommand> : ViewModel() {
         get() = navigation
 
     protected fun navigateTo(destination: T) {
+//        tplog("navigateTo, ${navigation.subscriptionCount.value}")
         viewModelScope.launch { navigation.emit(destination) }
     }
 }
