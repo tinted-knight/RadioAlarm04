@@ -10,18 +10,18 @@ import javax.inject.Inject
 
 class CategoryManager @Inject constructor(
     private val apiService: RadioBrowserService,
-) : WithLogTag {
+) : CategoryManagerContract, WithLogTag {
 
     override val logTag = "lang_manager"
 
     private val _state = MutableStateFlow<CategoryManagerState>(CategoryManagerState.Loading)
-    val state: StateFlow<CategoryManagerState> = _state
+    override val state = _state
 
-    suspend fun getLanguages() = getCategory(apiService::getLanguageList) {
+    override suspend fun getLanguages() = getCategory(apiService::getLanguageList) {
         CategoryModel.Language(it.name, it.stationcount.toString())
     }
 
-    suspend fun getTags() = getCategory(apiService::getTagList) {
+    override suspend fun getTags() = getCategory(apiService::getTagList) {
         CategoryModel.Tag(it.name, it.stationcount.toString())
     }
 

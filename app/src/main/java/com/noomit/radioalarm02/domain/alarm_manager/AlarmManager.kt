@@ -10,26 +10,12 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-
-interface AlarmManagerContract {
-    val alarms: Flow<List<Alarm>>
-    fun insert(hour: Int, minute: Int)
-    fun delete(alarm: Alarm)
-    fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm)
-    fun updateTime(alarm: Alarm, hour: Int, minute: Int)
-    fun setEnabled(alarm: Alarm, isEnabled: Boolean)
-    fun selectMelodyFor(alarm: Alarm)
-    fun setMelody(favorite: StationModel)
-    fun setDefaultRingtone()
-    suspend fun observeNextActive()
-}
 
 class AlarmManager @Inject constructor(
     database: Database,

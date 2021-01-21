@@ -5,18 +5,10 @@ import com.noomit.radioalarm02.Favorite
 import com.noomit.radioalarm02.data.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-interface IFavoritesManager {
-    val allEntries: Flow<List<StationModel>>
-    fun add(station: StationModel)
-    fun check(station: StationModel): Boolean
-    fun delete(station: StationModel)
-}
-
-class FavoritesManager @Inject constructor(database: Database) : IFavoritesManager {
+class FavoritesManager @Inject constructor(database: Database) : FavoritesManagerContract {
     private val queries = database.favoriteQueries
 
     override val allEntries = queries.selectAll().asFlow().mapToList()

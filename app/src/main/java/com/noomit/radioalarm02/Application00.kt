@@ -4,16 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
-import com.noomit.radioalarm02.domain.ServiceProvider
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltAndroidApp
 class Application00 : Application() {
-
-    @Inject
-    lateinit var serviceProvider: ServiceProvider
 
     override fun onCreate() {
         super.onCreate()

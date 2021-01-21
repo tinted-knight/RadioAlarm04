@@ -4,10 +4,10 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.data.CategoryModel
-import com.noomit.radioalarm02.domain.language_manager.CategoryManager
+import com.noomit.radioalarm02.domain.language_manager.CategoryManagerContract
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
-import com.noomit.radioalarm02.domain.server_manager.ServerManager
-import com.noomit.radioalarm02.domain.station_manager.StationManager
+import com.noomit.radioalarm02.domain.server_manager.ServerManagerContract
+import com.noomit.radioalarm02.domain.station_manager.StationManagerContract
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.navigation.NavCommand
@@ -28,9 +28,9 @@ sealed class RadioBrowserDirections : NavCommand {
 
 @FlowPreview
 class RadioBrowserViewModel @ViewModelInject constructor(
-    private val serverManager: ServerManager,
-    private val categoryManager: CategoryManager,
-    private val stationManager: StationManager,
+    private val serverManager: ServerManagerContract,
+    private val categoryManager: CategoryManagerContract,
+    private val stationManager: StationManagerContract,
 ) : NavigationViewModel<RadioBrowserDirections>(), RadioBrowserHomeDelegate {
 
     val availableServers = serverManager.state

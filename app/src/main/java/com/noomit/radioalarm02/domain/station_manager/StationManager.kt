@@ -10,20 +10,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-typealias StationList = List<StationModel>
-
 class StationManager @Inject constructor(
     via: RadioBrowserService,
-) : WithLogTag {
+) : StationManagerContract, WithLogTag {
 
     override val logTag = "station_manager"
 
     private val apiService = via
 
     private val _state = MutableStateFlow<StationManagerState>(StationManagerState.Loading)
-    val state: StateFlow<StationManagerState> = _state
+    override val state = _state
 
-    suspend fun stationsBy(category: CategoryModel) {
+    override suspend fun stationsBy(category: CategoryModel) {
         val last = state.value
         if (last is StationManagerState.Success && last.category == category) {
             return
