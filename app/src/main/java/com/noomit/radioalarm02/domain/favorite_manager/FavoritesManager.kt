@@ -7,6 +7,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 interface IFavoritesManager {
     val allEntries: Flow<List<StationModel>>
@@ -15,7 +16,7 @@ interface IFavoritesManager {
     fun delete(station: StationModel)
 }
 
-class FavoritesManager(database: Database) : IFavoritesManager {
+class FavoritesManager @Inject constructor(database: Database) : IFavoritesManager {
     private val queries = database.favoriteQueries
 
     override val allEntries = queries.selectAll().asFlow().mapToList()

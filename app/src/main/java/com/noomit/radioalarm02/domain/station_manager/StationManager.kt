@@ -8,10 +8,11 @@ import com.noomit.radioalarm02.data.StationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
 typealias StationList = List<StationModel>
 
-class StationManager(via: RadioBrowserService) : WithLogTag {
+class StationManager @Inject constructor(via: RadioBrowserService) : WithLogTag {
 
     override val logTag = "station_manager"
 

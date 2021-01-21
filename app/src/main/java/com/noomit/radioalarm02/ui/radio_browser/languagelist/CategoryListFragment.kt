@@ -17,13 +17,17 @@ import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
 @FlowPreview
+@AndroidEntryPoint
 class CategoryListFragment : ContourFragment<ICategoryLayout>() {
 
-    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
+    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser) {
+        defaultViewModelProviderFactory
+    }
 
     override val layout: View
         get() = CategoryListLayout(requireContext())

@@ -7,6 +7,7 @@ import com.noomit.radioalarm02.domain.favorite_manager.IFavoritesManager
 import com.noomit.radioalarm02.domain.language_manager.CategoryManager
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
+import javax.inject.Inject
 
 interface IServiceProvider {
     val serverManager: ServerManager
@@ -15,7 +16,7 @@ interface IServiceProvider {
     val favoritesManager: IFavoritesManager
 }
 
-class ServiceProvider(
+class ServiceProvider @Inject constructor(
     apiService: RadioBrowserService,
     database: Database,
 ) : IServiceProvider {

@@ -4,21 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
-import com.example.radiobrowser.RadioBrowserService
-import com.noomit.radioalarm02.data.AppDatabase
-import com.noomit.radioalarm02.domain.IServiceProvider
 import com.noomit.radioalarm02.domain.ServiceProvider
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
+import javax.inject.Inject
 
+@HiltAndroidApp
 class Application00 : Application() {
 
-    private val apiService = RadioBrowserService()
-    val serviceProvider: IServiceProvider by lazy(LazyThreadSafetyMode.NONE) {
-        ServiceProvider(
-            apiService = apiService,
-            database = AppDatabase.getInstance(this)
-        )
-    }
+    @Inject
+    lateinit var serviceProvider: ServiceProvider
 
     override fun onCreate() {
         super.onCreate()

@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class ServerState {
     object Loading : ServerState()
@@ -17,7 +18,9 @@ sealed class ServerState {
     data class Failure(val e: Throwable) : ServerState()
 }
 
-class ServerManager(private val apiService: RadioBrowserService) : WithLogTag {
+class ServerManager @Inject constructor(
+    private val apiService: RadioBrowserService,
+) : WithLogTag {
     override val logTag = "tagg-app-servers"
 
     private val _state = MutableStateFlow<ServerState>(ServerState.Loading)

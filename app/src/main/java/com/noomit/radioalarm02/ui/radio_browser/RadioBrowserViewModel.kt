@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.example.radiobrowser.ServerInfo
 import com.noomit.radioalarm02.data.CategoryModel
@@ -25,7 +26,7 @@ sealed class RadioBrowserDirections : NavCommand {
 }
 
 @FlowPreview
-class RadioBrowserViewModel(
+class RadioBrowserViewModel @ViewModelInject constructor(
     private val serverManager: ServerManager,
     private val categoryManager: CategoryManager,
     private val stationManager: StationManager,
