@@ -1,5 +1,7 @@
 package com.noomit.radioalarm02.di
 
+import com.noomit.radioalarm02.domain.alarm_manager.AlarmManager
+import com.noomit.radioalarm02.domain.alarm_manager.AlarmManagerContract
 import com.noomit.radioalarm02.domain.favorite_manager.FavoritesManager
 import com.noomit.radioalarm02.domain.favorite_manager.IFavoritesManager
 import dagger.Binds
@@ -13,4 +15,7 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun bindFavoritesManager(manager: FavoritesManager): IFavoritesManager
+
+    @Binds
+    abstract fun bindAlarmManager(manager: AlarmManager): AlarmManagerContract
 }
