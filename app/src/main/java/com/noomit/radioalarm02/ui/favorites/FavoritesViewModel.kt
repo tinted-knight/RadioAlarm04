@@ -1,7 +1,9 @@
 package com.noomit.radioalarm02.ui.favorites
 
+import androidx.hilt.lifecycle.ViewModelInject
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.domain.favorite_manager.IFavoritesManager
+import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.NowPlaying
@@ -15,7 +17,9 @@ sealed class FavoritesDirections : NavCommand {
 }
 
 // #think rewrite all to states
-class FavoritesViewModel(private val favoritesManager: IFavoritesManager) :
+class FavoritesViewModel @ViewModelInject constructor(
+    private val favoritesManager: IFavoritesManager,
+) :
     NavigationViewModel<FavoritesDirections>(),
     ItemClickListener<StationModel>, NowPlayingListener {
 
@@ -23,6 +27,15 @@ class FavoritesViewModel(private val favoritesManager: IFavoritesManager) :
 
     private val _nowPlaying = MutableStateFlow<NowPlaying?>(null)
     val nowPlaying: StateFlow<NowPlaying?> = _nowPlaying
+
+    init {
+        tplog("FavoritesViewModel::init")
+    }
+
+    override fun onCleared() {
+        tplog("FavoritesViewModel::onCleared")
+        super.onCleared()
+    }
 
     override fun onClick(item: StationModel) {
         _nowPlaying.value = NowPlaying(

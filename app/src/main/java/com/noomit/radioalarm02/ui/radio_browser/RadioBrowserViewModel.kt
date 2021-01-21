@@ -9,6 +9,7 @@ import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
 import com.noomit.radioalarm02.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.domain.station_manager.StationManager
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
+import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
@@ -42,6 +43,12 @@ class RadioBrowserViewModel @ViewModelInject constructor(
 
     init {
         serverManager.getAvalilable(viewModelScope)
+        tplog("RadioBrowserViewModel::init")
+    }
+
+    override fun onCleared() {
+        tplog("RadioBrowserViewModel::onCleared")
+        super.onCleared()
     }
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)

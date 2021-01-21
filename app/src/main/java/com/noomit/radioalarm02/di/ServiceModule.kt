@@ -9,7 +9,8 @@ import dagger.hilt.android.components.ActivityComponent
 
 @InstallIn(ActivityComponent::class)
 @Module
-abstract class FavoritesModule {
+abstract class ServiceModule {
+
     @Binds
     abstract fun bindFavoritesManager(manager: FavoritesManager): IFavoritesManager
 }

@@ -12,7 +12,9 @@ import javax.inject.Inject
 
 typealias StationList = List<StationModel>
 
-class StationManager @Inject constructor(via: RadioBrowserService) : WithLogTag {
+class StationManager @Inject constructor(
+    via: RadioBrowserService,
+) : WithLogTag {
 
     override val logTag = "station_manager"
 
