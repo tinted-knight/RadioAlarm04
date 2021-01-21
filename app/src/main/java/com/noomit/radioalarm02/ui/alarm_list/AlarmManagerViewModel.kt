@@ -1,7 +1,8 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.Context
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
@@ -10,6 +11,7 @@ import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -18,8 +20,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-class AlarmManagerViewModel(database: Database, application: Application) :
-    AndroidViewModel(application) {
+class AlarmManagerViewModel @ViewModelInject constructor(
+    database: Database,
+    @ApplicationContext private val context: Context,
+) : ViewModel() {
 
     private fun plog(message: String) =
         Timber.tag("tagg-app-alarm_manager").i("$message [${Thread.currentThread().name}]")
@@ -140,14 +144,14 @@ class AlarmManagerViewModel(database: Database, application: Application) :
                     val c = Calendar.getInstance().apply { timeInMillis = it.time_in_millis }
                     plog("next: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]};${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}")
                     scheduleAlarm(
-                        context = getApplication(),
+                        context = context,
                         alarmId = it.id,
                         bellUrl = it.bell_url,
                         bellName = it.bell_name,
                         timeInMillis = it.time_in_millis,
                     )
                 } else {
-                    clearScheduledAlarms(getApplication())
+                    clearScheduledAlarms(context)
                 }
             }
             .collect()
