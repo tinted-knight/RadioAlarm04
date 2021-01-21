@@ -61,7 +61,7 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
         super.onDestroyView()
     }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         contour.setDay(viewModel.day)
     }
 

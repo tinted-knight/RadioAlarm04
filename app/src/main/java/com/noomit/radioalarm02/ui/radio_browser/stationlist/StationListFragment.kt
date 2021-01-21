@@ -3,6 +3,7 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -22,6 +23,7 @@ import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
 @FlowPreview
@@ -42,17 +44,28 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
     override val notificationCaption: String
         get() = getString(R.string.app_name)
 
+    private var recyclerState: Parcelable? = null
+
     override fun initPlayerViews() {
         val view = (view as IStationListLayout)
         playerControlView = view.playerControll
         playerView = view.playerView
     }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         val adapter = StationListAdapter(delegate = stationViewModel)
         contour.apply {
             setStationsAdapter(adapter)
             showLoading()
+            recyclerState?.let {
+                contour.setRecyclerState(it)
+                return@apply
+            }
+            savedState?.let { bundle ->
+                bundle.getParcelable<Parcelable>(RECYCLER_STATE)?.let { state ->
+                    contour.setRecyclerState(state)
+                }
+            }
         }
         contour.listener = stationViewModel
     }
@@ -85,6 +98,17 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         }
     }
 
+    override fun onPause() {
+        val state = contour.getRecyclerState()
+        recyclerState = state
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(RECYCLER_STATE, recyclerState)
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
@@ -96,7 +120,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
             searchView.setOnCloseListener { false }
-            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope))
+            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope).debounce(500))
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

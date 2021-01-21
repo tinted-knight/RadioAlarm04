@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,9 @@ interface IStationListLayout {
     fun showLoading()
     fun showContent(values: List<StationModel>)
     fun nowPlaying(station: StationModel, inFavorites: Boolean)
+
+    fun getRecyclerState(): Parcelable?
+    fun setRecyclerState(state: Parcelable)
 }
 
 class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
@@ -156,6 +160,12 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
         nowPlayingView.update(station, inFavorites)
+    }
+
+    override fun getRecyclerState() = rvStationList.layoutManager?.onSaveInstanceState()
+
+    override fun setRecyclerState(state: Parcelable) {
+        rvStationList.layoutManager?.onRestoreInstanceState(state)
     }
 
     private fun nowPlayingClick(view: View) {

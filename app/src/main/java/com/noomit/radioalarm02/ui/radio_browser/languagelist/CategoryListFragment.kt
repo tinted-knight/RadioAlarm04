@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -40,10 +41,21 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) { LanguageListAdapter(categoryClick) }
 
-    override fun prepareView() {
+    private var recyclerState: Parcelable? = null
+
+    override fun prepareView(savedState: Bundle?) {
         contour.apply {
             setAdapter(adapter)
             showLoading()
+            recyclerState?.let {
+                contour.setRecyclerState(it)
+                return@apply
+            }
+            savedState?.let { bundle ->
+                bundle.getParcelable<Parcelable>(RECYCLER_STATE)?.let { state ->
+                    contour.setRecyclerState(state)
+                }
+            }
         }
     }
 
@@ -56,6 +68,17 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
                 is CategoryManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
             }
         }
+    }
+
+    override fun onPause() {
+        val state = contour.getRecyclerState()
+        recyclerState = state
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(RECYCLER_STATE, recyclerState)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -51,6 +51,8 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     ).apply {
         text = context.getString(R.string.favorites)
         stateListAnimator = ItemListAnimator(this)
+        // required for btnAddAlarm unbound ripple to work correctly
+        background = GradientDrawable()
         setOnClickListener { delegate?.onFavoriteClick() }
     }
 
@@ -61,6 +63,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     ).apply {
         text = context.getString(R.string.browse_radio)
         stateListAnimator = ItemListAnimator(this)
+        // required for btnAddAlarm unbound ripple to work correctly
         background = GradientDrawable()
         setOnClickListener { delegate?.onBrowseClick() }
     }

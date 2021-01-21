@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.radiobrowser.ActiveServerState
@@ -14,11 +15,12 @@ import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
-import com.noomit.radioalarm02.tplog
+import com.noomit.radioalarm02.ui.navigation.NavHelper
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
 
 @FlowPreview
 class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
@@ -42,7 +44,7 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             return scrollView
         }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         contour.apply {
             delegate = viewModel
             setServerAdapter(adapter)
@@ -69,50 +71,31 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
         }
 
         collect(viewModel.searchState) {
-            tplog("searchState: $it")
             contour.btnSearchEnabled(it.isValid)
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        tplog("saveState")
-        outState.putString("name", viewModel.searchState.value.name)
-        outState.putString("tag", viewModel.searchState.value.tag)
-        super.onSaveInstanceState(outState)
-    }
-
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        tplog("stateRestored")
-//        val name = savedInstanceState?.getString("name")
-//        val tag = savedInstanceState?.getString("tag")
-//        name?.let { viewModel.onSearchNameChanged(it) }
-//        tag?.let { viewModel.onSearchTagChanged(it) }
-//
-//        contour.setSearchState(name, tag)
-//
-//        super.onViewStateRestored(savedInstanceState)
-//    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.commands.observe(viewLifecycleOwner) { command ->
-            when (command) {
-                RadioBrowserDirections.LanguageList -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_languageList,
-                    Bundle().apply { putString("title", "Languages") }
-                )
-                RadioBrowserDirections.TagList -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_languageList,
-                    Bundle().apply { putString("title", "Tags") }
-                )
-                RadioBrowserDirections.TopVoted -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_stationList,
-                    Bundle().apply { putString("title", "Top voted") }
-                )
-                RadioBrowserDirections.Search -> findNavController().navigate(
-                    R.id.action_radioBrowser_to_stationList,
-                    Bundle().apply { putString("title", "Global search") }
-                )
+    override fun observeCommands() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.commands.collect() { command ->
+                when (command) {
+                    is RadioBrowserDirections.LanguageList -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_languageList,
+                        Bundle().apply { putString(NavHelper.title, getString(R.string.lang_list)) }
+                    )
+                    is RadioBrowserDirections.TagList -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_languageList,
+                        Bundle().apply { putString("title", getString(R.string.nav_label_tags)) }
+                    )
+                    is RadioBrowserDirections.TopVoted -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_stationList,
+                        Bundle().apply { putString("title", getString(R.string.nav_label_topvoted)) }
+                    )
+                    is RadioBrowserDirections.Search -> findNavController().navigate(
+                        R.id.action_radioBrowser_to_stationList,
+                        Bundle().apply { putString("title", getString(R.string.nav_label_search)) }
+                    )
+                }
             }
         }
     }

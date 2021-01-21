@@ -5,7 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
-fun <T> Fragment.collect(values: Flow<T>, block: suspend (T) -> Unit) =
+inline fun <T> Fragment.collect(values: Flow<T>, crossinline block: suspend (T) -> Unit) =
     lifecycleScope.launchWhenStarted {
         values.collect { block(it) }
     }

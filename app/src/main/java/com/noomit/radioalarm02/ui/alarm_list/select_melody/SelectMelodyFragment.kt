@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.ui.alarm_list.select_melody
 
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -36,7 +37,7 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
         playerView = contour.playerView
     }
 
-    override fun prepareView() {
+    override fun prepareView(savedState: Bundle?) {
         val adapter = StationListAdapter(delegate = favoritesViewModel)
         contour.apply {
             setStationsAdapter(adapter)

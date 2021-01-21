@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.radio_browser.languagelist
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
@@ -13,10 +14,13 @@ interface ICategoryLayout {
     fun setAdapter(adapter: LanguageListAdapter)
     fun showLoading()
     fun showContent(values: List<CategoryModel>)
+    fun getRecyclerState(): Parcelable?
+    fun setRecyclerState(state: Parcelable)
 }
 
 class CategoryListLayout(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet), ICategoryLayout {
+
     private val recycler = RecyclerView(context).apply {
         setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
@@ -53,4 +57,11 @@ class CategoryListLayout(context: Context, attrSet: AttributeSet? = null) :
         recycler.isVisible = true
         (recycler.adapter as LanguageListAdapter).submitList(values)
     }
+
+    override fun getRecyclerState() = recycler.layoutManager?.onSaveInstanceState()
+
+    override fun setRecyclerState(state: Parcelable) {
+        recycler.layoutManager?.onRestoreInstanceState(state)
+    }
+
 }

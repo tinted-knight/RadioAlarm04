@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.playerservice.PlayerService
-import com.noomit.radioalarm02.tplog
 
 /**
  * Generic parameter [L] is supposed to be your layout's interface
@@ -41,6 +40,11 @@ abstract class ContourFragment<L> : Fragment() {
      */
     protected abstract val contour: L
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeCommands()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,23 +54,30 @@ abstract class ContourFragment<L> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        prepareView()
+        prepareView(savedInstanceState)
         observeViewModel()
     }
 
     /**
-     * Called at the end of [onViewCreated] before [observeViewModel]
+     * Typically set here RecyclerView adapter, layout event listeners, delegates etc.
      *
-     * Typically set here recycler view adapter, layout event listeners and delegates etc.
+     * Called at the end of [onViewCreated] before [observeViewModel]
      */
-    protected abstract fun prepareView()
+    protected abstract fun prepareView(savedState: Bundle?)
 
     /**
-     * Called at the end of [onViewCreated] after [prepareView]
-     *
      * Observe viewmodel and update layout
+     *
+     * Called at the end of [onViewCreated] after [prepareView]
      */
     protected abstract fun observeViewModel()
+
+    /**
+     * Observe navigation commands
+     *
+     * Called in the [onCreate]
+     */
+    protected open fun observeCommands() {}
 
     /**
      * Hides software keyboard when fragment view is going to be destroyed
@@ -75,9 +86,15 @@ abstract class ContourFragment<L> : Fragment() {
         view?.let { view ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
-            tplog("hide keyboard")
         }
         super.onDestroyView()
+    }
+
+    companion object {
+        /**
+         * Bundle key to save RecyclerView state
+         */
+        const val RECYCLER_STATE = "recycler-state"
     }
 }
 
