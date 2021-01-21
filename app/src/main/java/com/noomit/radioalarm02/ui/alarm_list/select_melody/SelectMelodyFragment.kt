@@ -6,22 +6,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.playerservice.MediaItem
-import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
-import com.noomit.radioalarm02.ui.alarm_list.AlarmManagerViewModel
+import com.noomit.radioalarm02.ui.alarm_list.HomeViewModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
 
-    private val favoritesViewModel: FavoritesViewModel by viewModels {
-        DatabaseViewModelFactory(requireActivity().application as Application00)
-    }
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
 
-    private val alarmViewModel: AlarmManagerViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override val layout: View
         get() = SelectMelodyLayout(requireContext())
@@ -46,12 +44,12 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
         contour.listener = favoritesViewModel
         contour.onSetMelodyClick = {
             favoritesViewModel.nowPlaying.value?.let {
-                alarmViewModel.setMelody(it.station)
+                viewModel.setMelody(it.station)
             }
             findNavController().popBackStack()
         }
         contour.onSetDefaultRingtone = {
-            alarmViewModel.setDefaultRingtone()
+            viewModel.setDefaultRingtone()
             findNavController().popBackStack()
         }
     }
