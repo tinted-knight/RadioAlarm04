@@ -9,16 +9,14 @@ import androidx.activity.viewModels
 import com.ncorti.slidetoact.SlideToActView
 import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.BaseWakelockActivity
-import com.noomit.radioalarm02.data.AppDatabase
 import com.noomit.radioalarm02.tplog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AlarmActivity : BaseWakelockActivity() {
 
-    private val viewModel: DismissAlarmViewModel by viewModels {
-        AndroidViewModelFactory(AppDatabase.getInstance(this), application)
-    }
+    private val viewModel: DismissAlarmViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

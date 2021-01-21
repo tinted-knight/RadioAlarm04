@@ -12,21 +12,15 @@ import androidx.fragment.app.activityViewModels
 import com.noomit.playerservice.MediaItem
 import com.noomit.playerservice.PlayerService
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.AndroidViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
-import com.noomit.radioalarm02.data.AppDatabase
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
     private var ringtone: Ringtone? = null
 
-    private val viewModel: DismissAlarmViewModel by activityViewModels {
-        AndroidViewModelFactory(
-            AppDatabase.getInstance(requireActivity()),
-            requireActivity().application,
-        )
-    }
+    private val viewModel: DismissAlarmViewModel by activityViewModels()
 
     private lateinit var playerBroadcastReceiver: BroadcastReceiver
 

@@ -1,11 +1,13 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.Context
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.ViewModel
 import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.reComposeFired
 import com.noomit.radioalarm02.model.scheduleAlarm
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
@@ -16,8 +18,10 @@ import java.util.*
 private fun plog(message: String) =
     Timber.tag("tagg-app-dismiss_alarm").i("$message [${Thread.currentThread().name}]")
 
-class DismissAlarmViewModel(database: Database, application: Application) :
-    AndroidViewModel(application) {
+class DismissAlarmViewModel @ViewModelInject constructor(
+    database: Database,
+    @ApplicationContext private val context: Context,
+) : ViewModel() {
     companion object {
         private const val TIMER_TICK_DELAY = 1_000L * 30
     }
@@ -45,7 +49,12 @@ class DismissAlarmViewModel(database: Database, application: Application) :
         }
 
     init {
-        plog("DismissAlarmViewModel")
+        plog("DismissAlarmViewModel::init")
+    }
+
+    override fun onCleared() {
+        plog("DismissAlarmViewModel::onCleared")
+        super.onCleared()
     }
 
     fun alarmFired() = alarmId?.let {
@@ -64,14 +73,14 @@ class DismissAlarmViewModel(database: Database, application: Application) :
             val cal = Calendar.getInstance().apply { timeInMillis = nextAlarm.time_in_millis }
             plog("next: ${cal[Calendar.DAY_OF_MONTH]}/${cal[Calendar.MONTH]};${cal[Calendar.HOUR_OF_DAY]}:${cal[Calendar.MINUTE]}")
             scheduleAlarm(
-                context = getApplication(),
+                context = context,
                 alarmId = nextAlarm.id,
                 bellUrl = nextAlarm.bell_url,
                 bellName = nextAlarm.bell_name,
                 timeInMillis = nextAlarm.time_in_millis,
             )
         } else {
-            clearScheduledAlarms(getApplication())
+            clearScheduledAlarms(context)
         }
     }
 }
