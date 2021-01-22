@@ -78,6 +78,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmItem.melodyText.attr,
     ).apply {
+        text = "Melody name"
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.END
         setOnClickListener { delegate?.onMelodyClick() }
@@ -167,9 +168,10 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         )
         background.setStroke(2, Color.parseColor("#12000000"))
         background.cornerRadius = 16.0f
+        clipChildren = false
 
         val x = 8
-        val y = 8
+        val y = 2
 
         val xPadding = x.xdip
         val yPadding = y.ydip
@@ -200,7 +202,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         )
         melody.layoutBy(
             leftTo { alarmIcon.right() }.rightTo { btnDelete.left() - xPadding },
-            centerVerticallyTo { btnDelete.centerY() }
+            centerVerticallyTo { btnDelete.centerY() }.heightOf { btnDelete.height() }
         )
         week.layoutBy(
             matchParentX(x, y),

@@ -56,11 +56,15 @@
     <style name="LightTheme.ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
 
     <!-- Alarm Card -->
-    <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />
+    <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">36dp</item>
+    </style>
 
     <style name="LightTheme.MelodyText" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:padding">2dp</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="LightTheme.AlarmIcon">
@@ -72,7 +76,7 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:padding">4dp</item>
+        <item name="android:padding">2dp</item>
     </style>
 
     <style name="LightTheme.TextTime" parent="Widget.MaterialComponents.TextView">
@@ -141,7 +145,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:paddingStart">6dp</item>
         <item name="android:paddingEnd">6dp</item>
-<!--        <item name="android:paddingTop">2dp</item>-->
-<!--        <item name="android:paddingBottom">2dp</item>-->
+        <!--        <item name="android:paddingTop">2dp</item>-->
+        <!--        <item name="android:paddingBottom">2dp</item>-->
     </style>
 </resources>
