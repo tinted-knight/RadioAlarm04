@@ -1,7 +1,7 @@
 package com.noomit.radioalarm02.domain.language_manager
 
 import com.example.radiobrowser.CategoryNetworkEntity
-import com.example.radiobrowser.RadioBrowserService
+import com.example.radiobrowser.RadioBrowserContract
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.data.CategoryModel
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class CategoryManager @Inject constructor(
-    private val apiService: RadioBrowserService,
+    private val apiService: RadioBrowserContract,
 ) : CategoryManagerContract, WithLogTag {
 
     override val logTag = "lang_manager"

@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.domain.server_manager
 
-import com.example.radiobrowser.RadioBrowserService
+import com.example.radiobrowser.RadioBrowserContract
 import com.example.radiobrowser.ServerInfo
 import com.example.radiobrowser.ServerListResponse
 import com.noomit.radioalarm02.base.WithLogTag
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ServerManager @Inject constructor(
-    private val apiService: RadioBrowserService,
+    private val apiService: RadioBrowserContract,
 ) : ServerManagerContract, WithLogTag {
     override val logTag = "tagg-app-servers"
 
