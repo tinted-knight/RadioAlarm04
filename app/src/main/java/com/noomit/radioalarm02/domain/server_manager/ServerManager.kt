@@ -1,31 +1,26 @@
 package com.noomit.radioalarm02.domain.server_manager
 
-import com.example.radiobrowser.ActiveServerState
-import com.example.radiobrowser.RadioBrowserService
+import com.example.radiobrowser.RadioBrowserContract
 import com.example.radiobrowser.ServerInfo
 import com.example.radiobrowser.ServerListResponse
 import com.noomit.radioalarm02.base.WithLogTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-sealed class ServerState {
-    object Loading : ServerState()
-    data class Values(val values: List<ServerInfo>) : ServerState()
-    data class Failure(val e: Throwable) : ServerState()
-}
-
-class ServerManager(private val apiService: RadioBrowserService) : WithLogTag {
+class ServerManager @Inject constructor(
+    private val apiService: RadioBrowserContract,
+) : ServerManagerContract, WithLogTag {
     override val logTag = "tagg-app-servers"
 
     private val _state = MutableStateFlow<ServerState>(ServerState.Loading)
-    val state: StateFlow<ServerState> = _state
+    override val state = _state
 
-    var activeServer: StateFlow<ActiveServerState> = apiService.activeServer
+    override val activeServer get() = apiService.activeServer
 
-    fun getAvalilable(scope: CoroutineScope) {
+    override fun getAvalilable(scope: CoroutineScope) {
         scope.launch(Dispatchers.IO) {
             plog("RadioBrowserViewModel")
             when (val serverList = apiService.checkForAvailableServers()) {
@@ -43,7 +38,7 @@ class ServerManager(private val apiService: RadioBrowserService) : WithLogTag {
         }
     }
 
-    fun setServerManually(serverInfo: ServerInfo) {
+    override fun setServerManually(serverInfo: ServerInfo) {
         apiService.setActiveServer(serverInfo)
     }
 }

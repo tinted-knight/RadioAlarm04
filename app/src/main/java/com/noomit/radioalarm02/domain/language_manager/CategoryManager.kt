@@ -1,24 +1,27 @@
 package com.noomit.radioalarm02.domain.language_manager
 
 import com.example.radiobrowser.CategoryNetworkEntity
-import com.example.radiobrowser.RadioBrowserService
+import com.example.radiobrowser.RadioBrowserContract
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.data.CategoryModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class CategoryManager(private val apiService: RadioBrowserService) : WithLogTag {
+class CategoryManager @Inject constructor(
+    private val apiService: RadioBrowserContract,
+) : CategoryManagerContract, WithLogTag {
 
     override val logTag = "lang_manager"
 
     private val _state = MutableStateFlow<CategoryManagerState>(CategoryManagerState.Loading)
-    val state: StateFlow<CategoryManagerState> = _state
+    override val state = _state
 
-    suspend fun getLanguages() = getCategory(apiService::getLanguageList) {
+    override suspend fun getLanguages() = getCategory(apiService::getLanguageList) {
         CategoryModel.Language(it.name, it.stationcount.toString())
     }
 
-    suspend fun getTags() = getCategory(apiService::getTagList) {
+    override suspend fun getTags() = getCategory(apiService::getTagList) {
         CategoryModel.Tag(it.name, it.stationcount.toString())
     }
 

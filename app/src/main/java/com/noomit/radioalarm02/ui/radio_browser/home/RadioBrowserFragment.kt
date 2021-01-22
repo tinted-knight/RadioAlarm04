@@ -8,10 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.radiobrowser.ActiveServerState
-import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.ContourFragment
-import com.noomit.radioalarm02.base.ViewModelFactory
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
@@ -19,16 +17,17 @@ import com.noomit.radioalarm02.ui.navigation.NavHelper
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.squareup.contour.utils.children
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 
 @FlowPreview
+@AndroidEntryPoint
 class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
 
-    private val viewModel: RadioBrowserViewModel by navGraphViewModels(
-        navGraphId = R.id.nav_radio_browser,
-        factoryProducer = { ViewModelFactory(requireActivity().application as Application00) }
-    )
+    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser) {
+        defaultViewModelProviderFactory
+    }
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) { ServerListAdapter(adapterListener) }
 

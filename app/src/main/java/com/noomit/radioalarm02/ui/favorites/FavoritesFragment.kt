@@ -6,18 +6,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.noomit.playerservice.MediaItem
-import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.DatabaseViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
 
-    private val favoritesViewModel: FavoritesViewModel by viewModels {
-        DatabaseViewModelFactory(requireActivity().application as Application00)
-    }
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
 
     override val layout: View
         get() = FavoritesLayout(requireContext())

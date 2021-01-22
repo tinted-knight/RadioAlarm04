@@ -1,8 +1,6 @@
-package com.noomit.radioalarm02.ui.alarm_list
+package com.noomit.radioalarm02.domain.alarm_manager
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import android.content.Context
 import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
 import com.noomit.radioalarm02.data.StationModel
@@ -10,31 +8,29 @@ import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
-class AlarmManagerViewModel(database: Database, application: Application) :
-    AndroidViewModel(application) {
+class AlarmManager @Inject constructor(
+    database: Database,
+    @ApplicationContext private val context: Context,
+) : AlarmManagerContract {
 
-    private fun plog(message: String) =
-        Timber.tag("tagg-app-alarm_manager").i("$message [${Thread.currentThread().name}]")
+    private fun plog(message: String) = Timber.tag("tagg-alarm_manager").i(message)
 
     private val queries = database.alarmQueries
 
-    init {
-        observeNextActive()
-    }
-
-    val alarms = queries.selectAll().asFlow()
+    override val alarms = queries.selectAll().asFlow()
         .flowOn(Dispatchers.IO)
         .mapToList()
 
-    fun insert(hour: Int, minute: Int) {
+    override fun insert(hour: Int, minute: Int) {
         val alarm = composeAlarmEntity(hour, minute)
         plog("AlarmManagerViewModel.insert, $alarm")
         queries.insert(
@@ -49,9 +45,11 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         )
     }
 
-    fun delete(alarm: Alarm) = queries.delete(id = alarm.id)
+    override fun delete(alarm: Alarm) {
+        queries.delete(id = alarm.id)
+    }
 
-    fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm) {
+    override fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm) {
         val updated = reCompose(alarm, dayToSwitch)
         val c = Calendar.getInstance().apply {
             timeInMillis = updated.time_in_millis
@@ -65,7 +63,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         )
     }
 
-    fun updateTime(alarm: Alarm, hour: Int, minute: Int) {
+    override fun updateTime(alarm: Alarm, hour: Int, minute: Int) {
         plog("updateTime to $hour:$minute")
         val updated = reComposeFired(alarm.copy(hour = hour, minute = minute))
         queries.updateTime(
@@ -76,7 +74,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         )
     }
 
-    fun setEnabled(alarm: Alarm, isEnabled: Boolean) {
+    override fun setEnabled(alarm: Alarm, isEnabled: Boolean) {
         plog("setEnabled, $isEnabled")
         if (!isEnabled) {
             queries.updateEnabled(alarmId = alarm.id, isEnabled = false)
@@ -107,11 +105,11 @@ class AlarmManagerViewModel(database: Database, application: Application) :
 
     private var selectMelodyFor: Alarm? = null
 
-    fun selectMelodyFor(alarm: Alarm) {
+    override fun selectMelodyFor(alarm: Alarm) {
         selectMelodyFor = alarm
     }
 
-    fun setMelody(favorite: StationModel) {
+    override fun setMelody(favorite: StationModel) {
         selectMelodyFor?.let {
             queries.updateMelody(
                 alarmId = it.id,
@@ -121,7 +119,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         }
     }
 
-    fun setDefaultRingtone() {
+    override fun setDefaultRingtone() {
         selectMelodyFor?.let {
             queries.updateMelody(
                 alarmId = it.id,
@@ -131,7 +129,7 @@ class AlarmManagerViewModel(database: Database, application: Application) :
         }
     }
 
-    private fun observeNextActive() = viewModelScope.launch {
+    override suspend fun observeNextActive() {
         queries.nextActive()
             .asFlow()
             .mapToOneOrNull()
@@ -140,14 +138,14 @@ class AlarmManagerViewModel(database: Database, application: Application) :
                     val c = Calendar.getInstance().apply { timeInMillis = it.time_in_millis }
                     plog("next: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]};${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}")
                     scheduleAlarm(
-                        context = getApplication(),
+                        context = context,
                         alarmId = it.id,
                         bellUrl = it.bell_url,
                         bellName = it.bell_name,
                         timeInMillis = it.time_in_millis,
                     )
                 } else {
-                    clearScheduledAlarms(getApplication())
+                    clearScheduledAlarms(context)
                 }
             }
             .collect()

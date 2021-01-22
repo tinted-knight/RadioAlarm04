@@ -12,9 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import com.noomit.playerservice.MediaItem
-import com.noomit.radioalarm02.Application00
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.FavoritesViewModelFactory
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.domain.station_manager.StationManagerState
@@ -22,18 +20,20 @@ import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
 @FlowPreview
+@AndroidEntryPoint
 class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
 
-    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser)
-
-    private val stationViewModel: StationViewModel by viewModels {
-        FavoritesViewModelFactory(requireActivity().application as Application00)
+    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser) {
+        defaultViewModelProviderFactory
     }
+
+    private val stationViewModel: StationViewModel by viewModels()
 
     override val layout: View
         get() = StationListLayout(requireContext())
