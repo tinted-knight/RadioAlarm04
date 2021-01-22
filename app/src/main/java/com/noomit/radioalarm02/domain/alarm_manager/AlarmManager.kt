@@ -12,6 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import java.util.*
@@ -29,6 +30,9 @@ class AlarmManager @Inject constructor(
     override val alarms = queries.selectAll().asFlow()
         .flowOn(Dispatchers.IO)
         .mapToList()
+        .map { list -> list.sortedBy { it.time_in_millis } }
+        .map { list -> list.sortedByDescending { it.is_enabled } }
+        .flowOn(Dispatchers.Default)
 
     override fun insert(hour: Int, minute: Int) {
         val alarm = composeAlarmEntity(hour, minute)
