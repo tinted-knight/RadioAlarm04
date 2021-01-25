@@ -61,7 +61,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private val nowPlayingIcon = ImageView(context)
 
-    val btnFav = ImageButton(
+    private val btnFav = ImageButton(
         ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
         null,
         appTheme.nowPlaying.favoriteStyleId
@@ -104,7 +104,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private fun collapsedLayout() {
-        toggleCornerRaduis(false)
+//        toggleCornerRaduis(false)
         setPadding(4.dip, 2.dip, 4.dip, 2.dip)
 
         title.isSingleLine = true
@@ -134,7 +134,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private fun expandedLayoutNew() {
-        toggleCornerRaduis(true)
+//        toggleCornerRaduis(true)
         setPadding(16.dip, 16.dip, 16.dip, 16.dip)
 
         title.isSingleLine = false

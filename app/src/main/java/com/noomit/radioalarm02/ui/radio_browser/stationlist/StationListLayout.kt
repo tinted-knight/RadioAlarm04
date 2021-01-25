@@ -116,30 +116,18 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
         dimmingView.layoutBy(
             x = matchParentX(),
-            y = matchParentY()
+            y = topTo { parent.top() }.bottomTo { playerControll.top() }
         )
-
-        val xPadding = { if (!nowPlayingView.isSelected) 0.xdip else 32.xdip }
-        val yPadding = { if (!nowPlayingView.isSelected) 0.ydip else 64.ydip }
 
         nowPlayingView.layoutBy(
-            x = leftTo { parent.left() + xPadding() }
-                .rightTo {
-                    if (!nowPlayingView.isSelected) {
-                        playerControll.left() + xPadding()
-                    } else {
-                        parent.right() - xPadding()
-                    }
-                },
-            y = topTo {
-                if (!nowPlayingView.isSelected) {
-                    rvStationList.bottom()
-                } else {
-                    parent.top() + yPadding()
-                }
-            }.bottomTo { parent.bottom() - yPadding() }
+            x = leftTo { parent.left() }
+                .rightTo { if (expanded) parent.right() else playerControll.left() },
+            y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
+                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
         )
     }
+
+    private val expanded: Boolean get() = nowPlayingView.isSelected
 
     override fun setStationsAdapter(adapter: StationListAdapter) {
         rvStationList.adapter = adapter
