@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
@@ -38,7 +39,11 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     var nowPlayingListener: NowPlayingListener? = null
 
-    private val title = TextView(context).apply {
+    private val title = MaterialTextView(
+        ContextThemeWrapper(context, appTheme.nowPlaying.titleStyle.style),
+        null,
+        appTheme.nowPlaying.titleStyle.attr,
+    ).apply {
         ellipsize = TextUtils.TruncateAt.END
     }
 

@@ -62,4 +62,6 @@ class FavoritesViewModel @ViewModelInject constructor(
     }
 
     override fun onHomePageLongClick() {}
+
+    override fun showingExtended() {}
 }
