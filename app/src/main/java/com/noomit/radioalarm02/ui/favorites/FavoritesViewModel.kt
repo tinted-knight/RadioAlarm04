@@ -46,14 +46,14 @@ class FavoritesViewModel @ViewModelInject constructor(
 
     override fun onLongClick(item: StationModel) {}
 
-    override fun onFavoriteClick() {
+    override fun onFavoriteClick() {}
+
+    override fun onFavoriteLongClick() {
         _nowPlaying.value?.let {
             favoritesManager.delete(it.station)
             _nowPlaying.value = null
         }
     }
-
-    override fun onFavoriteLongClick() {}
 
     override fun onHomePageClick() {
         _nowPlaying.value?.let {
