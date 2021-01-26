@@ -37,7 +37,7 @@ class PlayerService : Service() {
     override fun onBind(intent: Intent): IBinder {
         intent.let {
             exoPlayer.playWhenReady = false
-            displayNotification()
+            displayNotification(remoteViews)
         }
         return PlayerServiceBinder()
     }
@@ -106,6 +106,7 @@ class PlayerService : Service() {
         )
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, NOTIF_CHANNEL_ID).apply {
+            setContent(content)
             setContentTitle(mediaTitle)
             setContentText(if (exoPlayer.playWhenReady) getString(R.string.state_playing) else getString(R.string.state_paused))
             addAction(
@@ -114,7 +115,6 @@ class PlayerService : Service() {
                 intentPlayPause
             )
             setSmallIcon(R.drawable.ic_radio_24)
-//            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_radio_24))
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(
@@ -133,7 +133,7 @@ class PlayerService : Service() {
 
     private fun updateNotification() {
         updateRemoteViews()
-        displayNotification()
+        displayNotification(remoteViews)
     }
 
     private val remoteViews: RemoteViews by lazy(LazyThreadSafetyMode.NONE) {
@@ -146,17 +146,13 @@ class PlayerService : Service() {
             0,
         )
         RemoteViews(packageName, R.layout.notification_player).apply {
-            setOnClickPendingIntent(R.id.btn_play_pause, intent)
+            setOnClickPendingIntent(R.id.tv_play_pause, intent)
             composeRemoteViews(this)
         }
     }
 
     private fun updateRemoteViews(isPlaying: Boolean = true) = composeRemoteViews(remoteViews)
     private fun composeRemoteViews(remoteViews: RemoteViews) = with(remoteViews) {
-        setImageViewResource(
-            R.id.btn_play_pause,
-            if (exoPlayer.playWhenReady) R.drawable.ic_stop_24 else R.drawable.ic_play_arrow_24
-        )
         setTextViewText(
             R.id.tv_title,
             mediaTitle ?: getString(R.string.state_playing_nothing)
@@ -164,6 +160,10 @@ class PlayerService : Service() {
         setTextViewText(
             R.id.tv_caption,
             caption ?: ""
+        )
+        setTextViewText(
+            R.id.tv_play_pause,
+            getString(if (exoPlayer.playWhenReady) R.string.action_pause else R.string.action_play)
         )
     }
 
