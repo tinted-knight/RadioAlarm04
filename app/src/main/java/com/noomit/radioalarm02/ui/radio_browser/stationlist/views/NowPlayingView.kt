@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
@@ -13,6 +12,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -40,13 +40,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     var nowPlayingListener: NowPlayingListener? = null
 
-    private val title = MaterialTextView(
-        ContextThemeWrapper(context, appTheme.nowPlaying.titleStyle.style),
-        null,
-        appTheme.nowPlaying.titleStyle.attr,
-    ).apply {
-        ellipsize = TextUtils.TruncateAt.END
-    }
+    private val title = MaterialTextView(context, null, appTheme.nowPlaying.titleStyle.attr)
 
     private val homePage = TextView(context)
 
@@ -67,12 +61,15 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private val nowPlayingIcon = ImageView(context)
 
+    private val iconInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconFavorite)
+    private val iconNotInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconNotFavorite)
+
     private val btnFav = ImageButton(
         ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
         null,
         appTheme.nowPlaying.favoriteStyleId
     ).apply {
-        setImageResource(appTheme.nowPlaying.iconNotFavorite)
+        setImageDrawable(iconNotInFavorites)
         setOnClickListener { nowPlayingListener?.onFavoriteClick() }
         setOnLongClickListener {
             nowPlayingListener?.onFavoriteLongClick()
@@ -85,7 +82,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.nowPlaying.favoriteStyleId
     ).apply {
-        setImageResource(appTheme.nowPlaying.iconHomepage)
+        setImageDrawable(ContextCompat.getDrawable(context, appTheme.nowPlaying.iconHomepage))
         setOnClickListener { nowPlayingListener?.onHomePageClick() }
         setOnLongClickListener {
             nowPlayingListener?.onHomePageLongClick()
@@ -246,9 +243,9 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             tagList.addView(chip)
         }
 
-        btnFav.setImageResource(when (inFavorites) {
-            true -> appTheme.nowPlaying.iconFavorite
-            false -> appTheme.nowPlaying.iconNotFavorite
+        btnFav.setImageDrawable(when (inFavorites) {
+            true -> iconInFavorites
+            false -> iconNotInFavorites
         })
 
         title.text = station.name

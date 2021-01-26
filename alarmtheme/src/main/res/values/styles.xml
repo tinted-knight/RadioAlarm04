@@ -66,6 +66,8 @@
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:padding">2dp</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="LightTheme.AlarmIcon">
@@ -84,7 +86,7 @@
         <item name="fontFamily">@font/allerta_stencil</item>
         <item name="android:textSize">28sp</item>
         <!--        <item name="android:textColor">@color/clTimeText</item>-->
-        <item name="android:background">@drawable/ripple_colored_unlim</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <!-- Alarm fire  -->
@@ -151,8 +153,9 @@
     </style>
 
     <style name="LightTheme.NowplayingTitle" parent="Widget.MaterialComponents.TextView">
-        <item name="fontFamily">@font/pt_sans_narrow</item>
-        <item name="android:textSize">24sp</item>
+<!--        <item name="fontFamily">@font/pt_sans_caption</item>-->
+        <item name="android:textSize">18sp</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>

@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
@@ -73,14 +74,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val melody = MaterialTextView(
-        context,
-        null,
-        appTheme.alarmItem.melodyText.attr,
-    ).apply {
-        text = "Melody name"
-        maxLines = 1
-        ellipsize = TextUtils.TruncateAt.END
+    private val melody = MaterialTextView(context, null, appTheme.alarmItem.melodyText.attr).apply {
         setOnClickListener { delegate?.onMelodyClick() }
         setOnLongClickListener {
             delegate?.onMelodyLongClick()
@@ -88,18 +82,14 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val alarmIcon = ImageView(
-        context,
-        null,
-        appTheme.alarmItem.alarmIcon.attr,
-    )
+    private val alarmIcon = ImageView(context, null, appTheme.alarmItem.alarmIcon.attr)
 
     private val btnDelete = ImageButton(
-        ContextThemeWrapper(context, appTheme.alarmItem.favoriteStyleId),
+        ContextThemeWrapper(context, appTheme.alarmItem.actionButton),
         null,
-        appTheme.alarmItem.favoriteStyleId,
+        appTheme.alarmItem.actionButton,
     ).apply {
-        setImageResource(appTheme.alarmItem.iconFavorite)
+        setImageDrawable(ContextCompat.getDrawable(context, appTheme.alarmItem.iconDelete))
         setOnClickListener { delegate?.onDeleteClick() }
         setOnLongClickListener {
             delegate?.onDeleteLongClick()
@@ -107,34 +97,13 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val monday = dayOfWeek().apply {
-        text = context.getString(R.string.monday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[0]) }
-    }
-    private val tuesday = dayOfWeek().apply {
-        text = context.getString(R.string.tuesday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[1]) }
-    }
-    private val wednesday = dayOfWeek().apply {
-        text = context.getString(R.string.wednesday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[2]) }
-    }
-    private val thursday = dayOfWeek().apply {
-        text = context.getString(R.string.thursday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[3]) }
-    }
-    private val friday = dayOfWeek().apply {
-        text = context.getString(R.string.friday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[4]) }
-    }
-    private val saturday = dayOfWeek().apply {
-        text = context.getString(R.string.saturday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[5]) }
-    }
-    private val sunday = dayOfWeek().apply {
-        text = context.getString(R.string.sunday)
-        setOnClickListener { delegate?.onDayOfWeekClick(days[6]) }
-    }
+    private val monday = dayOfWeek(R.string.monday, 0)
+    private val tuesday = dayOfWeek(R.string.tuesday, 1)
+    private val wednesday = dayOfWeek(R.string.wednesday, 2)
+    private val thursday = dayOfWeek(R.string.thursday, 3)
+    private val friday = dayOfWeek(R.string.friday, 4)
+    private val saturday = dayOfWeek(R.string.saturday, 5)
+    private val sunday = dayOfWeek(R.string.sunday, 6)
 
     private val dayViews: Map<Int, TextView> = mapOf(
         days[0] to monday,
@@ -210,7 +179,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         )
     }
 
-    private fun dayOfWeek() = MaterialTextView(
+    private fun dayOfWeek(@StringRes strId: Int, id: Int) = MaterialTextView(
         ContextThemeWrapper(context, appTheme.alarmItem.dayOfWeekStyle),
         null,
         appTheme.alarmItem.dayOfWeekStyle,
@@ -220,6 +189,8 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             LayoutParams.MATCH_PARENT,
             1.0f
         )
+        text = context.getString(strId)
+        setOnClickListener { delegate?.onDayOfWeekClick(days[id]) }
     }
 
     override fun time(value: String) {

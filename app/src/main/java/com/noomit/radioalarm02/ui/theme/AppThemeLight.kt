@@ -34,8 +34,8 @@ interface ThemeServerList {
 
 interface ThemeAlarmItem {
     val bgColor: Int
-    val favoriteStyleId: Int
-    val iconFavorite: Int
+    val actionButton: Int
+    val iconDelete: Int
     val dayOfWeekStyle: Int
     val dayColorInactive: Int
     val dayColorActive: Int
@@ -84,8 +84,8 @@ data class AppThemeLight(
     },
     val alarmItem: ThemeAlarmItem = object : ThemeAlarmItem {
         override val bgColor = C.clCardBackground
-        override val favoriteStyleId = S.LightTheme_ActionButton
-        override val iconFavorite = D.ic_delete_24
+        override val actionButton = S.LightTheme_ActionButton
+        override val iconDelete = D.ic_delete_24
         override val dayOfWeekStyle = S.LightTheme_DayOfWeek
         override val dayColorInactive = C.colorDayTextInactive
         override val dayColorActive = C.colorDayTextActive
