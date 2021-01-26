@@ -1,9 +1,6 @@
 package com.noomit.radioalarm02.base
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import android.view.LayoutInflater
@@ -105,6 +102,8 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
 
     protected var service: PlayerService.PlayerServiceBinder? = null
 
+    private var playerBroadcastReceiver: BroadcastReceiver? = null
+
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service is PlayerService.PlayerServiceBinder) {
@@ -135,23 +134,45 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
      */
     protected abstract fun initPlayerViews()
 
+    /**
+     * Called when broadcast message comes with connection error from [PlayerService]
+     */
+    open fun onConnectionError() {}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initPlayerViews()
         bindExoPlayerService()
+        registerBroadcastReceiver()
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         requireActivity().apply {
+            requireActivity().unregisterReceiver(playerBroadcastReceiver)
             unbindService(connection)
             stopService(Intent(this, PlayerService::class.java))
         }
+        super.onDestroyView()
     }
 
     private fun bindExoPlayerService() {
         val intent = Intent(requireActivity(), PlayerService::class.java)
         requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+    }
+
+    private fun registerBroadcastReceiver() {
+        playerBroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val codeError = intent?.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)
+                when (codeError) {
+                    PlayerService.BR_CODE_ERROR -> onConnectionError()
+                }
+            }
+        }
+        requireActivity().registerReceiver(
+            playerBroadcastReceiver,
+            IntentFilter(PlayerService.BROADCAST_FILTER),
+        )
     }
 }

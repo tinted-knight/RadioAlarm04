@@ -32,4 +32,5 @@
     <string name="nav_label_tags">Список тегов</string>
     <string name="nav_label_topvoted">Самые популярные</string>
     <string name="nav_label_search">Поиск</string>
+    <string name="toast_cannot_connect_to_station">Не могу соединиться со станцией</string>
 </resources>

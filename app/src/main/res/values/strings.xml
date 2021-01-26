@@ -32,4 +32,5 @@
     <string name="toast_added">To favorites: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
     <string name="toast_removed">Removed: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
     <string name="toast_hold_to_del">Hold icon to delete alarm</string>
+    <string name="toast_cannot_connect_to_station">Sorry, can\'t connect to station</string>
 </resources>

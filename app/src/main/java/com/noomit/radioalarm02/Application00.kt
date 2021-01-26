@@ -18,7 +18,9 @@ class Application00 : Application() {
     }
 }
 
-fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+fun Context.toast(message: String?) {
+    Toast.makeText(this, message ?: "message is null", Toast.LENGTH_SHORT).show()
+}
 
 fun tplog(message: String) = Timber.tag("tagg-main").i(message)
 
