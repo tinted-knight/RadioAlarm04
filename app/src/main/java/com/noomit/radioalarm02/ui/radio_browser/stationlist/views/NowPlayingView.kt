@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
@@ -13,6 +12,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -21,17 +21,26 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textview.MaterialTextView
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
+interface NowPlayingListener {
+    fun onFavoriteClick()
+    fun onFavoriteLongClick()
+    fun onHomePageClick()
+    fun onHomePageLongClick()
+}
+
 class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet) {
 
-    private val title = TextView(context).apply {
-        ellipsize = TextUtils.TruncateAt.END
-    }
+    var nowPlayingListener: NowPlayingListener? = null
+
+    private val title = MaterialTextView(context, null, appTheme.nowPlaying.titleStyle.attr)
 
     private val homePage = TextView(context)
 
@@ -52,12 +61,33 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private val nowPlayingIcon = ImageView(context)
 
-    val btnFav = ImageButton(
+    private val iconInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconFavorite)
+    private val iconNotInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconNotFavorite)
+
+    private val btnFav = ImageButton(
         ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
         null,
         appTheme.nowPlaying.favoriteStyleId
     ).apply {
-        setImageResource(appTheme.nowPlaying.iconNotFavorite)
+        setImageDrawable(iconNotInFavorites)
+        setOnClickListener { nowPlayingListener?.onFavoriteClick() }
+        setOnLongClickListener {
+            nowPlayingListener?.onFavoriteLongClick()
+            true
+        }
+    }
+
+    private val btnHomePage = ImageButton(
+        ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
+        null,
+        appTheme.nowPlaying.favoriteStyleId
+    ).apply {
+        setImageDrawable(ContextCompat.getDrawable(context, appTheme.nowPlaying.iconHomepage))
+        setOnClickListener { nowPlayingListener?.onHomePageClick() }
+        setOnLongClickListener {
+            nowPlayingListener?.onHomePageLongClick()
+            true
+        }
     }
 
     private fun buildChip(value: String, even: Boolean) = TextView(
@@ -77,7 +107,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private fun collapsedLayout() {
-        toggleCornerRaduis(false)
+//        toggleCornerRaduis(false)
         setPadding(4.dip, 2.dip, 4.dip, 2.dip)
 
         title.isSingleLine = true
@@ -87,6 +117,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.isVisible = false
         tagList.isVisible = false
         btnFav.isVisible = false
+        btnHomePage.isVisible = false
 
         nowPlayingIcon.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -102,99 +133,53 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.layoutBy(emptyX(), emptyY())
         tagList.layoutBy(emptyX(), emptyY())
         btnFav.layoutBy(emptyX(), emptyY())
+        btnHomePage.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayoutNew() {
-        toggleCornerRaduis(true)
+//        toggleCornerRaduis(true)
         setPadding(16.dip, 16.dip, 16.dip, 16.dip)
 
         title.isSingleLine = false
-        title.maxLines = 4
+        title.maxLines = 2
         homePage.isVisible = true
         country.isVisible = true
         codec.isVisible = codec.value.isNotBlank()
         bitrate.isVisible = bitrate.value.isNotBlank()
         tagList.isVisible = true
         btnFav.isVisible = true
+        btnHomePage.isVisible = true
 
         val vSpacing = 8.ydip
         val hSpacing = 8.xdip
 
         nowPlayingIcon.updateLayoutBy(
-            x = rightTo { parent.right() }.widthOf { parent.width() / 3 },
-            y = topTo { parent.top() }.heightOf { (parent.width() / 3).toY() }
+            x = rightTo { parent.right() }.widthOf { parent.width() / 4 },
+            y = topTo { parent.top() }.heightOf { (parent.width() / 4).toY() }
         )
-        codec.updateLayoutBy(
+        title.updateLayoutBy(
             leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
-            topTo { nowPlayingIcon.top() + vSpacing }
+            topTo { parent.top() }
         )
         bitrate.updateLayoutBy(
             leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
-            topTo { codec.bottom() + vSpacing }
+            topTo { title.bottom() + vSpacing }
+        )
+        codec.updateLayoutBy(
+            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
+            topTo { bitrate.bottom() + vSpacing }
         )
         btnFav.updateLayoutBy(
             rightTo { parent.right() },
             topTo { nowPlayingIcon.bottom() + vSpacing }
         )
-        homePage.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { btnFav.left() - hSpacing },
-            centerVerticallyTo { btnFav.centerY() }
+        btnHomePage.updateLayoutBy(
+            rightTo { btnFav.left() },
+            topTo { nowPlayingIcon.bottom() + vSpacing }
         )
-        title.updateLayoutBy(
+        tagList.updateLayoutBy(
             matchParentX(),
             topTo { btnFav.bottom() + vSpacing }
-        )
-        tagList.updateLayoutBy(
-            matchParentX(),
-            topTo { title.bottom() + vSpacing }
-        )
-    }
-
-    private fun expandedLayout() {
-        toggleCornerRaduis(true)
-
-        title.isSingleLine = false
-        homePage.isVisible = true
-        country.isVisible = true
-        codec.isVisible = true
-        bitrate.isVisible = true
-        tagList.isVisible = true
-        btnFav.isVisible = true
-
-        val fillParentWidth = matchParentX(marginLeft = 16, marginRight = 16)
-        val verticalSpacing = 8.ydip
-
-        title.updateLayoutBy(
-            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 8.xdip },
-            y = topTo { nowPlayingIcon.top() + 16.ydip }
-        )
-        nowPlayingIcon.updateLayoutBy(
-            x = rightTo { parent.right() - 16.xdip }.widthOf { parent.width() / 3 },
-            y = topTo { parent.top() + 16.ydip }.heightOf { (parent.width() / 3).toY() }
-        )
-        homePage.updateLayoutBy(
-            x = fillParentWidth,
-            y = topTo { nowPlayingIcon.bottom() + verticalSpacing }
-        )
-        country.updateLayoutBy(
-            x = fillParentWidth,
-            y = topTo { homePage.bottom() + verticalSpacing }
-        )
-        codec.updateLayoutBy(
-            x = leftTo { country.left() },
-            y = topTo { country.bottom() + verticalSpacing }
-        )
-        bitrate.updateLayoutBy(
-            x = leftTo { codec.right() + 16.xdip },
-            y = topTo { country.bottom() + 8.ydip }
-        )
-        tagList.updateLayoutBy(
-            x = fillParentWidth,
-            y = topTo { bitrate.bottom() + verticalSpacing }
-        )
-        btnFav.updateLayoutBy(
-            x = rightTo { parent.right() - 16.xdip },
-            y = bottomTo { parent.bottom() - 16.ydip }
         )
     }
 
@@ -258,9 +243,9 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             tagList.addView(chip)
         }
 
-        btnFav.setImageResource(when (inFavorites) {
-            true -> appTheme.nowPlaying.iconFavorite
-            false -> appTheme.nowPlaying.iconNotFavorite
+        btnFav.setImageDrawable(when (inFavorites) {
+            true -> iconInFavorites
+            false -> iconNotInFavorites
         })
 
         title.text = station.name
@@ -289,6 +274,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private fun loadStationIcon(station: StationModel) {
         Glide.with(this).load(station.favicon)
+            .error(R.drawable.ic_wifi_tethering_24)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,

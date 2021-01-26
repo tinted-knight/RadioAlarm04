@@ -25,6 +25,7 @@ interface ThemeNowPlaying {
     val stationCount: ViewStyle
     val dimmColor: Int
     val tag: ViewStyle
+    val titleStyle: ViewStyle
 }
 
 interface ThemeServerList {
@@ -33,8 +34,8 @@ interface ThemeServerList {
 
 interface ThemeAlarmItem {
     val bgColor: Int
-    val favoriteStyleId: Int
-    val iconFavorite: Int
+    val actionButton: Int
+    val iconDelete: Int
     val dayOfWeekStyle: Int
     val dayColorInactive: Int
     val dayColorActive: Int
@@ -76,14 +77,15 @@ data class AppThemeLight(
         override val stationCount = ViewStyle(S.LightTheme_TextStationCount, A.stationCountText)
         override val dimmColor = C.clNowplayingDimm
         override val tag = ViewStyle(S.LightTheme_StationTag, A.stationTag)
+        override val titleStyle = ViewStyle(S.LightTheme_NowplayingTitle, A.nowplaying_title)
     },
     val serverList: ThemeServerList = object : ThemeServerList {
         override val bgColor = C.clCardBackground
     },
     val alarmItem: ThemeAlarmItem = object : ThemeAlarmItem {
         override val bgColor = C.clCardBackground
-        override val favoriteStyleId = S.LightTheme_ActionButton
-        override val iconFavorite = D.ic_delete_24
+        override val actionButton = S.LightTheme_ActionButton
+        override val iconDelete = D.ic_delete_24
         override val dayOfWeekStyle = S.LightTheme_DayOfWeek
         override val dayColorInactive = C.colorDayTextInactive
         override val dayColorActive = C.colorDayTextActive

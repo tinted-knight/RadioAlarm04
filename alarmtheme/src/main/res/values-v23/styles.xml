@@ -24,5 +24,6 @@
         <item name="stationTag">@style/LightTheme.StationTag</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:statusBarColor">@color/clStausBarBackground</item>
+        <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
     </style>
 </resources>

@@ -24,6 +24,7 @@
         <item name="stationTag">@style/LightTheme.StationTag</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:windowBackground">@color/clBackground</item>
+        <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
     </style>
 
     <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
@@ -56,11 +57,17 @@
     <style name="LightTheme.ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
 
     <!-- Alarm Card -->
-    <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton" />
+    <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">36dp</item>
+    </style>
 
     <style name="LightTheme.MelodyText" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:padding">2dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="LightTheme.AlarmIcon">
@@ -72,14 +79,14 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:padding">4dp</item>
+        <item name="android:padding">2dp</item>
     </style>
 
     <style name="LightTheme.TextTime" parent="Widget.MaterialComponents.TextView">
         <item name="fontFamily">@font/allerta_stencil</item>
         <item name="android:textSize">28sp</item>
         <!--        <item name="android:textColor">@color/clTimeText</item>-->
-        <item name="android:background">@drawable/ripple_colored_unlim</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <!-- Alarm fire  -->
@@ -141,7 +148,14 @@
         <item name="android:textSize">16sp</item>
         <item name="android:paddingStart">6dp</item>
         <item name="android:paddingEnd">6dp</item>
-<!--        <item name="android:paddingTop">2dp</item>-->
-<!--        <item name="android:paddingBottom">2dp</item>-->
+        <!--        <item name="android:paddingTop">2dp</item>-->
+        <!--        <item name="android:paddingBottom">2dp</item>-->
     </style>
+
+    <style name="LightTheme.NowplayingTitle" parent="Widget.MaterialComponents.TextView">
+<!--        <item name="fontFamily">@font/pt_sans_caption</item>-->
+        <item name="android:textSize">18sp</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>
