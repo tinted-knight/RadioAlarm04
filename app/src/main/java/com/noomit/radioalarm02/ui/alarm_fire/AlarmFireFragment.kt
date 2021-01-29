@@ -1,16 +1,11 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.noomit.playerservice.MediaItem
-import com.noomit.playerservice.PlayerService
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
@@ -22,8 +17,6 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
 
     private val viewModel: DismissAlarmViewModel by activityViewModels()
 
-    private lateinit var playerBroadcastReceiver: BroadcastReceiver
-
     override val layout: View
         get() = AlarmFireLayout(requireContext())
 
@@ -33,25 +26,8 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
     override val notificationCaption: String
         get() = getString(R.string.app_name)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        playerBroadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                when (intent?.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)) {
-                    PlayerService.BR_CODE_ERROR -> playDefaultRingtone()
-                }
-            }
-        }
-        requireActivity().registerReceiver(
-            playerBroadcastReceiver,
-            IntentFilter(PlayerService.BROADCAST_FILTER),
-        )
-    }
-
     override fun onDestroyView() {
         stopRingtone()
-        requireActivity().unregisterReceiver(playerBroadcastReceiver)
         super.onDestroyView()
     }
 
@@ -72,6 +48,10 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
             service?.play()
             contour.setStationName(viewModel.melodyName ?: "")
         }
+    }
+
+    override fun onConnectionError() {
+        playDefaultRingtone()
     }
 
     override fun initPlayerViews() {

@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.ui.favorites
 
+import android.content.BroadcastReceiver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.PlayerServiceFragment
 import com.noomit.radioalarm02.base.collect
+import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +27,8 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
 
     override val notificationCaption: String
         get() = getString(R.string.app_name)
+
+    private lateinit var playerBroadcastReceiver: BroadcastReceiver
 
     override fun initPlayerViews() {
         playerControlView = contour.playerControll
@@ -66,5 +70,9 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
                     })
             }
         }
+    }
+
+    override fun onConnectionError() {
+        requireContext().toast(getString(R.string.toast_cannot_connect_to_station))
     }
 }

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/LightTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:theme="@style/LightTheme"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:theme="@style/LightTheme">
 
     <TextView
         android:id="@+id/tv_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="App name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        tools:text="App name" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,18 +27,18 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:padding="8dp"
-            android:text="Radio Station Title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+            tools:text="Radio Station Title" />
 
-        <ImageButton
-            android:id="@+id/btn_play_pause"
-            style="@style/LightTheme.ActionButton"
+        <TextView
+            android:id="@+id/tv_play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="4dp"
-            android:src="@drawable/ic_stop_24"
-            android:tint="@color/clAccent" />
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/tag_background"
+            android:padding="8dp"
+            android:text="@string/action_pause"
+            android:textColor="@color/clPrimary" />
     </LinearLayout>
 
 </LinearLayout>
