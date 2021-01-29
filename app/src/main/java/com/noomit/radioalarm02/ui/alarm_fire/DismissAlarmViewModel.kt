@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.noomit.radioalarm02.Database
+import com.noomit.radioalarm02.data.AlarmModel
 import com.noomit.radioalarm02.model.clearScheduledAlarms
 import com.noomit.radioalarm02.model.reComposeFired
 import com.noomit.radioalarm02.model.scheduleAlarm
@@ -58,15 +59,15 @@ class DismissAlarmViewModel @ViewModelInject constructor(
     }
 
     fun alarmFired() = alarmId?.let {
-        val alarm = queries.selectById(it).executeAsOne()
+        val alarm = AlarmModel(queries.selectById(it).executeAsOne())
         val updated = reComposeFired(alarm)
         val c = Calendar.getInstance().apply {
-            timeInMillis = updated.time_in_millis
+            timeInMillis = updated.timeInMillis
         }
         plog("updated: ${c[Calendar.DAY_OF_MONTH]}:${c[Calendar.MONTH]}")
         queries.updateTimeInMillis(
             alarmId = updated.id,
-            timeInMillis = updated.time_in_millis,
+            timeInMillis = updated.timeInMillis,
         )
         val nextAlarm = queries.nextActive().executeAsOneOrNull()
         if (nextAlarm != null) {

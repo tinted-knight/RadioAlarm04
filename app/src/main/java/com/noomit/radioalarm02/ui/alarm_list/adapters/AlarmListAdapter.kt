@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.data.AlarmModel
 import com.noomit.radioalarm02.model.hourString
 import com.noomit.radioalarm02.model.isDayBitOn
 import com.noomit.radioalarm02.model.minuteString
@@ -15,18 +15,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 interface AlarmAdapterActions {
-    fun onDeleteClick(alarm: Alarm)
-    fun onDeleteLongClick(alarm: Alarm)
-    fun onEnabledChecked(alarm: Alarm, isChecked: Boolean)
-    fun onTimeClick(alarm: Alarm)
-    fun onMelodyClick(alarm: Alarm)
-    fun onMelodyLongClick(alarm: Alarm)
-    fun onDayOfWeekClick(day: Int, alarm: Alarm)
+    fun onDeleteClick(alarm: AlarmModel)
+    fun onDeleteLongClick(alarm: AlarmModel)
+    fun onEnabledChecked(alarm: AlarmModel, isChecked: Boolean)
+    fun onTimeClick(alarm: AlarmModel)
+    fun onMelodyClick(alarm: AlarmModel)
+    fun onMelodyLongClick(alarm: AlarmModel)
+    fun onDayOfWeekClick(day: Int, alarm: AlarmModel)
 }
 
 class AlarmListAdapter(
     private val delegate: AlarmAdapterActions,
-) : ListAdapter<Alarm, AlarmListViewHolder>(AlarmListDiffUtil()) {
+) : ListAdapter<AlarmModel, AlarmListViewHolder>(AlarmListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
         AlarmItemView(parent.context)
     )
@@ -65,16 +65,16 @@ class AlarmListAdapter(
     }
 }
 
-class AlarmListDiffUtil : DiffUtil.ItemCallback<Alarm>() {
-    override fun areItemsTheSame(oldItem: Alarm, newItem: Alarm): Boolean {
+class AlarmListDiffUtil : DiffUtil.ItemCallback<AlarmModel>() {
+    override fun areItemsTheSame(oldItem: AlarmModel, newItem: AlarmModel): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Alarm, newItem: Alarm): Boolean {
-        return (oldItem.time_in_millis == newItem.time_in_millis
-                && oldItem.is_enabled == newItem.is_enabled
-                && oldItem.days_of_week == newItem.days_of_week
-                && oldItem.bell_url == newItem.bell_url)
+    override fun areContentsTheSame(oldItem: AlarmModel, newItem: AlarmModel): Boolean {
+        return (oldItem.timeInMillis == newItem.timeInMillis
+                && oldItem.isEnabled == newItem.isEnabled
+                && oldItem.daysOfWeek == newItem.daysOfWeek
+                && oldItem.bellUrl == newItem.bellUrl)
     }
 
 }
@@ -87,18 +87,18 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val contour: IAlarmItem
         get() = itemView as IAlarmItem
 
-    fun bind(value: Alarm) {
-        if (value.time_in_millis == 0L || !value.is_enabled) {
+    fun bind(value: AlarmModel) {
+        if (value.timeInMillis == 0L || !value.isEnabled) {
             contour time "${value.hourString}:${value.minuteString}"
             contour day ""
         } else {
-            val date = Date(value.time_in_millis)
+            val date = Date(value.timeInMillis)
             contour time timeFormat.format(date)
             contour day dateFormat.format(date)
         }
-        contour melody if (value.bell_url.isNotBlank()) value.bell_name else itemView.context.getString(R.string.melody_system)
-        contour switch value.is_enabled
-        processDaysOfWeek(value.days_of_week)
+        contour melody if (value.bellUrl.isNotBlank()) value.bellName else itemView.context.getString(R.string.melody_system)
+        contour switch value.isEnabled
+        processDaysOfWeek(value.daysOfWeek)
     }
 
     private fun processDaysOfWeek(daysOfWeek: Int) {

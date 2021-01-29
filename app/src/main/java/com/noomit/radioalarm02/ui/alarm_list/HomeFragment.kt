@@ -51,8 +51,8 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
                 is AlarmListDirections.TestMelody -> startActivity(AlarmActivity.composeIntent(
                     context = requireContext(),
                     id = command.alarm.id,
-                    url = command.alarm.bell_url,
-                    name = command.alarm.bell_name,
+                    url = command.alarm.bellUrl,
+                    name = command.alarm.bellName,
                     action = AlarmActivity.ACTION_TEST,
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
                 ))

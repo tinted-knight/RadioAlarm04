@@ -1,8 +1,8 @@
 package com.noomit.radioalarm02.domain.alarm_manager
 
 import android.content.Context
-import com.noomit.radioalarm02.Alarm
 import com.noomit.radioalarm02.Database
+import com.noomit.radioalarm02.data.AlarmModel
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -30,8 +30,9 @@ class AlarmManager @Inject constructor(
     override val alarms = queries.selectAll().asFlow()
         .flowOn(Dispatchers.IO)
         .mapToList()
-        .map { list -> list.sortedBy { it.time_in_millis } }
-        .map { list -> list.sortedByDescending { it.is_enabled } }
+        .map { dbEntities -> dbEntities.map { AlarmModel(it) } }
+        .map { list -> list.sortedBy { it.timeInMillis } }
+        .map { list -> list.sortedByDescending { it.isEnabled } }
         .flowOn(Dispatchers.Default)
 
     override fun insert(hour: Int, minute: Int) {
@@ -49,43 +50,43 @@ class AlarmManager @Inject constructor(
         )
     }
 
-    override fun delete(alarm: Alarm) {
+    override fun delete(alarm: AlarmModel) {
         queries.delete(id = alarm.id)
     }
 
-    override fun updateDayOfWeek(dayToSwitch: Int, alarm: Alarm) {
+    override fun updateDayOfWeek(dayToSwitch: Int, alarm: AlarmModel) {
         val updated = reCompose(alarm, dayToSwitch)
         val c = Calendar.getInstance().apply {
-            timeInMillis = updated.time_in_millis
+            timeInMillis = updated.timeInMillis
         }
-        plog("updated: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]}, daysOfWeek = ${updated.days_of_week}")
+        plog("updated: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]}, daysOfWeek = ${updated.daysOfWeek}")
         queries.updateDays(
             alarmId = updated.id,
-            daysOfWeek = updated.days_of_week,
-            timeInMillis = updated.time_in_millis,
-            isEnabled = updated.is_enabled,
+            daysOfWeek = updated.daysOfWeek,
+            timeInMillis = updated.timeInMillis,
+            isEnabled = updated.isEnabled,
         )
     }
 
-    override fun updateTime(alarm: Alarm, hour: Int, minute: Int) {
+    override fun updateTime(alarm: AlarmModel, hour: Int, minute: Int) {
         plog("updateTime to $hour:$minute")
         val updated = reComposeFired(alarm.copy(hour = hour, minute = minute))
         queries.updateTime(
             alarmId = alarm.id,
             hour = updated.hour,
             minute = updated.minute,
-            timeInMillis = updated.time_in_millis,
+            timeInMillis = updated.timeInMillis,
         )
     }
 
-    override fun setEnabled(alarm: Alarm, isEnabled: Boolean) {
+    override fun setEnabled(alarm: AlarmModel, isEnabled: Boolean) {
         plog("setEnabled, $isEnabled")
         if (!isEnabled) {
             queries.updateEnabled(alarmId = alarm.id, isEnabled = false)
             return
         }
 
-        if (alarm.days_of_week == 0) {
+        if (alarm.daysOfWeek == 0) {
             val composed = composeAlarmEntity(alarm.hour, alarm.minute)
             queries.updateDays(
                 alarmId = alarm.id,
@@ -96,20 +97,20 @@ class AlarmManager @Inject constructor(
             return
         }
 
-        if (isEnabled && alarm.days_of_week != 0) {
+        if (isEnabled && alarm.daysOfWeek != 0) {
             val reEnabled = reComposeFired(alarm)
             queries.updateDays(
-                daysOfWeek = reEnabled.days_of_week,
+                daysOfWeek = reEnabled.daysOfWeek,
                 isEnabled = true,
-                timeInMillis = reEnabled.time_in_millis,
+                timeInMillis = reEnabled.timeInMillis,
                 alarmId = reEnabled.id,
             )
         }
     }
 
-    private var selectMelodyFor: Alarm? = null
+    private var selectMelodyFor: AlarmModel? = null
 
-    override fun selectMelodyFor(alarm: Alarm) {
+    override fun selectMelodyFor(alarm: AlarmModel) {
         selectMelodyFor = alarm
     }
 

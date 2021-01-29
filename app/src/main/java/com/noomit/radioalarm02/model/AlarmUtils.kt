@@ -1,22 +1,10 @@
 package com.noomit.radioalarm02.model
 
-import com.noomit.radioalarm02.Alarm
+import com.noomit.radioalarm02.data.AlarmModel
 import com.noomit.radioalarm02.tplog
 import java.util.*
 
-// #think temporary
-data class Alarma(
-    val hour: Int,
-    val minute: Int,
-    val isEnabled: Boolean,
-    val bellUrl: String,
-    val bellName: String,
-    val repeat: Boolean,
-    val daysOfWeek: Int,
-    val timeInMillis: Long,
-)
-
-fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
+fun composeAlarmEntity(hour: Int, minute: Int): AlarmModel {
     val calendar = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, hour)
         set(Calendar.MINUTE, minute)
@@ -26,7 +14,7 @@ fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
         if (timeInMillis < oneMinuteInFuture.timeInMillis) add(Calendar.DAY_OF_YEAR, 1)
     }
 
-    return Alarma(
+    return AlarmModel(
         hour = calendar.hour,
         minute = calendar.minute,
         isEnabled = true,
@@ -43,13 +31,13 @@ fun composeAlarmEntity(hour: Int, minute: Int): Alarma {
  *
  * Looks for the next day when alarm will be fired
  */
-fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
-    val newDays = switchBitByDay(dayOfWeek, alarm.days_of_week)
-    tplog("newDays = $newDays, current = ${alarm.days_of_week}")
+fun reCompose(alarm: AlarmModel, dayOfWeek: Int): AlarmModel {
+    val newDays = switchBitByDay(dayOfWeek, alarm.daysOfWeek)
+    tplog("newDays = $newDays, current = ${alarm.daysOfWeek}")
     if (newDays == 0) return alarm.copy(
-        days_of_week = 0,
-        time_in_millis = 0,
-        is_enabled = false,
+        daysOfWeek = 0,
+        timeInMillis = 0,
+        isEnabled = false,
     )
 
     val now = Calendar.getInstance()
@@ -73,19 +61,19 @@ fun reCompose(alarm: Alarm, dayOfWeek: Int): Alarm {
         }
     }
     return alarm.copy(
-        days_of_week = newDays,
-        time_in_millis = calendar.timeInMillis,
-        is_enabled = true,
+        daysOfWeek = newDays,
+        timeInMillis = calendar.timeInMillis,
+        isEnabled = true,
     )
 }
 
-fun reComposeFired(alarm: Alarm): Alarm {
+fun reComposeFired(alarm: AlarmModel): AlarmModel {
     val now = Calendar.getInstance()
     val calendar = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, alarm.hour)
         set(Calendar.MINUTE, alarm.minute)
 
-        if (timeInMillis < now.timeInMillis && alarm.days_of_week == get(Calendar.DAY_OF_WEEK)) {
+        if (timeInMillis < now.timeInMillis && alarm.daysOfWeek == get(Calendar.DAY_OF_WEEK)) {
             add(Calendar.WEEK_OF_YEAR, 1)
         }
 
@@ -96,7 +84,7 @@ fun reComposeFired(alarm: Alarm): Alarm {
 
         var today = get(Calendar.DAY_OF_WEEK)
         repeat(7) {
-            if (alarm.days_of_week.isDayBitOn(today)) {
+            if (alarm.daysOfWeek.isDayBitOn(today)) {
                 return@repeat
             } else {
                 add(Calendar.DAY_OF_YEAR, 1)
@@ -105,8 +93,8 @@ fun reComposeFired(alarm: Alarm): Alarm {
         }
     }
     return alarm.copy(
-        time_in_millis = calendar.timeInMillis,
-        is_enabled = true,
+        timeInMillis = calendar.timeInMillis,
+        isEnabled = true,
     )
 }
 
@@ -119,8 +107,8 @@ private val Calendar.minute: Int
 private val Calendar.dayOfWeek: Int
     get() = get(Calendar.DAY_OF_WEEK)
 
-val Alarm.hourString: String
+val AlarmModel.hourString: String
     get() = if (hour > 9) hour.toString() else "0$hour"
 
-val Alarm.minuteString: String
+val AlarmModel.minuteString: String
     get() = if (minute > 9) minute.toString() else "0$minute"
