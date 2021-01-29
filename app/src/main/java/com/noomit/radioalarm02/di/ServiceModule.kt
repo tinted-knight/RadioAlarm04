@@ -4,6 +4,7 @@ import com.example.radiobrowser.RadioBrowserContract
 import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.domain.alarm_manager.AlarmManager
 import com.noomit.radioalarm02.domain.alarm_manager.AlarmManagerContract
+import com.noomit.radioalarm02.domain.alarm_manager.FiredAlarmManagerContract
 import com.noomit.radioalarm02.domain.favorite_manager.FavoritesManager
 import com.noomit.radioalarm02.domain.favorite_manager.FavoritesManagerContract
 import com.noomit.radioalarm02.domain.language_manager.CategoryManager
@@ -26,6 +27,9 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun bindAlarmManager(manager: AlarmManager): AlarmManagerContract
+
+    @Binds
+    abstract fun bindFiredAlarmManager(manager: AlarmManager): FiredAlarmManagerContract
 
     @Binds
     abstract fun bindCategoryManager(manager: CategoryManager): CategoryManagerContract

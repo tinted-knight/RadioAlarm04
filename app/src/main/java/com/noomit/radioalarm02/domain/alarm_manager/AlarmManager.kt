@@ -21,7 +21,7 @@ import javax.inject.Inject
 class AlarmManager @Inject constructor(
     database: Database,
     @ApplicationContext private val context: Context,
-) : AlarmManagerContract {
+) : AlarmManagerContract, FiredAlarmManagerContract {
 
     private fun plog(message: String) = Timber.tag("tagg-alarm_manager").i(message)
 
@@ -155,4 +155,20 @@ class AlarmManager @Inject constructor(
             }
             .collect()
     }
+
+    override fun selectById(id: Long) = AlarmModel(queries.selectById(id).executeAsOne())
+
+    override fun updateTimeInMillis(id: Long, timeInMillis: Long) {
+        queries.updateTimeInMillis(
+            alarmId = id,
+            timeInMillis = timeInMillis,
+        )
+    }
+
+    override val nextActive: AlarmModel?
+        get() {
+            val next = queries.nextActive().executeAsOneOrNull()
+                ?: return null
+            return AlarmModel(next)
+        }
 }

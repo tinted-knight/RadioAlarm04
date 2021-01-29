@@ -16,3 +16,9 @@ interface AlarmManagerContract {
     fun setDefaultRingtone()
     suspend fun observeNextActive()
 }
+
+interface FiredAlarmManagerContract {
+    fun selectById(id: Long): AlarmModel
+    fun updateTimeInMillis(id: Long, timeInMillis: Long)
+    val nextActive: AlarmModel?
+}
