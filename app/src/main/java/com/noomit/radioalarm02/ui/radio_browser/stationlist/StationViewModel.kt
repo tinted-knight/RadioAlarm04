@@ -4,7 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noomit.domain.StationModel
-import com.noomit.radioalarm02.domain.favorites_manager.FavoritesManagerContract
+import com.noomit.domain.favorites_manager.FavoritesManagerContract
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.ItemClickListener
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
 import kotlinx.coroutines.flow.MutableSharedFlow

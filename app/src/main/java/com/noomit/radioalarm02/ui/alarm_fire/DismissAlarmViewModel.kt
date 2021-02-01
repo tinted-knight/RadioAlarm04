@@ -5,8 +5,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.noomit.domain.alarm_manager.AlarmManagerContract
 import com.noomit.domain.alarm_manager.reComposeFired
-import com.noomit.radioalarm02.model.clearScheduledAlarms
-import com.noomit.radioalarm02.model.scheduleAlarm
+import com.noomit.radioalarm02.util.clearScheduledAlarms
+import com.noomit.radioalarm02.util.scheduleAlarm
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow

@@ -9,6 +9,7 @@ import com.noomit.domain.FavoriteQueries
 import com.noomit.domain.alarm_manager.AlarmManager
 import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
 import com.noomit.domain.category_manager.CategoryManager
+import com.noomit.domain.favorites_manager.FavoritesManager
 import com.noomit.domain.server_manager.ServerManager
 import com.noomit.domain.station_manager.StationManager
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -40,6 +41,11 @@ class DomainModule {
     @Provides
     fun provideAlarmManager(queries: AlarmQueries, scheduler: ScheduleAlarmUtilsContract): AlarmManager {
         return AlarmManager(queries, scheduler)
+    }
+
+    @Provides
+    fun provideFavoriteManager(queries: FavoriteQueries): FavoritesManager {
+        return FavoritesManager(queries)
     }
 
     @Provides

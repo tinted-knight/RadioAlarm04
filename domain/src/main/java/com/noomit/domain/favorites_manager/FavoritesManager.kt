@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.domain.favorites_manager
+package com.noomit.domain.favorites_manager
 
 import com.noomit.domain.Favorite
 import com.noomit.domain.FavoriteQueries
@@ -6,9 +6,8 @@ import com.noomit.domain.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class FavoritesManager @Inject constructor(
+class FavoritesManager constructor(
     private val queries: FavoriteQueries,
 ) : FavoritesManagerContract {
 

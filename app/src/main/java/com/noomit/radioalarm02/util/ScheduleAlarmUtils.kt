@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.model
+package com.noomit.radioalarm02.util
 
 import android.app.AlarmManager
 import android.app.PendingIntent

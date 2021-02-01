@@ -5,7 +5,7 @@ import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.database.getDatabase
 import com.noomit.db.AppDatabase
 import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
-import com.noomit.radioalarm02.model.ScheduleAlarmUtils
+import com.noomit.radioalarm02.util.ScheduleAlarmUtils
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides

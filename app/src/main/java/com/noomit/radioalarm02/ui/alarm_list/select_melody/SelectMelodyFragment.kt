@@ -7,11 +7,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.PlayerServiceFragment
-import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.ui.alarm_list.HomeViewModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
+import com.noomit.radioalarm02.util.PlayerServiceFragment
+import com.noomit.radioalarm02.util.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

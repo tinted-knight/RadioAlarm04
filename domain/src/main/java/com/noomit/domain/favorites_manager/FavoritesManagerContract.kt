@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.domain.favorites_manager
+package com.noomit.domain.favorites_manager
 
 import com.noomit.domain.StationModel
 import kotlinx.coroutines.flow.Flow

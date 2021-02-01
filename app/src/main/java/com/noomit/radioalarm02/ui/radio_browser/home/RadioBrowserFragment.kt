@@ -10,12 +10,12 @@ import androidx.navigation.navGraphViewModels
 import com.noomit.domain.ActiveServerState
 import com.noomit.domain.server_manager.ServerState
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.ContourFragment
-import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.navigation.NavHelper
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
+import com.noomit.radioalarm02.util.ContourFragment
+import com.noomit.radioalarm02.util.collect
 import com.squareup.contour.utils.children
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
