@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.model
+package com.noomit.domain.alarm_manager
 
 private val days = listOf(1, 2, 4, 8, 16, 32, 64)
 

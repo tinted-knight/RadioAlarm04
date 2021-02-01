@@ -1,8 +1,12 @@
-package com.noomit.radioalarm02.model
+package com.noomit.domain.alarm_manager
 
-import com.noomit.radioalarm02.base.AlarmModel
-import com.noomit.radioalarm02.tplog
+import com.noomit.domain.AlarmModel
 import java.util.*
+
+interface ScheduleAlarmUtilsContract {
+    fun schedule(alarmId: Long, bellUrl: String, bellName: String, timeInMillis: Long)
+    fun clearAlarms()
+}
 
 fun composeAlarmEntity(hour: Int, minute: Int): AlarmModel {
     val calendar = Calendar.getInstance().apply {
@@ -33,7 +37,7 @@ fun composeAlarmEntity(hour: Int, minute: Int): AlarmModel {
  */
 fun reCompose(alarm: AlarmModel, dayOfWeek: Int): AlarmModel {
     val newDays = switchBitByDay(dayOfWeek, alarm.daysOfWeek)
-    tplog("newDays = $newDays, current = ${alarm.daysOfWeek}")
+//    tplog("newDays = $newDays, current = ${alarm.daysOfWeek}")
     if (newDays == 0) return alarm.copy(
         daysOfWeek = 0,
         timeInMillis = 0,

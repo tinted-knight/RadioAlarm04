@@ -1,7 +1,7 @@
-package com.noomit.radioalarm02.domain.alarm_manager
+package com.noomit.domain.alarm_manager
 
+import com.noomit.domain.AlarmModel
 import com.noomit.domain.StationModel
-import com.noomit.radioalarm02.base.AlarmModel
 import kotlinx.coroutines.flow.Flow
 
 interface AlarmManagerContract {
@@ -15,10 +15,14 @@ interface AlarmManagerContract {
     fun setMelody(favorite: StationModel)
     fun setDefaultRingtone()
     suspend fun observeNextActive()
-}
 
-interface FiredAlarmManagerContract {
     fun selectById(id: Long): AlarmModel
     fun updateTimeInMillis(id: Long, timeInMillis: Long)
     val nextActive: AlarmModel?
 }
+
+//interface FiredAlarmManagerContract {
+//    fun selectById(id: Long): AlarmModel
+//    fun updateTimeInMillis(id: Long, timeInMillis: Long)
+//    val nextActive: AlarmModel?
+//}

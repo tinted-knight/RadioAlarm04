@@ -4,8 +4,21 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
 import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.MainActivity
+
+class ScheduleAlarmUtils(private val context: Context) : ScheduleAlarmUtilsContract {
+    override fun schedule(alarmId: Long, bellUrl: String, bellName: String, timeInMillis: Long) {
+        val operation = composePendingIntent(context, alarmId, bellUrl, bellName)
+        cancelAlarm(context, operation)
+        setWithAlarmClock(context, timeInMillis, operation)
+    }
+
+    override fun clearAlarms() {
+        cancelAlarm(context, composePendingIntent(context, -1, "", ""))
+    }
+}
 
 fun scheduleAlarm(context: Context, alarmId: Long, bellUrl: String, bellName: String, timeInMillis: Long) {
     val operation = composePendingIntent(context, alarmId, bellUrl, bellName)

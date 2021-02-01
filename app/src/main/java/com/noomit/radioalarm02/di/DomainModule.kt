@@ -6,6 +6,8 @@ import com.example.radiobrowser.database.getAndroidSqlDriver
 import com.noomit.db.AppDatabase
 import com.noomit.domain.AlarmQueries
 import com.noomit.domain.FavoriteQueries
+import com.noomit.domain.alarm_manager.AlarmManager
+import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
 import com.noomit.domain.category_manager.CategoryManager
 import com.noomit.domain.server_manager.ServerManager
 import com.noomit.domain.station_manager.StationManager
@@ -33,6 +35,11 @@ class DomainModule {
     @Provides
     fun provideStationManager(apiService: RadioBrowserService): StationManager {
         return StationManager(apiService)
+    }
+
+    @Provides
+    fun provideAlarmManager(queries: AlarmQueries, scheduler: ScheduleAlarmUtilsContract): AlarmManager {
+        return AlarmManager(queries, scheduler)
     }
 
     @Provides

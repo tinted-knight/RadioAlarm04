@@ -3,9 +3,9 @@ package com.noomit.radioalarm02.ui.alarm_fire
 import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.noomit.radioalarm02.domain.alarm_manager.FiredAlarmManagerContract
+import com.noomit.domain.alarm_manager.AlarmManagerContract
+import com.noomit.domain.alarm_manager.reComposeFired
 import com.noomit.radioalarm02.model.clearScheduledAlarms
-import com.noomit.radioalarm02.model.reComposeFired
 import com.noomit.radioalarm02.model.scheduleAlarm
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -19,7 +19,7 @@ private fun plog(message: String) =
     Timber.tag("tagg-app-dismiss_alarm").i("$message [${Thread.currentThread().name}]")
 
 class DismissAlarmViewModel @ViewModelInject constructor(
-    private val manager: FiredAlarmManagerContract,
+    private val manager: AlarmManagerContract,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
 

@@ -1,29 +1,24 @@
-package com.noomit.radioalarm02.domain.alarm_manager
+package com.noomit.domain.alarm_manager
 
-import android.content.Context
+import com.noomit.domain.AlarmModel
 import com.noomit.domain.AlarmQueries
 import com.noomit.domain.StationModel
-import com.noomit.radioalarm02.base.AlarmModel
-import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
-class AlarmManager @Inject constructor(
+class AlarmManager constructor(
     private val queries: AlarmQueries,
-    @ApplicationContext private val context: Context,
-) : AlarmManagerContract, FiredAlarmManagerContract {
+    private val alarmScheduler: ScheduleAlarmUtilsContract,
+) : AlarmManagerContract {
 
-    private fun plog(message: String) = Timber.tag("tagg-alarm_manager").i(message)
+//    private fun plog(message: String) = Timber.tag("tagg-alarm_manager").i(message)
 
     override val alarms = queries.selectAll().asFlow()
         .flowOn(Dispatchers.IO)
@@ -35,7 +30,7 @@ class AlarmManager @Inject constructor(
 
     override fun insert(hour: Int, minute: Int) {
         val alarm = composeAlarmEntity(hour, minute)
-        plog("AlarmManagerViewModel.insert, $alarm")
+//        plog("AlarmManagerViewModel.insert, $alarm")
         queries.insert(
             hour = alarm.hour,
             minute = alarm.minute,
@@ -57,7 +52,7 @@ class AlarmManager @Inject constructor(
         val c = Calendar.getInstance().apply {
             timeInMillis = updated.timeInMillis
         }
-        plog("updated: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]}, daysOfWeek = ${updated.daysOfWeek}")
+//        plog("updated: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]}, daysOfWeek = ${updated.daysOfWeek}")
         queries.updateDays(
             alarmId = updated.id,
             daysOfWeek = updated.daysOfWeek,
@@ -67,7 +62,7 @@ class AlarmManager @Inject constructor(
     }
 
     override fun updateTime(alarm: AlarmModel, hour: Int, minute: Int) {
-        plog("updateTime to $hour:$minute")
+//        plog("updateTime to $hour:$minute")
         val updated = reComposeFired(alarm.copy(hour = hour, minute = minute))
         queries.updateTime(
             alarmId = alarm.id,
@@ -78,7 +73,7 @@ class AlarmManager @Inject constructor(
     }
 
     override fun setEnabled(alarm: AlarmModel, isEnabled: Boolean) {
-        plog("setEnabled, $isEnabled")
+//        plog("setEnabled, $isEnabled")
         if (!isEnabled) {
             queries.updateEnabled(alarmId = alarm.id, isEnabled = false)
             return
@@ -139,16 +134,15 @@ class AlarmManager @Inject constructor(
             .onEach {
                 if (it != null) {
                     val c = Calendar.getInstance().apply { timeInMillis = it.time_in_millis }
-                    plog("next: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]};${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}")
-                    scheduleAlarm(
-                        context = context,
+//                    plog("next: ${c[Calendar.DAY_OF_MONTH]}/${c[Calendar.MONTH]};${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}")
+                    alarmScheduler.schedule(
                         alarmId = it.id,
                         bellUrl = it.bell_url,
                         bellName = it.bell_name,
                         timeInMillis = it.time_in_millis,
                     )
                 } else {
-                    clearScheduledAlarms(context)
+                    alarmScheduler.clearAlarms()
                 }
             }
             .collect()
