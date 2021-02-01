@@ -2,8 +2,8 @@ package com.noomit.radioalarm02.domain.alarm_manager
 
 import android.content.Context
 import com.example.radiobrowser.Database
-import com.noomit.radioalarm02.data.AlarmModel
-import com.noomit.radioalarm02.data.StationModel
+import com.noomit.domain.StationModel
+import com.noomit.radioalarm02.base.AlarmModel
 import com.noomit.radioalarm02.model.*
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList

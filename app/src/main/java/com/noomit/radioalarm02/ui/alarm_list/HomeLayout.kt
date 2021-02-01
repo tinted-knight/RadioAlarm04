@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.data.AlarmModel
+import com.noomit.radioalarm02.base.AlarmModel
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 import com.noomit.radioalarm02.ui.alarm_list.adapters.MarginItemDecoration
 import com.noomit.radioalarm02.ui.animations.ItemListAnimator

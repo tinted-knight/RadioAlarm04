@@ -2,7 +2,7 @@ package com.noomit.radioalarm02.domain.favorites_manager
 
 import com.example.radiobrowser.Database
 import com.example.radiobrowser.Favorite
-import com.noomit.radioalarm02.data.StationModel
+import com.noomit.domain.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.map

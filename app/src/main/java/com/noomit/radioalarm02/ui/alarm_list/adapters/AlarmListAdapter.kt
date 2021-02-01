@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.data.AlarmModel
+import com.noomit.radioalarm02.base.AlarmModel
 import com.noomit.radioalarm02.model.hourString
 import com.noomit.radioalarm02.model.isDayBitOn
 import com.noomit.radioalarm02.model.minuteString

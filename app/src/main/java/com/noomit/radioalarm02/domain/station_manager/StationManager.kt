@@ -1,10 +1,10 @@
 package com.noomit.radioalarm02.domain.station_manager
 
+import com.noomit.domain.CategoryModel
 import com.noomit.domain.RadioBrowserContract
+import com.noomit.domain.StationModel
 import com.noomit.domain.StationNetworkEntity
 import com.noomit.radioalarm02.base.WithLogTag
-import com.noomit.radioalarm02.data.CategoryModel
-import com.noomit.radioalarm02.data.StationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.model
 
-import com.noomit.radioalarm02.data.AlarmModel
+import com.noomit.radioalarm02.base.AlarmModel
 import com.noomit.radioalarm02.tplog
 import java.util.*
 

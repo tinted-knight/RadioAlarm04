@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.di
 
 import com.example.radiobrowser.RadioBrowserService
+import com.noomit.domain.category_manager.CategoryManager
 import com.noomit.domain.server_manager.ServerManager
 import dagger.Module
 import dagger.Provides
@@ -14,5 +15,10 @@ class DomainModule {
     @Provides
     fun provideServerManager(apiService: RadioBrowserService): ServerManager {
         return ServerManager(apiService)
+    }
+
+    @Provides
+    fun provideCategoryManager(apiService: RadioBrowserService): CategoryManager {
+        return CategoryManager(apiService)
     }
 }

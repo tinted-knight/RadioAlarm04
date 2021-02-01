@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.domain.favorites_manager
 
-import com.noomit.radioalarm02.data.StationModel
+import com.noomit.domain.StationModel
 import kotlinx.coroutines.flow.Flow
 
 interface FavoritesManagerContract {

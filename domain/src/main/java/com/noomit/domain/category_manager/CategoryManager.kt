@@ -1,18 +1,16 @@
-package com.noomit.radioalarm02.domain.language_manager
+package com.noomit.domain.category_manager
 
+import com.noomit.domain.CategoryModel
 import com.noomit.domain.CategoryNetworkEntity
 import com.noomit.domain.RadioBrowserContract
-import com.noomit.radioalarm02.base.WithLogTag
-import com.noomit.radioalarm02.data.CategoryModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import javax.inject.Inject
 
-class CategoryManager @Inject constructor(
+class CategoryManager constructor(
     private val apiService: RadioBrowserContract,
-) : CategoryManagerContract, WithLogTag {
+) : CategoryManagerContract {
 
-    override val logTag = "lang_manager"
+//    override val logTag = "lang_manager"
 
     private val _state = MutableStateFlow<CategoryManagerState>(CategoryManagerState.Loading)
     override val state = _state
@@ -38,7 +36,7 @@ class CategoryManager @Inject constructor(
             }
             .flowOn(Dispatchers.Default)
             .catch { e ->
-                plog("LanguageManager.catch: ${e.localizedMessage}")
+//                plog("LanguageManager.catch: ${e.localizedMessage}")
                 _state.value = CategoryManagerState.Failure(e)
             }
             .collect {

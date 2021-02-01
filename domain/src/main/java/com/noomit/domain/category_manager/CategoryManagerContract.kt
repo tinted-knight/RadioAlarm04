@@ -1,6 +1,6 @@
-package com.noomit.radioalarm02.domain.language_manager
+package com.noomit.domain.category_manager
 
-import com.noomit.radioalarm02.data.CategoryModel
+import com.noomit.domain.CategoryModel
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryManagerContract {

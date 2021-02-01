@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.radioalarm02.data.StationModel
+import com.noomit.domain.StationModel
 
 class StationListAdapter(
     private val delegate: ItemClickListener<StationModel>,
