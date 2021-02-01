@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.base
 
-import com.example.radiobrowser.Alarm
+import com.noomit.domain.Alarm
 
 // #todo fields [hour, minute and repeat] look redundant or need refactoring
 //  but they are used in some cases

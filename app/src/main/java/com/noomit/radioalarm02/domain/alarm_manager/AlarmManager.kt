@@ -1,7 +1,6 @@
 package com.noomit.radioalarm02.domain.alarm_manager
 
 import android.content.Context
-import com.example.radiobrowser.Database
 import com.noomit.domain.StationModel
 import com.noomit.radioalarm02.base.AlarmModel
 import com.noomit.radioalarm02.model.*
@@ -9,6 +8,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
+import fav_new.db.App2Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -19,7 +19,7 @@ import java.util.*
 import javax.inject.Inject
 
 class AlarmManager @Inject constructor(
-    database: Database,
+    database: App2Database,
     @ApplicationContext private val context: Context,
 ) : AlarmManagerContract, FiredAlarmManagerContract {
 
