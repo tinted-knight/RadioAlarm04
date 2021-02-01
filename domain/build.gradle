@@ -12,8 +12,8 @@ java {
 }
 
 sqldelight {
-    App2Database {
-        packageName = "fav_new.db"
+    AppDatabase {
+        packageName = "com.noomit.db"
     }
 }
 

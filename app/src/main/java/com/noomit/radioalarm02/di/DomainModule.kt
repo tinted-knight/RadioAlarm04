@@ -3,6 +3,8 @@ package com.noomit.radioalarm02.di
 import android.content.Context
 import com.example.radiobrowser.RadioBrowserService
 import com.example.radiobrowser.database.getAndroidSqlDriver
+import com.noomit.db.AppDatabase
+import com.noomit.domain.AlarmQueries
 import com.noomit.domain.FavoriteQueries
 import com.noomit.domain.category_manager.CategoryManager
 import com.noomit.domain.server_manager.ServerManager
@@ -13,7 +15,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fav_new.db.App2Database
 
 @InstallIn(ApplicationComponent::class)
 @Module
@@ -40,7 +41,12 @@ class DomainModule {
     }
 
     @Provides
-    fun provideFavoriteQueries(database: App2Database): FavoriteQueries {
+    fun provideFavoriteQueries(database: AppDatabase): FavoriteQueries {
         return database.favoriteQueries
+    }
+
+    @Provides
+    fun provideAlarmQueries(database: AppDatabase): AlarmQueries {
+        return database.alarmQueries
     }
 }

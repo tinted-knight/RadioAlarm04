@@ -11,7 +11,6 @@ import javax.inject.Inject
 class FavoritesManager @Inject constructor(
     private val queries: FavoriteQueries,
 ) : FavoritesManagerContract {
-//    private val queries = database.favoriteQueries
 
     override val allEntries = queries.selectAll().asFlow().mapToList()
         .map {
