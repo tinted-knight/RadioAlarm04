@@ -1,4 +1,4 @@
-package com.example.radiobrowser
+package com.noomit.domain
 
 data class StationNetworkEntity(
     val stationuuid: String,

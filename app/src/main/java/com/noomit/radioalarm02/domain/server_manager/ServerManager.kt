@@ -1,8 +1,8 @@
 package com.noomit.radioalarm02.domain.server_manager
 
-import com.example.radiobrowser.RadioBrowserContract
-import com.example.radiobrowser.ServerInfo
-import com.example.radiobrowser.ServerListResponse
+import com.noomit.domain.RadioBrowserContract
+import com.noomit.domain.ServerInfo
+import com.noomit.domain.ServerListResponse
 import com.noomit.radioalarm02.base.WithLogTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

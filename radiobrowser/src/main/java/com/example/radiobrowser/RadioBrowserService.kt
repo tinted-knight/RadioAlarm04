@@ -1,7 +1,7 @@
 package com.example.radiobrowser
 
 import android.util.Log
-import com.example.radiobrowser.ServerListResponse.ServerListFailure
+import com.noomit.domain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,8 +14,6 @@ import java.net.UnknownHostException
 
 private fun plog(message: String) =
     Log.i("tagg-radio_service", "$message [${Thread.currentThread().name}]")
-
-data class ServerInfo(val urlString: String, val isReachable: Boolean)
 
 class RadioBrowserService : RadioBrowserContract {
 
@@ -67,13 +65,13 @@ class RadioBrowserService : RadioBrowserContract {
                     return@withContext ServerListResponse.Success(serverList)
                 }
 
-                return@withContext ServerListResponse.Failure(ServerListFailure.NoReachableServers)
+                return@withContext ServerListResponse.Failure(ServerListResponse.ServerListFailure.NoReachableServers)
 
             } catch (e: UnknownHostException) {
-                return@withContext ServerListResponse.Failure(ServerListFailure.UnknownHost)
+                return@withContext ServerListResponse.Failure(ServerListResponse.ServerListFailure.UnknownHost)
 
             } catch (e: IOException) {
-                return@withContext ServerListResponse.Failure(ServerListFailure.NetworkError)
+                return@withContext ServerListResponse.Failure(ServerListResponse.ServerListFailure.NetworkError)
             }
         }
 

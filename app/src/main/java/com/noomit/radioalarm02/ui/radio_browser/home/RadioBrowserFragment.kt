@@ -7,7 +7,7 @@ import android.widget.ScrollView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.example.radiobrowser.ActiveServerState
+import com.noomit.domain.ActiveServerState
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.collect

@@ -1,7 +1,7 @@
 package com.noomit.radioalarm02.domain.server_manager
 
-import com.example.radiobrowser.ActiveServerState
-import com.example.radiobrowser.ServerInfo
+import com.noomit.domain.ActiveServerState
+import com.noomit.domain.ServerInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 

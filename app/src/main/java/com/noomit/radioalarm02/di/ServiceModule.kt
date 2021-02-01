@@ -1,7 +1,7 @@
 package com.noomit.radioalarm02.di
 
-import com.example.radiobrowser.RadioBrowserContract
 import com.example.radiobrowser.RadioBrowserService
+import com.noomit.domain.RadioBrowserContract
 import com.noomit.radioalarm02.domain.alarm_manager.AlarmManager
 import com.noomit.radioalarm02.domain.alarm_manager.AlarmManagerContract
 import com.noomit.radioalarm02.domain.alarm_manager.FiredAlarmManagerContract

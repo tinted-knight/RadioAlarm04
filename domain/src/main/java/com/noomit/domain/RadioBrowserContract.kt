@@ -1,6 +1,8 @@
-package com.example.radiobrowser
+package com.noomit.domain
 
 import kotlinx.coroutines.flow.Flow
+
+data class ServerInfo(val urlString: String, val isReachable: Boolean)
 
 interface RadioBrowserContract {
     val activeServer: Flow<ActiveServerState>

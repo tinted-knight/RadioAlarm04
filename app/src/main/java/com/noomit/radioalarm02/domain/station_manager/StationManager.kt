@@ -1,7 +1,7 @@
 package com.noomit.radioalarm02.domain.station_manager
 
-import com.example.radiobrowser.RadioBrowserContract
-import com.example.radiobrowser.StationNetworkEntity
+import com.noomit.domain.RadioBrowserContract
+import com.noomit.domain.StationNetworkEntity
 import com.noomit.radioalarm02.base.WithLogTag
 import com.noomit.radioalarm02.data.CategoryModel
 import com.noomit.radioalarm02.data.StationModel
