@@ -1,6 +1,6 @@
 package com.noomit.radioalarm02.data
 
-import com.noomit.radioalarm02.Alarm
+import com.example.radiobrowser.Alarm
 
 sealed class CategoryModel {
     abstract val name: String

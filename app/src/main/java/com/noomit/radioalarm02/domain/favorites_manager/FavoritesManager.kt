@@ -1,14 +1,16 @@
-package com.noomit.radioalarm02.domain.favorite_manager
+package com.noomit.radioalarm02.domain.favorites_manager
 
-import com.noomit.radioalarm02.Database
-import com.noomit.radioalarm02.Favorite
+import com.example.radiobrowser.Database
+import com.example.radiobrowser.Favorite
 import com.noomit.radioalarm02.data.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class FavoritesManager @Inject constructor(database: Database) : FavoritesManagerContract {
+class FavoritesManager @Inject constructor(
+    database: Database,
+) : FavoritesManagerContract {
     private val queries = database.favoriteQueries
 
     override val allEntries = queries.selectAll().asFlow().mapToList()

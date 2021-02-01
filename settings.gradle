@@ -1,3 +1,4 @@
+include ':domain'
 include ':playerservice'
 include ':alarmtheme'
 include ':radiobrowser'

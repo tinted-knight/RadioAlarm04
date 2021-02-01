@@ -1,9 +1,9 @@
 package com.noomit.radioalarm02.di
 
 import android.content.Context
+import com.example.radiobrowser.Database
 import com.example.radiobrowser.RadioBrowserService
-import com.noomit.radioalarm02.Database
-import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.example.radiobrowser.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +18,7 @@ object AppModule {
     @Provides
     @Singleton
     fun appDatabase(@ApplicationContext appContext: Context): Database {
-        return Database(
-            AndroidSqliteDriver(
-                schema = Database.Schema,
-                context = appContext,
-                name = "favorites.db",
-            ),
-        )
+        return AppDatabase.getInstance(appContext)
     }
 
     @Provides

@@ -2,7 +2,7 @@ package com.noomit.radioalarm02.ui.favorites
 
 import androidx.hilt.lifecycle.ViewModelInject
 import com.noomit.radioalarm02.data.StationModel
-import com.noomit.radioalarm02.domain.favorite_manager.FavoritesManagerContract
+import com.noomit.radioalarm02.domain.favorites_manager.FavoritesManagerContract
 import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel

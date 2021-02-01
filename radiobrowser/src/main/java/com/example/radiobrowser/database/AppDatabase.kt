@@ -1,8 +1,7 @@
-package com.noomit.radioalarm02.data
+package com.example.radiobrowser.database
 
 import android.content.Context
-import com.noomit.radioalarm02.Database
-import com.noomit.radioalarm02.tplog
+import com.example.radiobrowser.Database
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 
 class AppDatabase {
@@ -13,7 +12,6 @@ class AppDatabase {
         private const val DB_NAME = "favorites.db"
 
         fun getInstance(context: Context): Database {
-            tplog("getInstance, INSTANCE is ${if (INSTANCE == null) "null" else "not null"}")
             val tempInstance = INSTANCE
             if (tempInstance != null) return tempInstance
 

@@ -5,8 +5,8 @@ import com.example.radiobrowser.RadioBrowserService
 import com.noomit.radioalarm02.domain.alarm_manager.AlarmManager
 import com.noomit.radioalarm02.domain.alarm_manager.AlarmManagerContract
 import com.noomit.radioalarm02.domain.alarm_manager.FiredAlarmManagerContract
-import com.noomit.radioalarm02.domain.favorite_manager.FavoritesManager
-import com.noomit.radioalarm02.domain.favorite_manager.FavoritesManagerContract
+import com.noomit.radioalarm02.domain.favorites_manager.FavoritesManager
+import com.noomit.radioalarm02.domain.favorites_manager.FavoritesManagerContract
 import com.noomit.radioalarm02.domain.language_manager.CategoryManager
 import com.noomit.radioalarm02.domain.language_manager.CategoryManagerContract
 import com.noomit.radioalarm02.domain.server_manager.ServerManager

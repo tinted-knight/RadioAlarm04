@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -48,6 +47,7 @@ dependencies {
     implementation project(":radiobrowser")
     implementation project(":alarmtheme")
     implementation project(":playerservice")
+    implementation project(":domain")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

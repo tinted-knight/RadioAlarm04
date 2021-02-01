@@ -1,7 +1,7 @@
 package com.noomit.radioalarm02.domain.alarm_manager
 
 import android.content.Context
-import com.noomit.radioalarm02.Database
+import com.example.radiobrowser.Database
 import com.noomit.radioalarm02.data.AlarmModel
 import com.noomit.radioalarm02.data.StationModel
 import com.noomit.radioalarm02.model.*
