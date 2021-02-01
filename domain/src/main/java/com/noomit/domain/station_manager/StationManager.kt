@@ -1,20 +1,18 @@
-package com.noomit.radioalarm02.domain.station_manager
+package com.noomit.domain.station_manager
 
 import com.noomit.domain.CategoryModel
 import com.noomit.domain.RadioBrowserContract
 import com.noomit.domain.StationModel
 import com.noomit.domain.StationNetworkEntity
-import com.noomit.radioalarm02.base.WithLogTag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import javax.inject.Inject
 
-class StationManager @Inject constructor(
+class StationManager constructor(
     private val apiService: RadioBrowserContract,
-) : StationManagerContract, WithLogTag {
+) : StationManagerContract {
 
-    override val logTag = "station_manager"
+//    override val logTag = "station_manager"
 
     private val _state = MutableStateFlow<StationManagerState>(StationManagerState.Loading)
     override val state = _state

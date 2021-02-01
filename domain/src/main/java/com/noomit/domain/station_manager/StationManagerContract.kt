@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.domain.station_manager
+package com.noomit.domain.station_manager
 
 import com.noomit.domain.CategoryModel
 import com.noomit.domain.StationModel
