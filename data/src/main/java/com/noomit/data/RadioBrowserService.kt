@@ -1,4 +1,4 @@
-package com.example.radiobrowser
+package com.noomit.data
 
 import android.util.Log
 import com.noomit.domain.*

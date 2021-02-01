@@ -1,6 +1,6 @@
 include ':domain'
 include ':playerservice'
 include ':alarmtheme'
-include ':radiobrowser'
+include ':data'
 include ':app'
 rootProject.name = "RadioAlarm02"

@@ -1,4 +1,4 @@
-package com.example.radiobrowser
+package com.noomit.data
 
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory

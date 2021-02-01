@@ -1,8 +1,8 @@
 package com.noomit.radioalarm02.di
 
 import android.content.Context
-import com.example.radiobrowser.RadioBrowserService
-import com.example.radiobrowser.database.getAndroidSqlDriver
+import com.noomit.data.RadioBrowserService
+import com.noomit.data.database.getAndroidSqlDriver
 import com.noomit.db.AppDatabase
 import com.noomit.domain.AlarmQueries
 import com.noomit.domain.FavoriteQueries

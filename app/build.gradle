@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation project(":radiobrowser")
+    implementation project(':data')
     implementation project(":alarmtheme")
     implementation project(":playerservice")
     implementation project(":domain")

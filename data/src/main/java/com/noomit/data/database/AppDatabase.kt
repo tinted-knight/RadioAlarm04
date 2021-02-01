@@ -1,4 +1,4 @@
-package com.example.radiobrowser.database
+package com.noomit.data.database
 
 import android.content.Context
 import com.noomit.db.AppDatabase

@@ -1,4 +1,4 @@
-package com.example.radiobrowser
+package com.noomit.data
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
