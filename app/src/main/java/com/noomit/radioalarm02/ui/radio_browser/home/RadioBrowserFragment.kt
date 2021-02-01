@@ -8,10 +8,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.noomit.domain.ActiveServerState
+import com.noomit.domain.server_manager.ServerState
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.base.ContourFragment
 import com.noomit.radioalarm02.base.collect
-import com.noomit.radioalarm02.domain.server_manager.ServerState
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.navigation.NavHelper
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections

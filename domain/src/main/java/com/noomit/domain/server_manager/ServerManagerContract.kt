@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.domain.server_manager
+package com.noomit.domain.server_manager
 
 import com.noomit.domain.ActiveServerState
 import com.noomit.domain.ServerInfo

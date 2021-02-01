@@ -1,19 +1,16 @@
-package com.noomit.radioalarm02.domain.server_manager
+package com.noomit.domain.server_manager
 
 import com.noomit.domain.RadioBrowserContract
 import com.noomit.domain.ServerInfo
 import com.noomit.domain.ServerListResponse
-import com.noomit.radioalarm02.base.WithLogTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ServerManager @Inject constructor(
+class ServerManager constructor(
     private val apiService: RadioBrowserContract,
-) : ServerManagerContract, WithLogTag {
-    override val logTag = "tagg-app-servers"
+) : ServerManagerContract {
 
     private val _state = MutableStateFlow<ServerState>(ServerState.Loading)
     override val state = _state
@@ -22,15 +19,14 @@ class ServerManager @Inject constructor(
 
     override fun getAvalilable(scope: CoroutineScope) {
         scope.launch(Dispatchers.IO) {
-            plog("RadioBrowserViewModel")
             when (val serverList = apiService.checkForAvailableServers()) {
                 is ServerListResponse.Success -> {
-                    plog("Success:")
-                    serverList.value.onEach { plog("$it") }
+//                    plog("Success:")
+//                    serverList.value.onEach { plog("$it") }
                     _state.value = ServerState.Values(serverList.value)
                 }
                 is ServerListResponse.Failure -> {
-                    plog("Failure: ${serverList.error}")
+//                    plog("Failure: ${serverList.error}")
                     // #todo handle various failure reasons
                     _state.value = ServerState.Failure(Exception(serverList.error.toString()))
                 }
