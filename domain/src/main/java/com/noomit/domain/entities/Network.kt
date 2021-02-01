@@ -1,4 +1,4 @@
-package com.noomit.domain
+package com.noomit.domain.entities
 
 data class StationNetworkEntity(
     val stationuuid: String,

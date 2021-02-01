@@ -1,10 +1,10 @@
-package com.noomit.data
+package com.noomit.data.remote
 
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.noomit.domain.CategoryNetworkEntity
-import com.noomit.domain.SearchRequest
-import com.noomit.domain.StationNetworkEntity
+import com.noomit.domain.entities.CategoryNetworkEntity
+import com.noomit.domain.entities.SearchRequest
+import com.noomit.domain.entities.StationNetworkEntity
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body

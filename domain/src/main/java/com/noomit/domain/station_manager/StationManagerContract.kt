@@ -1,7 +1,7 @@
 package com.noomit.domain.station_manager
 
-import com.noomit.domain.CategoryModel
-import com.noomit.domain.StationModel
+import com.noomit.domain.entities.CategoryModel
+import com.noomit.domain.entities.StationModel
 import kotlinx.coroutines.flow.Flow
 
 interface StationManagerContract {

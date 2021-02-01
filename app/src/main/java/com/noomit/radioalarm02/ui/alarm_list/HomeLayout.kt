@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
-import com.noomit.domain.AlarmModel
+import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
 import com.noomit.radioalarm02.ui.alarm_list.adapters.MarginItemDecoration
@@ -51,7 +51,6 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     ).apply {
         text = context.getString(R.string.favorites)
         stateListAnimator = ItemListAnimator(this)
-        // required for btnAddAlarm unbound ripple to work correctly
         background = GradientDrawable()
         setOnClickListener { delegate?.onFavoriteClick() }
     }
@@ -63,7 +62,6 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     ).apply {
         text = context.getString(R.string.browse_radio)
         stateListAnimator = ItemListAnimator(this)
-        // required for btnAddAlarm unbound ripple to work correctly
         background = GradientDrawable()
         setOnClickListener { delegate?.onBrowseClick() }
     }

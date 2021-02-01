@@ -1,5 +1,7 @@
 package com.noomit.domain
 
+import com.noomit.domain.entities.CategoryNetworkEntity
+import com.noomit.domain.entities.StationNetworkEntity
 import kotlinx.coroutines.flow.Flow
 
 data class ServerInfo(val urlString: String, val isReachable: Boolean)

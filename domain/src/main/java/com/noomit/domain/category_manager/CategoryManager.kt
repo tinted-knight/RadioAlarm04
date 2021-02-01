@@ -1,8 +1,8 @@
 package com.noomit.domain.category_manager
 
-import com.noomit.domain.CategoryModel
-import com.noomit.domain.CategoryNetworkEntity
 import com.noomit.domain.RadioBrowserContract
+import com.noomit.domain.entities.CategoryModel
+import com.noomit.domain.entities.CategoryNetworkEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 

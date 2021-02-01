@@ -1,4 +1,6 @@
-package com.noomit.domain
+package com.noomit.domain.entities
+
+import com.noomit.domain.Alarm
 
 sealed class CategoryModel {
     abstract val name: String

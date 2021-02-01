@@ -19,7 +19,7 @@ import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
-import com.noomit.domain.StationModel
+import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener

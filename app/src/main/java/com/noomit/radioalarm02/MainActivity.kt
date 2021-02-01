@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // #todo doesn't do what it says :))
+    //  need to be fixed
     private fun setWindowsTransparency() {
         val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         window.decorView.apply {

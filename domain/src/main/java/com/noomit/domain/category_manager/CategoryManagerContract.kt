@@ -1,6 +1,6 @@
 package com.noomit.domain.category_manager
 
-import com.noomit.domain.CategoryModel
+import com.noomit.domain.entities.CategoryModel
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryManagerContract {

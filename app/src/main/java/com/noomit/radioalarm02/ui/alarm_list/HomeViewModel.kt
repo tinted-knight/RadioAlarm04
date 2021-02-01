@@ -2,9 +2,9 @@ package com.noomit.radioalarm02.ui.alarm_list
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.noomit.domain.AlarmModel
-import com.noomit.domain.StationModel
 import com.noomit.domain.alarm_manager.AlarmManagerContract
+import com.noomit.domain.entities.AlarmModel
+import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel

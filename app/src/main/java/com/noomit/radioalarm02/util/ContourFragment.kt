@@ -16,11 +16,21 @@ import com.noomit.playerservice.PlayerService
  * Generic parameter [L] is supposed to be your layout's interface
  */
 abstract class ContourFragment<L> : Fragment() {
+    companion object {
+        /**
+         * Bundle key to save RecyclerView state
+         */
+        const val RECYCLER_STATE = "recycler-state"
+    }
+
     /**
      * Layout, that will just be returned by [onCreateView] method
      *
      * __Important notice__: use _get() =_ syntax
      */
+    // #todo something like this:
+    //  protected abstract layout: (Context) -> View
+    //  and then invoke in onCreateView
     protected abstract val layout: View
 
     /**
@@ -86,15 +96,9 @@ abstract class ContourFragment<L> : Fragment() {
         }
         super.onDestroyView()
     }
-
-    companion object {
-        /**
-         * Bundle key to save RecyclerView state
-         */
-        const val RECYCLER_STATE = "recycler-state"
-    }
 }
 
+// #todo move to corresponding file
 abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
 
     protected lateinit var playerView: PlayerView

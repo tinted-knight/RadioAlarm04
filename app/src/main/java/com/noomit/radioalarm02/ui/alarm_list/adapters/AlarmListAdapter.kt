@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.domain.AlarmModel
 import com.noomit.domain.alarm_manager.hourString
 import com.noomit.domain.alarm_manager.isDayBitOn
 import com.noomit.domain.alarm_manager.minuteString
+import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
 import java.text.DateFormat
 import java.text.SimpleDateFormat

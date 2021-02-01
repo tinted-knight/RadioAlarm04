@@ -1,7 +1,9 @@
-package com.noomit.data
+package com.noomit.data.remote
 
 import android.util.Log
 import com.noomit.domain.*
+import com.noomit.domain.entities.CategoryNetworkEntity
+import com.noomit.domain.entities.SearchRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,8 +1,8 @@
 package com.noomit.domain.alarm_manager
 
-import com.noomit.domain.AlarmModel
 import com.noomit.domain.AlarmQueries
-import com.noomit.domain.StationModel
+import com.noomit.domain.entities.AlarmModel
+import com.noomit.domain.entities.StationModel
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull

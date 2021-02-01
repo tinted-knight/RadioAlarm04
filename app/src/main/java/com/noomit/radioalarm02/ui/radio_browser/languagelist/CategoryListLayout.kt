@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.domain.CategoryModel
+import com.noomit.domain.entities.CategoryModel
 import com.squareup.contour.ContourLayout
 
 interface ICategoryLayout {

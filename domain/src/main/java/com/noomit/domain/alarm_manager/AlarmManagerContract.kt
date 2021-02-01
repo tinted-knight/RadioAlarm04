@@ -1,7 +1,7 @@
 package com.noomit.domain.alarm_manager
 
-import com.noomit.domain.AlarmModel
-import com.noomit.domain.StationModel
+import com.noomit.domain.entities.AlarmModel
+import com.noomit.domain.entities.StationModel
 import kotlinx.coroutines.flow.Flow
 
 interface AlarmManagerContract {

@@ -1,6 +1,6 @@
 package com.noomit.domain.favorites_manager
 
-import com.noomit.domain.StationModel
+import com.noomit.domain.entities.StationModel
 import kotlinx.coroutines.flow.Flow
 
 interface FavoritesManagerContract {

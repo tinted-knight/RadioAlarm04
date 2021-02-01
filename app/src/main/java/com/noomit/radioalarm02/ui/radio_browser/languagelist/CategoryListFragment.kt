@@ -9,8 +9,8 @@ import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.noomit.domain.CategoryModel
 import com.noomit.domain.category_manager.CategoryManagerState
+import com.noomit.domain.entities.CategoryModel
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.common.textFlow

@@ -1,6 +1,6 @@
 package com.noomit.domain.alarm_manager
 
-import com.noomit.domain.AlarmModel
+import com.noomit.domain.entities.AlarmModel
 import java.util.*
 
 interface ScheduleAlarmUtilsContract {

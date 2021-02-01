@@ -61,32 +61,6 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
         }
     }
 
-    //    private val adapterListener = object : AlarmAdapterActions {
-//        override fun onDeleteClick(alarm: Alarm) {
-//            context?.toast(getString(R.string.toast_hold_to_del))
-//        }
-//
-//        override fun onTimeClick(alarm: Alarm) {
-//            pickTime { _, hour, minute -> alarmManager.updateTime(alarm, hour, minute) }
-//        }
-//
-//        override fun onMelodyClick(alarm: Alarm) {
-//            alarmManager.selectMelodyFor(alarm)
-//            findNavController().navigate(R.id.action_home_to_selectMelody)
-//        }
-//
-//        override fun onMelodyLongClick(alarm: Alarm) {
-//            startActivity(AlarmActivity.composeIntent(
-//                context = requireContext(),
-//                id = alarm.id,
-//                url = alarm.bell_url,
-//                name = alarm.bell_name,
-//                action = AlarmActivity.ACTION_TEST,
-//                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
-//            ))
-//        }
-//    }
-//
     private fun pickTime(callback: TimePickerDialog.OnTimeSetListener) {
         val timePicker = TimePickerFragment(callback)
         timePicker.show(childFragmentManager, "tag_time_picker")

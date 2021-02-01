@@ -1,9 +1,9 @@
 package com.noomit.domain.station_manager
 
-import com.noomit.domain.CategoryModel
 import com.noomit.domain.RadioBrowserContract
-import com.noomit.domain.StationModel
-import com.noomit.domain.StationNetworkEntity
+import com.noomit.domain.entities.CategoryModel
+import com.noomit.domain.entities.StationModel
+import com.noomit.domain.entities.StationNetworkEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
