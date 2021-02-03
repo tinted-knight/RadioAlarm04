@@ -31,10 +31,10 @@
         <receiver android:name=".AlarmReceiver" />
 
         <service
-            android:name="com.noomit.playerservice.PlayerService"
+            android:name=".service.PlayerService"
             android:exported="true" />
         <!--        <service-->
-        <!--            android:name="com.noomit.playerservice.PlayerService"-->
+        <!--            android:name="com.noomit.radioalarm02.service.PlayerService"-->
         <!--            android:enabled="true"-->
         <!--            android:exported="true" />-->
 

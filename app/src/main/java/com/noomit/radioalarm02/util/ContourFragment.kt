@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
-import com.noomit.playerservice.PlayerService
+import com.noomit.radioalarm02.service.PlayerService
 
 /**
  * Generic parameter [L] is supposed to be your layout's interface

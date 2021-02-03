@@ -5,8 +5,8 @@ import android.media.RingtoneManager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import com.noomit.playerservice.MediaItem
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.service.MediaItem
 import com.noomit.radioalarm02.util.PlayerServiceFragment
 import com.noomit.radioalarm02.util.collect
 import dagger.hilt.android.AndroidEntryPoint

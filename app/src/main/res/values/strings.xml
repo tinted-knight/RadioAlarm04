@@ -33,4 +33,10 @@
     <string name="toast_removed">Removed: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
     <string name="toast_hold_to_del">Hold icon to delete alarm</string>
     <string name="toast_cannot_connect_to_station">Sorry, can\'t connect to station</string>
+    <!-- PlayerService -->
+    <string name="action_pause">Pause</string>
+    <string name="action_play">Play</string>
+    <string name="state_paused">Paused</string>
+    <string name="state_playing">Playing</string>
+    <string name="state_playing_nothing">Nothing is playing…</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.noomit.playerservice
+package com.noomit.radioalarm02.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -23,10 +23,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import timber.log.Timber
-
-private fun plog(message: String) =
-    Timber.tag("tagg-player").i("$message [${Thread.currentThread().name}]")
+import com.noomit.radioalarm02.R
 
 class PlayerService : Service() {
 
