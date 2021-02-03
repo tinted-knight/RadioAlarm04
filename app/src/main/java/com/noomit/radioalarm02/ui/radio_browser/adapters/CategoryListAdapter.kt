@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.radioalarm02.data.CategoryModel
+import com.noomit.domain.entities.CategoryModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.IStationItem
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationItemView
 

@@ -4,7 +4,7 @@ import android.animation.*
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.animation.LinearInterpolator
-import com.noomit.radioalarm02.base.withAlpha
+import com.noomit.radioalarm02.util.withAlpha
 
 class BBarAnimator(private val view: View, private val strokeColor: Int) :
     StateListAnimator() {

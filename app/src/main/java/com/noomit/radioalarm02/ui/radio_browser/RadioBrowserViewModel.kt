@@ -2,13 +2,13 @@ package com.noomit.radioalarm02.ui.radio_browser
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.example.radiobrowser.ServerInfo
-import com.noomit.radioalarm02.data.CategoryModel
-import com.noomit.radioalarm02.domain.language_manager.CategoryManagerContract
-import com.noomit.radioalarm02.domain.language_manager.CategoryManagerState
-import com.noomit.radioalarm02.domain.server_manager.ServerManagerContract
-import com.noomit.radioalarm02.domain.station_manager.StationManagerContract
-import com.noomit.radioalarm02.domain.station_manager.StationManagerState
+import com.noomit.domain.ServerInfo
+import com.noomit.domain.category_manager.CategoryManagerContract
+import com.noomit.domain.category_manager.CategoryManagerState
+import com.noomit.domain.entities.CategoryModel
+import com.noomit.domain.server_manager.ServerManagerContract
+import com.noomit.domain.station_manager.StationManagerContract
+import com.noomit.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel

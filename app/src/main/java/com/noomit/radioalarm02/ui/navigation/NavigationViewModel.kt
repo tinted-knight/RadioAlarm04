@@ -12,6 +12,7 @@ object NavHelper {
     const val title = "title"
 }
 
+// #todo naming and look into Channel.comsumeAsFlow/collectAsFlow
 abstract class NavigationViewModel<T : NavCommand> : ViewModel() {
     private val navigation = MutableSharedFlow<T>(replay = 0)
     val commands: SharedFlow<T>

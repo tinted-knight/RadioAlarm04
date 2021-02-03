@@ -5,7 +5,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import com.google.android.material.button.MaterialButton
-import com.noomit.radioalarm02.data.StationModel
+import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesLayout
 import com.noomit.radioalarm02.ui.favorites.IFavoritesLayout
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter

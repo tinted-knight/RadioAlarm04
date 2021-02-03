@@ -3,10 +3,10 @@ package com.noomit.radioalarm02.ui.alarm_fire
 import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.noomit.radioalarm02.Database
-import com.noomit.radioalarm02.model.clearScheduledAlarms
-import com.noomit.radioalarm02.model.reComposeFired
-import com.noomit.radioalarm02.model.scheduleAlarm
+import com.noomit.domain.alarm_manager.AlarmManagerContract
+import com.noomit.domain.alarm_manager.reComposeFired
+import com.noomit.radioalarm02.util.clearScheduledAlarms
+import com.noomit.radioalarm02.util.scheduleAlarm
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -19,14 +19,13 @@ private fun plog(message: String) =
     Timber.tag("tagg-app-dismiss_alarm").i("$message [${Thread.currentThread().name}]")
 
 class DismissAlarmViewModel @ViewModelInject constructor(
-    database: Database,
+    private val manager: AlarmManagerContract,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
+
     companion object {
         private const val TIMER_TICK_DELAY = 1_000L * 30
     }
-
-    private val queries = database.alarmQueries
 
     var alarmId: Long? = null
     var melodyUrl: String? = null
@@ -58,26 +57,27 @@ class DismissAlarmViewModel @ViewModelInject constructor(
     }
 
     fun alarmFired() = alarmId?.let {
-        val alarm = queries.selectById(it).executeAsOne()
+        val alarm = manager.selectById(it)
         val updated = reComposeFired(alarm)
         val c = Calendar.getInstance().apply {
-            timeInMillis = updated.time_in_millis
+            timeInMillis = updated.timeInMillis
         }
         plog("updated: ${c[Calendar.DAY_OF_MONTH]}:${c[Calendar.MONTH]}")
-        queries.updateTimeInMillis(
-            alarmId = updated.id,
-            timeInMillis = updated.time_in_millis,
+        manager.updateTimeInMillis(
+            id = updated.id,
+            timeInMillis = updated.timeInMillis,
         )
-        val nextAlarm = queries.nextActive().executeAsOneOrNull()
+        val nextAlarm = manager.nextActive
+        // #think nextAlarm?.also { } ?: clearSchAl()
         if (nextAlarm != null) {
-            val cal = Calendar.getInstance().apply { timeInMillis = nextAlarm.time_in_millis }
+            val cal = Calendar.getInstance().apply { timeInMillis = nextAlarm.timeInMillis }
             plog("next: ${cal[Calendar.DAY_OF_MONTH]}/${cal[Calendar.MONTH]};${cal[Calendar.HOUR_OF_DAY]}:${cal[Calendar.MINUTE]}")
             scheduleAlarm(
                 context = context,
                 alarmId = nextAlarm.id,
-                bellUrl = nextAlarm.bell_url,
-                bellName = nextAlarm.bell_name,
-                timeInMillis = nextAlarm.time_in_millis,
+                bellUrl = nextAlarm.bellUrl,
+                bellName = nextAlarm.bellName,
+                timeInMillis = nextAlarm.timeInMillis,
             )
         } else {
             clearScheduledAlarms(context)

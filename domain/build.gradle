@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+//    id 'com.squareup.sqldelight'
+}
+
+apply plugin: 'com.squareup.sqldelight'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+sqldelight {
+    AppDatabase {
+        packageName = "com.noomit.db"
+    }
+}
+
+dependencies {
+//    implementation project(":radiobrowser")
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_android"
+    //SQLDelight
+    implementation "com.squareup.sqldelight:runtime:$sql_delight"
+    implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
+}

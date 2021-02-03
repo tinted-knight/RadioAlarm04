@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.radiobrowser.ServerInfo
+import com.noomit.domain.ServerInfo
 
 typealias ServerClick = (ServerInfo) -> Unit
 

@@ -1,8 +1,11 @@
 package com.noomit.radioalarm02.di
 
 import android.content.Context
-import com.example.radiobrowser.RadioBrowserService
-import com.noomit.radioalarm02.Database
+import com.noomit.data.database.getDatabase
+import com.noomit.data.remote.RadioBrowserService
+import com.noomit.db.AppDatabase
+import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
+import com.noomit.radioalarm02.util.ScheduleAlarmUtils
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
@@ -17,19 +20,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun appDatabase(@ApplicationContext appContext: Context): Database {
-        return Database(
-            AndroidSqliteDriver(
-                schema = Database.Schema,
-                context = appContext,
-                name = "favorites.db",
-            ),
-        )
+    fun app2Database(driver: AndroidSqliteDriver): AppDatabase {
+        return getDatabase(driver)
     }
 
     @Provides
     @Singleton
     fun apiService(): RadioBrowserService {
         return RadioBrowserService()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmScheduler(@ApplicationContext context: Context): ScheduleAlarmUtilsContract {
+        return ScheduleAlarmUtils(context)
     }
 }

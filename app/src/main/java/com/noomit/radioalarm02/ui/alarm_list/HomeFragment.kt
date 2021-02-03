@@ -7,11 +7,11 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.base.ContourFragment
-import com.noomit.radioalarm02.base.collect
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
+import com.noomit.radioalarm02.util.ContourFragment
+import com.noomit.radioalarm02.util.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,8 +51,8 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
                 is AlarmListDirections.TestMelody -> startActivity(AlarmActivity.composeIntent(
                     context = requireContext(),
                     id = command.alarm.id,
-                    url = command.alarm.bell_url,
-                    name = command.alarm.bell_name,
+                    url = command.alarm.bellUrl,
+                    name = command.alarm.bellName,
                     action = AlarmActivity.ACTION_TEST,
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
                 ))
@@ -61,32 +61,6 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
         }
     }
 
-    //    private val adapterListener = object : AlarmAdapterActions {
-//        override fun onDeleteClick(alarm: Alarm) {
-//            context?.toast(getString(R.string.toast_hold_to_del))
-//        }
-//
-//        override fun onTimeClick(alarm: Alarm) {
-//            pickTime { _, hour, minute -> alarmManager.updateTime(alarm, hour, minute) }
-//        }
-//
-//        override fun onMelodyClick(alarm: Alarm) {
-//            alarmManager.selectMelodyFor(alarm)
-//            findNavController().navigate(R.id.action_home_to_selectMelody)
-//        }
-//
-//        override fun onMelodyLongClick(alarm: Alarm) {
-//            startActivity(AlarmActivity.composeIntent(
-//                context = requireContext(),
-//                id = alarm.id,
-//                url = alarm.bell_url,
-//                name = alarm.bell_name,
-//                action = AlarmActivity.ACTION_TEST,
-//                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
-//            ))
-//        }
-//    }
-//
     private fun pickTime(callback: TimePickerDialog.OnTimeSetListener) {
         val timePicker = TimePickerFragment(callback)
         timePicker.show(childFragmentManager, "tag_time_picker")
