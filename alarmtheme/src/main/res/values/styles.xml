@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/clPrimaryDark</item>
         <item name="colorAccent">@color/clAccent</item>
         <item name="colorSecondary">@color/clSecondary</item>
+        <item name="colorOnSecondary">@color/clOnSecondary</item>
         <item name="radioBrowserCategory">@style/LightTheme.MaterialButton</item>
         <item name="buttonBarButtonFavorites">@style/LightTheme.BBar.Favorites</item>
         <item name="buttonBarButtonBrowse">@style/LightTheme.BBar.Browse</item>
@@ -25,6 +26,10 @@
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
         <item name="android:windowBackground">@color/clBackground</item>
         <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
+        <item name="help_text">@style/LightTheme.HelpText</item>
+        <item name="help_icon">@style/LightTheme.HelpIcon</item>
+        <item name="help_fab">@style/LightTheme.FabImmitation</item>
+        <item name="help_divider">@style/LightTheme.HelpDivider</item>
     </style>
 
     <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
@@ -153,9 +158,30 @@
     </style>
 
     <style name="LightTheme.NowplayingTitle" parent="Widget.MaterialComponents.TextView">
-<!--        <item name="fontFamily">@font/pt_sans_caption</item>-->
+        <!--        <item name="fontFamily">@font/pt_sans_caption</item>-->
         <item name="android:textSize">18sp</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="LightTheme.HelpText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/pt_sans_narrow</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/clOnSecondary</item>
+    </style>
+
+    <style name="LightTheme.FabImmitation">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:src">@drawable/ic_help_24</item>
+        <item name="android:tint">@color/clOnSecondary</item>
+    </style>
+
+    <style name="LightTheme.HelpIcon">
+        <item name="android:tint">@color/clOnSecondary</item>
+    </style>
+
+    <style name="LightTheme.HelpDivider">
+        <item name="android:background">@color/clOnSecondary</item>
     </style>
 
 </resources>

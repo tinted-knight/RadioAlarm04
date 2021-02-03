@@ -4,9 +4,13 @@ import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
+import android.view.View
+import android.view.animation.OvershootInterpolator
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
@@ -76,6 +80,12 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         setOnClickListener { delegate?.onAddAlarmClick() }
     }
 
+    private val helpView = HelpView(context).apply {
+        setOnClickListener(::helpClick)
+    }
+
+    private val isHelpExpanded: Boolean get() = helpView.isSelected
+
     init {
         btnAddAlarm.layoutBy(
             leftTo { btnFavorites.right() }.rightTo { btnBrowse.left() },
@@ -93,6 +103,12 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             matchParentX(16, 16),
             topTo { parent.top() }.bottomTo { btnAddAlarm.top() }
         )
+        helpView.layoutBy(
+            rightTo { if (isHelpExpanded) parent.right() - 8.xdip else parent.right() - 16.xdip }
+                .widthOf { if (isHelpExpanded) parent.width() * 3 / 4 else 48.xdip },
+            bottomTo { btnBrowse.top() - 8.ydip }
+                .heightOf { if (isHelpExpanded) parent.height() * 3 / 4 else 48.ydip }
+        )
     }
 
     override fun setAdapter(adapter: AlarmListAdapter) {
@@ -107,5 +123,14 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     override fun showEmpty() {
         // #todo empty view
         recycler.isVisible = false
+    }
+
+    private fun helpClick(view: View) {
+        TransitionManager.beginDelayedTransition(this, ChangeBounds()
+            .setInterpolator(OvershootInterpolator(1f))
+            .setDuration(400)
+        )
+        view.isSelected = !view.isSelected
+        requestLayout()
     }
 }
