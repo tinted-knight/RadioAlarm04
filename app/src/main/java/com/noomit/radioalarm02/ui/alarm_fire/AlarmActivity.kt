@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import com.ncorti.slidetoact.SlideToActView
-import com.noomit.radioalarm02.AlarmReceiver
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.service.AlarmReceiver
 import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.util.BaseWakelockActivity
 import dagger.hilt.android.AndroidEntryPoint
