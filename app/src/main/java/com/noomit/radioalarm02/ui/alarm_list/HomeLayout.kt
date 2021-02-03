@@ -7,6 +7,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.core.view.isVisible
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
@@ -103,11 +104,12 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             matchParentX(16, 16),
             topTo { parent.top() }.bottomTo { btnAddAlarm.top() }
         )
+        val fabSize = appTheme.helpView.fabSize
         helpView.layoutBy(
             rightTo { if (isHelpExpanded) parent.right() - 8.xdip else parent.right() - 16.xdip }
-                .widthOf { if (isHelpExpanded) parent.width() * 3 / 4 else 48.xdip },
+                .widthOf { if (isHelpExpanded) parent.width() * 3 / 4 else fabSize.xdip },
             bottomTo { btnBrowse.top() - 8.ydip }
-                .heightOf { if (isHelpExpanded) parent.height() * 3 / 4 else 48.ydip }
+                .heightOf { if (isHelpExpanded) parent.height() * 3 / 4 else fabSize.ydip }
         )
     }
 
@@ -126,9 +128,11 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     }
 
     private fun helpClick(view: View) {
-        TransitionManager.beginDelayedTransition(this, ChangeBounds()
-            .setInterpolator(OvershootInterpolator(1f))
-            .setDuration(400)
+        TransitionManager.beginDelayedTransition(this,
+            ChangeBounds().apply {
+                duration = 300L
+                interpolator = if (view.isSelected) FastOutSlowInInterpolator() else OvershootInterpolator(1f)
+            }
         )
         view.isSelected = !view.isSelected
         requestLayout()

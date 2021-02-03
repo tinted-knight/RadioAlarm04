@@ -19,5 +19,8 @@
     <color name="clNowplayingDimm">#CC000000</color>
     <color name="clTagAlternative">#9fa8da</color>
     <color name="clTagBg">#54CCCCCC</color>
-    <color name="clOnSecondary">#DD212121</color>
+    <!-- HelpView -->
+    <color name="helpBackground">#333333</color>
+    <color name="helpText">#DDffffff</color>
+    <color name="helpTint">#ffea00</color>
 </resources>

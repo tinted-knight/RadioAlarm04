@@ -1,10 +1,12 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -46,23 +48,26 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
 
     private val fab = ImageButton(context, null, appTheme.helpView.fabStyleId)
 
+    private val fabCornerRadius = (appTheme.helpView.fabSize.toFloat() / 2).dip
+    private val cardCornerRadius = 8.0f.dip
+
     init {
-        background = PaintDrawable(ContextCompat.getColor(context, appTheme.helpView.bgColor)).apply {
-            setCornerRadius(48.0f)
-        }
-        collapsedLayout()
+        background = PaintDrawable(ContextCompat.getColor(context, appTheme.helpView.bgColor))
         elevation = 4.0f
         stateListAnimator = ElevationAnimator(this)
         registerBackpressListener()
+
+        collapseLayout()
     }
 
     override fun setSelected(selected: Boolean) {
         if (isLaidOut && selected == this.isSelected) return
         super.setSelected(selected)
-        if (!selected) collapsedLayout() else expandedLayout()
+        if (!selected) collapseLayout() else expandLayout()
     }
 
-    private fun collapsedLayout() {
+    private fun collapseLayout() {
+        toggleCornerRaduis(expand = false)
         contourHeightMatchParent()
         setPadding(0.dip, 0.dip, 0.dip, 0.dip)
 
@@ -77,8 +82,8 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         fab.isVisible = true
 
         fab.layoutBy(
-            matchParentX(),
-            matchParentY()
+            x = matchParentX(),
+            y = matchParentY()
         )
 
         browseHelp.layoutBy(emptyX(), emptyY())
@@ -91,7 +96,8 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         melodyIcon.layoutBy(emptyX(), emptyY())
     }
 
-    private fun expandedLayout() {
+    private fun expandLayout() {
+        toggleCornerRaduis(expand = true)
         browseHelp.isVisible = true
         browseIcon.isVisible = true
         browseDivider.isVisible = true
@@ -109,37 +115,67 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         val vSpacing = 16.ydip
 
         browseIcon.updateLayoutBy(
-            leftTo { parent.left() },
-            centerVerticallyTo { browseHelp.centerY() }
+            x = leftTo { parent.left() },
+            y = centerVerticallyTo { browseHelp.centerY() }
         )
         browseHelp.updateLayoutBy(
-            leftTo { browseIcon.right() + hSpacing }.rightTo { parent.right() },
-            topTo { parent.top() }
+            x = leftTo { browseIcon.right() + hSpacing }.rightTo { parent.right() },
+            y = topTo { parent.top() }
         )
         browseDivider.updateLayoutBy(
-            matchParentX(16, 16),
-            topTo { browseHelp.bottom() + vSpacing }.heightOf { 1.ydip }
+            x = matchParentX(16, 16),
+            y = topTo { browseHelp.bottom() + vSpacing }.heightOf { 1.ydip }
         )
         deleteIcon.updateLayoutBy(
-            leftTo { parent.left() },
-            centerVerticallyTo { deleteHelp.centerY() }
+            x = leftTo { parent.left() },
+            y = centerVerticallyTo { deleteHelp.centerY() }
         )
         deleteHelp.updateLayoutBy(
-            leftTo { deleteIcon.right() + hSpacing }.rightTo { parent.right() },
-            topTo { browseDivider.bottom() + vSpacing }
+            x = leftTo { deleteIcon.right() + hSpacing }.rightTo { parent.right() },
+            y = topTo { browseDivider.bottom() + vSpacing }
         )
         deleteDivider.updateLayoutBy(
-            matchParentX(16, 16),
-            topTo { deleteHelp.bottom() + vSpacing }.heightOf { 1.ydip }
+            x = matchParentX(16, 16),
+            y = topTo { deleteHelp.bottom() + vSpacing }.heightOf { 1.ydip }
         )
         melodyIcon.updateLayoutBy(
-            leftTo { parent.left() },
-            centerVerticallyTo { melodyHelp.centerY() }
+            x = leftTo { parent.left() },
+            y = centerVerticallyTo { melodyHelp.centerY() }
         )
         melodyHelp.updateLayoutBy(
-            leftTo { melodyIcon.right() + hSpacing }.rightTo { parent.right() },
-            topTo { deleteDivider.bottom() + vSpacing }
+            x = leftTo { melodyIcon.right() + hSpacing }.rightTo { parent.right() },
+            y = topTo { deleteDivider.bottom() + vSpacing }
         )
+    }
+
+    override fun getBackground() = super.getBackground() as PaintDrawable
+
+    private fun toggleCornerRaduis(expand: Boolean) {
+        val fromRadius = if (expand) fabCornerRadius else cardCornerRadius
+        val toRadius = if (expand) cardCornerRadius else fabCornerRadius
+
+        if (isLaidOut) {
+            val cornerAnimator = ObjectAnimator.ofFloat(fromRadius, toRadius).apply {
+                addUpdateListener {
+                    background.setCornerRadii(floatArrayOf(
+                        it.animatedValue as Float, it.animatedValue as Float,
+                        it.animatedValue as Float, it.animatedValue as Float,
+                        0f, 0f,
+                        it.animatedValue as Float, it.animatedValue as Float,
+                    ))
+                }
+                duration = 200L
+                interpolator = LinearInterpolator()
+            }
+            cornerAnimator.start()
+        } else {
+            background.setCornerRadii(floatArrayOf(
+                toRadius, toRadius,
+                toRadius, toRadius,
+                0f, 0f,
+                toRadius, toRadius,
+            ))
+        }
     }
 
     private fun registerBackpressListener() {
