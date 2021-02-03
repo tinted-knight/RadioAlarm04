@@ -106,9 +106,9 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         )
         val fabSize = appTheme.helpView.fabSize
         helpView.layoutBy(
-            rightTo { if (isHelpExpanded) parent.right() - 8.xdip else parent.right() - 16.xdip }
+            rightTo { if (isHelpExpanded) parent.right() - 16.xdip else parent.right() - 16.xdip }
                 .widthOf { if (isHelpExpanded) parent.width() * 3 / 4 else fabSize.xdip },
-            bottomTo { btnBrowse.top() - 8.ydip }
+            bottomTo { btnBrowse.top() - 16.ydip }
                 .heightOf { if (isHelpExpanded) parent.height() * 3 / 4 else fabSize.ydip }
         )
     }

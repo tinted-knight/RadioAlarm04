@@ -170,7 +170,7 @@
 
     <style name="LightTheme.FabImmitation">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">12dp</item>
         <item name="android:src">@drawable/ic_help_24</item>
         <item name="android:tint">@color/helpTint</item>
     </style>
