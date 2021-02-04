@@ -1,11 +1,14 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +38,6 @@ interface IHomeLayout {
     fun showEmpty()
 }
 
-// #todo help fab
 // #todo bbar as separate layout
 class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayout(context),
     IHomeLayout {
@@ -47,6 +49,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         setHasFixedSize(true)
         isVerticalScrollBarEnabled = true
         addItemDecoration(MarginItemDecoration(R.dimen.recyclerAlarmVertical))
+        addOnScrollListener(recyclerScrollListener)
     }
 
     private val btnFavorites = MaterialTextView(
@@ -137,4 +140,31 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
         view.isSelected = !view.isSelected
         requestLayout()
     }
+
+    private val recyclerScrollListener: RecyclerView.OnScrollListener
+        get() = object : RecyclerView.OnScrollListener() {
+
+            private var isFabVisible = true
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 && isFabVisible) {
+                    isFabVisible = false
+                    AnimatorSet().apply {
+                        duration = 200L
+                        playTogether(
+                            ObjectAnimator.ofFloat(helpView, View.SCALE_X, 1f, 0f),
+                            ObjectAnimator.ofFloat(helpView, View.SCALE_Y, 1f, 0f)
+                        )
+                        doOnEnd {
+                            helpView.isClickable = false
+                        }
+                    }.start()
+                } else if (dy < 0 && !isFabVisible) {
+                    isFabVisible = true
+                    helpView.isClickable = true
+                    helpView.animate()
+                        .scaleX(1f).scaleY(1f).start()
+                }
+            }
+        }
 }
