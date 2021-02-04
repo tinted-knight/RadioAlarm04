@@ -12,6 +12,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.ElevationAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -19,15 +20,15 @@ import com.squareup.contour.ContourLayout
 class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(context) {
 
     private val browseHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
-        text = "Browse radio stations and add to Favorites to be able to set it as Alarm melody"
+        text = context.getString(R.string.help_browse)
     }
 
     private val deleteHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
-        text = "Hold delete icon to delete Alarm"
+        text = context.getString(R.string.help_delete)
     }
 
     private val melodyHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
-        text = "Tap melody field to select from Favorites, hold to test Alarm screen. While testing adjust volume"
+        text = context.getString(R.string.help_melody)
     }
 
     private val browseIcon = addImageView().apply {

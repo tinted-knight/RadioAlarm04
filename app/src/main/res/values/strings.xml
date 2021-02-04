@@ -39,4 +39,7 @@
     <string name="state_paused">Paused</string>
     <string name="state_playing">Playing</string>
     <string name="state_playing_nothing">Nothing is playing…</string>
+    <string name="help_browse">Browse radio stations and add to Favorites to be able to set it as Alarm melody</string>
+    <string name="help_delete">Hold delete icon to delete Alarm</string>
+    <string name="help_melody">Tap melody field to select from Favorites, hold to test Alarm screen. While testing adjust volume</string>
 </resources>
