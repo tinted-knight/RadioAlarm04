@@ -143,6 +143,7 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="drawableTopCompat">@drawable/ic_add_alarm_24</item>
         <item name="android:padding">8dp</item>
+        <item name="colorControlNormal">@color/clPrimary</item>
     </style>
 
     <!-- NowPlaying card   -->
