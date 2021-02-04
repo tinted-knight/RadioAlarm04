@@ -62,6 +62,18 @@ interface ThemeAlarmFire {
     val day: ViewStyle
 }
 
+interface ThemeHelp {
+    val browseIcon: Int
+    val deleteIcon: Int
+    val melodyIcon: Int
+    val iconAttr: Int
+    val dividerAttr: Int
+    val fabStyleId: Int
+    val fabSize: Int
+    val bgColor: Int
+    val text: Int
+}
+
 val appTheme = AppThemeLight()
 
 data class AppThemeLight(
@@ -107,5 +119,16 @@ data class AppThemeLight(
         override val station = ViewStyle(S.LightTheme_AlarmFireStation, A.textAlarmFireStation)
         override val time = ViewStyle(S.LightTheme_AlarmFireTime, A.textAlarmFireTime)
         override val day = ViewStyle(S.LightTheme_AlarmFireDay, A.textAlarmFireDay)
+    },
+    val helpView: ThemeHelp = object : ThemeHelp {
+        override val browseIcon = D.ic_search_24
+        override val deleteIcon = D.ic_delete_24
+        override val melodyIcon = D.ic_add_alarm_24
+        override val iconAttr = A.help_icon
+        override val dividerAttr = A.help_divider
+        override val fabStyleId = A.help_fab
+        override val fabSize = 56
+        override val bgColor = C.helpBackground
+        override val text = A.help_text
     },
 )

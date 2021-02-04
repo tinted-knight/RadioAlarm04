@@ -33,4 +33,16 @@
     <string name="toast_removed">Removed: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
     <string name="toast_hold_to_del">Hold icon to delete alarm</string>
     <string name="toast_cannot_connect_to_station">Sorry, can\'t connect to station</string>
+    <!-- PlayerService -->
+    <string name="action_pause">Pause</string>
+    <string name="action_play">Play</string>
+    <string name="state_paused">Paused</string>
+    <string name="state_playing">Playing</string>
+    <string name="state_playing_nothing">Nothing is playing…</string>
+    <!-- HelpView FAB -->
+    <string name="help_browse">Browse radio stations and add to Favorites to be able to set it as Alarm melody</string>
+    <string name="help_delete">Hold delete icon to delete Alarm</string>
+    <string name="help_melody">Tap melody field to select from Favorites, hold to test Alarm screen. While testing adjust volume</string>
+    <!-- -->
+    <string name="wake_up">Wake up</string>
 </resources>

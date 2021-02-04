@@ -1,5 +1,4 @@
 include ':domain'
-include ':playerservice'
 include ':alarmtheme'
 include ':data'
 include ':app'

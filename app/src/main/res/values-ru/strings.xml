@@ -33,4 +33,16 @@
     <string name="nav_label_topvoted">Самые популярные</string>
     <string name="nav_label_search">Поиск</string>
     <string name="toast_cannot_connect_to_station">Не могу соединиться со станцией</string>
+    <!-- PlayerService -->
+    <string name="action_pause">Остановить</string>
+    <string name="action_play">Играть</string>
+    <string name="state_paused">Пауза</string>
+    <string name="state_playing">Играет</string>
+    <string name="state_playing_nothing">Станция не выбрана…</string>
+    <!-- HelpView FAB -->
+    <string name="help_browse">Добавляйте радио станции в избранное, чтобы установить мелодию в качестве будильника</string>
+    <string name="help_delete">Удерживайте иконку с корзиной, чтобы удалить Будильник</string>
+    <string name="help_melody">Нажмите поле с названием мелодии, чтобы выбрать из списка Избранных. Удерживайте, чтобы проверить, как будет выглядеть экран Будильника. Здесь можно изменить громкость</string>
+    <!-- -->
+    <string name="wake_up">Просыпайся</string>
 </resources>
