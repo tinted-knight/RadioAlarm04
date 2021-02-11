@@ -107,7 +107,9 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             matchParentX(16, 16),
             topTo { parent.top() }.bottomTo { btnAddAlarm.top() }
         )
-        val fabSize = appTheme.helpView.fabSize
+
+        val densityDpi = resources.configuration.densityDpi
+        val fabSize = if (densityDpi < 460f) appTheme.helpView.fabSizeSmall else appTheme.helpView.fabSize
         helpView.layoutBy(
             rightTo { if (isHelpExpanded) parent.right() - 16.xdip else parent.right() - 16.xdip }
                 .widthOf { if (isHelpExpanded) parent.width() * 3 / 4 else fabSize.xdip },
