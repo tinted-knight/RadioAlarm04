@@ -149,6 +149,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && isFabVisible) {
                     isFabVisible = false
+                    if (helpView.isSelected) helpClick(helpView)
                     AnimatorSet().apply {
                         duration = 200L
                         playTogether(
