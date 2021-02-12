@@ -7,13 +7,10 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.View
-import android.view.animation.OvershootInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.domain.entities.AlarmModel
@@ -107,6 +104,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             matchParentX(16, 16),
             topTo { parent.top() }.bottomTo { btnAddAlarm.top() }
         )
+
         val fabSize = appTheme.helpView.fabSize
         helpView.layoutBy(
             rightTo { if (isHelpExpanded) parent.right() - 16.xdip else parent.right() - 16.xdip }
@@ -131,12 +129,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
     }
 
     private fun helpClick(view: View) {
-        TransitionManager.beginDelayedTransition(this,
-            ChangeBounds().apply {
-                duration = 300L
-                interpolator = if (view.isSelected) FastOutSlowInInterpolator() else OvershootInterpolator(1f)
-            }
-        )
+        TransitionManager.beginDelayedTransition(this, helpView.layoutTransition)
         view.isSelected = !view.isSelected
         requestLayout()
     }
@@ -149,6 +142,7 @@ class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayou
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0 && isFabVisible) {
                     isFabVisible = false
+                    if (helpView.isSelected) helpClick(helpView)
                     AnimatorSet().apply {
                         duration = 200L
                         playTogether(

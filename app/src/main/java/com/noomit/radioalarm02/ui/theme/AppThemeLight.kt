@@ -70,6 +70,7 @@ interface ThemeHelp {
     val dividerAttr: Int
     val fabStyleId: Int
     val fabSize: Int
+    val fabSizeSmall: Int
     val bgColor: Int
     val text: Int
 }
@@ -128,6 +129,7 @@ data class AppThemeLight(
         override val dividerAttr = A.help_divider
         override val fabStyleId = A.help_fab
         override val fabSize = 56
+        override val fabSizeSmall = 48
         override val bgColor = C.helpBackground
         override val text = A.help_text
     },

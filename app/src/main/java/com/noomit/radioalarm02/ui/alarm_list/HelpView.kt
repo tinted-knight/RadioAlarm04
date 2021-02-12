@@ -7,10 +7,16 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.transition.ChangeBounds
+import androidx.transition.Fade
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.ElevationAnimator
@@ -52,6 +58,8 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
     private val fabCornerRadius = (appTheme.helpView.fabSize.toFloat() / 2).dip
     private val cardCornerRadius = 8.0f.dip
 
+    private val animationDuration = 300L
+
     init {
         background = PaintDrawable(ContextCompat.getColor(context, appTheme.helpView.bgColor))
         elevation = 4.0f
@@ -61,6 +69,29 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         collapseLayout()
     }
 
+    val layoutTransition: Transition
+        get() {
+            return if (!isSelected) {
+                // expanding
+                ChangeBounds().apply {
+                    duration = animationDuration
+                    interpolator = OvershootInterpolator(1f)
+                }
+            } else {
+                // collapsing
+                TransitionSet()
+                    .addTransition(ChangeBounds().apply {
+                        duration = animationDuration
+                        interpolator = FastOutSlowInInterpolator()
+                    })
+                    .addTransition(Fade().apply {
+                        addTarget(fab)
+                        startDelay = animationDuration / 4
+                        duration = animationDuration - startDelay
+                    })
+            }
+        }
+
     override fun setSelected(selected: Boolean) {
         if (isLaidOut && selected == this.isSelected) return
         super.setSelected(selected)
@@ -68,7 +99,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
     }
 
     private fun collapseLayout() {
-        toggleCornerRaduis(expand = false)
+        animateLayout(expand = false)
         contourHeightMatchParent()
         setPadding(0.dip, 0.dip, 0.dip, 0.dip)
 
@@ -98,7 +129,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
     }
 
     private fun expandLayout() {
-        toggleCornerRaduis(expand = true)
+        animateLayout(expand = true)
         browseHelp.isVisible = true
         browseIcon.isVisible = true
         browseDivider.isVisible = true
@@ -151,7 +182,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
 
     override fun getBackground() = super.getBackground() as PaintDrawable
 
-    private fun toggleCornerRaduis(expand: Boolean) {
+    private fun animateLayout(expand: Boolean) {
         val fromRadius = if (expand) fabCornerRadius else cardCornerRadius
         val toRadius = if (expand) cardCornerRadius else fabCornerRadius
 
@@ -165,7 +196,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
                         it.animatedValue as Float, it.animatedValue as Float,
                     ))
                 }
-                duration = 200L
+                duration = animationDuration
                 interpolator = LinearInterpolator()
             }
             cornerAnimator.start()
