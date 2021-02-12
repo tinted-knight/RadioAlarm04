@@ -1,26 +1,21 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
-import android.content.Context
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.noomit.domain.alarm_manager.AlarmManagerContract
 import com.noomit.domain.alarm_manager.reComposeFired
-import com.noomit.radioalarm02.util.clearScheduledAlarms
-import com.noomit.radioalarm02.util.scheduleAlarm
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import timber.log.Timber
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-private fun plog(message: String) =
-    Timber.tag("tagg-app-dismiss_alarm").i("$message [${Thread.currentThread().name}]")
-
-class DismissAlarmViewModel @ViewModelInject constructor(
+@HiltViewModel
+class DismissAlarmViewModel @Inject constructor(
     private val manager: AlarmManagerContract,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     companion object {
@@ -48,12 +43,9 @@ class DismissAlarmViewModel @ViewModelInject constructor(
         }
 
     init {
-        plog("DismissAlarmViewModel::init")
-    }
-
-    override fun onCleared() {
-        plog("DismissAlarmViewModel::onCleared")
-        super.onCleared()
+        viewModelScope.launch {
+            manager.observeNextActive()
+        }
     }
 
     fun alarmFired() = alarmId?.let {
@@ -62,25 +54,9 @@ class DismissAlarmViewModel @ViewModelInject constructor(
         val c = Calendar.getInstance().apply {
             timeInMillis = updated.timeInMillis
         }
-        plog("updated: ${c[Calendar.DAY_OF_MONTH]}:${c[Calendar.MONTH]}")
         manager.updateTimeInMillis(
             id = updated.id,
             timeInMillis = updated.timeInMillis,
         )
-        val nextAlarm = manager.nextActive
-        // #think nextAlarm?.also { } ?: clearSchAl()
-        if (nextAlarm != null) {
-            val cal = Calendar.getInstance().apply { timeInMillis = nextAlarm.timeInMillis }
-            plog("next: ${cal[Calendar.DAY_OF_MONTH]}/${cal[Calendar.MONTH]};${cal[Calendar.HOUR_OF_DAY]}:${cal[Calendar.MINUTE]}")
-            scheduleAlarm(
-                context = context,
-                alarmId = nextAlarm.id,
-                bellUrl = nextAlarm.bellUrl,
-                bellName = nextAlarm.bellName,
-                timeInMillis = nextAlarm.timeInMillis,
-            )
-        } else {
-            clearScheduledAlarms(context)
-        }
     }
 }

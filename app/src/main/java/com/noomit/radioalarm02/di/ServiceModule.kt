@@ -15,10 +15,10 @@ import com.noomit.domain.station_manager.StationManagerContract
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ViewModelComponent
 
-@InstallIn(ActivityComponent::class)
 @Module
+@InstallIn(ViewModelComponent::class)
 abstract class ServiceModule {
 
     @Binds
@@ -26,9 +26,6 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun bindAlarmManager(manager: AlarmManager): AlarmManagerContract
-
-//    @Binds
-//    abstract fun bindFiredAlarmManager(manager: AlarmManager): FiredAlarmManagerContract
 
     @Binds
     abstract fun bindCategoryManager(manager: CategoryManager): CategoryManagerContract

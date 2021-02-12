@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class ServerManager constructor(
+class ServerManager(
     private val apiService: RadioBrowserContract,
 ) : ServerManagerContract {
 
@@ -21,12 +21,9 @@ class ServerManager constructor(
         scope.launch(Dispatchers.IO) {
             when (val serverList = apiService.checkForAvailableServers()) {
                 is ServerListResponse.Success -> {
-//                    plog("Success:")
-//                    serverList.value.onEach { plog("$it") }
                     _state.value = ServerState.Values(serverList.value)
                 }
                 is ServerListResponse.Failure -> {
-//                    plog("Failure: ${serverList.error}")
                     // #todo handle various failure reasons
                     _state.value = ServerState.Failure(Exception(serverList.error.toString()))
                 }

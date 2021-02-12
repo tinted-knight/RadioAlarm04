@@ -100,7 +100,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
 
     private fun collapseLayout() {
         animateLayout(expand = false)
-        contourHeightMatchParent()
+        contourHeightOf { appTheme.helpView.fabSize.ydip }
         setPadding(0.dip, 0.dip, 0.dip, 0.dip)
 
         browseHelp.isVisible = false
@@ -129,6 +129,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
     }
 
     private fun expandLayout() {
+        contourHeightWrapContent()
         animateLayout(expand = true)
         browseHelp.isVisible = true
         browseIcon.isVisible = true
@@ -140,7 +141,6 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         melodyIcon.isVisible = true
         fab.isVisible = false
 
-        contourHeightWrapContent()
         setPadding(8.dip, 8.dip, 8.dip, 8.dip)
 
         val hSpacing = 16.xdip

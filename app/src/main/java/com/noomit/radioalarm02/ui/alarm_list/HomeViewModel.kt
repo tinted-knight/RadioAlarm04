@@ -1,14 +1,19 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
+import com.noomit.domain.ActiveServerState
 import com.noomit.domain.alarm_manager.AlarmManagerContract
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.domain.entities.StationModel
+import com.noomit.domain.server_manager.ServerManagerContract
+import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class AlarmListDirections : NavCommand {
     object Favorites : AlarmListDirections()
@@ -20,13 +25,23 @@ sealed class AlarmListDirections : NavCommand {
     data class TimeChange(val alarm: AlarmModel) : AlarmListDirections()
 }
 
-class HomeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val manager: AlarmManagerContract,
+    private val serverManager: ServerManagerContract,
 ) : NavigationViewModel<AlarmListDirections>(), IHomeLayoutDelegate, AlarmAdapterActions {
 
     val alarms = manager.alarms
 
     init {
+        viewModelScope.launch {
+            serverManager.activeServer.collect {
+                if (it is ActiveServerState.Value) {
+                    tplog(it.serverInfo.urlString)
+                }
+            }
+        }
+        serverManager.getAvalilable(viewModelScope)
         viewModelScope.launch {
             manager.observeNextActive()
         }

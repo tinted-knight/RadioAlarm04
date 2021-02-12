@@ -54,8 +54,9 @@ class RadioBrowserService : RadioBrowserContract {
                         )
                     }
                 )
-
-                // fisrt try to find out if there is "good" server available and return
+                // #todo "fr" server look less stable in my location, so I try to stick with
+                //  "de" or "nl". It may differ in other region, so this "hardcode" decision
+                //  is obviously terrible and has to be rethinked / refactored
                 serverList.filter { it.urlString.contains("de1") || it.urlString.contains("nl1") }
                     .firstOrNull { it.isReachable }?.let {
                         setActiveServer(it)

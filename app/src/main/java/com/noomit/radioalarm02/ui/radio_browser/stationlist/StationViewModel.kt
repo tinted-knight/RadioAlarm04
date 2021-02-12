@@ -1,17 +1,18 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noomit.domain.entities.StationModel
 import com.noomit.domain.favorites_manager.FavoritesManagerContract
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.ItemClickListener
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class UIMessage {
     data class Added(val value: String) : UIMessage()
@@ -19,7 +20,8 @@ sealed class UIMessage {
     data class OpenExternalLink(val url: String) : UIMessage()
 }
 
-class StationViewModel @ViewModelInject constructor(
+@HiltViewModel
+class StationViewModel @Inject constructor(
     private val favoritesManager: FavoritesManagerContract,
 ) : ViewModel(),
     ItemClickListener<StationModel>, NowPlayingListener {
