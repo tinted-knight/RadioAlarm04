@@ -184,4 +184,9 @@
         <item name="android:background">@color/helpBackground</item>
     </style>
 
+    <style name="LightTheme.ExoPlayerFab" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:backgroundTint">@color/clPrimary</item>
+        <item name="colorOnSecondary">#ffffffff</item>
+    </style>
+
 </resources>
