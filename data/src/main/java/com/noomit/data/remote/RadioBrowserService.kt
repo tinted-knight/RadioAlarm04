@@ -29,12 +29,12 @@ class RadioBrowserService : RadioBrowserContract {
     override val activeServer: StateFlow<ActiveServerState> = _activeServer
 
     private fun isReachable(addr: String, port: Int, timeout: Int): Boolean {
-        try {
+        return try {
             val socket = Socket()
             socket.connect(InetSocketAddress(addr, port), timeout)
-            return true
+            true
         } catch (e: IOException) {
-            return false
+            false
         }
     }
 
