@@ -148,7 +148,7 @@ class PlayerService : Service() {
         }
     }
 
-    private fun updateRemoteViews(isPlaying: Boolean = true) = composeRemoteViews(remoteViews)
+    private fun updateRemoteViews() = composeRemoteViews(remoteViews)
     private fun composeRemoteViews(remoteViews: RemoteViews) = with(remoteViews) {
         setTextViewText(
             R.id.tv_title,

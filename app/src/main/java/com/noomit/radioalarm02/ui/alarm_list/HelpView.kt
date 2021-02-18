@@ -23,7 +23,7 @@ import com.noomit.radioalarm02.ui.animations.ElevationAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
-class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(context) {
+class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(context, attrs) {
 
     private val browseHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
         text = context.getString(R.string.help_browse)

@@ -3,7 +3,6 @@ package com.noomit.radioalarm02.ui.alarm_list.adapters
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.widget.ImageButton
@@ -51,6 +50,7 @@ interface IAlarmItem {
 }
 
 // #achtung flashes when click on day
+@Suppress("DEPRECATION")
 class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet), IAlarmItem {
 
@@ -220,11 +220,10 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             isActive -> R.drawable.day_active_middle
             else -> R.drawable.day_ripple_ltd
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            dayViews[day]?.setTextColor(resources.getColor(textColor, null))
-        } else {
-            dayViews[day]?.setTextColor(resources.getColor(textColor))
-        }
+        dayViews[day]?.setTextColor(getResourceApi23(
+            more = { resources.getColor(textColor, null) },
+            less = { resources.getColor(textColor) })
+        )
         dayViews[day]?.background = ResourcesCompat.getDrawable(resources, bgDrawable, null)
     }
 

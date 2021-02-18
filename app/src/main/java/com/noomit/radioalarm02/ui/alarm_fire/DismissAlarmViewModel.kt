@@ -51,9 +51,6 @@ class DismissAlarmViewModel @Inject constructor(
     fun alarmFired() = alarmId?.let {
         val alarm = manager.selectById(it)
         val updated = reComposeFired(alarm)
-        val c = Calendar.getInstance().apply {
-            timeInMillis = updated.timeInMillis
-        }
         manager.updateTimeInMillis(
             id = updated.id,
             timeInMillis = updated.timeInMillis,

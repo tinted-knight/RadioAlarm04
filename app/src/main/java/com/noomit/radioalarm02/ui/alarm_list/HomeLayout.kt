@@ -36,7 +36,7 @@ interface IHomeLayout {
 }
 
 // #todo bbar as separate layout
-class HomeLayout(context: Context, attrSet: AttributeSet? = null) : ContourLayout(context),
+class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(context, attrs),
     IHomeLayout {
 
     override var delegate: IHomeLayoutDelegate? = null
