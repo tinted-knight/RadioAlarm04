@@ -59,6 +59,8 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
                 is ServerState.Loading -> contour.showLoading()
                 is ServerState.Values -> contour.update(content = it.values)
                 is ServerState.Failure -> requireContext().toast(it.e.localizedMessage)
+                // #todo smth like showError or empty
+                else -> contour.showLoading()
             }
         }
 
@@ -66,6 +68,8 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             when (it) {
                 is ActiveServerState.None -> contour.update(activerServer = null)
                 is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
+                // #todo smth like showError or empty
+                else -> contour.showLoading()
             }
         }
 
@@ -76,11 +80,11 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
 
     override fun observeCommands() {
         lifecycleScope.launchWhenStarted {
-            viewModel.commands.collect() { command ->
+            viewModel.commands.collect { command ->
                 when (command) {
                     is RadioBrowserDirections.LanguageList -> findNavController().navigate(
                         R.id.action_radioBrowser_to_languageList,
-                        Bundle().apply { putString(NavHelper.title, getString(R.string.lang_list)) }
+                        Bundle().apply { putString(NavHelper.title, getString(R.string.nav_label_languages)) }
                     )
                     is RadioBrowserDirections.TagList -> findNavController().navigate(
                         R.id.action_radioBrowser_to_languageList,

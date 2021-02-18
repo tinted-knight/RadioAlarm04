@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.noomit.radioalarm02">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
         <activity android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity"></activity>
 
@@ -32,11 +34,7 @@
 
         <service
             android:name=".service.PlayerService"
-            android:exported="true" />
-        <!--        <service-->
-        <!--            android:name="com.noomit.radioalarm02.service.PlayerService"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true" />-->
+            android:exported="false" />
 
     </application>
 

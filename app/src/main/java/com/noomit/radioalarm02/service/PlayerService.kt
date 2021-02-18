@@ -208,7 +208,6 @@ class PlayerService : Service() {
         const val PLAY_PAUSE_ACTION = "action-play-pause"
         const val PLAY_PAUSE_VALUE = 1001
 
-        const val MEDIA_URL = "media-url"
         const val NOTIFICATION_ID = 42
         const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
         const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"

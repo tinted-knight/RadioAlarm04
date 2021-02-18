@@ -23,7 +23,7 @@ class ServerListView(context: Context) : ContourLayout(context) {
     }
 
     val active = TextView(context).apply {
-        text = "Looking for available server..."
+//        text = "Looking for available server..."
     }
 
     init {

@@ -28,11 +28,13 @@
 
         <ImageButton
             android:id="@id/exo_play"
-            style="@style/ExoMediaButton.Play" />
+            style="@style/ExoMediaButton.Play"
+            android:contentDescription="@string/cdesc_play" />
 
         <ImageButton
             android:id="@id/exo_pause"
-            style="@style/ExoMediaButton.Pause" />
+            style="@style/ExoMediaButton.Pause"
+            android:contentDescription="@string/cdesc_pause" />
 
     </LinearLayout>
 </LinearLayout>

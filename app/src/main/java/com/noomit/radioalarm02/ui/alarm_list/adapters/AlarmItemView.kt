@@ -145,7 +145,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         val xPadding = x.xdip
         val yPadding = y.ydip
 
-        contourHeightOf { _ ->
+        contourHeightOf {
             week.bottom() + yPadding
         }
 

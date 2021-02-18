@@ -70,6 +70,8 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
                 is CategoryManagerState.Empty -> contour.showContent(emptyList())
                 is CategoryManagerState.Values -> contour.showContent(it.values)
                 is CategoryManagerState.Failure -> requireContext().toast(it.e.localizedMessage)
+                // #todo smth like showError or empty
+                else -> contour.showLoading()
             }
         }
     }

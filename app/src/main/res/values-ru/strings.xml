@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Радио будильник</string>
-    <string name="hello_blank_fragment">Пустой фрагмент</string>
     <string name="favorites">Избранные</string>
     <string name="add_alarm">Добавить</string>
     <string name="browse_radio">Поиск радио</string>
@@ -45,4 +44,6 @@
     <string name="help_melody">Нажмите поле с названием мелодии, чтобы выбрать из списка Избранных. Удерживайте, чтобы проверить, как будет выглядеть экран Будильника. Здесь можно изменить громкость</string>
     <!-- -->
     <string name="wake_up">Просыпайся</string>
+    <string name="cdesc_play">Играть</string>
+    <string name="cdesc_pause">Пауза</string>
 </resources>
