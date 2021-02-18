@@ -19,6 +19,13 @@
     <color name="clNowplayingDimm">#54000000</color>
     <color name="clTagAlternative">#3f51b5</color>
     <color name="clTagBg">#87CCCCCC</color>
+    <color name="clTitleBg">#12000000</color>
+<!--    <color name="clTitleBg">#ff212121</color>-->
+    <color name="clInfoBg">#12000000</color>
+<!--    <color name="clInfoBg">#607D88</color>-->
+    <color name="clNowPlayingTitle">#8a000000</color>
+    <color name="clNowPlayingTitleExpanded">#8a000000</color>
+<!--    <color name="clNowPlayingTitleExpanded">#ffffffff</color>-->
     <!-- HelpView -->
     <color name="helpBackground">#3949AB</color>
     <color name="helpText">#ffffff</color>

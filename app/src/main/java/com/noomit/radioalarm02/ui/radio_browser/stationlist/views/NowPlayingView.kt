@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -59,7 +60,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         chipSpacingVertical = 4
     }
 
-    private val nowPlayingIcon = ImageView(context)
+    private val stationPicture = ImageView(context)
 
     private val iconInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconFavorite)
     private val iconNotInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconNotFavorite)
@@ -119,14 +120,19 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         btnFav.isVisible = false
         btnHomePage.isVisible = false
 
-        nowPlayingIcon.layoutBy(
+        stationPicture.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
             y = topTo { parent.top() + 2.ydip }.bottomTo { parent.bottom() - 2.ydip }
         )
+
+        title.background = null
+        title.setTextColor(getColor(resources, R.color.clNowPlayingTitle, null))
+        title.setPadding(0)
         title.layoutBy(
-            x = leftTo { parent.left() + 16.xdip }.rightTo { nowPlayingIcon.left() - 2.xdip },
-            y = centerVerticallyTo { nowPlayingIcon.centerY() }
+            x = leftTo { parent.left() + 16.xdip }.rightTo { stationPicture.left() - 2.xdip },
+            y = centerVerticallyTo { stationPicture.centerY() }
         )
+
         homePage.layoutBy(emptyX(), emptyY())
         country.layoutBy(emptyX(), emptyY())
         codec.layoutBy(emptyX(), emptyY())
@@ -153,33 +159,43 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         val vSpacing = 8.ydip
         val hSpacing = 8.xdip
 
-        nowPlayingIcon.updateLayoutBy(
-            x = rightTo { parent.right() }.widthOf { parent.width() / 4 },
-            y = topTo { parent.top() }.heightOf { (parent.width() / 4).toY() }
+        title.apply {
+            background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
+                setCornerRadius(16.0f)
+            }
+            setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
+            setPadding(16.dip, 8.dip, 16.dip, 8.dip)
+            updateLayoutBy(
+                matchParentX(),
+                topTo { parent.top() }
+            )
+        }
+
+        stationPicture.updateLayoutBy(
+            x = leftTo { parent.left() }.widthOf { parent.width() * 2 / 5 },
+            y = topTo { title.bottom() + vSpacing }.heightOf { (parent.width() * 2 / 5).toY() }
         )
-        title.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
-            topTo { parent.top() }
-        )
+
         bitrate.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
             topTo { title.bottom() + vSpacing }
         )
+
         codec.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { nowPlayingIcon.left() - hSpacing },
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
             topTo { bitrate.bottom() + vSpacing }
         )
         btnFav.updateLayoutBy(
-            rightTo { parent.right() },
-            topTo { nowPlayingIcon.bottom() + vSpacing }
+            leftTo { parent.left() },
+            bottomTo { parent.bottom() }
         )
         btnHomePage.updateLayoutBy(
-            rightTo { btnFav.left() },
-            topTo { nowPlayingIcon.bottom() + vSpacing }
+            leftTo { btnFav.right() + hSpacing },
+            bottomTo { parent.bottom() }
         )
         tagList.updateLayoutBy(
             matchParentX(),
-            topTo { btnFav.bottom() + vSpacing }
+            topTo { stationPicture.bottom() + vSpacing }
         )
     }
 
@@ -263,7 +279,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     fun updateEmpty() {
         title.text = ""
-        nowPlayingIcon.setImageDrawable(null)
+        stationPicture.setImageDrawable(null)
         homePage.text = ""
         country.text = ""
         codec.value = ""
@@ -292,7 +308,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
                     dataSource: DataSource?,
                     isFirstResource: Boolean,
                 ): Boolean {
-                    nowPlayingIcon.apply {
+                    stationPicture.apply {
                         alpha = 0f
                         isVisible = true
                         animate().setDuration(300L)
@@ -302,6 +318,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
                     return false
                 }
             })
-            .into(nowPlayingIcon)
+            .into(stationPicture)
     }
 }
