@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -31,18 +32,26 @@ class PlayerService : Service() {
     private var mediaTitle: String? = null
     private var caption: String? = null
 
+    private var binder = PlayerServiceBinder()
+
     //  #todo may need to save PlayerServiceBinder in field
     //      and release it in onUnbind
     //      LeakCanary shows Binder memory leak
     override fun onBind(intent: Intent): IBinder {
+        Log.d("tagg", "PlayerService.onBind")
         intent.let {
             exoPlayer.playWhenReady = false
             displayNotification(remoteViews)
         }
-        return PlayerServiceBinder()
+        return binder
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        return super.onUnbind(intent)
     }
 
     override fun onCreate() {
+        Log.d("tagg", "PlayerService::onCreate")
         super.onCreate()
         val trackSelection = AdaptiveTrackSelection.Factory(DefaultBandwidthMeter())
         val trackSelector = DefaultTrackSelector(trackSelection)
@@ -51,12 +60,14 @@ class PlayerService : Service() {
     }
 
     override fun onDestroy() {
+        Log.d("tagg", "PlayerService::onDestroy")
         super.onDestroy()
         exoPlayer.release()
         hideNotification()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("tagg", "PlayerService.onStartCommand")
         intent?.let {
             when (it.getIntExtra(PLAY_PAUSE_ACTION, -1)) {
                 PLAY_PAUSE_VALUE -> mediaTitle?.let {
@@ -192,6 +203,12 @@ class PlayerService : Service() {
         fun stop() {
             exoPlayer.playWhenReady = false
             updateNotification()
+        }
+
+        // #achtung
+        fun stopService() {
+            exoPlayer.playWhenReady = false
+            stopSelf()
         }
 
         var mediaItem = MediaItem("", "")

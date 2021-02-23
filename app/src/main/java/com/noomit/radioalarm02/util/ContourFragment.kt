@@ -101,8 +101,8 @@ abstract class ContourFragment<L> : Fragment() {
 // #todo move to corresponding file
 abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
 
-    protected lateinit var playerView: PlayerView
-    protected lateinit var playerControlView: PlayerControlView
+    protected var playerView: PlayerView? = null
+    protected var playerControlView: PlayerControlView? = null
 
     protected var service: PlayerService.PlayerServiceBinder? = null
 
@@ -111,8 +111,8 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service is PlayerService.PlayerServiceBinder) {
-                playerView.player = service.exoPlayerInstance
-                playerControlView.player = playerView.player
+                playerView?.player = service.exoPlayerInstance
+                playerControlView?.player = service.exoPlayerInstance
                 this@PlayerServiceFragment.service = service
                 service.setCaption(notificationCaption)
                 onServiceConnected()
@@ -143,25 +143,35 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
      */
     open fun onConnectionError() {}
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initPlayerViews()
+    override fun onStart() {
+        super.onStart()
         bindExoPlayerService()
         registerBroadcastReceiver()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initPlayerViews()
+    }
+
     override fun onDestroyView() {
-        requireActivity().apply {
-            requireActivity().unregisterReceiver(playerBroadcastReceiver)
-            unbindService(connection)
-            stopService(Intent(this, PlayerService::class.java))
-        }
+        playerView?.player = null
+        playerControlView?.player = null
+        playerView = null
+        playerControlView = null
         super.onDestroyView()
     }
 
-    private fun bindExoPlayerService() {
+    override fun onStop() {
         requireActivity().apply {
+            unregisterReceiver(playerBroadcastReceiver)
+            application.unbindService(connection)
+        }
+        super.onStop()
+    }
+
+    private fun bindExoPlayerService() {
+        requireActivity().application.apply {
             val intent = Intent(this, PlayerService::class.java)
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }

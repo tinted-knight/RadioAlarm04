@@ -70,4 +70,9 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
             }
         }
     }
+
+    override fun onStop() {
+        service?.stop()
+        super.onStop()
+    }
 }

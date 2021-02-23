@@ -73,6 +73,7 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
 
     private fun stopRingtone() {
         ringtone?.stop()
+        service?.stop()
         ringtone = null
     }
 }

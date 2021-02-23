@@ -28,6 +28,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
     private val favorites = FavoritesLayout(context)
 
     private val btnSetup = MaterialButton(context).apply {
+        // #achtung
 //        text = "Set"
         isEnabled = false
         maxLines = 1
@@ -40,6 +41,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.btns.text.attr,
     ).apply {
+        // #achtung
 //        text = "Set default"
         setOnClickListener { onSetDefaultRingtone?.invoke() }
     }
