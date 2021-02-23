@@ -90,7 +90,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private fun buildChip(value: String, even: Boolean) = TextView(
+    private fun buildChip(value: String) = TextView(
         context,
         null,
         appTheme.nowPlaying.tag.attr
@@ -238,8 +238,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.value = station.bitrate
         // #todo if collapsed, there is no need to create ChipGroup
         tagList.removeAllViews()
-        station.tags.filter { it.isNotBlank() }.forEachIndexed { index, value ->
-            val chip = buildChip(value, index % 2 == 0)
+        station.tags.filter { it.isNotBlank() }.forEach { value ->
+            val chip = buildChip(value)
             tagList.addView(chip)
         }
 

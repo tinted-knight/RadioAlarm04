@@ -19,7 +19,7 @@ class StationItemView(
 ) : ContourLayout(context, attrSet), IStationItem {
 
     private val stationName = TextView(context).apply {
-        text = "Stub station"
+//        text = "Stub station"
         isSingleLine = true
         ellipsize = TextUtils.TruncateAt.END
     }

@@ -17,7 +17,7 @@ class ServerItemView(context: Context) : ContourLayout(context), IServerItem {
     }
 
     init {
-        contourHeightOf { _ ->
+        contourHeightOf {
             name.height() + 16.ydip
         }
 

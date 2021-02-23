@@ -253,6 +253,7 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         serverList.active.text = activerServer?.urlString ?: "No activer server..."
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun serverListClick(view: View) {
         TransitionManager.beginDelayedTransition(this, ChangeBounds()
             .setInterpolator(LinearInterpolator())

@@ -28,7 +28,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
     private val favorites = FavoritesLayout(context)
 
     private val btnSetup = MaterialButton(context).apply {
-        text = "Set"
+//        text = "Set"
         isEnabled = false
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.MARQUEE
@@ -40,7 +40,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.btns.text.attr,
     ).apply {
-        text = "Set default"
+//        text = "Set default"
         setOnClickListener { onSetDefaultRingtone?.invoke() }
     }
 

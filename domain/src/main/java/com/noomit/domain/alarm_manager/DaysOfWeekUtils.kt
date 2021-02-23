@@ -21,11 +21,6 @@ fun switchBitByDay(day: Int, zippedDays: Int): Int {
     }
 }
 
-fun Int.swithBitFor(day: Int) = when (day) {
-    1 -> this xor days[6]
-    else -> this xor days[day - 2]
-}
-
 /**
  * Use on daysOfWeek [Int]
  */

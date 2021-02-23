@@ -1,6 +1,5 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.noomit.domain.ServerInfo
 import com.noomit.domain.category_manager.CategoryManagerContract
@@ -9,15 +8,16 @@ import com.noomit.domain.entities.CategoryModel
 import com.noomit.domain.server_manager.ServerManagerContract
 import com.noomit.domain.station_manager.StationManagerContract
 import com.noomit.domain.station_manager.StationManagerState
-import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 sealed class RadioBrowserDirections : NavCommand {
     object LanguageList : RadioBrowserDirections()
@@ -27,7 +27,8 @@ sealed class RadioBrowserDirections : NavCommand {
 }
 
 @FlowPreview
-class RadioBrowserViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RadioBrowserViewModel @Inject constructor(
     private val serverManager: ServerManagerContract,
     private val categoryManager: CategoryManagerContract,
     private val stationManager: StationManagerContract,
@@ -40,16 +41,6 @@ class RadioBrowserViewModel @ViewModelInject constructor(
     private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
 
     private val stationFilter = MutableStateFlow<Filter>(Filter.None)
-
-    init {
-        serverManager.getAvalilable(viewModelScope)
-        tplog("RadioBrowserViewModel::init")
-    }
-
-    override fun onCleared() {
-        tplog("RadioBrowserViewModel::onCleared")
-        super.onCleared()
-    }
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 

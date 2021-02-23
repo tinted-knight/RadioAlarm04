@@ -31,6 +31,9 @@ class PlayerService : Service() {
     private var mediaTitle: String? = null
     private var caption: String? = null
 
+    //  #todo may need to save PlayerServiceBinder in field
+    //      and release it in onUnbind
+    //      LeakCanary shows Binder memory leak
     override fun onBind(intent: Intent): IBinder {
         intent.let {
             exoPlayer.playWhenReady = false
@@ -148,7 +151,7 @@ class PlayerService : Service() {
         }
     }
 
-    private fun updateRemoteViews(isPlaying: Boolean = true) = composeRemoteViews(remoteViews)
+    private fun updateRemoteViews() = composeRemoteViews(remoteViews)
     private fun composeRemoteViews(remoteViews: RemoteViews) = with(remoteViews) {
         setTextViewText(
             R.id.tv_title,
@@ -208,7 +211,6 @@ class PlayerService : Service() {
         const val PLAY_PAUSE_ACTION = "action-play-pause"
         const val PLAY_PAUSE_VALUE = 1001
 
-        const val MEDIA_URL = "media-url"
         const val NOTIFICATION_ID = 42
         const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
         const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"

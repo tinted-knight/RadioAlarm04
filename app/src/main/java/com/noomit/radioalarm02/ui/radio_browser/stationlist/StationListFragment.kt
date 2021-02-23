@@ -78,6 +78,8 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
                 }
                 is StationManagerState.Success -> contour.showContent(it.values)
                 is StationManagerState.Failure -> context?.toast(it.error.localizedMessage)
+                // #todo smth like showError or empty
+                else -> contour.showLoading()
             }
         }
         collect(stationViewModel.nowPlaying.filterNotNull()) {

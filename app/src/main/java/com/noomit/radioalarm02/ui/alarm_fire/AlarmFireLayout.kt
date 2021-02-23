@@ -40,7 +40,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmFire.time.attr,
     ).apply {
-        text = "9:00"
+//        text = "9:00"
         background = ResourcesCompat.getDrawable(resources, R.drawable.alarm_bg_time, null)
     }
 
@@ -49,7 +49,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmFire.day.attr,
     ).apply {
-        text = "Monday"
+//        text = "Monday"
     }
 
     override val playerControll =

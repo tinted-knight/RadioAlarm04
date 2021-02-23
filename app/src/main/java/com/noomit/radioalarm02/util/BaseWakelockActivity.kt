@@ -11,6 +11,7 @@ import timber.log.Timber
 
 private fun plog(message: String) = Timber.tag("tagg-app-wakelock").i(message)
 
+@Suppress("DEPRECATION")
 abstract class BaseWakelockActivity : AppCompatActivity() {
 
     private lateinit var wakeLock: PowerManager.WakeLock

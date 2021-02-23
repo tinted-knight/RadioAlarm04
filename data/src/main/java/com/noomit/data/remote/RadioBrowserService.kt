@@ -29,12 +29,12 @@ class RadioBrowserService : RadioBrowserContract {
     override val activeServer: StateFlow<ActiveServerState> = _activeServer
 
     private fun isReachable(addr: String, port: Int, timeout: Int): Boolean {
-        try {
+        return try {
             val socket = Socket()
             socket.connect(InetSocketAddress(addr, port), timeout)
-            return true
+            true
         } catch (e: IOException) {
-            return false
+            false
         }
     }
 
@@ -54,8 +54,9 @@ class RadioBrowserService : RadioBrowserContract {
                         )
                     }
                 )
-
-                // fisrt try to find out if there is "good" server available and return
+                // #todo "fr" server look less stable in my location, so I try to stick with
+                //  "de" or "nl". It may differ in other region, so this "hardcode" decision
+                //  is obviously terrible and has to be rethinked / refactored
                 serverList.filter { it.urlString.contains("de1") || it.urlString.contains("nl1") }
                     .firstOrNull { it.isReachable }?.let {
                         setActiveServer(it)
