@@ -26,9 +26,9 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
     override val notificationCaption: String
         get() = getString(R.string.app_name)
 
-    override fun onDestroyView() {
+    override fun onPause() {
         stopRingtone()
-        super.onDestroyView()
+        super.onPause()
     }
 
     override fun prepareView(savedState: Bundle?) {

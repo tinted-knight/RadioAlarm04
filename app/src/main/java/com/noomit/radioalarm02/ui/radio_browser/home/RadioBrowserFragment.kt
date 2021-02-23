@@ -27,8 +27,6 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
         defaultViewModelProviderFactory
     }
 
-    private val adapter by lazy(LazyThreadSafetyMode.NONE) { ServerListAdapter(adapterListener) }
-
     override val contour: IRadioBrowserHomeLayout
         get() = (view as ViewGroup).children.first() as IRadioBrowserHomeLayout
 
@@ -43,6 +41,7 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
 
     override fun prepareView(savedState: Bundle?) {
         contour.apply {
+            val adapter = ServerListAdapter(adapterListener)
             delegate = viewModel
             setServerAdapter(adapter)
             showLoading()

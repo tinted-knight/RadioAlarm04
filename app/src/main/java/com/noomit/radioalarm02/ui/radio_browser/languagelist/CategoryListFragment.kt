@@ -43,12 +43,11 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
         )
     }
 
-    private val adapter by lazy(LazyThreadSafetyMode.NONE) { LanguageListAdapter(categoryClick) }
-
     private var recyclerState: Parcelable? = null
 
     override fun prepareView(savedState: Bundle?) {
         contour.apply {
+            val adapter = LanguageListAdapter(categoryClick)
             setAdapter(adapter)
             showLoading()
             recyclerState?.let {

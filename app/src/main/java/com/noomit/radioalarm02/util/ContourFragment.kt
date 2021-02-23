@@ -89,12 +89,12 @@ abstract class ContourFragment<L> : Fragment() {
     /**
      * Hides software keyboard when fragment view is going to be destroyed
      */
-    override fun onDestroyView() {
+    override fun onPause() {
         view?.let { view ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-        super.onDestroyView()
+        super.onPause()
     }
 }
 
@@ -147,22 +147,28 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
         super.onViewCreated(view, savedInstanceState)
 
         initPlayerViews()
-        bindExoPlayerService()
         registerBroadcastReceiver()
     }
 
-    override fun onDestroyView() {
+    override fun onStart() {
+        super.onStart()
+        bindExoPlayerService()
+    }
+
+    override fun onPause() {
         requireActivity().apply {
             requireActivity().unregisterReceiver(playerBroadcastReceiver)
             unbindService(connection)
             stopService(Intent(this, PlayerService::class.java))
         }
-        super.onDestroyView()
+        super.onPause()
     }
 
     private fun bindExoPlayerService() {
-        val intent = Intent(requireActivity(), PlayerService::class.java)
-        requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        requireActivity().apply {
+            val intent = Intent(this, PlayerService::class.java)
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     private fun registerBroadcastReceiver() {
