@@ -31,6 +31,9 @@ class PlayerService : Service() {
     private var mediaTitle: String? = null
     private var caption: String? = null
 
+    //  #todo may need to save PlayerServiceBinder in field
+    //      and release it in onUnbind
+    //      LeakCanary shows Binder memory leak
     override fun onBind(intent: Intent): IBinder {
         intent.let {
             exoPlayer.playWhenReady = false
