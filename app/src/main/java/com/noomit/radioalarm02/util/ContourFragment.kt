@@ -147,21 +147,17 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
         super.onViewCreated(view, savedInstanceState)
 
         initPlayerViews()
+        bindExoPlayerService()
         registerBroadcastReceiver()
     }
 
-    override fun onStart() {
-        super.onStart()
-        bindExoPlayerService()
-    }
-
-    override fun onPause() {
+    override fun onDestroyView() {
         requireActivity().apply {
             requireActivity().unregisterReceiver(playerBroadcastReceiver)
             unbindService(connection)
             stopService(Intent(this, PlayerService::class.java))
         }
-        super.onPause()
+        super.onDestroyView()
     }
 
     private fun bindExoPlayerService() {

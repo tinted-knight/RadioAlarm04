@@ -46,4 +46,5 @@
     <string name="wake_up">Wake up</string>
     <string name="cdesc_play">Play</string>
     <string name="cdesc_pause">Pause</string>
+    <string name="btn_close">Close</string>
 </resources>

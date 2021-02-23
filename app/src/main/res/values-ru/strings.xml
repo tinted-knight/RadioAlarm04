@@ -46,4 +46,5 @@
     <string name="wake_up">Просыпайся</string>
     <string name="cdesc_play">Играть</string>
     <string name="cdesc_pause">Пауза</string>
+    <string name="btn_close">Закрыть</string>
 </resources>

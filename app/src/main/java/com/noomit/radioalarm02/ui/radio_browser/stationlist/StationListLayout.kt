@@ -123,7 +123,8 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             x = leftTo { parent.left() }
                 .rightTo { if (expanded) parent.right() else playerControll.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
-                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
+                .bottomTo { parent.bottom() }
+//                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
         )
     }
 

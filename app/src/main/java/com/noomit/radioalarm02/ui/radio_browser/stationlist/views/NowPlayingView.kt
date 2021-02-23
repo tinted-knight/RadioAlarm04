@@ -21,6 +21,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.domain.entities.StationModel
@@ -70,7 +71,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.nowPlaying.favoriteStyleId
     ).apply {
-        setImageDrawable(iconNotInFavorites)
         setOnClickListener { nowPlayingListener?.onFavoriteClick() }
         setOnLongClickListener {
             nowPlayingListener?.onFavoriteLongClick()
@@ -89,6 +89,15 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             nowPlayingListener?.onHomePageLongClick()
             true
         }
+    }
+
+    private val btnClose = MaterialButton(
+        ContextThemeWrapper(context, appTheme.btns.outline.style),
+        null,
+        appTheme.btns.outline.attr,
+    ).apply {
+        text = resources.getString(R.string.btn_close)
+        setOnClickListener { this@NowPlayingView.performClick() }
     }
 
     private fun buildChip(value: String) = TextView(
@@ -117,6 +126,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         codec.isVisible = false
         bitrate.isVisible = false
         tagList.isVisible = false
+        btnClose.isVisible = false
         btnFav.isVisible = false
         btnHomePage.isVisible = false
 
@@ -125,13 +135,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             y = topTo { parent.top() + 2.ydip }.bottomTo { parent.bottom() - 2.ydip }
         )
 
-        title.background = null
-        title.setTextColor(getColor(resources, R.color.clNowPlayingTitle, null))
-        title.setPadding(0)
-        title.layoutBy(
-            x = leftTo { parent.left() + 16.xdip }.rightTo { stationPicture.left() - 2.xdip },
-            y = centerVerticallyTo { stationPicture.centerY() }
-        )
+        title.apply {
+            background = null
+            setTextColor(getColor(resources, R.color.clNowPlayingTitle, null))
+            setPadding(0)
+            textAlignment = TEXT_ALIGNMENT_TEXT_START
+            layoutBy(
+                x = leftTo { parent.left() + 16.xdip }.rightTo { stationPicture.left() - 2.xdip },
+                y = centerVerticallyTo { stationPicture.centerY() }
+            )
+        }
 
         homePage.layoutBy(emptyX(), emptyY())
         country.layoutBy(emptyX(), emptyY())
@@ -140,6 +153,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.layoutBy(emptyX(), emptyY())
         btnFav.layoutBy(emptyX(), emptyY())
         btnHomePage.layoutBy(emptyX(), emptyY())
+        btnClose.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayoutNew() {
@@ -153,6 +167,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         codec.isVisible = codec.value.isNotBlank()
         bitrate.isVisible = bitrate.value.isNotBlank()
         tagList.isVisible = true
+        btnClose.isVisible = true
         btnFav.isVisible = true
         btnHomePage.isVisible = true
 
@@ -163,6 +178,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
                 setCornerRadius(16.0f)
             }
+            textAlignment = TEXT_ALIGNMENT_CENTER
             setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
             setPadding(16.dip, 8.dip, 16.dip, 8.dip)
             updateLayoutBy(
@@ -172,26 +188,30 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
 
         stationPicture.updateLayoutBy(
-            x = leftTo { parent.left() }.widthOf { parent.width() * 2 / 5 },
+            x = rightTo { parent.right() }.widthOf { parent.width() * 2 / 5 },
             y = topTo { title.bottom() + vSpacing }.heightOf { (parent.width() * 2 / 5).toY() }
         )
 
         bitrate.updateLayoutBy(
-            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
+            leftTo { parent.left() }.rightTo { stationPicture.left() - hSpacing },
             topTo { title.bottom() + vSpacing }
         )
 
         codec.updateLayoutBy(
-            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
+            leftTo { parent.left() }.rightTo { stationPicture.left() - hSpacing },
             topTo { bitrate.bottom() + vSpacing }
         )
-        btnFav.updateLayoutBy(
+        btnClose.updateLayoutBy(
             leftTo { parent.left() },
             bottomTo { parent.bottom() }
         )
+        btnFav.updateLayoutBy(
+            leftTo { btnClose.right() + hSpacing },
+            centerVerticallyTo { btnClose.centerY() }
+        )
         btnHomePage.updateLayoutBy(
             leftTo { btnFav.right() + hSpacing },
-            bottomTo { parent.bottom() }
+            centerVerticallyTo { btnClose.centerY() }
         )
         tagList.updateLayoutBy(
             matchParentX(),
@@ -252,6 +272,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         country.text = station.country
         codec.value = station.codec
         bitrate.value = station.bitrate
+//        codec.value = if (station.codec.isNotBlank()) station.codec else "MP42"
+//        bitrate.value = if (station.bitrate.isNotBlank()) station.bitrate else "2077"
         // #todo if collapsed, there is no need to create ChipGroup
         tagList.removeAllViews()
         station.tags.filter { it.isNotBlank() }.forEach { value ->

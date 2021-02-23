@@ -80,15 +80,8 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
     init {
         contourHeightMatchParent()
 
-        val matchParentWidth = matchParentX(marginLeft = 16.dip, marginRight = 16.dip)
-
-        playerControll.layoutBy(
-            rightTo { parent.right() },
-            bottomTo { parent.bottom() }
-        )
-
         stationList.layoutBy(
-            matchParentWidth,
+            matchParentX(),
             bottomTo { playerControll.top() }.topTo { parent.top() }
         )
 
@@ -106,7 +99,12 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
             x = leftTo { parent.left() }
                 .rightTo { if (expanded) parent.right() else playerControll.left() },
             y = topTo { if (expanded) parent.top() else stationList.bottom() }
-                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
+                .bottomTo { parent.bottom() }
+//                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
+        )
+        playerControll.layoutBy(
+            rightTo { parent.right() },
+            bottomTo { parent.bottom() }
         )
     }
 
