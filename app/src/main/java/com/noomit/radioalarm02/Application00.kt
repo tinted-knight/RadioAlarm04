@@ -2,10 +2,8 @@ package com.noomit.radioalarm02
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.widget.Toast
-import com.noomit.radioalarm02.service.PlayerService
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -17,8 +15,6 @@ class Application00 : Application() {
         Timber.plant(Timber.DebugTree())
 
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        val intent = Intent(this, PlayerService::class.java)
-        startService(intent)
     }
 }
 

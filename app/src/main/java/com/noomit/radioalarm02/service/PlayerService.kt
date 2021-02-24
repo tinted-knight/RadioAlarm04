@@ -73,7 +73,7 @@ class PlayerService : Service() {
                 PLAY_PAUSE_VALUE -> mediaTitle?.let {
                     exoPlayer.playWhenReady = !exoPlayer.playWhenReady
                 }
-                -1 -> exoPlayer.playWhenReady = false
+//                -1 -> exoPlayer.playWhenReady = false
                 else -> exoPlayer.playWhenReady = true
             }
             updateNotification()
@@ -83,8 +83,14 @@ class PlayerService : Service() {
 
     private val playerStateListener = object : Player.DefaultEventListener() {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            Log.d("tagg", "PlayerService.onPlayerStateChanged, $playbackState")
             when (playbackState) {
-                Player.STATE_READY -> updateNotification()
+                Player.STATE_READY -> {
+                    updateNotification()
+                    val intent = Intent(BR_ACTION_STATE)
+                    intent.putExtra(BR_MEDIA_IS_PLAYING, exoPlayer.playWhenReady)
+                    sendBroadcast(intent)
+                }
 //                Player.STATE_IDLE -> plog("IDLE")
 //                Player.STATE_BUFFERING -> plog("BUFFERING")
 //                Player.STATE_ENDED -> plog("ENDED")
@@ -92,7 +98,7 @@ class PlayerService : Service() {
         }
 
         override fun onPlayerError(error: ExoPlaybackException?) {
-            val intent = Intent(BROADCAST_FILTER)
+            val intent = Intent(BR_ACTION_ERROR)
             intent.putExtra(BR_MEDIA_UNAVAILABLE, BR_CODE_ERROR)
             sendBroadcast(intent)
         }
@@ -232,8 +238,10 @@ class PlayerService : Service() {
         const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
         const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
 
-        const val BROADCAST_FILTER = "com.noomit.radioalarm.service_br"
+        const val BR_ACTION_ERROR = "com.noomit.radioalarm.service_br.error"
+        const val BR_ACTION_STATE = "com.noomit.radioalarm.service_br.state"
         const val BR_MEDIA_UNAVAILABLE = "br-service-unavailable"
+        const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
         const val BR_CODE_ERROR = 1
     }
 

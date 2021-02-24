@@ -111,7 +111,7 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service is PlayerService.PlayerServiceBinder) {
-                playerView?.player = service.exoPlayerInstance
+//                playerView?.player = service.exoPlayerInstance
                 playerControlView?.player = service.exoPlayerInstance
                 this@PlayerServiceFragment.service = service
                 service.setCaption(notificationCaption)
@@ -146,7 +146,7 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
     override fun onStart() {
         super.onStart()
         bindExoPlayerService()
-        registerBroadcastReceiver()
+//        registerBroadcastReceiver()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -164,14 +164,14 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
 
     override fun onStop() {
         requireActivity().apply {
-            unregisterReceiver(playerBroadcastReceiver)
-            application.unbindService(connection)
+//            unregisterReceiver(playerBroadcastReceiver)
+            unbindService(connection)
         }
         super.onStop()
     }
 
     private fun bindExoPlayerService() {
-        requireActivity().application.apply {
+        requireActivity().apply {
             val intent = Intent(this, PlayerService::class.java)
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
@@ -188,7 +188,7 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
         }
         requireActivity().registerReceiver(
             playerBroadcastReceiver,
-            IntentFilter(PlayerService.BROADCAST_FILTER),
+            IntentFilter(PlayerService.BR_ACTION_ERROR),
         )
     }
 }

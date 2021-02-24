@@ -1,5 +1,9 @@
 package com.noomit.radioalarm02
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -11,10 +15,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.noomit.radioalarm02.service.PlayerService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private var playerBroadcastReceiver: BroadcastReceiver? = null
+
+    private var isPlaying = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,38 @@ class MainActivity : AppCompatActivity() {
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setWindowsTransparency()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tplog("MainActivity.onResume")
+
+        val intent = Intent(this, PlayerService::class.java)
+        application.startService(intent)
+
+        playerBroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                when (intent?.action) {
+                    PlayerService.BR_ACTION_ERROR -> {
+                        val codeError = intent.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)
+                        if (codeError == PlayerService.BR_CODE_ERROR) toast("from Activity: connection error")
+                    }
+                    PlayerService.BR_ACTION_STATE -> {
+                        isPlaying = intent.getBooleanExtra(PlayerService.BR_MEDIA_IS_PLAYING, false)
+                    }
+                }
+            }
+        }
+        registerReceiver(playerBroadcastReceiver, IntentFilter(PlayerService.BR_ACTION_ERROR))
+        registerReceiver(playerBroadcastReceiver, IntentFilter(PlayerService.BR_ACTION_STATE))
+    }
+
+    override fun onPause() {
+        unregisterReceiver(playerBroadcastReceiver)
+        tplog("MainActivity.onPause, isPlaying = $isPlaying")
+        if (!isPlaying) stopService(Intent(this, PlayerService::class.java))
+        playerBroadcastReceiver = null
+        super.onPause()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
