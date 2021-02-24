@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
@@ -42,9 +44,14 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     var nowPlayingListener: NowPlayingListener? = null
 
-    private val title = MaterialTextView(context, null, appTheme.nowPlaying.titleStyle.attr)
+    private val title = MaterialTextView(context, null, appTheme.nowPlaying.titleStyle.attr).apply {
+        elevation = 4.0f
+    }
 
-    private val homePage = TextView(context)
+    private val homePage = TextView(context).apply {
+        setTextColor(getColor(resources, appTheme.nowPlaying.linkColor, null))
+        setOnClickListener { nowPlayingListener?.onHomePageClick() }
+    }
 
     private val country = TextView(context)
 
@@ -78,18 +85,18 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val btnHomePage = ImageButton(
-        ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
-        null,
-        appTheme.nowPlaying.favoriteStyleId
-    ).apply {
-        setImageDrawable(ContextCompat.getDrawable(context, appTheme.nowPlaying.iconHomepage))
-        setOnClickListener { nowPlayingListener?.onHomePageClick() }
-        setOnLongClickListener {
-            nowPlayingListener?.onHomePageLongClick()
-            true
-        }
-    }
+//    private val btnHomePage = ImageButton(
+//        ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
+//        null,
+//        appTheme.nowPlaying.favoriteStyleId
+//    ).apply {
+//        setImageDrawable(ContextCompat.getDrawable(context, appTheme.nowPlaying.iconHomepage))
+//        setOnClickListener { nowPlayingListener?.onHomePageClick() }
+//        setOnLongClickListener {
+//            nowPlayingListener?.onHomePageLongClick()
+//            true
+//        }
+//    }
 
     private val btnClose = MaterialButton(
         ContextThemeWrapper(context, appTheme.btns.outline.style),
@@ -128,7 +135,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.isVisible = false
         btnClose.isVisible = false
         btnFav.isVisible = false
-        btnHomePage.isVisible = false
+//        btnHomePage.isVisible = false
 
         stationPicture.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -152,7 +159,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.layoutBy(emptyX(), emptyY())
         tagList.layoutBy(emptyX(), emptyY())
         btnFav.layoutBy(emptyX(), emptyY())
-        btnHomePage.layoutBy(emptyX(), emptyY())
+//        btnHomePage.layoutBy(emptyX(), emptyY())
         btnClose.layoutBy(emptyX(), emptyY())
     }
 
@@ -169,7 +176,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.isVisible = true
         btnClose.isVisible = true
         btnFav.isVisible = true
-        btnHomePage.isVisible = true
+//        btnHomePage.isVisible = true
 
         val vSpacing = 8.ydip
         val hSpacing = 8.xdip
@@ -188,18 +195,22 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
 
         stationPicture.updateLayoutBy(
-            x = rightTo { parent.right() }.widthOf { parent.width() * 2 / 5 },
+            x = leftTo { parent.left() }.widthOf { parent.width() * 2 / 5 },
             y = topTo { title.bottom() + vSpacing }.heightOf { (parent.width() * 2 / 5).toY() }
         )
 
         bitrate.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { stationPicture.left() - hSpacing },
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
             topTo { title.bottom() + vSpacing }
         )
 
         codec.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { stationPicture.left() - hSpacing },
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
             topTo { bitrate.bottom() + vSpacing }
+        )
+        homePage.updateLayoutBy(
+            leftTo { parent.left() }.rightTo { parent.right() },
+            topTo { stationPicture.bottom() + vSpacing }
         )
         btnClose.updateLayoutBy(
             leftTo { parent.left() },
@@ -209,13 +220,13 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             leftTo { btnClose.right() + hSpacing },
             centerVerticallyTo { btnClose.centerY() }
         )
-        btnHomePage.updateLayoutBy(
-            leftTo { btnFav.right() + hSpacing },
-            centerVerticallyTo { btnClose.centerY() }
-        )
+//        btnHomePage.updateLayoutBy(
+//            leftTo { btnFav.right() + hSpacing },
+//            centerVerticallyTo { btnClose.centerY() }
+//        )
         tagList.updateLayoutBy(
             matchParentX(),
-            topTo { stationPicture.bottom() + vSpacing }
+            topTo { homePage.bottom() + vSpacing }
         )
     }
 
@@ -268,12 +279,14 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     fun update(station: StationModel, inFavorites: Boolean) {
         loadStationIcon(station)
 
-        homePage.text = station.homepage
+        homePage.text = SpannableString(station.homepage).apply {
+            setSpan(UnderlineSpan(), 0, length, 0)
+        }
         country.text = station.country
         codec.value = station.codec
         bitrate.value = station.bitrate
-//        codec.value = if (station.codec.isNotBlank()) station.codec else "MP42"
-//        bitrate.value = if (station.bitrate.isNotBlank()) station.bitrate else "2077"
+        codec.value = if (station.codec.isNotBlank()) station.codec else "MP42"
+        bitrate.value = if (station.bitrate.isNotBlank()) station.bitrate else "2077"
         // #todo if collapsed, there is no need to create ChipGroup
         tagList.removeAllViews()
         station.tags.filter { it.isNotBlank() }.forEach { value ->

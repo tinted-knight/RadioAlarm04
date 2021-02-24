@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import com.google.android.material.button.MaterialButton
 import com.noomit.domain.entities.StationModel
+import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.favorites.FavoritesLayout
 import com.noomit.radioalarm02.ui.favorites.IFavoritesLayout
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
@@ -28,8 +29,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
     private val favorites = FavoritesLayout(context)
 
     private val btnSetup = MaterialButton(context).apply {
-        // #achtung
-//        text = "Set"
+        text = resources.getString(R.string.btn_set)
         isEnabled = false
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.MARQUEE
@@ -41,8 +41,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.btns.text.attr,
     ).apply {
-        // #achtung
-//        text = "Set default"
+        text = resources.getString(R.string.btn_set_default)
         setOnClickListener { onSetDefaultRingtone?.invoke() }
     }
 

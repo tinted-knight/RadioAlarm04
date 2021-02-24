@@ -47,4 +47,6 @@
     <string name="cdesc_play">Играть</string>
     <string name="cdesc_pause">Пауза</string>
     <string name="btn_close">Закрыть</string>
+    <string name="btn_set">Установить</string>
+    <string name="btn_set_default">По-умолчанию</string>
 </resources>

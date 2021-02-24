@@ -2,24 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:elevation="0dp"
     android:layoutDirection="ltr"
     android:orientation="horizontal"
     android:padding="2dp">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@id/exo_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/LightTheme.ExoPlayerFab"
         android:contentDescription="@string/cdesc_play"
-        android:src="@drawable/ic_play_arrow_24"
-        android:theme="@style/LightTheme.ExoPlayerFab" />
+        android:src="@drawable/ic_play_arrow_24" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@id/exo_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/LightTheme.ExoPlayerFab"
         android:contentDescription="@string/cdesc_pause"
-        android:src="@drawable/ic_pause_24"
-        android:theme="@style/LightTheme.ExoPlayerFab" />
+        android:src="@drawable/ic_pause_24" />
 
 </LinearLayout>

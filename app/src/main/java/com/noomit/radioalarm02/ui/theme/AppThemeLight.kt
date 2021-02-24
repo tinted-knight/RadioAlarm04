@@ -26,6 +26,7 @@ interface ThemeNowPlaying {
     val dimmColor: Int
     val tag: ViewStyle
     val titleStyle: ViewStyle
+    val linkColor: Int
 }
 
 interface ThemeServerList {
@@ -91,6 +92,7 @@ data class AppThemeLight(
         override val dimmColor = C.clNowplayingDimm
         override val tag = ViewStyle(S.LightTheme_StationTag, A.stationTag)
         override val titleStyle = ViewStyle(S.LightTheme_NowplayingTitle, A.nowplaying_title)
+        override val linkColor = C.clNowPlayingLink
     },
     val serverList: ThemeServerList = object : ThemeServerList {
         override val bgColor = C.clCardBackground

@@ -103,8 +103,8 @@ class FavoritesLayout(context: Context) : ContourLayout(context), IFavoritesLayo
 //                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
         )
         playerControll.layoutBy(
-            rightTo { parent.right() },
-            bottomTo { parent.bottom() }
+            rightTo { parent.right() - 8.xdip },
+            bottomTo { parent.bottom() - 8.ydip }
         )
     }
 

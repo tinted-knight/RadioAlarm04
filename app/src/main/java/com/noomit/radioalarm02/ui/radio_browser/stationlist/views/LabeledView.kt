@@ -30,7 +30,8 @@ class LabeledView(context: Context) : ContourLayout(context) {
         contourWidthWrapContent()
         contourHeightWrapContent()
 
-        setPadding(8.dip, 16.dip, 8.dip, 16.dip)
+        setPadding(8.dip, 12.dip, 8.dip, 12.dip)
+        elevation = 4.0f
 
 //        background = GradientDrawable().apply {
 ////            colors = intArrayOf(R.color.clInfoBg)
