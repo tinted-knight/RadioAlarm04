@@ -206,15 +206,9 @@ class PlayerService : Service() {
             updateNotification()
         }
 
-        fun stop() {
+        fun pause() {
             exoPlayer.playWhenReady = false
             updateNotification()
-        }
-
-        // #achtung
-        fun stopService() {
-            exoPlayer.playWhenReady = false
-            stopSelf()
         }
 
         var mediaItem = MediaItem("", "")

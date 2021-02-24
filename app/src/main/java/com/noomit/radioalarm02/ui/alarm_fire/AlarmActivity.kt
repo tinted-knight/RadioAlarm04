@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import com.ncorti.slidetoact.SlideToActView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.service.AlarmReceiver
+import com.noomit.radioalarm02.service.PlayerService
 import com.noomit.radioalarm02.tplog
 import com.noomit.radioalarm02.util.BaseWakelockActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +52,13 @@ class AlarmActivity : BaseWakelockActivity() {
             viewModel.melodyUrl = it.getStringExtra(AlarmReceiver.BELL_URL)
             viewModel.melodyName = it.getStringExtra(AlarmReceiver.BELL_NAME)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val intent = Intent(this, PlayerService::class.java)
+        application.startService(intent)
     }
 
     private fun setWindowTransparency() {

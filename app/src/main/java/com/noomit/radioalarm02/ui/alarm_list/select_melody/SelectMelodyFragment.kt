@@ -65,14 +65,14 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
                 service?.play()
                 contour.nowPlaying(it.station, it.inFavorites)
             } else {
-                service?.stop()
+                service?.pause()
                 contour.nowPlayingEmpty()
             }
         }
     }
 
     override fun onStop() {
-        service?.stop()
+        service?.pause()
         super.onStop()
     }
 }

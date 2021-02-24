@@ -99,13 +99,14 @@ abstract class ContourFragment<L> : Fragment() {
 }
 
 // #todo move to corresponding file
-abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
+abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
 
     protected var playerView: PlayerView? = null
     protected var playerControlView: PlayerControlView? = null
 
     protected var service: PlayerService.PlayerServiceBinder? = null
 
+    //  #deprecated
     private var playerBroadcastReceiver: BroadcastReceiver? = null
 
     private val connection = object : ServiceConnection {
@@ -146,7 +147,6 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
     override fun onStart() {
         super.onStart()
         bindExoPlayerService()
-//        registerBroadcastReceiver()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -163,10 +163,7 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
     }
 
     override fun onStop() {
-        requireActivity().apply {
-//            unregisterReceiver(playerBroadcastReceiver)
-            unbindService(connection)
-        }
+        requireActivity().unbindService(connection)
         super.onStop()
     }
 
@@ -177,6 +174,7 @@ abstract class PlayerServiceFragment<L> : ContourFragment<L>() {
         }
     }
 
+    //  #deprecated
     private fun registerBroadcastReceiver() {
         playerBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {

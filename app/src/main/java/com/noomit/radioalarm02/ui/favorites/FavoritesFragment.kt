@@ -52,7 +52,7 @@ class FavoritesFragment : PlayerServiceFragment<IFavoritesLayout>() {
                 service?.play()
                 contour.nowPlaying(it.station, it.inFavorites)
             } else {
-                service?.stop()
+                service?.pause()
                 contour.nowPlayingEmpty()
             }
         }
