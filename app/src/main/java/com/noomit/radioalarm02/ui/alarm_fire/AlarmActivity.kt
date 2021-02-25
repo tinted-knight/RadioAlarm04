@@ -37,6 +37,7 @@ class AlarmActivity : BaseWakelockActivity() {
             override fun onSlideComplete(view: SlideToActView) {
                 if (action == ACTION_FIRE) {
                     viewModel.alarmFired()
+                    application.stopService(PlayerService.intent(this@AlarmActivity))
                     onBackPressed()
                 } else {
                     onBackPressed()
@@ -57,8 +58,7 @@ class AlarmActivity : BaseWakelockActivity() {
     override fun onResume() {
         super.onResume()
 
-        val intent = Intent(this, PlayerService::class.java)
-        application.startService(intent)
+        application.startService(PlayerService.intent(this))
     }
 
     private fun setWindowTransparency() {

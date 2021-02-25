@@ -46,8 +46,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         tplog("MainActivity.onResume")
 
-        val intent = Intent(this, PlayerService::class.java)
-        application.startService(intent)
+        application.startService(PlayerService.intent(this))
 
         playerBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         unregisterReceiver(playerBroadcastReceiver)
         tplog("MainActivity.onPause, isPlaying = $isPlaying")
-        if (!isPlaying) stopService(Intent(this, PlayerService::class.java))
+        if (!isPlaying) stopService(PlayerService.intent(this))
         playerBroadcastReceiver = null
         super.onPause()
     }

@@ -28,6 +28,23 @@ import com.noomit.radioalarm02.R
 
 class PlayerService : Service() {
 
+    companion object {
+        const val PLAY_PAUSE_ACTION = "action-play-pause"
+        const val PLAY_PAUSE_VALUE = 1001
+
+        const val NOTIFICATION_ID = 42
+        const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
+        const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
+
+        const val BR_ACTION_ERROR = "com.noomit.radioalarm.service_br.error"
+        const val BR_ACTION_STATE = "com.noomit.radioalarm.service_br.state"
+        const val BR_MEDIA_UNAVAILABLE = "br-service-unavailable"
+        const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
+        const val BR_CODE_ERROR = 1
+
+        fun intent(context: Context) = Intent(context, PlayerService::class.java)
+    }
+
     private lateinit var exoPlayer: SimpleExoPlayer
     private var mediaTitle: String? = null
     private var caption: String? = null
@@ -116,7 +133,7 @@ class PlayerService : Service() {
         val intentPlayPause = PendingIntent.getService(
             this,
             0,
-            Intent(this, PlayerService::class.java).apply {
+            intent(this).apply {
                 putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
             },
             0,
@@ -157,7 +174,7 @@ class PlayerService : Service() {
         val intent = PendingIntent.getService(
             this,
             0,
-            Intent(this, PlayerService::class.java).apply {
+            intent(this).apply {
                 putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
             },
             0,
@@ -223,22 +240,6 @@ class PlayerService : Service() {
             updateRemoteViews()
         }
     }
-
-    companion object {
-        const val PLAY_PAUSE_ACTION = "action-play-pause"
-        const val PLAY_PAUSE_VALUE = 1001
-
-        const val NOTIFICATION_ID = 42
-        const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
-        const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
-
-        const val BR_ACTION_ERROR = "com.noomit.radioalarm.service_br.error"
-        const val BR_ACTION_STATE = "com.noomit.radioalarm.service_br.state"
-        const val BR_MEDIA_UNAVAILABLE = "br-service-unavailable"
-        const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
-        const val BR_CODE_ERROR = 1
-    }
-
 }
 
 data class MediaItem(
