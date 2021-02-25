@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        tplog("MainActivity.onResume")
 
         application.startService(PlayerService.intent(this))
 
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 when (intent?.action) {
                     PlayerService.BR_ACTION_ERROR -> {
                         val codeError = intent.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)
-                        if (codeError == PlayerService.BR_CODE_ERROR) toast("from Activity: connection error")
+                        if (codeError == PlayerService.BR_CODE_ERROR) toast(getString(R.string.toast_cannot_connect_to_station))
                     }
                     PlayerService.BR_ACTION_STATE -> {
                         isPlaying = intent.getBooleanExtra(PlayerService.BR_MEDIA_IS_PLAYING, false)
@@ -67,7 +66,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         unregisterReceiver(playerBroadcastReceiver)
-        tplog("MainActivity.onPause, isPlaying = $isPlaying")
         if (!isPlaying) stopService(PlayerService.intent(this))
         playerBroadcastReceiver = null
         super.onPause()
@@ -78,11 +76,9 @@ class MainActivity : AppCompatActivity() {
 
         when (newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                tplog("configuration changed, night")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
             Configuration.UI_MODE_NIGHT_NO -> {
-                tplog("configuration changed, light")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }
