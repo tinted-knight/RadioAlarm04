@@ -10,8 +10,8 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmListAdapter
-import com.noomit.radioalarm02.util.ContourFragment
-import com.noomit.radioalarm02.util.collect
+import com.noomit.radioalarm02.util.fragment.ContourFragment
+import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

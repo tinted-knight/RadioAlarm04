@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -27,9 +28,28 @@ import com.noomit.radioalarm02.R
 
 class PlayerService : Service() {
 
+    companion object {
+        const val PLAY_PAUSE_ACTION = "action-play-pause"
+        const val PLAY_PAUSE_VALUE = 1001
+
+        const val NOTIFICATION_ID = 42
+        const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
+        const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
+
+        const val BR_ACTION_ERROR = "com.noomit.radioalarm.service_br.error"
+        const val BR_ACTION_STATE = "com.noomit.radioalarm.service_br.state"
+        const val BR_MEDIA_UNAVAILABLE = "br-service-unavailable"
+        const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
+        const val BR_CODE_ERROR = 1
+
+        fun intent(context: Context) = Intent(context, PlayerService::class.java)
+    }
+
     private lateinit var exoPlayer: SimpleExoPlayer
     private var mediaTitle: String? = null
     private var caption: String? = null
+
+    private var binder = PlayerServiceBinder()
 
     //  #todo may need to save PlayerServiceBinder in field
     //      and release it in onUnbind
@@ -39,7 +59,11 @@ class PlayerService : Service() {
             exoPlayer.playWhenReady = false
             displayNotification(remoteViews)
         }
-        return PlayerServiceBinder()
+        return binder
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        return super.onUnbind(intent)
     }
 
     override fun onCreate() {
@@ -62,7 +86,7 @@ class PlayerService : Service() {
                 PLAY_PAUSE_VALUE -> mediaTitle?.let {
                     exoPlayer.playWhenReady = !exoPlayer.playWhenReady
                 }
-                -1 -> exoPlayer.playWhenReady = false
+//                -1 -> exoPlayer.playWhenReady = false
                 else -> exoPlayer.playWhenReady = true
             }
             updateNotification()
@@ -72,8 +96,14 @@ class PlayerService : Service() {
 
     private val playerStateListener = object : Player.DefaultEventListener() {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            Log.d("tagg", "PlayerService.onPlayerStateChanged, $playbackState")
             when (playbackState) {
-                Player.STATE_READY -> updateNotification()
+                Player.STATE_READY -> {
+                    updateNotification()
+                    val intent = Intent(BR_ACTION_STATE)
+                    intent.putExtra(BR_MEDIA_IS_PLAYING, exoPlayer.playWhenReady)
+                    sendBroadcast(intent)
+                }
 //                Player.STATE_IDLE -> plog("IDLE")
 //                Player.STATE_BUFFERING -> plog("BUFFERING")
 //                Player.STATE_ENDED -> plog("ENDED")
@@ -81,7 +111,7 @@ class PlayerService : Service() {
         }
 
         override fun onPlayerError(error: ExoPlaybackException?) {
-            val intent = Intent(BROADCAST_FILTER)
+            val intent = Intent(BR_ACTION_ERROR)
             intent.putExtra(BR_MEDIA_UNAVAILABLE, BR_CODE_ERROR)
             sendBroadcast(intent)
         }
@@ -99,7 +129,7 @@ class PlayerService : Service() {
         val intentPlayPause = PendingIntent.getService(
             this,
             0,
-            Intent(this, PlayerService::class.java).apply {
+            intent(this).apply {
                 putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
             },
             0,
@@ -140,7 +170,7 @@ class PlayerService : Service() {
         val intent = PendingIntent.getService(
             this,
             0,
-            Intent(this, PlayerService::class.java).apply {
+            intent(this).apply {
                 putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
             },
             0,
@@ -189,7 +219,7 @@ class PlayerService : Service() {
             updateNotification()
         }
 
-        fun stop() {
+        fun pause() {
             exoPlayer.playWhenReady = false
             updateNotification()
         }
@@ -206,20 +236,6 @@ class PlayerService : Service() {
             updateRemoteViews()
         }
     }
-
-    companion object {
-        const val PLAY_PAUSE_ACTION = "action-play-pause"
-        const val PLAY_PAUSE_VALUE = 1001
-
-        const val NOTIFICATION_ID = 42
-        const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
-        const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
-
-        const val BROADCAST_FILTER = "com.noomit.radioalarm.service_br"
-        const val BR_MEDIA_UNAVAILABLE = "br-service-unavailable"
-        const val BR_CODE_ERROR = 1
-    }
-
 }
 
 data class MediaItem(

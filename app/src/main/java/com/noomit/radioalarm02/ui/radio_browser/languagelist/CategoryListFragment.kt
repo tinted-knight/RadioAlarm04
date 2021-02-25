@@ -15,8 +15,8 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
-import com.noomit.radioalarm02.util.ContourFragment
-import com.noomit.radioalarm02.util.collect
+import com.noomit.radioalarm02.util.fragment.ContourFragment
+import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce

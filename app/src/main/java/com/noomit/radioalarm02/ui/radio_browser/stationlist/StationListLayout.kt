@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.exoplayer2.ui.PlayerControlView
-import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
@@ -32,13 +31,13 @@ import com.squareup.contour.ContourLayout
 
 interface IStationListLayout {
     val playerControll: PlayerControlView
-    val playerView: PlayerView
     var listener: NowPlayingListener?
 
     fun setStationsAdapter(adapter: StationListAdapter)
     fun showLoading()
     fun showContent(values: List<StationModel>)
     fun nowPlaying(station: StationModel, inFavorites: Boolean)
+    fun nowPlayingEmpty()
 
     fun getRecyclerState(): Parcelable?
     fun setRecyclerState(state: Parcelable)
@@ -57,11 +56,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     override val playerControll =
         inflater.inflate(R.layout.exo_player_control_view, null) as PlayerControlView
-
-    override val playerView = PlayerView(context).apply {
-        useController = false
-        isVisible = false
-    }
 
     private val rvStationList = RecyclerView(context).apply {
         setHasFixedSize(true)
@@ -94,11 +88,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     init {
         contourHeightMatchParent()
 
-        playerControll.layoutBy(
-            rightTo { parent.right() },
-            bottomTo { parent.bottom() }
-        )
-
         stationsCount.layoutBy(
             rightTo { parent.right() - 16.xdip },
             topTo { parent.top() }
@@ -123,7 +112,12 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             x = leftTo { parent.left() }
                 .rightTo { if (expanded) parent.right() else playerControll.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
-                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
+                .bottomTo { parent.bottom() }
+        )
+
+        playerControll.layoutBy(
+            rightTo { parent.right() },
+            bottomTo { parent.bottom() }
         )
     }
 
@@ -148,6 +142,11 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
         nowPlayingView.update(station, inFavorites)
+    }
+
+    override fun nowPlayingEmpty() {
+        nowPlayingView.updateEmpty()
+        dimmingView.isVisible = false
     }
 
     override fun getRecyclerState() = rvStationList.layoutManager?.onSaveInstanceState()

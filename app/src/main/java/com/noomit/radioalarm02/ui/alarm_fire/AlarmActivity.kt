@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import com.ncorti.slidetoact.SlideToActView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.service.AlarmReceiver
-import com.noomit.radioalarm02.tplog
+import com.noomit.radioalarm02.service.PlayerService
 import com.noomit.radioalarm02.util.BaseWakelockActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,15 +27,13 @@ class AlarmActivity : BaseWakelockActivity() {
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
         viewModel.melodyName = intent.getStringExtra(AlarmReceiver.BELL_NAME)
 
-        tplog("bellurl: ${viewModel.melodyUrl}")
-        tplog("melodyname: ${viewModel.melodyName}")
-
         val action = intent.action ?: ACTION_TEST
         findViewById<SlideToActView>(R.id.slide_to_wake).onSlideCompleteListener = object :
             SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
                 if (action == ACTION_FIRE) {
                     viewModel.alarmFired()
+                    application.stopService(PlayerService.intent(this@AlarmActivity))
                     onBackPressed()
                 } else {
                     onBackPressed()
@@ -51,6 +49,12 @@ class AlarmActivity : BaseWakelockActivity() {
             viewModel.melodyUrl = it.getStringExtra(AlarmReceiver.BELL_URL)
             viewModel.melodyName = it.getStringExtra(AlarmReceiver.BELL_NAME)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        application.startService(PlayerService.intent(this))
     }
 
     private fun setWindowTransparency() {

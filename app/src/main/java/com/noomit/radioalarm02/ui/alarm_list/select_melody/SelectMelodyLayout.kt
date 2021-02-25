@@ -1,34 +1,35 @@
 package com.noomit.radioalarm02.ui.alarm_list.select_melody
 
 import android.content.Context
+import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import com.google.android.material.button.MaterialButton
 import com.noomit.domain.entities.StationModel
-import com.noomit.radioalarm02.ui.favorites.FavoritesLayout
-import com.noomit.radioalarm02.ui.favorites.IFavoritesLayout
+import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.IStationListLayout
+import com.noomit.radioalarm02.ui.radio_browser.stationlist.StationListLayout
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
-interface ISelectMelodyLayout : IFavoritesLayout {
+interface ISelectMelodyLayout : IStationListLayout {
     var onSetMelodyClick: (() -> Unit)?
     var onSetDefaultRingtone: (() -> Unit)?
 }
 
 class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet), ISelectMelodyLayout {
-
     override var onSetMelodyClick: (() -> Unit)? = null
 
     override var onSetDefaultRingtone: (() -> Unit)? = null
 
-    private val favorites = FavoritesLayout(context)
+    private val favorites = StationListLayout(context)
 
     private val btnSetup = MaterialButton(context).apply {
-//        text = "Set"
+        text = resources.getString(R.string.btn_set)
         isEnabled = false
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.MARQUEE
@@ -40,7 +41,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.btns.text.attr,
     ).apply {
-//        text = "Set default"
+        text = resources.getString(R.string.btn_set_default)
         setOnClickListener { onSetDefaultRingtone?.invoke() }
     }
 
@@ -61,8 +62,6 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
 
     override val playerControll = favorites.playerControll
 
-    override val playerView = favorites.playerView
-
     override var listener: NowPlayingListener? = null
 
     override fun setStationsAdapter(adapter: StationListAdapter) =
@@ -73,7 +72,6 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
     override fun showContent(values: List<StationModel>) = favorites.showContent(values)
 
     override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
-//        btnSetup.text = station.name
         btnSetup.isEnabled = true
         favorites.nowPlaying(station, inFavorites)
     }
@@ -82,4 +80,8 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         btnSetup.isEnabled = false
         favorites.nowPlayingEmpty()
     }
+
+    override fun getRecyclerState(): Parcelable? = null
+
+    override fun setRecyclerState(state: Parcelable) {}
 }

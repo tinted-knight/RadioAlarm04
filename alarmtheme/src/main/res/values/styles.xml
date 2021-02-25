@@ -151,10 +151,10 @@
         <item name="android:fontFamily">@font/pt_sans_narrow</item>
         <item name="android:background">@drawable/tag_background</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:paddingStart">6dp</item>
-        <item name="android:paddingEnd">6dp</item>
-        <!--        <item name="android:paddingTop">2dp</item>-->
-        <!--        <item name="android:paddingBottom">2dp</item>-->
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
     <style name="LightTheme.NowplayingTitle" parent="Widget.MaterialComponents.TextView">
@@ -182,6 +182,13 @@
 
     <style name="LightTheme.HelpDivider">
         <item name="android:background">@color/helpBackground</item>
+    </style>
+
+    <style name="LightTheme.ExoPlayerFab" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@drawable/fake_fab</item>
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:tint">@color/clOnPrimary</item>
     </style>
 
 </resources>

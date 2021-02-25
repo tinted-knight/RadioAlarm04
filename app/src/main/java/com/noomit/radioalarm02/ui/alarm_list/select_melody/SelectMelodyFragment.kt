@@ -10,8 +10,8 @@ import com.noomit.radioalarm02.service.MediaItem
 import com.noomit.radioalarm02.ui.alarm_list.HomeViewModel
 import com.noomit.radioalarm02.ui.favorites.FavoritesViewModel
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
-import com.noomit.radioalarm02.util.PlayerServiceFragment
-import com.noomit.radioalarm02.util.collect
+import com.noomit.radioalarm02.util.fragment.PlayerServiceFragment
+import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +32,6 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
 
     override fun initPlayerViews() {
         playerControlView = contour.playerControll
-        playerView = contour.playerView
     }
 
     override fun prepareView(savedState: Bundle?) {
@@ -65,9 +64,14 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
                 service?.play()
                 contour.nowPlaying(it.station, it.inFavorites)
             } else {
-                service?.stop()
+                service?.pause()
                 contour.nowPlayingEmpty()
             }
         }
+    }
+
+    override fun onStop() {
+        service?.pause()
+        super.onStop()
     }
 }

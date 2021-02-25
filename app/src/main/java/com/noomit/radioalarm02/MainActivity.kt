@@ -1,5 +1,9 @@
 package com.noomit.radioalarm02
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -11,10 +15,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.noomit.radioalarm02.service.PlayerService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private var playerBroadcastReceiver: BroadcastReceiver? = null
+
+    private var isPlaying = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,16 +42,43 @@ class MainActivity : AppCompatActivity() {
         setWindowsTransparency()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        application.startService(PlayerService.intent(this))
+
+        playerBroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                when (intent?.action) {
+                    PlayerService.BR_ACTION_ERROR -> {
+                        val codeError = intent.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)
+                        if (codeError == PlayerService.BR_CODE_ERROR) toast(getString(R.string.toast_cannot_connect_to_station))
+                    }
+                    PlayerService.BR_ACTION_STATE -> {
+                        isPlaying = intent.getBooleanExtra(PlayerService.BR_MEDIA_IS_PLAYING, false)
+                    }
+                }
+            }
+        }
+        registerReceiver(playerBroadcastReceiver, IntentFilter(PlayerService.BR_ACTION_ERROR))
+        registerReceiver(playerBroadcastReceiver, IntentFilter(PlayerService.BR_ACTION_STATE))
+    }
+
+    override fun onPause() {
+        unregisterReceiver(playerBroadcastReceiver)
+        if (!isPlaying) stopService(PlayerService.intent(this))
+        playerBroadcastReceiver = null
+        super.onPause()
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
         when (newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                tplog("configuration changed, night")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
             Configuration.UI_MODE_NIGHT_NO -> {
-                tplog("configuration changed, light")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }
