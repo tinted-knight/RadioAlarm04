@@ -32,7 +32,6 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
 
     override fun initPlayerViews() {
         playerControlView = contour.playerControll
-        playerView = contour.playerView
     }
 
     override fun prepareView(savedState: Bundle?) {

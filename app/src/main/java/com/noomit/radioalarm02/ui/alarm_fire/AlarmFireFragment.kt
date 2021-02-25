@@ -71,7 +71,6 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
 
     override fun initPlayerViews() {
         playerControlView = contour.playerControll
-        playerView = contour.playerView
     }
 
     override fun observeViewModel() {

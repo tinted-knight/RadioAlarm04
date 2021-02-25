@@ -94,11 +94,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     init {
         contourHeightMatchParent()
 
-        playerControll.layoutBy(
-            rightTo { parent.right() },
-            bottomTo { parent.bottom() }
-        )
-
         stationsCount.layoutBy(
             rightTo { parent.right() - 16.xdip },
             topTo { parent.top() }
@@ -124,7 +119,11 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
                 .rightTo { if (expanded) parent.right() else playerControll.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
                 .bottomTo { parent.bottom() }
-//                .bottomTo { if (expanded) playerControll.top() else parent.bottom() }
+        )
+
+        playerControll.layoutBy(
+            rightTo { parent.right() },
+            bottomTo { parent.bottom() }
         )
     }
 

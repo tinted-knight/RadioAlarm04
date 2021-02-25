@@ -49,7 +49,6 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
     override fun initPlayerViews() {
         val view = (view as IStationListLayout)
         playerControlView = view.playerControll
-        playerView = view.playerView
     }
 
     override fun prepareView(savedState: Bundle?) {

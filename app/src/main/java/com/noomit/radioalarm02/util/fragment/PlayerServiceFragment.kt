@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.os.IBinder
 import android.view.View
 import com.google.android.exoplayer2.ui.PlayerControlView
-import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.radioalarm02.service.PlayerService
 
 abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
 
-    protected var playerView: PlayerView? = null
     protected var playerControlView: PlayerControlView? = null
 
     protected var service: PlayerService.PlayerServiceBinder? = null
@@ -62,9 +60,7 @@ abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
     }
 
     override fun onDestroyView() {
-        playerView?.player = null
         playerControlView?.player = null
-        playerView = null
         playerControlView = null
         super.onDestroyView()
     }
