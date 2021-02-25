@@ -33,7 +33,7 @@
     <string name="nav_label_search">Поиск</string>
     <string name="toast_cannot_connect_to_station">Не могу соединиться со станцией</string>
     <!-- PlayerService -->
-    <string name="action_pause">Остановить</string>
+    <string name="action_pause">Пауза</string>
     <string name="action_play">Играть</string>
     <string name="state_paused">Пауза</string>
     <string name="state_playing">Играет</string>

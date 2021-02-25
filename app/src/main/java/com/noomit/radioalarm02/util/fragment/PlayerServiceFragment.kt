@@ -73,6 +73,7 @@ abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
     private fun bindExoPlayerService() {
         requireActivity().apply {
             val intent = PlayerService.intent(this)
+            application.startService(intent)
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
