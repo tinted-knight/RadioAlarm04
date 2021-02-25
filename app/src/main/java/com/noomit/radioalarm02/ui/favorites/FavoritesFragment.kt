@@ -9,8 +9,8 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.service.MediaItem
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.StationListAdapter
-import com.noomit.radioalarm02.util.PlayerServiceFragment
-import com.noomit.radioalarm02.util.collect
+import com.noomit.radioalarm02.util.fragment.PlayerServiceFragment
+import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

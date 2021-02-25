@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.util
+package com.noomit.radioalarm02.util.fragment
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
