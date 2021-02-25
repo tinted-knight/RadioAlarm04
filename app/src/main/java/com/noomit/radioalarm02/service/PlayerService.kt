@@ -55,7 +55,6 @@ class PlayerService : Service() {
     //      and release it in onUnbind
     //      LeakCanary shows Binder memory leak
     override fun onBind(intent: Intent): IBinder {
-        Log.d("tagg", "PlayerService.onBind")
         intent.let {
             exoPlayer.playWhenReady = false
             displayNotification(remoteViews)
@@ -68,7 +67,6 @@ class PlayerService : Service() {
     }
 
     override fun onCreate() {
-        Log.d("tagg", "PlayerService::onCreate")
         super.onCreate()
         val trackSelection = AdaptiveTrackSelection.Factory(DefaultBandwidthMeter())
         val trackSelector = DefaultTrackSelector(trackSelection)
@@ -77,14 +75,12 @@ class PlayerService : Service() {
     }
 
     override fun onDestroy() {
-        Log.d("tagg", "PlayerService::onDestroy")
         super.onDestroy()
         exoPlayer.release()
         hideNotification()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("tagg", "PlayerService.onStartCommand")
         intent?.let {
             when (it.getIntExtra(PLAY_PAUSE_ACTION, -1)) {
                 PLAY_PAUSE_VALUE -> mediaTitle?.let {
