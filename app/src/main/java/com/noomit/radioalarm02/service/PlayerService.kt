@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -30,7 +29,7 @@ class PlayerService : Service() {
 
     companion object {
         const val PLAY_PAUSE_ACTION = "action-play-pause"
-        const val PLAY_PAUSE_VALUE = 1001
+        const val STOP_ACTION = "action-stop"
 
         const val NOTIFICATION_ID = 42
         const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
@@ -42,7 +41,9 @@ class PlayerService : Service() {
         const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
         const val BR_CODE_ERROR = 1
 
-        fun intent(context: Context) = Intent(context, PlayerService::class.java)
+        fun intent(context: Context, action: String? = null) = Intent(context, PlayerService::class.java).apply {
+            action?.let { this.action = it }
+        }
     }
 
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -51,19 +52,23 @@ class PlayerService : Service() {
 
     private var binder = PlayerServiceBinder()
 
-    //  #todo may need to save PlayerServiceBinder in field
-    //      and release it in onUnbind
-    //      LeakCanary shows Binder memory leak
+    private val pintentPlayPause: PendingIntent
+        get() = PendingIntent.getService(this, 0, intent(this, PLAY_PAUSE_ACTION), 0)
+
+    private val pintentStopService: PendingIntent
+        get() = PendingIntent.getService(this, 0, intent(this, STOP_ACTION), 0)
+
     override fun onBind(intent: Intent): IBinder {
         intent.let {
             exoPlayer.playWhenReady = false
-            displayNotification(remoteViews)
+            displayNotification()
         }
         return binder
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        return super.onUnbind(intent)
+        updateNotification()
+        return false
     }
 
     override fun onCreate() {
@@ -82,12 +87,14 @@ class PlayerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
-            when (it.getIntExtra(PLAY_PAUSE_ACTION, -1)) {
-                PLAY_PAUSE_VALUE -> mediaTitle?.let {
+            when (it.action) {
+                PLAY_PAUSE_ACTION -> mediaTitle?.let {
                     exoPlayer.playWhenReady = !exoPlayer.playWhenReady
                 }
-//                -1 -> exoPlayer.playWhenReady = false
-                else -> exoPlayer.playWhenReady = true
+                STOP_ACTION -> {
+                    stopService(intent(this))
+                }
+//                else -> exoPlayer.playWhenReady = true
             }
             updateNotification()
         }
@@ -96,7 +103,6 @@ class PlayerService : Service() {
 
     private val playerStateListener = object : Player.DefaultEventListener() {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            Log.d("tagg", "PlayerService.onPlayerStateChanged, $playbackState")
             when (playbackState) {
                 Player.STATE_READY -> {
                     updateNotification()
@@ -125,24 +131,21 @@ class PlayerService : Service() {
         manager.cancelAll()
     }
 
-    private fun displayNotification(content: RemoteViews = this.remoteViews) {
-        val intentPlayPause = PendingIntent.getService(
-            this,
-            0,
-            intent(this).apply {
-                putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
-            },
-            0,
-        )
+    private fun displayNotification() {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, NOTIF_CHANNEL_ID).apply {
-            setContent(content)
+            setContent(remoteViews)
             setContentTitle(mediaTitle)
             setContentText(if (exoPlayer.playWhenReady) getString(R.string.state_playing) else getString(R.string.state_paused))
             addAction(
                 R.drawable.ic_play_arrow_24,
                 if (exoPlayer.playWhenReady) getString(R.string.action_pause) else getString(R.string.action_play),
-                intentPlayPause
+                pintentPlayPause
+            )
+            addAction(
+                R.drawable.ic_play_arrow_24,
+                getString(R.string.btn_close),
+                pintentStopService
             )
             setSmallIcon(R.drawable.ic_radio_24)
         }
@@ -163,20 +166,13 @@ class PlayerService : Service() {
 
     private fun updateNotification() {
         updateRemoteViews()
-        displayNotification(remoteViews)
+        displayNotification()
     }
 
     private val remoteViews: RemoteViews by lazy(LazyThreadSafetyMode.NONE) {
-        val intent = PendingIntent.getService(
-            this,
-            0,
-            intent(this).apply {
-                putExtra(PLAY_PAUSE_ACTION, PLAY_PAUSE_VALUE)
-            },
-            0,
-        )
         RemoteViews(packageName, R.layout.notification_player).apply {
-            setOnClickPendingIntent(R.id.tv_play_pause, intent)
+            setOnClickPendingIntent(R.id.tv_play_pause, pintentPlayPause)
+            setOnClickPendingIntent(R.id.tv_stop, pintentStopService)
             composeRemoteViews(this)
         }
     }
