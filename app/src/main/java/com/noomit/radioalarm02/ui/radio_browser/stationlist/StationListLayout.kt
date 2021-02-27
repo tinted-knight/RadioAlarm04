@@ -116,8 +116,8 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
         )
 
         playerControll.layoutBy(
-            rightTo { parent.right() },
-            bottomTo { parent.bottom() }
+            rightTo { parent.right() - 8.xdip },
+            bottomTo { parent.bottom() - 8.ydip }
         )
     }
 

@@ -25,6 +25,7 @@
     <color name="clNowPlayingTitle">#8a000000</color>
     <color name="clNowPlayingTitleExpanded">#FFffffff</color>
     <color name="clNowPlayingLink">#3949AB</color>
+    <color name="clNowPlayingBitrate">#607D88</color>
     <!-- HelpView -->
     <color name="helpBackground">#3949AB</color>
     <color name="helpText">#ffffff</color>

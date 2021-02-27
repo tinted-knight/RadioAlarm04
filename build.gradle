@@ -6,7 +6,7 @@ buildscript {
     }
 
     ext {
-        kotlin_version = "1.4.30"
+        kotlin_version = "1.4.31"
 
         timber_version = '4.7.1'
         lifecycle_version = '2.3.0'

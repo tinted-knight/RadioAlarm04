@@ -39,8 +39,8 @@ abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
     open fun onServiceConnected() {}
 
     /**
-     * Here [playerView] and [playerControlView] need to be initialized with
-     * views in fragment's layout
+     * Here [playerControlView] need to be initialized with
+     * corresponding view in layout
      */
     protected abstract fun initPlayerViews()
 
