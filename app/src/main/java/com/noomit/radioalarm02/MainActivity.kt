@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         unregisterReceiver(playerBroadcastReceiver)
-        if (!isPlaying) stopService(PlayerService.intent(this))
+        if (!isPlaying) application.stopService(PlayerService.intent(this))
         playerBroadcastReceiver = null
         super.onPause()
     }
@@ -105,5 +105,15 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("key-isplaying", isPlaying)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        isPlaying = savedInstanceState.getBoolean("key-isplaying", false)
     }
 }
