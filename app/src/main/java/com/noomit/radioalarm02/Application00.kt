@@ -22,7 +22,7 @@ fun Context.toast(message: String?) {
     Toast.makeText(this, message ?: "message is null", Toast.LENGTH_SHORT).show()
 }
 
-fun tplog(message: String) = Timber.tag("tagg-main").i(message)
+fun ilog(message: String) = Timber.tag("tagg-main").i(message)
 
 inline fun <T> getResourceApi23(more: () -> T, less: () -> T) =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

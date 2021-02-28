@@ -6,24 +6,22 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.ilog
+import java.util.regex.Pattern
 
 class PlayerService : Service() {
 
@@ -73,9 +71,7 @@ class PlayerService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val trackSelection = AdaptiveTrackSelection.Factory(DefaultBandwidthMeter())
-        val trackSelector = DefaultTrackSelector(trackSelection)
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
+        exoPlayer = SimpleExoPlayer.Builder(this).build()
         exoPlayer.addListener(playerStateListener)
     }
 
@@ -101,7 +97,7 @@ class PlayerService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private val playerStateListener = object : Player.DefaultEventListener() {
+    private val playerStateListener = object : Player.EventListener {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_READY -> {
@@ -110,13 +106,11 @@ class PlayerService : Service() {
                     intent.putExtra(BR_MEDIA_IS_PLAYING, exoPlayer.playWhenReady)
                     sendBroadcast(intent)
                 }
-//                Player.STATE_IDLE -> plog("IDLE")
-//                Player.STATE_BUFFERING -> plog("BUFFERING")
-//                Player.STATE_ENDED -> plog("ENDED")
+                else -> ilog("-STATE_READY")
             }
         }
 
-        override fun onPlayerError(error: ExoPlaybackException?) {
+        override fun onPlayerError(error: ExoPlaybackException) {
             val intent = Intent(BR_ACTION_ERROR)
             intent.putExtra(BR_MEDIA_UNAVAILABLE, BR_CODE_ERROR)
             sendBroadcast(intent)
@@ -194,16 +188,22 @@ class PlayerService : Service() {
     }
 
     private fun playMedia(mediaUrl: String) {
-        val dataSourceFactory = DefaultDataSourceFactory(
-            this,
-            Util.getUserAgent(this, javaClass.simpleName),
-            DefaultBandwidthMeter()
-        )
-        val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory)
-            .setExtractorsFactory(DefaultExtractorsFactory())
-            .createMediaSource(Uri.parse(mediaUrl))
-        exoPlayer.prepare(mediaSource, true, false)
-        updateNotification()
+        val userAgent = Util.getUserAgent(this, javaClass.simpleName)
+        val isHls = Pattern.compile(".*\\.m3u8([#?\\s].*)?$")
+            .matcher(mediaUrl)
+            .matches()
+
+        val dataSourceFactory = DefaultHttpDataSource.Factory()
+        dataSourceFactory.setUserAgent(userAgent)
+        val mediaSource = if (isHls) {
+            HlsMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(MediaItem.fromUri(mediaUrl))
+        } else {
+            ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(MediaItem.fromUri(mediaUrl))
+        }
+        exoPlayer.setMediaSource(mediaSource)
+        exoPlayer.prepare()
     }
 
     inner class PlayerServiceBinder : Binder() {
@@ -220,7 +220,7 @@ class PlayerService : Service() {
             updateNotification()
         }
 
-        var mediaItem = MediaItem("", "")
+        var mediaItem = ServiceMediaItem("", "")
             set(value) {
                 mediaTitle = value.title
                 playMedia(value.url)
@@ -234,7 +234,7 @@ class PlayerService : Service() {
     }
 }
 
-data class MediaItem(
+data class ServiceMediaItem(
     val url: String,
     val title: String,
 )

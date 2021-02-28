@@ -42,7 +42,7 @@ class StationManager constructor(
                         StationModel(
                             name = it.name,
                             upvotes = it.votes.toString(),
-                            streamUrl = it.url,
+                            streamUrl = it.url_resolved,
                             country = it.country,
                             homepage = it.homepage,
                             codec = it.codec,

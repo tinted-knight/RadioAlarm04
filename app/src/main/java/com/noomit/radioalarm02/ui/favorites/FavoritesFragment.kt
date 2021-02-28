@@ -7,7 +7,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.service.MediaItem
+import com.noomit.radioalarm02.service.ServiceMediaItem
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.IStationListLayout
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.StationListLayout
@@ -33,7 +33,7 @@ class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
     private var recyclerState: Parcelable? = null
 
     override fun initPlayerViews() {
-        playerControlView = contour.playerControll
+        playerControlView = contour.playerControl
     }
 
     override fun prepareView(savedState: Bundle?) {
@@ -61,7 +61,7 @@ class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
 
         collect(favoritesViewModel.nowPlaying) {
             if (it != null) {
-                service?.mediaItem = MediaItem(url = it.station.streamUrl, title = it.station.name)
+                service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
                 service?.play()
                 contour.nowPlaying(it.station, it.inFavorites)
             } else {

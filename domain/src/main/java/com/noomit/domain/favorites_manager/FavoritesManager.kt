@@ -21,8 +21,8 @@ class FavoritesManager constructor(
                     streamUrl = fav.stream_url,
                     country = fav.country,
                     homepage = fav.homepage,
-                    codec = "",
-                    bitrate = "",
+                    codec = fav.codec,
+                    bitrate = fav.bitrate,
                     favicon = fav.favicon,
                     tags = tagList,
                 )
@@ -34,6 +34,8 @@ class FavoritesManager constructor(
             Favorite(
                 name = station.name,
                 stream_url = station.streamUrl,
+                bitrate = station.bitrate,
+                codec = station.codec,
                 country = station.country,
                 homepage = station.homepage,
                 favicon = station.favicon,

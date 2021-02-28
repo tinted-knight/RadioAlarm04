@@ -10,8 +10,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.service.MediaItem
 import com.noomit.radioalarm02.service.PlayerService
+import com.noomit.radioalarm02.service.ServiceMediaItem
 import com.noomit.radioalarm02.util.fragment.PlayerServiceFragment
 import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +56,7 @@ class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
             return
         }
         viewModel.melodyUrl?.let {
-            service?.mediaItem = MediaItem(
+            service?.mediaItem = ServiceMediaItem(
                 url = it,
                 title = viewModel.melodyName ?: it
             )

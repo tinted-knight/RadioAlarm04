@@ -4,13 +4,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.noomit.radioalarm02"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +24,7 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        useIR = true
     }
 
     buildFeatures {
@@ -80,8 +81,8 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide"
     //ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer-core:$exo_payer"
-    implementation "com.google.android.exoplayer:exoplayer-dash:$exo_payer"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exo_payer"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$exo_payer"
     //SQLDelight
     implementation "com.squareup.sqldelight:android-driver:$sql_delight"
     implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"

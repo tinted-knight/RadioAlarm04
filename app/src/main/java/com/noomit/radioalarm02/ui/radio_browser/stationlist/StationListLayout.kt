@@ -30,7 +30,7 @@ import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface IStationListLayout {
-    val playerControll: PlayerControlView
+    val playerControl: PlayerControlView
     var listener: NowPlayingListener?
 
     fun setStationsAdapter(adapter: StationListAdapter)
@@ -54,7 +54,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
     private val inflater = LayoutInflater.from(context)
 
-    override val playerControll =
+    override val playerControl =
         inflater.inflate(R.layout.exo_player_control_view, null) as PlayerControlView
 
     private val rvStationList = RecyclerView(context).apply {
@@ -95,7 +95,7 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
         rvStationList.layoutBy(
             matchParentX(),
-            bottomTo { playerControll.top() }.topTo { stationsCount.bottom() }
+            bottomTo { playerControl.top() }.topTo { stationsCount.bottom() }
         )
 
         loadingIndicator.layoutBy(
@@ -105,17 +105,17 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
         dimmingView.layoutBy(
             x = matchParentX(),
-            y = topTo { parent.top() }.bottomTo { playerControll.top() }
+            y = topTo { parent.top() }.bottomTo { playerControl.top() }
         )
 
         nowPlayingView.layoutBy(
             x = leftTo { parent.left() }
-                .rightTo { if (expanded) parent.right() else playerControll.left() },
+                .rightTo { if (expanded) parent.right() else playerControl.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
                 .bottomTo { parent.bottom() }
         )
 
-        playerControll.layoutBy(
+        playerControl.layoutBy(
             rightTo { parent.right() - 8.xdip },
             bottomTo { parent.bottom() - 8.ydip }
         )

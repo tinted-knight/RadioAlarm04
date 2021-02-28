@@ -6,7 +6,7 @@ import com.noomit.domain.alarm_manager.AlarmManagerContract
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.domain.entities.StationModel
 import com.noomit.domain.server_manager.ServerManagerContract
-import com.noomit.radioalarm02.tplog
+import com.noomit.radioalarm02.ilog
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             serverManager.activeServer.collect {
                 if (it is ActiveServerState.Value) {
-                    tplog(it.serverInfo.urlString)
+                    ilog(it.serverInfo.urlString)
                 }
             }
         }

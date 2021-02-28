@@ -1,6 +1,8 @@
 CREATE TABLE favorite (
     name TEXT NOT NULL,
     stream_url TEXT NOT NULL PRIMARY KEY,
+    bitrate TEXT NOT NULL,
+    codec TEXT NOT NULL,
     country TEXT NOT NULL,
     homepage TEXT NOT NULL,
     favicon TEXT NOT NULL,
@@ -17,11 +19,11 @@ FROM favorite
 WHERE stream_url = :streamUrl;
 
 insert:
-INSERT INTO favorite(name, stream_url, country, homepage, favicon, tags)
+INSERT INTO favorite(name, stream_url, bitrate, codec, country, homepage, favicon, tags)
 VALUES ?;
 
 insertOrUpdate:
-REPLACE INTO favorite(name, stream_url, country, homepage, favicon, tags)
+REPLACE INTO favorite(name, stream_url, bitrate, codec, country, homepage, favicon, tags)
 VALUES ?;
 
 delete:

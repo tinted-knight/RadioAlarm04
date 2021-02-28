@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import com.noomit.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.service.MediaItem
+import com.noomit.radioalarm02.service.ServiceMediaItem
 import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.common.textFlow
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
@@ -48,7 +48,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
 
     override fun initPlayerViews() {
         val view = (view as IStationListLayout)
-        playerControlView = view.playerControll
+        playerControlView = view.playerControl
     }
 
     override fun prepareView(savedState: Bundle?) {
@@ -82,7 +82,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
             }
         }
         collect(stationViewModel.nowPlaying.filterNotNull()) {
-            service?.mediaItem = MediaItem(url = it.station.streamUrl, title = it.station.name)
+            service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
             service?.play()
             contour.nowPlaying(it.station, it.inFavorites)
         }

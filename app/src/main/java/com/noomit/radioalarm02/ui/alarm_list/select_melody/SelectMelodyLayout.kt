@@ -60,7 +60,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         )
     }
 
-    override val playerControll = favorites.playerControll
+    override val playerControl = favorites.playerControl
 
     override var listener: NowPlayingListener? = null
 
