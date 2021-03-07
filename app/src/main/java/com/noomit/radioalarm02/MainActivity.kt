@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -93,8 +95,12 @@ class MainActivity : AppCompatActivity() {
                 version21to23()
                 return
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                version23to29(nightMode)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+                version23to26(nightMode)
+                return
+            }
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O && Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                version26to29(nightMode)
                 return
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -116,16 +122,29 @@ class MainActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun version23to29(nightMode: Int) {
+    private fun version23to26(nightMode: Int) {
         window.decorView.apply {
             when (nightMode) {
                 Configuration.UI_MODE_NIGHT_NO -> {
                     systemUiVisibility = systemUiVisibility or
                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-//                    window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                    window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
                 }
-                Configuration.UI_MODE_NIGHT_YES -> systemUiVisibility = systemUiVisibility xor
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//                Configuration.UI_MODE_NIGHT_YES -> systemUiVisibility = systemUiVisibility xor
+//                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
+    }
+
+    @SuppressLint("InlinedApi")
+    @Suppress("DEPRECATION")
+    private fun version26to29(nightMode: Int) {
+        window.decorView.apply {
+            when (nightMode) {
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                }
             }
         }
     }
