@@ -23,6 +23,8 @@
         <item name="stationCountText">@style/LightTheme.TextStationCount</item>
         <item name="stationTag">@style/LightTheme.StationTag</item>
         <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
+        <item name="android:statusBarColor">@color/clStatusBarBackground</item>
+        <item name="android:navigationBarColor">@color/clStatusBarBackground</item>
         <item name="android:windowBackground">@color/clBackground</item>
         <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
         <item name="help_text">@style/LightTheme.HelpText</item>

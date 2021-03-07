@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        setWindowsTransparency()
+        setWindowDecoration()
     }
 
     override fun onResume() {
@@ -84,25 +86,73 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // #todo doesn't do what it says :))
-    //  need to be fixed
-    private fun setWindowsTransparency() {
+    private fun setWindowDecoration() {
         val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         window.decorView.apply {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                window.statusBarColor = Color.TRANSPARENT
+                version21to23()
                 return
             }
-            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
-                when (nightMode) {
-                    Configuration.UI_MODE_NIGHT_NO -> systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    Configuration.UI_MODE_NIGHT_YES -> window.statusBarColor =
-                        resources.getColor(R.color.clStausBarBackground, null)
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                version23to29(nightMode)
                 return
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                version30plus(nightMode)
+                return
+            }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun version21to23() {
+        window.statusBarColor = Color.parseColor("#40000000")
+        window.decorView.apply {
+            systemUiVisibility = systemUiVisibility or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun version23to29(nightMode: Int) {
+        window.decorView.apply {
+            when (nightMode) {
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    systemUiVisibility = systemUiVisibility or
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//                    window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                }
+                Configuration.UI_MODE_NIGHT_YES -> systemUiVisibility = systemUiVisibility xor
+                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
+    }
+
+    private fun version30plus(nightMode: Int) {
+        window.setDecorFitsSystemWindows(false)
+        val insetController = window.insetsController ?: return
+        when (nightMode) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                insetController.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                )
+                insetController.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                )
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+                insetController.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
+                insetController.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                )
             }
         }
     }
