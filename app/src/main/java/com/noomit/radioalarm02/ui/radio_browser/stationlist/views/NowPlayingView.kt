@@ -10,6 +10,7 @@ import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
+import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -18,6 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.transition.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -29,6 +32,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
+import com.noomit.radioalarm02.ui.animations.TitleTransition
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
@@ -45,6 +49,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     var nowPlayingListener: NowPlayingListener? = null
 
     private val title = MaterialTextView(context, null, appTheme.nowPlaying.titleStyle.attr).apply {
+        background = PaintDrawable(getColor(resources, R.color.clTitleBg, null))
         elevation = 4.0f
     }
 
@@ -143,7 +148,9 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         )
 
         title.apply {
-            background = null
+            background.alpha = 0
+            (background as PaintDrawable).setCornerRadius(0.1f)
+
             setTextColor(getColor(resources, R.color.clNowPlayingTitle, null))
             setPadding(0)
             textAlignment = TEXT_ALIGNMENT_TEXT_START
@@ -182,9 +189,11 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         val hSpacing = 8.xdip
 
         title.apply {
-            background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
-                setCornerRadius(16.0f)
-            }
+            background.alpha = 255
+            (background as PaintDrawable).setCornerRadius(16.0f)
+//            background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
+//                setCornerRadius(16.0f)
+//            }
             textAlignment = TEXT_ALIGNMENT_CENTER
             setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
             setPadding(16.dip, 8.dip, 16.dip, 8.dip)
@@ -229,6 +238,56 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             topTo { homePage.bottom() + vSpacing }
         )
     }
+
+    val layoutTransition: Transition
+        get() {
+            val transitionDuration = 400L
+            if (!isSelected) {
+                // expanding
+                return TransitionSet()
+                    .addTransition(ChangeBounds().apply {
+                        duration = transitionDuration
+                        interpolator = OvershootInterpolator(1f)
+                    })
+                    .addTransition(TitleTransition(collapse = false).apply {
+                        addTarget(title)
+                        duration = transitionDuration
+                        interpolator = FastOutSlowInInterpolator()
+                    })
+                    .addTransition(Fade().apply {
+                        addTarget(bitrate)
+                        addTarget(codec)
+                        addTarget(tagList)
+                        addTarget(btnClose)
+                        addTarget(btnFav)
+                        addTarget(homePage)
+                        startDelay = transitionDuration / 4
+                        duration = transitionDuration - startDelay
+                    })
+            } else {
+                // collapsing
+                return TransitionSet()
+                    .addTransition(ChangeBounds().apply {
+                        duration = transitionDuration
+                        interpolator = FastOutSlowInInterpolator()
+                    })
+                    .addTransition(TitleTransition(collapse = true).apply {
+                        addTarget(title)
+                        duration = transitionDuration
+                        interpolator = FastOutSlowInInterpolator()
+                    })
+                    .addTransition(Fade().apply {
+                        addTarget(bitrate)
+                        addTarget(codec)
+                        addTarget(tagList)
+                        addTarget(btnClose)
+                        addTarget(btnFav)
+                        addTarget(homePage)
+                        duration = transitionDuration / 2
+                        interpolator = LinearInterpolator()
+                    })
+            }
+        }
 
     override fun setSelected(selected: Boolean) {
         if (isLaidOut && selected == this.isSelected) return

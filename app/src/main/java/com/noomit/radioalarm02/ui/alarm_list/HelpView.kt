@@ -62,7 +62,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
 
     init {
         background = PaintDrawable(ContextCompat.getColor(context, appTheme.helpView.bgColor))
-        elevation = 4.0f
+        elevation = 6.0f
         stateListAnimator = ElevationAnimator(this)
         registerBackpressListener()
 
