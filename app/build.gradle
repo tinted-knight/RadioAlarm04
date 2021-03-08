@@ -24,16 +24,17 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-        useIR = true
+        useIR = false
     }
 
     buildFeatures {
-        viewBinding true
+        viewBinding false
     }
 
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
@@ -45,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation project(':data')
+    implementation project(":data")
     implementation project(":alarmtheme")
     implementation project(":domain")
 

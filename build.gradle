@@ -26,6 +26,8 @@ buildscript {
         hilt_version = '2.32-alpha'
         hilt_arch = '1.0.0-alpha03'
         leak_canary = '2.6'
+        retrofit='2.9.0'
+        retrofit_coroutines_adapter='0.9.2'
     }
 
     dependencies {
