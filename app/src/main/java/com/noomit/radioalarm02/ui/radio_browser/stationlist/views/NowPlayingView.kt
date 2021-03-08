@@ -1,7 +1,5 @@
 package com.noomit.radioalarm02.ui.radio_browser.stationlist.views
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
@@ -15,7 +13,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -75,8 +73,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private val stationPicture = ImageView(context)
 
-    private val iconInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconFavorite)
-    private val iconNotInFavorites = ContextCompat.getDrawable(context, appTheme.nowPlaying.iconNotFavorite)
+    private val iconInFavorites = loadResourceIcon(appTheme.nowPlaying.iconFavorite)
+    private val iconNotInFavorites = loadResourceIcon(appTheme.nowPlaying.iconNotFavorite)
 
     private val btnFav = ImageButton(
         ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
@@ -90,26 +88,26 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-//    private val btnHomePage = ImageButton(
-//        ContextThemeWrapper(context, appTheme.nowPlaying.favoriteStyleId),
-//        null,
-//        appTheme.nowPlaying.favoriteStyleId
-//    ).apply {
-//        setImageDrawable(ContextCompat.getDrawable(context, appTheme.nowPlaying.iconHomepage))
-//        setOnClickListener { nowPlayingListener?.onHomePageClick() }
-//        setOnLongClickListener {
-//            nowPlayingListener?.onHomePageLongClick()
-//            true
-//        }
-//    }
-
     private val btnClose = MaterialButton(
-        ContextThemeWrapper(context, appTheme.btns.outline.style),
+        ContextThemeWrapper(context, appTheme.nowPlaying.btnClose.style),
         null,
-        appTheme.btns.outline.attr,
+        appTheme.nowPlaying.btnClose.attr,
     ).apply {
         text = resources.getString(R.string.btn_close)
         setOnClickListener { this@NowPlayingView.performClick() }
+    }
+
+    private val btnFavorite = MaterialButton(
+        ContextThemeWrapper(context, appTheme.nowPlaying.btnFavorite.style),
+        null,
+        appTheme.nowPlaying.btnFavorite.attr,
+    ).apply {
+        text = resources.getString(R.string.favorites)
+        setOnClickListener { nowPlayingListener?.onFavoriteClick() }
+        setOnLongClickListener {
+            nowPlayingListener?.onFavoriteLongClick()
+            true
+        }
     }
 
     private fun buildChip(value: String) = TextView(
@@ -129,7 +127,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private fun collapsedLayout() {
-//        toggleCornerRaduis(false)
         setPadding(4.dip, 2.dip, 4.dip, 2.dip)
 
         title.isSingleLine = true
@@ -140,7 +137,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.isVisible = false
         btnClose.isVisible = false
         btnFav.isVisible = false
-//        btnHomePage.isVisible = false
+        btnFavorite.isVisible = false
 
         stationPicture.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -166,12 +163,11 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.layoutBy(emptyX(), emptyY())
         tagList.layoutBy(emptyX(), emptyY())
         btnFav.layoutBy(emptyX(), emptyY())
-//        btnHomePage.layoutBy(emptyX(), emptyY())
+        btnFavorite.layoutBy(emptyX(), emptyY())
         btnClose.layoutBy(emptyX(), emptyY())
     }
 
-    private fun expandedLayoutNew() {
-//        toggleCornerRaduis(true)
+    private fun expandedLayout() {
         setPadding(16.dip, 16.dip, 16.dip, 16.dip)
 
         title.isSingleLine = false
@@ -182,8 +178,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         bitrate.isVisible = bitrate.value.isNotBlank()
         tagList.isVisible = true
         btnClose.isVisible = true
-        btnFav.isVisible = true
-//        btnHomePage.isVisible = true
+        btnFavorite.isVisible = true
 
         val vSpacing = 8.ydip
         val hSpacing = 8.xdip
@@ -191,9 +186,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         title.apply {
             background.alpha = 255
             (background as PaintDrawable).setCornerRadius(16.0f)
-//            background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
-//                setCornerRadius(16.0f)
-//            }
+
             textAlignment = TEXT_ALIGNMENT_CENTER
             setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
             setPadding(16.dip, 8.dip, 16.dip, 8.dip)
@@ -225,14 +218,10 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             leftTo { parent.left() },
             bottomTo { parent.bottom() }
         )
-        btnFav.updateLayoutBy(
-            leftTo { btnClose.right() + hSpacing },
+        btnFavorite.updateLayoutBy(
+            rightTo { parent.right() },
             centerVerticallyTo { btnClose.centerY() }
         )
-//        btnHomePage.updateLayoutBy(
-//            leftTo { btnFav.right() + hSpacing },
-//            centerVerticallyTo { btnClose.centerY() }
-//        )
         tagList.updateLayoutBy(
             matchParentX(),
             topTo { homePage.bottom() + vSpacing }
@@ -259,7 +248,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
                         addTarget(codec)
                         addTarget(tagList)
                         addTarget(btnClose)
-                        addTarget(btnFav)
+                        addTarget(btnFavorite)
                         addTarget(homePage)
                         startDelay = transitionDuration / 4
                         duration = transitionDuration - startDelay
@@ -281,7 +270,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
                         addTarget(codec)
                         addTarget(tagList)
                         addTarget(btnClose)
-                        addTarget(btnFav)
+                        addTarget(btnFavorite)
                         addTarget(homePage)
                         duration = transitionDuration / 2
                         interpolator = LinearInterpolator()
@@ -292,7 +281,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     override fun setSelected(selected: Boolean) {
         if (isLaidOut && selected == this.isSelected) return
         super.setSelected(selected)
-        if (!selected) collapsedLayout() else expandedLayoutNew()
+        if (!selected) collapsedLayout() else expandedLayout()
     }
 
     private fun registerBackpressListener() {
@@ -308,31 +297,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     override fun getBackground() = super.getBackground() as PaintDrawable
-
-    private fun toggleCornerRaduis(show: Boolean) {
-        val fromRadius = if (show) 0.01f else 12.0f.dip
-        val toRadius = if (show) 12.0f.dip else 0.01f
-
-        val fromElevation = if (show) 0.0f else 6.0f
-        val toElevation = if (show) 6.0f else 0.0f
-
-        if (isLaidOut) {
-            val cornerAnimator = ObjectAnimator.ofFloat(fromRadius, toRadius)
-                .apply { addUpdateListener { background.setCornerRadius(it.animatedValue as Float) } }
-            val elevationAnimator = ObjectAnimator.ofFloat(fromElevation, toElevation)
-                .apply { addUpdateListener { elevation = it.animatedValue as Float } }
-
-            AnimatorSet().apply {
-                when {
-                    show -> playSequentially(elevationAnimator, cornerAnimator)
-                    else -> playSequentially(cornerAnimator, elevationAnimator)
-                }
-                duration = 200
-            }.start()
-        } else {
-            background.setCornerRadius(toRadius)
-        }
-    }
 
     // #todo when changing favorite update only icon
     fun update(station: StationModel, inFavorites: Boolean) {
@@ -353,10 +317,10 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             tagList.addView(chip)
         }
 
-        btnFav.setImageDrawable(when (inFavorites) {
+        btnFavorite.setCompoundDrawables(when (inFavorites) {
             true -> iconInFavorites
             false -> iconNotInFavorites
-        })
+        }, null, null, null)
 
         title.text = station.name
         title.apply {
@@ -413,5 +377,12 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
                 }
             })
             .into(stationPicture)
+    }
+
+    private fun loadResourceIcon(id: Int): Drawable? {
+        return ResourcesCompat.getDrawable(resources, id, null).apply {
+            this?.setBounds(0, 0, 40, 40)
+            this?.setTint(getColor(resources, R.color.clNowPlayingFavIcon, null))
+        };
     }
 }

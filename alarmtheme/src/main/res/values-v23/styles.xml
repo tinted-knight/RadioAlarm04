@@ -26,6 +26,8 @@
         <item name="android:statusBarColor">@color/clStatusBarBackground</item>
 <!--        <item name="android:navigationBarColor">@color/clStatusBarBackground</item>-->
         <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
+        <item name="nowplaying_close">@style/LightTheme.NowPlayingClose</item>
+        <item name="nowplaying_favorite">@style/LightTheme.NowPlayingFavorite</item>
         <item name="help_text">@style/LightTheme.HelpText</item>
         <item name="help_icon">@style/LightTheme.HelpIcon</item>
         <item name="help_fab">@style/LightTheme.FabImmitation</item>

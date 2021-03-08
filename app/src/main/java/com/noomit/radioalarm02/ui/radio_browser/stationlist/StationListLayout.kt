@@ -106,16 +106,16 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             y = topTo { parent.top() }.bottomTo { playerControl.top() }
         )
 
+        playerControl.layoutBy(
+            rightTo { parent.right() - 8.xdip },
+            bottomTo { parent.bottom() - 8.ydip }
+        )
+
         nowPlayingView.layoutBy(
             x = leftTo { parent.left() }
                 .rightTo { if (expanded) parent.right() else playerControl.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
                 .bottomTo { parent.bottom() }
-        )
-
-        playerControl.layoutBy(
-            rightTo { parent.right() - 8.xdip },
-            bottomTo { parent.bottom() - 8.ydip }
         )
     }
 
@@ -154,13 +154,6 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     }
 
     private fun nowPlayingClick(view: View) {
-//        TransitionManager.beginDelayedTransition(this, ChangeBounds()
-//            .setInterpolator(
-//                if (view.isSelected) FastOutLinearInInterpolator() else OvershootInterpolator(1f)
-//            )
-//            .setDuration(4_000)
-//        )
-
         TransitionManager.beginDelayedTransition(this, nowPlayingView.layoutTransition)
 
         view.isSelected = !view.isSelected

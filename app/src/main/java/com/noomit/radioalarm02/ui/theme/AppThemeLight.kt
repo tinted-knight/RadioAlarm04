@@ -27,6 +27,8 @@ interface ThemeNowPlaying {
     val tag: ViewStyle
     val titleStyle: ViewStyle
     val linkColor: Int
+    val btnClose: ViewStyle
+    val btnFavorite: ViewStyle
 }
 
 interface ThemeServerList {
@@ -93,6 +95,8 @@ data class AppThemeLight(
         override val tag = ViewStyle(S.LightTheme_StationTag, A.stationTag)
         override val titleStyle = ViewStyle(S.LightTheme_NowplayingTitle, A.nowplaying_title)
         override val linkColor = C.clNowPlayingLink
+        override val btnClose = ViewStyle(S.LightTheme_NowPlayingClose, A.nowplaying_close)
+        override val btnFavorite = ViewStyle(S.LightTheme_NowPlayingFavorite, A.nowplaying_favorite)
     },
     val serverList: ThemeServerList = object : ThemeServerList {
         override val bgColor = C.clCardBackground
