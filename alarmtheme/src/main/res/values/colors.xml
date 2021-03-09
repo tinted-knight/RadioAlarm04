@@ -6,7 +6,7 @@
     <color name="clAccent">#607D88</color>
     <color name="clSecondary">#039BE5</color>
     <color name="clBackground">#ffFFFFFF</color>
-    <color name="clStausBarBackground">#FFFFFF</color>
+    <color name="clStatusBarBackground">#FFFFFF</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>
     <color name="clFireTextColor">#FFFFFF</color>
