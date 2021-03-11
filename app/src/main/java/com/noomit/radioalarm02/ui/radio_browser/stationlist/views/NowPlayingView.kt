@@ -280,6 +280,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     override fun setSelected(selected: Boolean) {
         if (isLaidOut && selected == this.isSelected) return
+        if (title.text.isNullOrBlank()) return
         super.setSelected(selected)
         if (!selected) collapsedLayout() else expandedLayout()
     }
@@ -295,8 +296,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             }
         }
     }
-
-    override fun getBackground() = super.getBackground() as PaintDrawable
 
     // #todo when changing favorite update only icon
     fun update(station: StationModel, inFavorites: Boolean) {
