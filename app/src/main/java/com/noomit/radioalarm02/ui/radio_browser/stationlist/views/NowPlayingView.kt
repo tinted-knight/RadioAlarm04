@@ -335,6 +335,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     fun updateEmpty() {
+        isSelected = false
         title.text = ""
         stationPicture.setImageDrawable(null)
         homePage.text = ""
@@ -342,7 +343,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         codec.value = ""
         bitrate.value = ""
         tagList.removeAllViews()
-        isSelected = false
     }
 
     private fun loadStationIcon(station: StationModel) {

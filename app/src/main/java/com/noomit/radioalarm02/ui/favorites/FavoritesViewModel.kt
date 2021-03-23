@@ -26,14 +26,28 @@ class FavoritesViewModel @Inject constructor(
 
     val selectAll = favoritesManager.allEntries
 
-    private val _nowPlaying = MutableStateFlow<NowPlaying?>(null)
-    val nowPlaying: StateFlow<NowPlaying?> = _nowPlaying
+    private val _nowPlayingForService = MutableStateFlow<NowPlaying?>(null)
+    val nowPlayingForService: StateFlow<NowPlaying?> = _nowPlayingForService
+
+    private val _nowPlayingView = MutableStateFlow<NowPlaying?>(null)
+    val nowPlayingView: StateFlow<NowPlaying?> = _nowPlayingView
+
+    fun serviceIsPlaying(value: StationModel?) {
+        if (value == null) return
+
+        _nowPlayingView.value = NowPlaying(
+            station = value,
+            inFavorites = favoritesManager.check(value)
+        )
+    }
 
     override fun onClick(item: StationModel) {
-        _nowPlaying.value = NowPlaying(
+        val nowPlaying = NowPlaying(
             station = item,
             inFavorites = true,
         )
+        _nowPlayingForService.value = nowPlaying
+        _nowPlayingView.value = nowPlaying
     }
 
     override fun onLongClick(item: StationModel) {}
@@ -41,14 +55,14 @@ class FavoritesViewModel @Inject constructor(
     override fun onFavoriteClick() {}
 
     override fun onFavoriteLongClick() {
-        _nowPlaying.value?.let {
+        _nowPlayingForService.value?.let {
             favoritesManager.delete(it.station)
-            _nowPlaying.value = null
+            _nowPlayingForService.value = null
         }
     }
 
     override fun onHomePageClick() {
-        _nowPlaying.value?.let {
+        _nowPlayingForService.value?.let {
             navigateTo(FavoritesDirections.OpenExternalLink(it.station.homepage))
         }
     }

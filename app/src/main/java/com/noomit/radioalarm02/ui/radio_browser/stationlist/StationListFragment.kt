@@ -81,8 +81,16 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
                 else -> contour.showLoading()
             }
         }
-        collect(stationViewModel.nowPlaying.filterNotNull()) {
+        collect(stationViewModel.nowPlayingView) {
+            if (it == null) {
+                contour.nowPlayingEmpty()
+            } else {
+                contour.nowPlaying(it.station, it.inFavorites)
+            }
+        }
+        collect(stationViewModel.nowPlayingForService.filterNotNull()) {
             service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
+            service?.playingModel = it.station
             service?.play()
             contour.nowPlaying(it.station, it.inFavorites)
         }

@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     private fun version30plus(nightMode: Int) {
         window.setDecorFitsSystemWindows(false)
         val insetController = window.insetsController ?: return
