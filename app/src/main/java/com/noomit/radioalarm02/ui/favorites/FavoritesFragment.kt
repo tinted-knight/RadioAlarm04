@@ -68,7 +68,7 @@ class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
             } else {
                 service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
                 service?.playingModel = it.station
-                service?.play()
+                if (it.playImmediately) service?.play()
             }
         }
 

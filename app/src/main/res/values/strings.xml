@@ -49,4 +49,6 @@
     <string name="btn_close">Close</string>
     <string name="btn_set">Set</string>
     <string name="btn_set_default">Set default</string>
+    <string name="btn_favorites_add">Save</string>
+    <string name="btn_favorites_remove">Remove</string>
 </resources>

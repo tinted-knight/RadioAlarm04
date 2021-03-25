@@ -20,8 +20,7 @@ sealed class FavoritesDirections : NavCommand {
 // #think rewrite all to states
 class FavoritesViewModel @Inject constructor(
     private val favoritesManager: FavoritesManagerContract,
-) :
-    NavigationViewModel<FavoritesDirections>(),
+) : NavigationViewModel<FavoritesDirections>(),
     ItemClickListener<StationModel>, NowPlayingListener {
 
     val selectAll = favoritesManager.allEntries
@@ -52,11 +51,20 @@ class FavoritesViewModel @Inject constructor(
 
     override fun onLongClick(item: StationModel) {}
 
-    override fun onFavoriteClick() {}
+    override fun onFavoriteClick() {
+        _nowPlayingView.value?.let {
+            if (!it.inFavorites) {
+                favoritesManager.add(it.station)
+                _nowPlayingView.value = it.copy(inFavorites = true)
+                _nowPlayingForService.value = it.copy(inFavorites = true, playImmediately = false)
+            }
+        }
+    }
 
     override fun onFavoriteLongClick() {
         _nowPlayingForService.value?.let {
             favoritesManager.delete(it.station)
+            _nowPlayingView.value = it.copy(inFavorites = false)
             _nowPlayingForService.value = null
         }
     }

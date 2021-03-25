@@ -77,4 +77,5 @@ class StationViewModel @Inject constructor(
 data class NowPlaying(
     val station: StationModel,
     val inFavorites: Boolean,
+    val playImmediately: Boolean = true,
 )

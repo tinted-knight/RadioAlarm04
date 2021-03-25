@@ -49,4 +49,6 @@
     <string name="btn_close">Закрыть</string>
     <string name="btn_set">Установить</string>
     <string name="btn_set_default">По-умолчанию</string>
+    <string name="btn_favorites_add">Сохранить</string>
+    <string name="btn_favorites_remove">Удалить</string>
 </resources>

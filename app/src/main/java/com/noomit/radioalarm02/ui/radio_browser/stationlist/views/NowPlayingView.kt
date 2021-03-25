@@ -102,7 +102,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.nowPlaying.btnFavorite.attr,
     ).apply {
-        text = resources.getString(R.string.favorites)
         setOnClickListener { nowPlayingListener?.onFavoriteClick() }
         setOnLongClickListener {
             nowPlayingListener?.onFavoriteLongClick()
@@ -316,10 +315,13 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             tagList.addView(chip)
         }
 
-        btnFavorite.setCompoundDrawables(when (inFavorites) {
-            true -> iconInFavorites
-            false -> iconNotInFavorites
-        }, null, null, null)
+        if (inFavorites) {
+            btnFavorite.text = resources.getString(R.string.btn_favorites_remove)
+            btnFavorite.setCompoundDrawables(iconInFavorites, null, null, null)
+        } else {
+            btnFavorite.text = resources.getString(R.string.btn_favorites_add)
+            btnFavorite.setCompoundDrawables(iconNotInFavorites, null, null, null)
+        }
 
         title.text = station.name
         title.apply {
