@@ -167,14 +167,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     private fun expandedLayout() {
-        setPadding(16.dip, 16.dip, 16.dip, 16.dip)
+        setPadding(16.dip, 16.dip, 8.dip, 16.dip)
 
         title.isSingleLine = false
         title.maxLines = 2
         homePage.isVisible = true
         country.isVisible = true
+
         codec.isVisible = codec.value.isNotBlank()
         bitrate.isVisible = bitrate.value.isNotBlank()
+
         tagList.isVisible = true
         btnClose.isVisible = true
         btnFavorite.isVisible = true
@@ -190,7 +192,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
             setPadding(16.dip, 8.dip, 16.dip, 8.dip)
             updateLayoutBy(
-                matchParentX(),
+                matchParentX(marginRight = hSpacing.value),
                 topTo { parent.top() }
             )
         }
@@ -201,16 +203,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         )
 
         bitrate.updateLayoutBy(
-            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() - hSpacing},
             topTo { title.bottom() + vSpacing }
         )
 
         codec.updateLayoutBy(
-            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() },
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() - hSpacing },
             topTo { bitrate.bottom() + vSpacing }
         )
         homePage.updateLayoutBy(
-            leftTo { parent.left() }.rightTo { parent.right() },
+            leftTo { parent.left() },
             topTo { stationPicture.bottom() + vSpacing }
         )
         btnClose.updateLayoutBy(
@@ -304,8 +306,6 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             setSpan(UnderlineSpan(), 0, length, 0)
         }
         country.text = station.country
-        codec.value = station.codec
-        bitrate.value = station.bitrate
         codec.value = if (station.codec.isNotBlank()) station.codec else "MP42"
         bitrate.value = if (station.bitrate.isNotBlank()) station.bitrate else "2077"
         // #todo if collapsed, there is no need to create ChipGroup

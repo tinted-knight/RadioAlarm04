@@ -33,7 +33,7 @@ class LabeledView(context: Context) : ContourLayout(context) {
         setPadding(8.dip, 12.dip, 8.dip, 12.dip)
         elevation = 4.0f
 
-        background = PaintDrawable(getColor(resources, R.color.clNowPlayingBitrate, null)).apply {
+        background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
             setCornerRadius(16.0f)
         }
 
