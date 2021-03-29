@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O && Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                version26to29(nightMode)
+                version27to29(nightMode)
                 return
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -138,17 +138,19 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("InlinedApi")
     @Suppress("DEPRECATION")
-    private fun version26to29(nightMode: Int) {
+    private fun version27to29(nightMode: Int) {
         window.decorView.apply {
             when (nightMode) {
                 Configuration.UI_MODE_NIGHT_NO -> {
-                    systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                    systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+//                    window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
                 }
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     private fun version30plus(nightMode: Int) {
         window.setDecorFitsSystemWindows(false)
         val insetController = window.insetsController ?: return

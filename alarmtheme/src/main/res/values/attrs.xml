@@ -18,6 +18,8 @@
     <attr name="stationTag" format="reference" />
     <!--  Nowplaying  -->
     <attr name="nowplaying_title" format="reference" />
+    <attr name="nowplaying_close" format="reference" />
+    <attr name="nowplaying_favorite" format="reference" />
     <!-- HelpView -->
     <attr name="help_text" format="reference" />
     <attr name="help_icon" format="reference" />

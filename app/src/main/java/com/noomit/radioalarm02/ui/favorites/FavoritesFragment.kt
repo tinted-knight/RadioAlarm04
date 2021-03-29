@@ -57,16 +57,26 @@ class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
     override fun observeViewModel() {
         collect(favoritesViewModel.selectAll) {
             contour.showContent(it)
+            favoritesViewModel.serviceIsPlaying(service?.playingModel)
         }
 
-        collect(favoritesViewModel.nowPlaying) {
-            if (it != null) {
-                service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
-                service?.play()
-                contour.nowPlaying(it.station, it.inFavorites)
-            } else {
+        // #todo filterNotNull
+        collect(favoritesViewModel.nowPlayingForService) {
+            if (it == null) {
                 service?.pause()
+                service?.playingModel = null
+            } else {
+                service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
+                service?.playingModel = it.station
+                if (it.playImmediately) service?.play()
+            }
+        }
+
+        collect(favoritesViewModel.nowPlayingView) {
+            if (it == null) {
                 contour.nowPlayingEmpty()
+            } else {
+                contour.nowPlaying(it.station, it.inFavorites)
             }
         }
     }

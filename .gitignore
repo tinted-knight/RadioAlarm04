@@ -85,6 +85,8 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/assetWizardSettings.xml
+.idea/render.experimental.xml
+.idea/deploymentTargetDropDown.xml
 
 # OS-specific files
 .DS_Store

@@ -10,7 +10,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.LinearInterpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.animation.addListener
@@ -18,7 +17,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.noomit.domain.entities.StationModel
@@ -80,9 +78,9 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     private val dimmingView = View(context).apply {
         setBackgroundColor(ResourcesCompat.getColor(resources, appTheme.nowPlaying.dimmColor, null))
         isVisible = false
-        setOnClickListener {
-            if (nowPlayingView.isSelected) nowPlayingClick(nowPlayingView)
-        }
+//        setOnClickListener {
+//            if (nowPlayingView.isSelected) nowPlayingClick(nowPlayingView)
+//        }
     }
 
     init {
@@ -108,16 +106,16 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             y = topTo { parent.top() }.bottomTo { playerControl.top() }
         )
 
+        playerControl.layoutBy(
+            rightTo { parent.right() - 8.xdip },
+            bottomTo { parent.bottom() - 8.ydip }
+        )
+
         nowPlayingView.layoutBy(
             x = leftTo { parent.left() }
                 .rightTo { if (expanded) parent.right() else playerControl.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
                 .bottomTo { parent.bottom() }
-        )
-
-        playerControl.layoutBy(
-            rightTo { parent.right() - 8.xdip },
-            bottomTo { parent.bottom() - 8.ydip }
         )
     }
 
@@ -156,10 +154,8 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
     }
 
     private fun nowPlayingClick(view: View) {
-        TransitionManager.beginDelayedTransition(this, ChangeBounds()
-            .setInterpolator(OvershootInterpolator(1f))
-            .setDuration(400)
-        )
+        TransitionManager.beginDelayedTransition(this, nowPlayingView.layoutTransition)
+
         view.isSelected = !view.isSelected
 
         val anim = dimmigViewAnimator(view.isSelected)

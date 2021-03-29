@@ -42,7 +42,7 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
         }
         contour.listener = favoritesViewModel
         contour.onSetMelodyClick = {
-            favoritesViewModel.nowPlaying.value?.let {
+            favoritesViewModel.nowPlayingForService.value?.let {
                 viewModel.setMelody(it.station)
             }
             findNavController().popBackStack()
@@ -58,7 +58,7 @@ class SelectMelodyFragment : PlayerServiceFragment<ISelectMelodyLayout>() {
             contour.showContent(it)
         }
 
-        collect(favoritesViewModel.nowPlaying) {
+        collect(favoritesViewModel.nowPlayingForService) {
             if (it != null) {
                 service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
                 service?.play()

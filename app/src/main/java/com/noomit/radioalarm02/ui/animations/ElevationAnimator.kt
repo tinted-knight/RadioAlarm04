@@ -22,9 +22,9 @@ class ElevationAnimator(private val view: View) : StateListAnimator() {
         )
     }
 
-    private fun pressAnimator() = createAnimator(4.0f, 8.0f)
+    private fun pressAnimator() = createAnimator(6.0f, 12.0f)
 
-    private fun releaseAnimator() = createAnimator(8.0f, 4.0f)
+    private fun releaseAnimator() = createAnimator(12.0f, 6.0f)
 
     private fun createAnimator(fromElevation: Float, toElevation: Float): Animator {
         return ObjectAnimator.ofFloat(fromElevation, toElevation).apply {

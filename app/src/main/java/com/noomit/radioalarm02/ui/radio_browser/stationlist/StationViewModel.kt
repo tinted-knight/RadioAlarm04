@@ -26,17 +26,22 @@ class StationViewModel @Inject constructor(
 ) : ViewModel(),
     ItemClickListener<StationModel>, NowPlayingListener {
 
-    private val _nowPlaying = MutableStateFlow<NowPlaying?>(null)
-    val nowPlaying: StateFlow<NowPlaying?> = _nowPlaying
+    private val _nowPlayingForService = MutableStateFlow<NowPlaying?>(null)
+    val nowPlayingForService: StateFlow<NowPlaying?> = _nowPlayingForService
+
+    private val _nowPlayingView = MutableStateFlow<NowPlaying?>(null)
+    val nowPlayingView: StateFlow<NowPlaying?> = _nowPlayingView
 
     private val _message = MutableSharedFlow<UIMessage>()
     val uiMessage: SharedFlow<UIMessage> = _message
 
     override fun onClick(item: StationModel) {
-        _nowPlaying.value = NowPlaying(
+        val nowPlaying = NowPlaying(
             station = item,
             inFavorites = favoritesManager.check(item),
         )
+        _nowPlayingForService.value = nowPlaying
+        _nowPlayingView.value = nowPlaying
     }
 
     override fun onLongClick(item: StationModel) {
@@ -45,15 +50,15 @@ class StationViewModel @Inject constructor(
     }
 
     override fun onFavoriteClick() {
-        _nowPlaying.value?.let {
+        _nowPlayingForService.value?.let {
             if (!it.inFavorites) {
                 favoritesManager.add(it.station)
                 viewModelScope.launch { _message.emit(UIMessage.Added(it.station.name)) }
-                _nowPlaying.value = it.copy(inFavorites = true)
+                _nowPlayingView.value = it.copy(inFavorites = true)
             } else {
                 favoritesManager.delete(it.station)
                 viewModelScope.launch { _message.emit(UIMessage.Removed(it.station.name)) }
-                _nowPlaying.value = it.copy(inFavorites = false)
+                _nowPlayingView.value = it.copy(inFavorites = false)
             }
         }
     }
@@ -61,7 +66,7 @@ class StationViewModel @Inject constructor(
     override fun onFavoriteLongClick() {}
 
     override fun onHomePageClick() {
-        _nowPlaying.value?.let {
+        _nowPlayingForService.value?.let {
             viewModelScope.launch { _message.emit(UIMessage.OpenExternalLink(it.station.homepage)) }
         }
     }
@@ -72,4 +77,5 @@ class StationViewModel @Inject constructor(
 data class NowPlaying(
     val station: StationModel,
     val inFavorites: Boolean,
+    val playImmediately: Boolean = true,
 )

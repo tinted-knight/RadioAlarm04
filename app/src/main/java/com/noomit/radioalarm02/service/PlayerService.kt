@@ -19,8 +19,8 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
+import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.ilog
 import java.util.regex.Pattern
 
 class PlayerService : Service() {
@@ -106,7 +106,9 @@ class PlayerService : Service() {
                     intent.putExtra(BR_MEDIA_IS_PLAYING, exoPlayer.playWhenReady)
                     sendBroadcast(intent)
                 }
-                else -> ilog("-STATE_READY")
+                else -> {
+//                    ilog("-STATE_READY")
+                }
             }
         }
 
@@ -220,12 +222,16 @@ class PlayerService : Service() {
             updateNotification()
         }
 
-        var mediaItem = ServiceMediaItem("", "")
+        var mediaItem: ServiceMediaItem? = null
             set(value) {
+                if (value == null) return
+
                 mediaTitle = value.title
                 playMedia(value.url)
                 field = mediaItem
             }
+
+        var playingModel: StationModel? = null
 
         fun setCaption(value: String) {
             caption = value
