@@ -22,7 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
-        <activity android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity"></activity>
+        <activity
+            android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity"
+            android:theme="@style/LightTheme.Fullscreen"></activity>
 
         <activity
             android:name=".MainActivity"

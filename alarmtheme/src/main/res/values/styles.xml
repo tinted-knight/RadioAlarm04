@@ -35,6 +35,13 @@
         <item name="help_divider">@style/LightTheme.HelpDivider</item>
     </style>
 
+    <style name="LightTheme.Fullscreen" parent="LightTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
         <!--        <item name="android:indeterminateBehavior">repeat</item>-->
         <!--        <item name="android:indeterminateDuration">1000</item>-->

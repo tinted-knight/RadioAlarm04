@@ -1,11 +1,17 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.ncorti.slidetoact.SlideToActView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.service.AlarmReceiver
@@ -21,7 +27,7 @@ class AlarmActivity : BaseWakelockActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm)
-        setWindowTransparency()
+        setWindowDecoration()
 
         viewModel.alarmId = intent.getLongExtra(AlarmReceiver.ALARM_ID, -1)
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
@@ -57,14 +63,84 @@ class AlarmActivity : BaseWakelockActivity() {
         application.startService(PlayerService.intent(this))
     }
 
-    private fun setWindowTransparency() {
+    private fun setWindowDecoration() {
+        val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         window.decorView.apply {
-            systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                    View.SYSTEM_UI_FLAG_LOW_PROFILE
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                version21to23()
+                return
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+                version23to26(nightMode)
+                return
+            }
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O && Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                version27to29(nightMode)
+                return
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                version30plus(nightMode)
+                return
+            }
         }
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.TRANSPARENT
+    }
+
+    @Suppress("DEPRECATION")
+    private fun version21to23() {
+        window.statusBarColor = Color.parseColor("#40000000")
+        window.decorView.apply {
+            systemUiVisibility = systemUiVisibility or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun version23to26(nightMode: Int) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+        window.decorView.apply {
+            systemUiVisibility = systemUiVisibility or
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+    }
+
+    @SuppressLint("InlinedApi")
+    @Suppress("DEPRECATION")
+    private fun version27to29(nightMode: Int) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or
+//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun version30plus(nightMode: Int) {
+        window.setDecorFitsSystemWindows(false)
+        val insetController = window.insetsController ?: return
+        when (nightMode) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                insetController.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                )
+                insetController.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                )
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+                insetController.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
+                insetController.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                )
+            }
+        }
     }
 
     companion object {
