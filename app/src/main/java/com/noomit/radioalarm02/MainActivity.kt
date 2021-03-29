@@ -33,6 +33,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Template to request "change brightness" permission
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+//            if (Settings.System.canWrite(this)) {
+//                ilog("can write")
+//            } else {
+//                ilog("cannot write")
+//                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+//                intent.data = Uri.parse("package:$packageName")
+//                startActivity(intent)
+//            }
+//        }
+
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
