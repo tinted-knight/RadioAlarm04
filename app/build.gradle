@@ -24,7 +24,7 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-        useIR = false
+        useIR = true
     }
 
     buildFeatures {
@@ -97,4 +97,6 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_arch"
 //    kapt "androidx.hilt:hilt-compiler:$hilt_version"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:$work_manager"
 }
