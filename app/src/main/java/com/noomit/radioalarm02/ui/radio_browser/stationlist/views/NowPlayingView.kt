@@ -39,6 +39,9 @@ interface NowPlayingListener {
     fun onFavoriteLongClick()
     fun onHomePageClick()
     fun onHomePageLongClick()
+
+    fun onVolumeUp()
+    fun onVolumeDown()
 }
 
 class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
@@ -117,6 +120,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         text = value
     }
 
+    // #achtung
+    private val btnUp = MaterialButton(context).apply {
+        text = "Up"
+        setOnClickListener { nowPlayingListener?.onVolumeUp() }
+    }
+    private val btnDown = MaterialButton(context).apply {
+        text = "Down"
+        setOnClickListener { nowPlayingListener?.onVolumeDown() }
+    }
+
     init {
         background = PaintDrawable(getColor(resources, appTheme.nowPlaying.bgColor, null))
         registerBackpressListener()
@@ -137,6 +150,9 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         btnClose.isVisible = false
         btnFav.isVisible = false
         btnFavorite.isVisible = false
+
+        btnUp.isVisible = false
+        btnDown.isVisible = false
 
         stationPicture.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -164,6 +180,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         btnFav.layoutBy(emptyX(), emptyY())
         btnFavorite.layoutBy(emptyX(), emptyY())
         btnClose.layoutBy(emptyX(), emptyY())
+        btnUp.layoutBy(emptyX(), emptyY())
+        btnDown.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayout() {
@@ -203,7 +221,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         )
 
         bitrate.updateLayoutBy(
-            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() - hSpacing},
+            leftTo { stationPicture.right() + hSpacing }.rightTo { parent.right() - hSpacing },
             topTo { title.bottom() + vSpacing }
         )
 
@@ -226,6 +244,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         tagList.updateLayoutBy(
             matchParentX(),
             topTo { homePage.bottom() + vSpacing }
+        )
+        btnUp.isVisible = true
+        btnDown.isVisible = true
+        btnUp.updateLayoutBy(
+            leftTo { codec.left() },
+            topTo { codec.bottom() + vSpacing }
+        )
+        btnDown.updateLayoutBy(
+            leftTo { btnUp.right() + hSpacing },
+            topTo { codec.bottom() + vSpacing }
         )
     }
 

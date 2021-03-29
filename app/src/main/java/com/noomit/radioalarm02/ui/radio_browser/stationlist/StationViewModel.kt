@@ -72,6 +72,14 @@ class StationViewModel @Inject constructor(
     }
 
     override fun onHomePageLongClick() {}
+
+    override fun onVolumeUp() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onVolumeDown() {
+        TODO("Not yet implemented")
+    }
 }
 
 data class NowPlaying(

@@ -39,9 +39,10 @@ class PlayerService : Service() {
         const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
         const val BR_CODE_ERROR = 1
 
-        fun intent(context: Context, action: String? = null) = Intent(context, PlayerService::class.java).apply {
-            action?.let { this.action = it }
-        }
+        fun intent(context: Context, action: String? = null) =
+            Intent(context, PlayerService::class.java).apply {
+                action?.let { this.action = it }
+            }
     }
 
     private lateinit var exoPlayer: SimpleExoPlayer
