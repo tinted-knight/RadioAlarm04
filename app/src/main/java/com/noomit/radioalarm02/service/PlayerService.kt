@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
 import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
+import java.lang.ref.WeakReference
 import java.util.regex.Pattern
 
 class PlayerService : Service() {
@@ -39,16 +40,17 @@ class PlayerService : Service() {
         const val BR_MEDIA_IS_PLAYING = "br-service-is-playing"
         const val BR_CODE_ERROR = 1
 
-        fun intent(context: Context, action: String? = null) = Intent(context, PlayerService::class.java).apply {
-            action?.let { this.action = it }
-        }
+        fun intent(context: Context, action: String? = null) =
+            Intent(context, PlayerService::class.java).apply {
+                action?.let { this.action = it }
+            }
     }
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private var mediaTitle: String? = null
     private var caption: String? = null
 
-    private var binder = PlayerServiceBinder()
+    private var binder = WeakReference<PlayerServiceBinder>(null)
 
     private val pintentPlayPause: PendingIntent
         get() = PendingIntent.getService(this, 0, intent(this, PLAY_PAUSE_ACTION), 0)
@@ -56,12 +58,15 @@ class PlayerService : Service() {
     private val pintentStopService: PendingIntent
         get() = PendingIntent.getService(this, 0, intent(this, STOP_ACTION), 0)
 
-    override fun onBind(intent: Intent): IBinder {
+    override fun onBind(intent: Intent): IBinder? {
         intent.let {
             exoPlayer.playWhenReady = false
             displayNotification()
         }
-        return binder
+        if (binder.get() == null) {
+            binder = WeakReference(PlayerServiceBinder())
+        }
+        return binder.get()
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

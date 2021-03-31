@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.noomit.radioalarm02">
 
@@ -8,6 +9,10 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+<!--    <uses-permission-->
+<!--        android:name="android.permission.WRITE_SETTINGS"-->
+<!--        tools:ignore="ProtectedPermissions" />-->
 
     <application
         android:name=".Application00"
@@ -20,9 +25,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
-        <activity android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity"></activity>
+        <activity
+            android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity"
+            android:theme="@style/LightTheme.Fullscreen"></activity>
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,9 +41,21 @@
 
         <receiver android:name=".service.AlarmReceiver" />
 
+        <receiver
+            android:name=".service.device_reboot.BootCompletedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".service.PlayerService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
     </application>
 

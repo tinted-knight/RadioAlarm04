@@ -1,10 +1,12 @@
 package com.noomit.radioalarm02.ui.favorites
 
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.core.content.getSystemService
 import androidx.fragment.app.viewModels
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.service.ServiceMediaItem
@@ -88,6 +90,14 @@ class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
                     Intent(Intent.ACTION_VIEW).apply {
                         data = Uri.parse(command.url)
                     })
+                FavoritesDirections.VolumeDown -> {
+                    val audioManager = requireContext().getSystemService<AudioManager>()
+                    audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 3, AudioManager.FLAG_SHOW_UI)
+                }
+                FavoritesDirections.VolumeUp -> {
+                    val audioManager = requireContext().getSystemService<AudioManager>()
+                    audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_SHOW_UI)
+                }
             }
         }
     }

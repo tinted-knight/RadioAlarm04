@@ -14,6 +14,8 @@ import javax.inject.Inject
 
 sealed class FavoritesDirections : NavCommand {
     data class OpenExternalLink(val url: String) : FavoritesDirections()
+    object VolumeUp : FavoritesDirections()
+    object VolumeDown : FavoritesDirections()
 }
 
 @HiltViewModel
@@ -76,4 +78,12 @@ class FavoritesViewModel @Inject constructor(
     }
 
     override fun onHomePageLongClick() {}
+
+//    override fun onVolumeUp() {
+//        navigateTo(FavoritesDirections.VolumeUp)
+//    }
+//
+//    override fun onVolumeDown() {
+//        navigateTo(FavoritesDirections.VolumeDown)
+//    }
 }
