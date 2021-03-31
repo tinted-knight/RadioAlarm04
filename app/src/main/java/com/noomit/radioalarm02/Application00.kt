@@ -2,7 +2,6 @@ package com.noomit.radioalarm02
 
 import android.app.Application
 import android.content.Context
-import android.os.Build
 import android.widget.Toast
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -23,10 +22,3 @@ fun Context.toast(message: String?) {
 }
 
 fun ilog(message: String) = Timber.tag("tagg-main").i(message)
-
-inline fun <T> getResourceApi23(more: () -> T, less: () -> T) =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        more()
-    } else {
-        less()
-    }

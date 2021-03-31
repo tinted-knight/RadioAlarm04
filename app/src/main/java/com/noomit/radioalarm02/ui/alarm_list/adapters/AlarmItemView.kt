@@ -15,7 +15,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.getResourceApi23
 import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.days
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -50,7 +49,6 @@ interface IAlarmItem {
 }
 
 // #achtung flashes when click on day
-@Suppress("DEPRECATION")
 class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet), IAlarmItem {
 
@@ -117,20 +115,27 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
 
     private val week = LinearLayout(context).apply {
         orientation = LinearLayout.HORIZONTAL
-        addView(monday)
-        addView(tuesday)
-        addView(wednesday)
-        addView(thursday)
-        addView(friday)
-        addView(saturday)
-        addView(sunday)
+        if (Calendar.getInstance().firstDayOfWeek == Calendar.MONDAY) {
+            addView(monday)
+            addView(tuesday)
+            addView(wednesday)
+            addView(thursday)
+            addView(friday)
+            addView(saturday)
+            addView(sunday)
+        } else {
+            addView(sunday)
+            addView(monday)
+            addView(tuesday)
+            addView(wednesday)
+            addView(thursday)
+            addView(friday)
+            addView(saturday)
+        }
     }
 
     init {
-        val bgColor = getResourceApi23(
-            more = { resources.getColor(appTheme.alarmItem.bgColor, null) },
-            less = { resources.getColor(appTheme.alarmItem.bgColor) },
-        )
+        val bgColor = ResourcesCompat.getColor(resources, appTheme.alarmItem.bgColor, null)
         background = GradientDrawable(
             GradientDrawable.Orientation.BOTTOM_TOP,
             intArrayOf(bgColor, bgColor),
@@ -220,10 +225,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             isActive -> R.drawable.day_active_middle
             else -> R.drawable.day_ripple_ltd
         }
-        dayViews[day]?.setTextColor(getResourceApi23(
-            more = { resources.getColor(textColor, null) },
-            less = { resources.getColor(textColor) })
-        )
+        dayViews[day]?.setTextColor(ResourcesCompat.getColor(resources, textColor, null))
         dayViews[day]?.background = ResourcesCompat.getDrawable(resources, bgDrawable, null)
     }
 
