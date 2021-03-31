@@ -7,12 +7,14 @@ import android.os.PowerManager
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import timber.log.Timber
-
-private fun plog(message: String) = Timber.tag("tagg-app-wakelock").i(message)
+import com.noomit.radioalarm02.ilog
 
 @Suppress("DEPRECATION")
 abstract class BaseWakelockActivity : AppCompatActivity() {
+
+    companion object {
+        const val WAKELOCK_TAG = "radioalarm:wakelog-tag"
+    }
 
     private lateinit var wakeLock: PowerManager.WakeLock
 
@@ -20,11 +22,8 @@ abstract class BaseWakelockActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            plog("wakeup version >= 27")
             wakeUp27plus()
-
         } else {
-            plog("wakeup version < 27")
             wakeUp27less()
         }
 
@@ -60,27 +59,26 @@ abstract class BaseWakelockActivity : AppCompatActivity() {
         setShowWhenLocked(true)
         setTurnScreenOn(true)
 
+        // Keyguard leak: https://stackoverflow.com/questions/60477120/keyguardmanager-memory-leak
         val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-        keyguardManager.requestDismissKeyguard(this,
-            object : KeyguardManager.KeyguardDismissCallback() {
-                override fun onDismissSucceeded() {
-                    super.onDismissSucceeded()
-                    plog("onDismissSucceeded")
-                }
+        if (keyguardManager.isKeyguardLocked) {
+            keyguardManager.requestDismissKeyguard(this,
+                object : KeyguardManager.KeyguardDismissCallback() {
+                    override fun onDismissSucceeded() {
+                        super.onDismissSucceeded()
+                        ilog("onDismissSucceeded")
+                    }
 
-                override fun onDismissCancelled() {
-                    super.onDismissCancelled()
-                    plog("onDismissCancelled")
-                }
+                    override fun onDismissCancelled() {
+                        super.onDismissCancelled()
+                        ilog("onDismissCancelled")
+                    }
 
-                override fun onDismissError() {
-                    super.onDismissError()
-                    plog("onDismissError")
-                }
-            })
-    }
-
-    companion object {
-        const val WAKELOCK_TAG = "radioalarm:wakelog-tag"
+                    override fun onDismissError() {
+                        super.onDismissError()
+                        ilog("onDismissError")
+                    }
+                })
+        }
     }
 }
