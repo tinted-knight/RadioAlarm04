@@ -79,11 +79,11 @@ class FavoritesViewModel @Inject constructor(
 
     override fun onHomePageLongClick() {}
 
-    override fun onVolumeUp() {
-        navigateTo(FavoritesDirections.VolumeUp)
-    }
-
-    override fun onVolumeDown() {
-        navigateTo(FavoritesDirections.VolumeDown)
-    }
+//    override fun onVolumeUp() {
+//        navigateTo(FavoritesDirections.VolumeUp)
+//    }
+//
+//    override fun onVolumeDown() {
+//        navigateTo(FavoritesDirections.VolumeDown)
+//    }
 }

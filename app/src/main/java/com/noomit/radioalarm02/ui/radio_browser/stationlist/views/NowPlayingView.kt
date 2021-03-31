@@ -40,8 +40,8 @@ interface NowPlayingListener {
     fun onHomePageClick()
     fun onHomePageLongClick()
 
-    fun onVolumeUp()
-    fun onVolumeDown()
+//    fun onVolumeUp()
+//    fun onVolumeDown()
 }
 
 class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
@@ -121,14 +121,14 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     }
 
     // #achtung
-    private val btnUp = MaterialButton(context).apply {
-        text = "Up"
-        setOnClickListener { nowPlayingListener?.onVolumeUp() }
-    }
-    private val btnDown = MaterialButton(context).apply {
-        text = "Down"
-        setOnClickListener { nowPlayingListener?.onVolumeDown() }
-    }
+//    private val btnUp = MaterialButton(context).apply {
+//        text = "Up"
+//        setOnClickListener { nowPlayingListener?.onVolumeUp() }
+//    }
+//    private val btnDown = MaterialButton(context).apply {
+//        text = "Down"
+//        setOnClickListener { nowPlayingListener?.onVolumeDown() }
+//    }
 
     init {
         background = PaintDrawable(getColor(resources, appTheme.nowPlaying.bgColor, null))
@@ -151,8 +151,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         btnFav.isVisible = false
         btnFavorite.isVisible = false
 
-        btnUp.isVisible = false
-        btnDown.isVisible = false
+//        btnUp.isVisible = false
+//        btnDown.isVisible = false
 
         stationPicture.layoutBy(
             x = rightTo { parent.right() - 4.xdip },
@@ -180,8 +180,8 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         btnFav.layoutBy(emptyX(), emptyY())
         btnFavorite.layoutBy(emptyX(), emptyY())
         btnClose.layoutBy(emptyX(), emptyY())
-        btnUp.layoutBy(emptyX(), emptyY())
-        btnDown.layoutBy(emptyX(), emptyY())
+//        btnUp.layoutBy(emptyX(), emptyY())
+//        btnDown.layoutBy(emptyX(), emptyY())
     }
 
     private fun expandedLayout() {
@@ -245,16 +245,16 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             matchParentX(),
             topTo { homePage.bottom() + vSpacing }
         )
-        btnUp.isVisible = true
-        btnDown.isVisible = true
-        btnUp.updateLayoutBy(
-            leftTo { codec.left() },
-            topTo { codec.bottom() + vSpacing }
-        )
-        btnDown.updateLayoutBy(
-            leftTo { btnUp.right() + hSpacing },
-            topTo { codec.bottom() + vSpacing }
-        )
+//        btnUp.isVisible = true
+//        btnDown.isVisible = true
+//        btnUp.updateLayoutBy(
+//            leftTo { codec.left() },
+//            topTo { codec.bottom() + vSpacing }
+//        )
+//        btnDown.updateLayoutBy(
+//            leftTo { btnUp.right() + hSpacing },
+//            topTo { codec.bottom() + vSpacing }
+//        )
     }
 
     val layoutTransition: Transition
