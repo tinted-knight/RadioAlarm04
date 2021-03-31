@@ -6,10 +6,8 @@ import com.noomit.data.database.getDatabase
 import com.noomit.data.remote.RadioBrowserService
 import com.noomit.db.AppDatabase
 import com.noomit.domain.RadioBrowserContract
-import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
 import com.noomit.domain.server_manager.ServerManager
 import com.noomit.domain.server_manager.ServerManagerContract
-import com.noomit.radioalarm02.util.ScheduleAlarmUtils
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
@@ -32,12 +30,6 @@ object AppModule {
     @Singleton
     fun apiService(): RadioBrowserContract {
         return RadioBrowserService()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAlarmScheduler(@ApplicationContext context: Context): ScheduleAlarmUtilsContract {
-        return ScheduleAlarmUtils(context)
     }
 
     @Provides
