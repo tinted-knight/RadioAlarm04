@@ -5,8 +5,10 @@ import com.noomit.data.database.getAndroidSqlDriver
 import com.noomit.data.database.getDatabase
 import com.noomit.data.remote.RadioBrowserService
 import com.noomit.db.AppDatabase
+import com.noomit.domain.RadioBrowserContract
 import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
 import com.noomit.domain.server_manager.ServerManager
+import com.noomit.domain.server_manager.ServerManagerContract
 import com.noomit.radioalarm02.util.ScheduleAlarmUtils
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
@@ -28,7 +30,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun apiService(): RadioBrowserService {
+    fun apiService(): RadioBrowserContract {
         return RadioBrowserService()
     }
 
@@ -40,7 +42,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideServerManager(apiService: RadioBrowserService): ServerManager {
+    fun provideServerManager(apiService: RadioBrowserContract): ServerManagerContract {
         return ServerManager(apiService)
     }
 
