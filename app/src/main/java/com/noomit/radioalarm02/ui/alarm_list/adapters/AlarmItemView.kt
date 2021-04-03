@@ -113,9 +113,11 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         days[6] to sunday,
     )
 
+    private val isWeekStartMonday = Calendar.getInstance().firstDayOfWeek == Calendar.MONDAY
+
     private val week = LinearLayout(context).apply {
         orientation = LinearLayout.HORIZONTAL
-        if (Calendar.getInstance().firstDayOfWeek == Calendar.MONDAY) {
+        if (isWeekStartMonday) {
             addView(monday)
             addView(tuesday)
             addView(wednesday)
@@ -179,7 +181,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             centerVerticallyTo { btnDelete.centerY() }.heightOf { btnDelete.height() }
         )
         week.layoutBy(
-            matchParentX(x, y),
+            matchParentX(x, x),
             topTo { btnDelete.bottom() + yPadding }
         )
     }
@@ -219,15 +221,29 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             isActive -> R.color.colorDayTextActive
             else -> R.color.colorDayTextInactive
         }
-        val bgDrawable = when {
-            isActive && day == days.first() -> R.drawable.day_active_start
-            isActive && day == days.last() -> R.drawable.day_active_end
-            isActive -> R.drawable.day_active_middle
-            else -> R.drawable.day_ripple_ltd
-        }
+
+        val bgDrawable = getDayBackground(isActive, day)
+
         dayViews[day]?.setTextColor(ResourcesCompat.getColor(resources, textColor, null))
         dayViews[day]?.background = ResourcesCompat.getDrawable(resources, bgDrawable, null)
     }
 
     override fun getBackground() = super.getBackground() as GradientDrawable
+
+    private fun getDayBackground(isActive: Boolean, day: Int): Int {
+        return if (isWeekStartMonday) {
+            dayBackgroundFor(day, isActive, weekStart = days.first(), weekEnd = days.last())
+        } else {
+            dayBackgroundFor(day, isActive, weekStart = days.last(), weekEnd = days[5])
+        }
+    }
+
+    private fun dayBackgroundFor(day: Int, isActive: Boolean, weekStart: Int, weekEnd: Int): Int {
+        return when {
+            isActive && day == weekStart -> R.drawable.day_active_start
+            isActive && day == weekEnd -> R.drawable.day_active_end
+            isActive -> R.drawable.day_active_middle
+            else -> R.drawable.day_ripple_ltd
+        }
+    }
 }
