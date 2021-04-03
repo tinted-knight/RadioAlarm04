@@ -23,5 +23,19 @@ Start screen              | Wake up           | Favorites          | Radio brows
 
 ## Copyright and thanks
 
+### Server-side API
+Awesome [Radio browser API](https://www.radio-browser.info)([github](https://github.com/segler-alex/radiobrowser-api-rust)) by [Alex](https://github.com/segler-alex)
+### Images
 - Question mark icon from [Material Design Icons](https://materialdesignicons.com) by [Templarian](https://twitter.com/Templarian)
-
+- Launcher icon drawn by myself 😎
+### Libraries
+- DI: [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+- No xml layout: [Contour layout](https://github.com/cashapp/contour)
+- Media player: [ExoPlayer](https://github.com/google/ExoPlayer)
+- Wake me up!: [Slide to act](https://github.com/cortinico/slidetoact)
+- Network: [Retrofit](https://github.com/square/retrofit)
+- Logging: [Timber](https://github.com/JakeWharton/timber)
+- [LeakCanary](https://github.com/square/leakcanary)
+- Image loading: [Glide](https://github.com/bumptech/glide)
+- Database: [SQLDelight](https://github.com/cashapp/sqldelight)
+- Lots of 'androidx' libraries [Android Jetpack](https://developer.android.com/jetpack/androidx)
