@@ -7,7 +7,10 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,6 +84,11 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
         setOnClickListener { delegate?.onAddAlarmClick() }
     }
 
+    private val emptyImage = ImageView(context).apply {
+        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.alarm_sad))
+        isVisible = false
+    }
+
     private val helpView = HelpView(context).apply {
         setOnClickListener(::helpClick)
     }
@@ -112,6 +120,12 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
             bottomTo { btnBrowse.top() - 16.ydip }
 //                .heightOf { if (isHelpExpanded) parent.height() * 3 / 4 else fabSize.ydip }
         )
+        emptyImage.layoutBy(
+            leftTo { parent.left() + parent.width() / 4 }
+                .rightTo { parent.width() - parent.width() / 4 },
+            topTo { parent.top() + (parent.height() - btnAddAlarm.height()) / 4 }
+                .heightOf { emptyImage.width().toY() }
+        )
     }
 
     override fun setAdapter(adapter: AlarmListAdapter) {
@@ -121,11 +135,20 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
     override fun showContent(values: List<AlarmModel>) {
         (recycler.adapter as AlarmListAdapter).submitList(values)
         recycler.isVisible = true
+        emptyImage.isVisible = false
     }
 
     override fun showEmpty() {
         // #todo empty view
         recycler.isVisible = false
+        emptyImage.apply {
+            alpha = 0f
+            isVisible = true
+            animate().setDuration(200L)
+                .alpha(0.85f)
+                .setInterpolator(LinearInterpolator())
+                .setListener(null)
+        }
     }
 
     private fun helpClick(view: View) {

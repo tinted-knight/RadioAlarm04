@@ -15,7 +15,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.getResourceApi23
 import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.days
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -33,10 +32,10 @@ interface IAlarmItemActions {
 }
 
 interface IAlarmItem {
-    infix fun time(value: String)
-    infix fun day(value: String)
-    infix fun switch(isChecked: Boolean)
-    infix fun melody(value: String)
+    fun setTime(value: String)
+    fun setDay(value: String)
+    fun setSwitch(isChecked: Boolean)
+    fun setMelody(value: String)
     fun checkDay(day: Int, isActive: Boolean)
 
     var delegate: IAlarmItemActions?
@@ -50,7 +49,6 @@ interface IAlarmItem {
 }
 
 // #achtung flashes when click on day
-@Suppress("DEPRECATION")
 class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     ContourLayout(context, attrSet), IAlarmItem {
 
@@ -115,22 +113,31 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         days[6] to sunday,
     )
 
+    private val isWeekStartMonday = Calendar.getInstance().firstDayOfWeek == Calendar.MONDAY
+
     private val week = LinearLayout(context).apply {
         orientation = LinearLayout.HORIZONTAL
-        addView(monday)
-        addView(tuesday)
-        addView(wednesday)
-        addView(thursday)
-        addView(friday)
-        addView(saturday)
-        addView(sunday)
+        if (isWeekStartMonday) {
+            addView(monday)
+            addView(tuesday)
+            addView(wednesday)
+            addView(thursday)
+            addView(friday)
+            addView(saturday)
+            addView(sunday)
+        } else {
+            addView(sunday)
+            addView(monday)
+            addView(tuesday)
+            addView(wednesday)
+            addView(thursday)
+            addView(friday)
+            addView(saturday)
+        }
     }
 
     init {
-        val bgColor = getResourceApi23(
-            more = { resources.getColor(appTheme.alarmItem.bgColor, null) },
-            less = { resources.getColor(appTheme.alarmItem.bgColor) },
-        )
+        val bgColor = ResourcesCompat.getColor(resources, appTheme.alarmItem.bgColor, null)
         background = GradientDrawable(
             GradientDrawable.Orientation.BOTTOM_TOP,
             intArrayOf(bgColor, bgColor),
@@ -174,7 +181,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             centerVerticallyTo { btnDelete.centerY() }.heightOf { btnDelete.height() }
         )
         week.layoutBy(
-            matchParentX(x, y),
+            matchParentX(x, x),
             topTo { btnDelete.bottom() + yPadding }
         )
     }
@@ -193,19 +200,19 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         setOnClickListener { delegate?.onDayOfWeekClick(days[id]) }
     }
 
-    override fun time(value: String) {
+    override fun setTime(value: String) {
         time.text = value
     }
 
-    override fun day(value: String) {
+    override fun setDay(value: String) {
         day.text = value
     }
 
-    override fun switch(isChecked: Boolean) {
+    override fun setSwitch(isChecked: Boolean) {
         switch.isChecked = isChecked
     }
 
-    override fun melody(value: String) {
+    override fun setMelody(value: String) {
         melody.text = value
     }
 
@@ -214,18 +221,29 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
             isActive -> R.color.colorDayTextActive
             else -> R.color.colorDayTextInactive
         }
-        val bgDrawable = when {
-            isActive && day == days.first() -> R.drawable.day_active_start
-            isActive && day == days.last() -> R.drawable.day_active_end
-            isActive -> R.drawable.day_active_middle
-            else -> R.drawable.day_ripple_ltd
-        }
-        dayViews[day]?.setTextColor(getResourceApi23(
-            more = { resources.getColor(textColor, null) },
-            less = { resources.getColor(textColor) })
-        )
+
+        val bgDrawable = getDayBackground(isActive, day)
+
+        dayViews[day]?.setTextColor(ResourcesCompat.getColor(resources, textColor, null))
         dayViews[day]?.background = ResourcesCompat.getDrawable(resources, bgDrawable, null)
     }
 
     override fun getBackground() = super.getBackground() as GradientDrawable
+
+    private fun getDayBackground(isActive: Boolean, day: Int): Int {
+        return if (isWeekStartMonday) {
+            dayBackgroundFor(day, isActive, weekStart = days.first(), weekEnd = days.last())
+        } else {
+            dayBackgroundFor(day, isActive, weekStart = days.last(), weekEnd = days[5])
+        }
+    }
+
+    private fun dayBackgroundFor(day: Int, isActive: Boolean, weekStart: Int, weekEnd: Int): Int {
+        return when {
+            isActive && day == weekStart -> R.drawable.day_active_start
+            isActive && day == weekEnd -> R.drawable.day_active_end
+            isActive -> R.drawable.day_active_middle
+            else -> R.drawable.day_ripple_ltd
+        }
+    }
 }
