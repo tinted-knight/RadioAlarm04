@@ -89,15 +89,15 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(value: AlarmModel) {
         if (value.timeInMillis == 0L || !value.isEnabled) {
-            contour time "${value.hourString}:${value.minuteString}"
-            contour day ""
+            contour.setTime("${value.hourString}:${value.minuteString}")
+            contour.setDay("")
         } else {
             val date = Date(value.timeInMillis)
-            contour time timeFormat.format(date)
-            contour day dateFormat.format(date)
+            contour.setTime(timeFormat.format(date))
+            contour.setDay(dateFormat.format(date))
         }
-        contour melody if (value.bellUrl.isNotBlank()) value.bellName else itemView.context.getString(R.string.melody_system)
-        contour switch value.isEnabled
+        contour.setMelody(if (value.bellUrl.isNotBlank()) value.bellName else itemView.context.getString(R.string.melody_system))
+        contour.setSwitch(value.isEnabled)
         processDaysOfWeek(value.daysOfWeek)
     }
 

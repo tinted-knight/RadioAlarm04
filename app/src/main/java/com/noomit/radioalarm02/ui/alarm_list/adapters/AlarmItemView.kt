@@ -32,10 +32,10 @@ interface IAlarmItemActions {
 }
 
 interface IAlarmItem {
-    infix fun time(value: String)
-    infix fun day(value: String)
-    infix fun switch(isChecked: Boolean)
-    infix fun melody(value: String)
+    fun setTime(value: String)
+    fun setDay(value: String)
+    fun setSwitch(isChecked: Boolean)
+    fun setMelody(value: String)
     fun checkDay(day: Int, isActive: Boolean)
 
     var delegate: IAlarmItemActions?
@@ -198,19 +198,19 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         setOnClickListener { delegate?.onDayOfWeekClick(days[id]) }
     }
 
-    override fun time(value: String) {
+    override fun setTime(value: String) {
         time.text = value
     }
 
-    override fun day(value: String) {
+    override fun setDay(value: String) {
         day.text = value
     }
 
-    override fun switch(isChecked: Boolean) {
+    override fun setSwitch(isChecked: Boolean) {
         switch.isChecked = isChecked
     }
 
-    override fun melody(value: String) {
+    override fun setMelody(value: String) {
         melody.text = value
     }
 
