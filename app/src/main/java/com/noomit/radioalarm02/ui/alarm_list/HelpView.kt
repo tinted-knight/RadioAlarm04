@@ -69,6 +69,14 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         collapseLayout()
     }
 
+    fun expand() {
+        if (!isSelected) performClick()
+    }
+
+    fun collapse() {
+        if (isSelected) performClick()
+    }
+
     val layoutTransition: Transition
         get() {
             return if (!isSelected) {
