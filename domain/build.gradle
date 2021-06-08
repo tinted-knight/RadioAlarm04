@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'kotlin'
-//    id 'com.squareup.sqldelight'
 }
 
 apply plugin: 'com.squareup.sqldelight'
