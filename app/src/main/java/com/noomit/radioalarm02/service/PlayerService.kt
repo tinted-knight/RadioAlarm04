@@ -102,7 +102,7 @@ class PlayerService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private val playerStateListener = object : Player.EventListener {
+    private val playerStateListener = object : Player.Listener {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_READY -> {

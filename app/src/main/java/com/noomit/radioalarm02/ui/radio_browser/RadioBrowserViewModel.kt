@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 sealed class RadioBrowserDirections : NavCommand {
@@ -86,7 +85,7 @@ class RadioBrowserViewModel @Inject constructor(
                 emit(state)
             } else {
                 val list = state.values.filter {
-                    it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
+                    it.name.lowercase().contains(filter.value)
                 }
                 emit(StationManagerState.Success(list, state.category))
             }
@@ -103,7 +102,7 @@ class RadioBrowserViewModel @Inject constructor(
                 emit(state)
             } else {
                 val filtered = state.values.filter {
-                    it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
+                    it.name.lowercase().contains(filter.value)
                 }
                 emit(CategoryManagerState.Values(filtered))
             }
@@ -147,8 +146,8 @@ class RadioBrowserViewModel @Inject constructor(
 
     override fun onSearchClick() {
         loadStations(CategoryModel.GlobalSearch(
-            searchName = _searchState.value.name.toLowerCase(Locale.getDefault()),
-            searchTag = _searchState.value.tag.toLowerCase(Locale.getDefault())
+            searchName = _searchState.value.name.lowercase(),
+            searchTag = _searchState.value.tag.lowercase()
         ))
         navigateTo(RadioBrowserDirections.Search)
     }
