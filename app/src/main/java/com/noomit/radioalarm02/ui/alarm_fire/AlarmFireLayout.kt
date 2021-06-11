@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -40,7 +41,6 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmFire.time.attr,
     ).apply {
-//        text = "9:00"
         background = ResourcesCompat.getDrawable(resources, R.drawable.alarm_bg_time, null)
     }
 
@@ -48,9 +48,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         context,
         null,
         appTheme.alarmFire.day.attr,
-    ).apply {
-//        text = "Monday"
-    }
+    )
 
     override val playerControll =
         LayoutInflater.from(context)
@@ -63,7 +61,8 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
 
     init {
         fitsSystemWindows = true
-        background = ResourcesCompat.getDrawable(resources, R.drawable.hipster_bg_gradient, null)
+//        background = ResourcesCompat.getDrawable(resources, R.drawable.hipster_bg_gradient, null)
+        background = ColorDrawable(ResourcesCompat.getColor(resources, appTheme.alarmFire.background, null))
         time.layoutBy(
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },

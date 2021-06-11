@@ -9,7 +9,9 @@
     <color name="clStatusBarBackground">#FFFFFF</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>
+    <!-- Fire alarm screen -->
     <color name="clFireTextColor">#FFFFFF</color>
+    <color name="clFireBackground">#000000</color>
     <!-- Alarm card  -->
     <color name="clDayBgActive">#0F109113</color>
     <color name="clDayRippleActive">#FFFF0000</color>

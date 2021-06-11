@@ -63,6 +63,7 @@ interface ThemeAlarmFire {
     val station: ViewStyle
     val time: ViewStyle
     val day: ViewStyle
+    val background: Int
 }
 
 interface ThemeHelp {
@@ -126,6 +127,7 @@ data class AppThemeLight(
         override val station = ViewStyle(S.LightTheme_AlarmFireStation, A.textAlarmFireStation)
         override val time = ViewStyle(S.LightTheme_AlarmFireTime, A.textAlarmFireTime)
         override val day = ViewStyle(S.LightTheme_AlarmFireDay, A.textAlarmFireDay)
+        override val background = C.clBackground
     },
     val helpView: ThemeHelp = object : ThemeHelp {
         override val browseIcon = D.ic_search_24
