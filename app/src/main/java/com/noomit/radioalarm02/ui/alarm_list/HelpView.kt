@@ -154,9 +154,11 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         val hSpacing = 16.xdip
         val vSpacing = 16.ydip
 
+        val vPaddingIcon = 4.ydip
+
         browseIcon.updateLayoutBy(
             x = leftTo { parent.left() },
-            y = centerVerticallyTo { browseHelp.centerY() }
+            y = topTo { browseHelp.top() + vPaddingIcon }
         )
         browseHelp.updateLayoutBy(
             x = leftTo { browseIcon.right() + hSpacing }.rightTo { parent.right() },
@@ -168,7 +170,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         )
         deleteIcon.updateLayoutBy(
             x = leftTo { parent.left() },
-            y = centerVerticallyTo { deleteHelp.centerY() }
+            y = topTo { deleteHelp.top() + vPaddingIcon }
         )
         deleteHelp.updateLayoutBy(
             x = leftTo { deleteIcon.right() + hSpacing }.rightTo { parent.right() },
@@ -180,7 +182,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         )
         melodyIcon.updateLayoutBy(
             x = leftTo { parent.left() },
-            y = centerVerticallyTo { melodyHelp.centerY() }
+            y = topTo { melodyHelp.top() + vPaddingIcon }
         )
         melodyHelp.updateLayoutBy(
             x = leftTo { melodyIcon.right() + hSpacing }.rightTo { parent.right() },
