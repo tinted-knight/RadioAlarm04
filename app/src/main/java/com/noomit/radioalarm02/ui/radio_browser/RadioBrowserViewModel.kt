@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
 import androidx.lifecycle.viewModelScope
+import com.noomit.domain.ActiveServerState
 import com.noomit.domain.ServerInfo
 import com.noomit.domain.category_manager.CategoryManagerContract
 import com.noomit.domain.category_manager.CategoryManagerState
@@ -35,11 +36,21 @@ class RadioBrowserViewModel @Inject constructor(
 
     val availableServers = serverManager.state
 
-    val activeServer = serverManager.activeServer
+    private val activeServer = serverManager.activeServer
 
     private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
 
     private val stationFilter = MutableStateFlow<Filter>(Filter.None)
+
+    init {
+        viewModelScope.launch {
+            // If there is no activeServer, it means something has gone wrong with connection
+            // So why not to try once more
+            activeServer.collect {
+                if (it is ActiveServerState.None) serverManager.getAvalilable()
+            }
+        }
+    }
 
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 

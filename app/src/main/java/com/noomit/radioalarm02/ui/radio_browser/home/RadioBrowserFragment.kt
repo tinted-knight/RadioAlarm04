@@ -6,10 +6,8 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.noomit.domain.ActiveServerState
 import com.noomit.domain.server_manager.ServerState
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.navigation.NavHelper
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserEvent
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
@@ -55,20 +53,18 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             when (it) {
                 is ServerState.Loading -> contour.showLoading()
                 is ServerState.Values -> contour.update(content = it.values)
-                is ServerState.Failure -> requireContext().toast(it.e.localizedMessage)
-                // #todo smth like showError or empty
+                is ServerState.Failure -> contour.showError(getString(R.string.err_server_connection))
                 else -> contour.showLoading()
             }
         }
 
-        collect(viewModel.activeServer) {
-            when (it) {
-                is ActiveServerState.None -> contour.update(activerServer = null)
-                is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
-                // #todo smth like showError or empty
-                else -> contour.showLoading()
-            }
-        }
+//        collect(viewModel.activeServer) {
+//            when (it) {
+//                is ActiveServerState.None -> contour.update(activerServer = null)
+//                is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
+//                else -> contour.showLoading()
+//            }
+//        }
 
         collect(viewModel.searchState) {
             contour.btnSearchEnabled(it.isValid)

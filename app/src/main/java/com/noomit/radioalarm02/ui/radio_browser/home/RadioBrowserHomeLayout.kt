@@ -36,6 +36,7 @@ interface IRadioBrowserHomeLayout {
     fun setServerAdapter(adapter: ServerListAdapter)
     fun serverListCollapse()
     fun showLoading()
+    fun showError(message: String)
     fun btnSearchEnabled(isEnabled: Boolean)
     fun setSearchFields(name: String, tag: String)
     fun update(content: List<ServerInfo>)
@@ -112,8 +113,12 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         R.attr.progressBarColors
     )
 
-    private val loadingBackground = View(context).apply {
-        setBackgroundColor(Color.parseColor("#12ff0000"))
+    //  #todo Need this layout to be heightWrapContent to align Buttons and TextViews correctly
+    //      So the right way may be to have outer layout with math_parent
+    //      and in case of error show errorView centered in outer layout
+    //      If no error show content with heightWrapContent aligned to top of outer layout
+    private val errorMessage = TextView(context).apply {
+        isVisible = false
     }
 
     private val divider = View(context).apply {
@@ -126,22 +131,23 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
         contourHeightWrapContent()
         setPadding(16.dip, 0.dip, 16.dip, 0.dip)
 
-        loadingBackground.layoutBy(
-            leftTo { loadingIndicator.left() - 16.xdip }.rightTo { loadingIndicator.right() + 16.xdip },
-            topTo { loadingIndicator.top() - 16.ydip }.bottomTo { loadingIndicator.bottom() + 16.ydip }
-        )
         loadingIndicator.layoutBy(
             centerHorizontallyTo { parent.centerX() }.widthOf { 60.xdip },
             topTo { parent.top() + 100.ydip }.heightOf { 60.ydip }
         )
+
+        errorMessage.layoutBy(emptyX(), emptyY())
+
         btnLanguages.layoutBy(
             x = matchParentX(),
             y = topTo { parent.top() }
         )
+
         btnTags.layoutBy(
             x = matchParentX(),
             y = topTo { btnLanguages.bottom() }
         )
+
         btnTopVoted.layoutBy(
             x = matchParentX(),
             y = topTo { btnTags.bottom() }
@@ -193,27 +199,20 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     }
 
     override fun showLoading() {
+        hideViews()
         loadingIndicator.isVisible = true
-        loadingBackground.isVisible = false
+    }
 
-        serverList.recycler.isVisible = false
-        btnLanguages.isEnabled = false
-        btnLanguages.isVisible = false
-
-        btnTags.isEnabled = false
-        btnTags.isVisible = false
-
-        btnTopVoted.isEnabled = false
-        btnTopVoted.isVisible = false
-
-        divider.isVisible = false
-
-        searchLabel.isVisible = false
-        searchName.isVisible = false
-        searchTag.isVisible = false
-        btnSearch.isVisible = false
-
-        serverList.isVisible = false
+    override fun showError(message: String) {
+        hideViews()
+        loadingIndicator.isVisible = false
+        errorMessage.text = message
+        errorMessage.isSingleLine = false
+        errorMessage.updateLayoutBy(
+            leftTo { parent.left() + 16.xdip }.rightTo { parent.right() + 16.xdip },
+            topTo { parent.top() }
+        )
+        errorMessage.isVisible = true
     }
 
     override fun setSearchFields(name: String, tag: String) {
@@ -251,6 +250,29 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
 
     override fun update(activerServer: ServerInfo?) {
         serverList.active.text = activerServer?.urlString ?: "No activer server..."
+    }
+
+    private fun hideViews() {
+        errorMessage.isVisible = false
+
+        serverList.recycler.isVisible = false
+        btnLanguages.isEnabled = false
+        btnLanguages.isVisible = false
+
+        btnTags.isEnabled = false
+        btnTags.isVisible = false
+
+        btnTopVoted.isEnabled = false
+        btnTopVoted.isVisible = false
+
+        divider.isVisible = false
+
+        searchLabel.isVisible = false
+        searchName.isVisible = false
+        searchTag.isVisible = false
+        btnSearch.isVisible = false
+
+        serverList.isVisible = false
     }
 
     @Suppress("UNUSED_PARAMETER")

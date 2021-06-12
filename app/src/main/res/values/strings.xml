@@ -51,4 +51,5 @@
     <string name="btn_set_default">Set default</string>
     <string name="btn_favorites_add">Save</string>
     <string name="btn_favorites_remove">Remove</string>
+    <string name="err_server_connection">Cannot reach to server. Check if WiFi is enabled. Check your Internet connection and try again.</string>
 </resources>

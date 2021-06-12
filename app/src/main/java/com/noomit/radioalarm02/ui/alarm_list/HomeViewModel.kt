@@ -1,17 +1,15 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
 import androidx.lifecycle.viewModelScope
-import com.noomit.domain.ActiveServerState
 import com.noomit.domain.alarm_manager.AlarmManagerContract
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.domain.entities.StationModel
 import com.noomit.domain.server_manager.ServerManagerContract
-import com.noomit.radioalarm02.ilog
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,16 +32,16 @@ class HomeViewModel @Inject constructor(
     val alarms = manager.alarms
 
     init {
-        viewModelScope.launch {
-            serverManager.activeServer.collect {
-                if (it is ActiveServerState.Value) {
-                    ilog(it.serverInfo.urlString)
-                }
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            serverManager.getAvalilable()
         }
-        serverManager.getAvalilable(viewModelScope)
         viewModelScope.launch {
             manager.observeNextActive()
+//            serverManager.activeServer.collect {
+//                if (it is ActiveServerState.Value) {
+//                    ilog(it.serverInfo.urlString)
+//                }
+//            }
         }
     }
 
