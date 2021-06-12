@@ -8,28 +8,28 @@ import com.noomit.domain.entities.StationModel
 import com.noomit.domain.server_manager.ServerManagerContract
 import com.noomit.radioalarm02.ilog
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
-import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
+import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class AlarmListDirections : NavCommand {
-    object Favorites : AlarmListDirections()
-    object AddAlarm : AlarmListDirections()
-    object RadioBrowser : AlarmListDirections()
-    object HoldToDelete : AlarmListDirections()
-    object SelectMelody : AlarmListDirections()
-    data class TestMelody(val alarm: AlarmModel) : AlarmListDirections()
-    data class TimeChange(val alarm: AlarmModel) : AlarmListDirections()
+sealed class AlarmListEvent : OneShotEvent {
+    object Favorites : AlarmListEvent()
+    object AddAlarm : AlarmListEvent()
+    object RadioBrowser : AlarmListEvent()
+    object HoldToDelete : AlarmListEvent()
+    object SelectMelody : AlarmListEvent()
+    data class TestMelody(val alarm: AlarmModel) : AlarmListEvent()
+    data class TimeChange(val alarm: AlarmModel) : AlarmListEvent()
 }
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val manager: AlarmManagerContract,
     private val serverManager: ServerManagerContract,
-) : NavigationViewModel<AlarmListDirections>(), IHomeLayoutDelegate, AlarmAdapterActions {
+) : NavigationViewModel<AlarmListEvent>(), IHomeLayoutDelegate, AlarmAdapterActions {
 
     val alarms = manager.alarms
 
@@ -57,19 +57,19 @@ class HomeViewModel @Inject constructor(
     fun setDefaultRingtone() = manager.setDefaultRingtone()
 
     override fun onFavoriteClick() {
-        navigateTo(AlarmListDirections.Favorites)
+        navigateTo(AlarmListEvent.Favorites)
     }
 
     override fun onAddAlarmClick() {
-        navigateTo(AlarmListDirections.AddAlarm)
+        navigateTo(AlarmListEvent.AddAlarm)
     }
 
     override fun onBrowseClick() {
-        navigateTo(AlarmListDirections.RadioBrowser)
+        navigateTo(AlarmListEvent.RadioBrowser)
     }
 
     override fun onDeleteClick(alarm: AlarmModel) {
-        navigateTo(AlarmListDirections.HoldToDelete)
+        navigateTo(AlarmListEvent.HoldToDelete)
     }
 
     override fun onDeleteLongClick(alarm: AlarmModel) {
@@ -81,16 +81,16 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onTimeClick(alarm: AlarmModel) {
-        navigateTo(AlarmListDirections.TimeChange(alarm))
+        navigateTo(AlarmListEvent.TimeChange(alarm))
     }
 
     override fun onMelodyClick(alarm: AlarmModel) {
         manager.selectMelodyFor(alarm)
-        navigateTo(AlarmListDirections.SelectMelody)
+        navigateTo(AlarmListEvent.SelectMelody)
     }
 
     override fun onMelodyLongClick(alarm: AlarmModel) {
-        navigateTo(AlarmListDirections.TestMelody(alarm))
+        navigateTo(AlarmListEvent.TestMelody(alarm))
     }
 
     override fun onDayOfWeekClick(day: Int, alarm: AlarmModel) {

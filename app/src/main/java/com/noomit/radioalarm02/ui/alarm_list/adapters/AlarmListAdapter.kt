@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.domain.alarm_manager.hourString
 import com.noomit.domain.alarm_manager.isDayBitOn
-import com.noomit.domain.alarm_manager.minuteString
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
 import java.text.DateFormat
@@ -88,14 +86,13 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         get() = itemView as IAlarmItem
 
     fun bind(value: AlarmModel) {
-        if (value.timeInMillis == 0L || !value.isEnabled) {
-            contour.setTime("${value.hourString}:${value.minuteString}")
-            contour.setDay("")
-        } else {
-            val date = Date(value.timeInMillis)
-            contour.setTime(timeFormat.format(date))
-            contour.setDay(dateFormat.format(date))
+        val date = Date(value.timeInMillis)
+        // #todo instead of setDay(value!!) => showDay(value!!) and hideDay()
+        when (value.timeInMillis == 0L || !value.isEnabled) {
+            true -> contour.setDay(dateFormat.format(date))
+            false -> contour.setDay("")
         }
+        contour.setTime(timeFormat.format(date))
         contour.setMelody(if (value.bellUrl.isNotBlank()) value.bellName else itemView.context.getString(R.string.melody_system))
         contour.setSwitch(value.isEnabled)
         processDaysOfWeek(value.daysOfWeek)

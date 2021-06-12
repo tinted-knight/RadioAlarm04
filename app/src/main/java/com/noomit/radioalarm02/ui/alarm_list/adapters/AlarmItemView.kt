@@ -15,6 +15,13 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.FRI_ID
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.MON_ID
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.SAT_ID
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.SUN_ID
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.THU_ID
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.TUE_ID
+import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.WED_ID
 import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.days
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
@@ -45,6 +52,13 @@ interface IAlarmItem {
             Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
             Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
         )
+        const val MON_ID = 0
+        const val TUE_ID = 1
+        const val WED_ID = 2
+        const val THU_ID = 3
+        const val FRI_ID = 4
+        const val SAT_ID = 5
+        const val SUN_ID = 6
     }
 }
 
@@ -95,13 +109,13 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val monday = dayOfWeek(R.string.monday, 0)
-    private val tuesday = dayOfWeek(R.string.tuesday, 1)
-    private val wednesday = dayOfWeek(R.string.wednesday, 2)
-    private val thursday = dayOfWeek(R.string.thursday, 3)
-    private val friday = dayOfWeek(R.string.friday, 4)
-    private val saturday = dayOfWeek(R.string.saturday, 5)
-    private val sunday = dayOfWeek(R.string.sunday, 6)
+    private val monday = dayOfWeek(R.string.monday, MON_ID)
+    private val tuesday = dayOfWeek(R.string.tuesday, TUE_ID)
+    private val wednesday = dayOfWeek(R.string.wednesday, WED_ID)
+    private val thursday = dayOfWeek(R.string.thursday, THU_ID)
+    private val friday = dayOfWeek(R.string.friday, FRI_ID)
+    private val saturday = dayOfWeek(R.string.saturday, SAT_ID)
+    private val sunday = dayOfWeek(R.string.sunday, SUN_ID)
 
     private val dayViews: Map<Int, TextView> = mapOf(
         days[0] to monday,

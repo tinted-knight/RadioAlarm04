@@ -8,8 +8,8 @@ import com.noomit.domain.entities.CategoryModel
 import com.noomit.domain.server_manager.ServerManagerContract
 import com.noomit.domain.station_manager.StationManagerContract
 import com.noomit.domain.station_manager.StationManagerState
-import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
+import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,11 +18,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class RadioBrowserDirections : NavCommand {
-    object LanguageList : RadioBrowserDirections()
-    object TagList : RadioBrowserDirections()
-    object TopVoted : RadioBrowserDirections()
-    object Search : RadioBrowserDirections()
+sealed class RadioBrowserEvent : OneShotEvent {
+    object LanguageList : RadioBrowserEvent()
+    object TagList : RadioBrowserEvent()
+    object TopVoted : RadioBrowserEvent()
+    object Search : RadioBrowserEvent()
 }
 
 @FlowPreview
@@ -31,7 +31,7 @@ class RadioBrowserViewModel @Inject constructor(
     private val serverManager: ServerManagerContract,
     private val categoryManager: CategoryManagerContract,
     private val stationManager: StationManagerContract,
-) : NavigationViewModel<RadioBrowserDirections>(), RadioBrowserHomeDelegate {
+) : NavigationViewModel<RadioBrowserEvent>(), RadioBrowserHomeDelegate {
 
     val availableServers = serverManager.state
 
@@ -117,7 +117,7 @@ class RadioBrowserViewModel @Inject constructor(
             clearCategoryFilter()
             categoryManager.getLanguages()
         }
-        navigateTo(RadioBrowserDirections.LanguageList)
+        navigateTo(RadioBrowserEvent.LanguageList)
     }
 
     override fun onTagClick() {
@@ -125,12 +125,12 @@ class RadioBrowserViewModel @Inject constructor(
             clearCategoryFilter()
             categoryManager.getTags()
         }
-        navigateTo(RadioBrowserDirections.TagList)
+        navigateTo(RadioBrowserEvent.TagList)
     }
 
     override fun onTopVotedClick() {
         loadStations(CategoryModel.TopVoted())
-        navigateTo(RadioBrowserDirections.TopVoted)
+        navigateTo(RadioBrowserEvent.TopVoted)
     }
 
     data class SearchState(
@@ -149,7 +149,7 @@ class RadioBrowserViewModel @Inject constructor(
             searchName = _searchState.value.name.lowercase(),
             searchTag = _searchState.value.tag.lowercase()
         ))
-        navigateTo(RadioBrowserDirections.Search)
+        navigateTo(RadioBrowserEvent.Search)
     }
 
     override fun onSearchNameChanged(value: String?) {
