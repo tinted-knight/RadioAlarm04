@@ -158,13 +158,13 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 
         view.isSelected = !view.isSelected
 
-        val anim = dimmigViewAnimator(view.isSelected)
+        val anim = dimmingViewAnimator(view.isSelected)
         anim.start()
 
         requestLayout()
     }
 
-    private fun dimmigViewAnimator(show: Boolean): Animator {
+    private fun dimmingViewAnimator(show: Boolean): Animator {
         dimmingView.alpha = if (show) 0.0f else 0.5f
         dimmingView.isVisible = true
         val toAlpha = if (show) 0.5f else 0.0f
