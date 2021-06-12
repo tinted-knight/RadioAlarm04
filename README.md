@@ -1,5 +1,21 @@
 # Inprogress
 
+## Project structure and key technologies
+
+- Kotlin + Coroutines + Flow
+- No XML layouts (almost). There are two for the only two Activities in the project. I promise to get rid of them somewhen. Aaand there are two more for ExoPlayer controls 🐱 And there is one more for Notification 🐶
+- No feature-modules. Project is small so there is no need. Only three for "Clean-way": `app`, `data` and `domain`. And `alarmtheme` for ui-related components like styles, colors and drawable.
+- Project is mostly an experiment and playground for `ContourLayout`, `Kotlin Flow` and `SQLDelight` and there are inconsistencies in some points. Some unnecessary interfaces, some strange naming.
+
+Q: Why it's name is RadioAlarm04?<br>
+A: Previous four felled in battle.
+
+## Contacts
+
+[Telegram](https://t.me/pinq_punq)
+
+[LinkedIn](https://www.linkedin.com/in/faserschreiber)
+
 ## Screenshots and videos
 
 ### Some app screens
@@ -30,7 +46,7 @@ Awesome [Radio browser API](https://www.radio-browser.info)([github](https://git
 - Launcher icon drawn by myself 😎
 ### Libraries
 - DI: [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
-- No xml layout: [Contour layout](https://github.com/cashapp/contour)
+- Layout in Kotlin: [Contour layout](https://github.com/cashapp/contour)
 - Media player: [ExoPlayer](https://github.com/google/ExoPlayer)
 - Wake me up!: [Slide to act](https://github.com/cortinico/slidetoact)
 - Network: [Retrofit](https://github.com/square/retrofit)
