@@ -19,7 +19,6 @@ import com.noomit.radioalarm02.util.fragment.ContourFragment
 import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.debounce
 
 @FlowPreview
 @AndroidEntryPoint
@@ -97,7 +96,7 @@ class CategoryListFragment : ContourFragment<ICategoryLayout>() {
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
             searchView.setOnCloseListener { false }
-            viewModel.applyCategoryFilter(searchView.textFlow(lifecycleScope).debounce(500))
+            viewModel.applyCategoryFilter(searchView.textFlow(lifecycleScope))
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

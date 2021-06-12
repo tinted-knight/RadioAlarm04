@@ -44,23 +44,27 @@ class RadioBrowserViewModel @Inject constructor(
     fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
     fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
-        stringFlow.filterNotNull().collect {
-            if (it.isBlank()) {
-                caterogyFilter.emit(Filter.None)
-            } else {
-                caterogyFilter.emit(Filter.Value(it))
+        stringFlow.debounce(500)
+            .filterNotNull()
+            .collect {
+                if (it.isBlank()) {
+                    caterogyFilter.emit(Filter.None)
+                } else {
+                    caterogyFilter.emit(Filter.Value(it))
+                }
             }
-        }
     }
 
     fun applyStationFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
-        stringFlow.collect {
-            if (it.isNullOrBlank()) {
-                stationFilter.emit(Filter.None)
-            } else {
-                stationFilter.emit(Filter.Value(it))
+        stringFlow.debounce(500)
+            .filterNotNull()
+            .collect {
+                if (it.isBlank()) {
+                    stationFilter.emit(Filter.None)
+                } else {
+                    stationFilter.emit(Filter.Value(it))
+                }
             }
-        }
     }
 
     fun requestCategory(model: CategoryModel) {

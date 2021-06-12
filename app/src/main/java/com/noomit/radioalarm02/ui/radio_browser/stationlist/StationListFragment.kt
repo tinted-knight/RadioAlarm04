@@ -22,7 +22,6 @@ import com.noomit.radioalarm02.util.fragment.PlayerServiceFragment
 import com.noomit.radioalarm02.util.fragment.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
 @FlowPreview
@@ -129,7 +128,7 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
             searchView.setOnCloseListener { false }
-            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope).debounce(500))
+            viewModel.applyStationFilter(searchView.textFlow(lifecycleScope))
         }
         super.onCreateOptionsMenu(menu, inflater)
     }

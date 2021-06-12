@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 fun SearchView.textFlow(scope: LifecycleCoroutineScope): Flow<String?> {
     val flow = MutableStateFlow<String?>(null)
 
-    setOnSearchClickListener { scope.launchWhenStarted { flow.emit("") } }
+    setOnSearchClickListener { scope.launchWhenStarted { flow.emit(null) } }
 
     setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
