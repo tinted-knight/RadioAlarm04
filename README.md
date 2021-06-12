@@ -6,6 +6,7 @@
 - No XML layouts (almost). There are two for the only two Activities in the project. I promise to get rid of them somewhen. Aaand there are two more for ExoPlayer controls 🐱 And there is one more for Notification 🐶
 - No feature-modules. Project is small so there is no need. Only three for "Clean-way": `app`, `data` and `domain`. And `alarmtheme` for ui-related components like styles, colors and drawable.
 - Project is mostly an experiment and playground for `ContourLayout`, `Kotlin Flow` and `SQLDelight` and there are inconsistencies in some points. Some unnecessary interfaces, some strange naming.
+- Release build configured **temporarily** to be signed with debug key
 
 Q: Why it's name is RadioAlarm04?<br>
 A: Previous four felled in battle.
