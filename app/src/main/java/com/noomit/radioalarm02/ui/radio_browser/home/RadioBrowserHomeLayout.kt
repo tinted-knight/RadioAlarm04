@@ -1,6 +1,5 @@
 package com.noomit.radioalarm02.ui.radio_browser.home
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -43,7 +42,6 @@ interface IRadioBrowserHomeLayout {
     fun update(activerServer: ServerInfo?)
 }
 
-@SuppressLint("SetTextI18n")
 class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = null) :
     ContourLayout(context, attributeSet), IRadioBrowserHomeLayout {
 

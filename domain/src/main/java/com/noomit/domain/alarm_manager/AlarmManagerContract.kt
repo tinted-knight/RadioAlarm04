@@ -14,15 +14,14 @@ interface AlarmManagerContract {
     fun selectMelodyFor(alarm: AlarmModel)
     fun setMelody(favorite: StationModel)
     fun setDefaultRingtone()
+
+    /**
+     * Observes database and on each change checks next active alarm and modifies schedule
+     * or clears schedule if there are no active alarms
+     */
     suspend fun observeNextActive()
 
     fun selectById(id: Long): AlarmModel
     fun updateTimeInMillis(id: Long, timeInMillis: Long)
     val nextActive: AlarmModel?
 }
-
-//interface FiredAlarmManagerContract {
-//    fun selectById(id: Long): AlarmModel
-//    fun updateTimeInMillis(id: Long, timeInMillis: Long)
-//    val nextActive: AlarmModel?
-//}
