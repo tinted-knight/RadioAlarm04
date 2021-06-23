@@ -32,7 +32,6 @@ class PlayerService : Service() {
 
         const val NOTIFICATION_ID = 42
         const val NOTIF_CHANNEL_ID = "radio-alarm-notif-ch-id"
-        const val NOTIF_CHANNEL_NAME = "radio-alarm-notif-ch-name"
 
         const val BR_ACTION_ERROR = "com.noomit.radioalarm.service_br.error"
         const val BR_ACTION_STATE = "com.noomit.radioalarm.service_br.state"
@@ -127,7 +126,7 @@ class PlayerService : Service() {
     private fun hideNotification() {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            manager.deleteNotificationChannel(NOTIF_CHANNEL_NAME)
+            manager.deleteNotificationChannel(getString(R.string.notif_channel_radio_alarm))
         }
         manager.cancelAll()
     }
@@ -154,7 +153,7 @@ class PlayerService : Service() {
             manager.createNotificationChannel(
                 NotificationChannel(
                     NOTIF_CHANNEL_ID,
-                    NOTIF_CHANNEL_NAME,
+                    getString(R.string.notif_channel_radio_alarm),
                     NotificationManager.IMPORTANCE_LOW
                 )
             )

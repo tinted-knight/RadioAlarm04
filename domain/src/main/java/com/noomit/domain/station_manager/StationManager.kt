@@ -5,14 +5,11 @@ import com.noomit.domain.entities.CategoryModel
 import com.noomit.domain.entities.StationModel
 import com.noomit.domain.entities.StationNetworkEntity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 class StationManager constructor(
     private val apiService: RadioBrowserContract,
 ) : StationManagerContract {
-
-//    override val logTag = "station_manager"
 
     private val _state = MutableStateFlow<StationManagerState>(StationManagerState.Loading)
     override val state = _state
@@ -33,8 +30,6 @@ class StationManager constructor(
         }
 
         flow.flowOn(Dispatchers.IO)
-            // #fake delay
-            .onEach { delay(250) }
             .map { stationList ->
                 stationList.sortedByDescending { it.votes }
                     .map {

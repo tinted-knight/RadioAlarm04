@@ -6,11 +6,7 @@ import com.noomit.domain.entities.CategoryNetworkEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
-class CategoryManager constructor(
-    private val apiService: RadioBrowserContract,
-) : CategoryManagerContract {
-
-//    override val logTag = "lang_manager"
+class CategoryManager(private val apiService: RadioBrowserContract) : CategoryManagerContract {
 
     private val _state = MutableStateFlow<CategoryManagerState>(CategoryManagerState.Loading)
     override val state = _state
@@ -35,10 +31,7 @@ class CategoryManager constructor(
                     .map(mapper)
             }
             .flowOn(Dispatchers.Default)
-            .catch { e ->
-//                plog("LanguageManager.catch: ${e.localizedMessage}")
-                _state.value = CategoryManagerState.Failure(e)
-            }
+            .catch { e -> _state.value = CategoryManagerState.Failure(e) }
             .collect {
                 _state.value = when {
                     it.isEmpty() -> CategoryManagerState.Empty

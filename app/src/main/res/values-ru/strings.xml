@@ -52,4 +52,6 @@
     <string name="btn_favorites_add">Сохранить</string>
     <string name="btn_favorites_remove">Удалить</string>
     <string name="err_server_connection">Не могу доустачаться до сервера. Проверьте, включен ли WiFi, есть ли доступ в Интернет и попробуйте чуть позже.</string>
+    <string name="notif_channel_radio_alarm">Радио будильник</string>
+    <string name="notif_i_am">Уведомление от Радио будильника</string>
 </resources>

@@ -52,4 +52,6 @@
     <string name="btn_favorites_add">Save</string>
     <string name="btn_favorites_remove">Remove</string>
     <string name="err_server_connection">Cannot reach to server. Check if WiFi is enabled. Check your Internet connection and try again.</string>
+    <string name="notif_channel_radio_alarm">Radio Alarm</string>
+    <string name="notif_i_am">I am Radio Alarm notification</string>
 </resources>

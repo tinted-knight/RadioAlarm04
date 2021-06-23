@@ -2,8 +2,8 @@ package com.noomit.radioalarm02.ui.alarm_fire
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.noomit.domain.alarm_manager.AlarmManagerContract
-import com.noomit.domain.alarm_manager.reComposeFired
+import com.noomit.domain.alarm_manager.AlarmManager
+import com.noomit.domain.alarm_manager.alarm_composer.AlarmComposer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DismissAlarmViewModel @Inject constructor(
-    private val manager: AlarmManagerContract,
+    private val manager: AlarmManager,
+    private val alarmComposer: AlarmComposer,
 ) : ViewModel() {
 
     companion object {
@@ -50,7 +51,7 @@ class DismissAlarmViewModel @Inject constructor(
 
     fun alarmFired() = alarmId?.let {
         val alarm = manager.selectById(it)
-        val updated = reComposeFired(alarm)
+        val updated = alarmComposer.reComposeFired(alarm)
         manager.updateTimeInMillis(
             id = updated.id,
             timeInMillis = updated.timeInMillis,

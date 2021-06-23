@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface ServerManagerContract {
     val state: Flow<ServerState>
     val activeServer: Flow<ActiveServerState>
+
     suspend fun getAvalilable()
     fun setServerManually(serverInfo: ServerInfo)
 }

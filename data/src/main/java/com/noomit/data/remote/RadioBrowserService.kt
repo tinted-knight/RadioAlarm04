@@ -25,6 +25,9 @@ class RadioBrowserService : RadioBrowserContract {
 
     private lateinit var api: RadioBrowserApi
 
+    //  #todo This is the only usage of Flow here
+    //      Probabaly active server logic should be moved to domain,
+    //      so we can get rid of Flow in the whole data layer
     private val _activeServer = MutableStateFlow<ActiveServerState>(ActiveServerState.None)
     override val activeServer: StateFlow<ActiveServerState> = _activeServer
 
