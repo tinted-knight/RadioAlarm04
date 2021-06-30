@@ -49,14 +49,16 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
                 is AlarmListEvent.RadioBrowser -> findNavController().navigate(R.id.action_home_to_radioBrowser)
                 is AlarmListEvent.HoldToDelete -> context?.toast(getString(R.string.toast_hold_to_del))
                 is AlarmListEvent.SelectMelody -> findNavController().navigate(R.id.action_home_to_selectMelody)
-                is AlarmListEvent.TestMelody -> startActivity(AlarmActivity.composeIntent(
-                    context = requireContext(),
-                    id = event.alarm.id,
-                    url = event.alarm.bellUrl,
-                    name = event.alarm.bellName,
-                    action = AlarmActivity.ACTION_TEST,
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
-                ))
+                is AlarmListEvent.TestMelody -> startActivity(
+                    AlarmActivity.composeIntent(
+                        context = requireContext(),
+                        id = event.alarm.id,
+                        url = event.alarm.bellUrl,
+                        name = event.alarm.bellName,
+                        action = AlarmActivity.ACTION_TEST,
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+                    )
+                )
                 is AlarmListEvent.TimeChange -> pickTimeUpdateAlarm(event.alarm)
             }
         }
