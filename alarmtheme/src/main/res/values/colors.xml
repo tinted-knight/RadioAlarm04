@@ -5,11 +5,13 @@
     <color name="clPrimaryDark">#3F535C</color>
     <color name="clAccent">#607D88</color>
     <color name="clSecondary">#039BE5</color>
-    <color name="clBackground">#ffFFFFFF</color>
+    <color name="clBackground">#ff121212</color>
     <color name="clStatusBarBackground">#FFFFFF</color>
     <color name="colorDayTextInactive">#57000000</color>
     <color name="colorDayTextActive">#558B2F</color>
+    <!-- Fire alarm screen -->
     <color name="clFireTextColor">#FFFFFF</color>
+    <color name="clFireBackground">#000000</color>
     <!-- Alarm card  -->
     <color name="clDayBgActive">#0F109113</color>
     <color name="clDayRippleActive">#FFFF0000</color>

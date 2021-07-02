@@ -25,11 +25,7 @@ sealed class ActiveServerState {
 }
 
 sealed class ServerListResponse {
-    sealed class ServerListFailure {
-        object UnknownHost : ServerListFailure()
-        object NetworkError : ServerListFailure()
-        object NoReachableServers : ServerListFailure()
-    }
+    enum class ServerListFailure { UnknownHost, NetworkError, NoReachableServers }
 
     class Success(val value: List<ServerInfo>) : ServerListResponse()
     class Failure(val error: ServerListFailure) : ServerListResponse()

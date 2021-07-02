@@ -10,6 +10,8 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -25,33 +27,20 @@ import com.squareup.contour.ContourLayout
 
 class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(context, attrs) {
 
-    private val browseHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
-        text = context.getString(R.string.help_browse)
-    }
+    private val browseHelp = materialTextView(R.string.help_browse)
 
-    private val deleteHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
-        text = context.getString(R.string.help_delete)
-    }
+    private val deleteHelp = materialTextView(R.string.help_delete)
 
-    private val melodyHelp = MaterialTextView(context, null, appTheme.helpView.text).apply {
-        text = context.getString(R.string.help_melody)
-    }
+    private val melodyHelp = materialTextView(R.string.help_melody)
 
-    private val browseIcon = addImageView().apply {
-//        imageTintList = ColorStateList.valueOf(Color.WHITE)
-        setImageDrawable(ContextCompat.getDrawable(context, appTheme.helpView.browseIcon))
-    }
+    private val browseIcon = imageView(appTheme.helpView.browseIcon)
 
-    private val deleteIcon = addImageView().apply {
-        setImageDrawable(ContextCompat.getDrawable(context, appTheme.helpView.deleteIcon))
-    }
+    private val deleteIcon = imageView(appTheme.helpView.deleteIcon)
 
-    private val melodyIcon = addImageView().apply {
-        setImageDrawable(ContextCompat.getDrawable(context, appTheme.helpView.melodyIcon))
-    }
+    private val melodyIcon = imageView(appTheme.helpView.melodyIcon)
 
-    private val browseDivider = addDivider()
-    private val deleteDivider = addDivider()
+    private val browseDivider = divider()
+    private val deleteDivider = divider()
 
     private val fab = ImageButton(context, null, appTheme.helpView.fabStyleId)
 
@@ -67,6 +56,14 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         registerBackpressListener()
 
         collapseLayout()
+    }
+
+    fun expand() {
+        if (!isSelected) performClick()
+    }
+
+    fun collapse() {
+        if (isSelected) performClick()
     }
 
     val layoutTransition: Transition
@@ -146,9 +143,11 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         val hSpacing = 16.xdip
         val vSpacing = 16.ydip
 
+        val vPaddingIcon = 4.ydip
+
         browseIcon.updateLayoutBy(
             x = leftTo { parent.left() },
-            y = centerVerticallyTo { browseHelp.centerY() }
+            y = topTo { browseHelp.top() + vPaddingIcon }
         )
         browseHelp.updateLayoutBy(
             x = leftTo { browseIcon.right() + hSpacing }.rightTo { parent.right() },
@@ -160,7 +159,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         )
         deleteIcon.updateLayoutBy(
             x = leftTo { parent.left() },
-            y = centerVerticallyTo { deleteHelp.centerY() }
+            y = topTo { deleteHelp.top() + vPaddingIcon }
         )
         deleteHelp.updateLayoutBy(
             x = leftTo { deleteIcon.right() + hSpacing }.rightTo { parent.right() },
@@ -172,7 +171,7 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         )
         melodyIcon.updateLayoutBy(
             x = leftTo { parent.left() },
-            y = centerVerticallyTo { melodyHelp.centerY() }
+            y = topTo { melodyHelp.top() + vPaddingIcon }
         )
         melodyHelp.updateLayoutBy(
             x = leftTo { melodyIcon.right() + hSpacing }.rightTo { parent.right() },
@@ -222,7 +221,15 @@ class HelpView(context: Context, attrs: AttributeSet? = null) : ContourLayout(co
         }
     }
 
-    private fun addImageView() = ImageView(context, null, appTheme.helpView.iconAttr)
+    private fun imageView(@DrawableRes resId: Int) =
+        ImageView(context, null, appTheme.helpView.iconAttr).apply {
+            setImageDrawable(ContextCompat.getDrawable(context, resId))
+        }
 
-    private fun addDivider() = View(context, null, appTheme.helpView.dividerAttr)
+    private fun materialTextView(@StringRes resId: Int) =
+        MaterialTextView(context, null, appTheme.helpView.text).apply {
+            text = context.getString(resId)
+        }
+
+    private fun divider() = View(context, null, appTheme.helpView.dividerAttr)
 }

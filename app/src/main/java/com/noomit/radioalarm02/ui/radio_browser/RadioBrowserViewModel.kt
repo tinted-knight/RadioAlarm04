@@ -1,6 +1,7 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
 import androidx.lifecycle.viewModelScope
+import com.noomit.domain.ActiveServerState
 import com.noomit.domain.ServerInfo
 import com.noomit.domain.category_manager.CategoryManagerContract
 import com.noomit.domain.category_manager.CategoryManagerState
@@ -8,22 +9,21 @@ import com.noomit.domain.entities.CategoryModel
 import com.noomit.domain.server_manager.ServerManagerContract
 import com.noomit.domain.station_manager.StationManagerContract
 import com.noomit.domain.station_manager.StationManagerState
-import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
+import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
-sealed class RadioBrowserDirections : NavCommand {
-    object LanguageList : RadioBrowserDirections()
-    object TagList : RadioBrowserDirections()
-    object TopVoted : RadioBrowserDirections()
-    object Search : RadioBrowserDirections()
+sealed class RadioBrowserEvent : OneShotEvent {
+    object LanguageList : RadioBrowserEvent()
+    object TagList : RadioBrowserEvent()
+    object TopVoted : RadioBrowserEvent()
+    object Search : RadioBrowserEvent()
 }
 
 @FlowPreview
@@ -32,36 +32,50 @@ class RadioBrowserViewModel @Inject constructor(
     private val serverManager: ServerManagerContract,
     private val categoryManager: CategoryManagerContract,
     private val stationManager: StationManagerContract,
-) : NavigationViewModel<RadioBrowserDirections>(), RadioBrowserHomeDelegate {
+) : NavigationViewModel<RadioBrowserEvent>(), RadioBrowserHomeDelegate {
 
     val availableServers = serverManager.state
 
-    val activeServer = serverManager.activeServer
+    private val activeServer = serverManager.activeServer
 
     private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
 
     private val stationFilter = MutableStateFlow<Filter>(Filter.None)
 
-    fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
-
-    fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
-        stringFlow.filterNotNull().collect {
-            if (it.isBlank()) {
-                caterogyFilter.emit(Filter.None)
-            } else {
-                caterogyFilter.emit(Filter.Value(it))
+    init {
+        viewModelScope.launch {
+            // If there is no activeServer, it means something has gone wrong with connection
+            // So why not to try once more
+            activeServer.collect {
+                if (it is ActiveServerState.None) serverManager.getAvalilable()
             }
         }
     }
 
-    fun applyStationFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
-        stringFlow.collect {
-            if (it.isNullOrBlank()) {
-                stationFilter.emit(Filter.None)
-            } else {
-                stationFilter.emit(Filter.Value(it))
+    fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
+
+    fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
+        stringFlow.debounce(500)
+            .filterNotNull()
+            .collect {
+                if (it.isBlank()) {
+                    caterogyFilter.emit(Filter.None)
+                } else {
+                    caterogyFilter.emit(Filter.Value(it))
+                }
             }
-        }
+    }
+
+    fun applyStationFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
+        stringFlow.debounce(500)
+            .filterNotNull()
+            .collect {
+                if (it.isBlank()) {
+                    stationFilter.emit(Filter.None)
+                } else {
+                    stationFilter.emit(Filter.Value(it))
+                }
+            }
     }
 
     fun requestCategory(model: CategoryModel) {
@@ -86,7 +100,7 @@ class RadioBrowserViewModel @Inject constructor(
                 emit(state)
             } else {
                 val list = state.values.filter {
-                    it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
+                    it.name.lowercase().contains(filter.value)
                 }
                 emit(StationManagerState.Success(list, state.category))
             }
@@ -103,7 +117,7 @@ class RadioBrowserViewModel @Inject constructor(
                 emit(state)
             } else {
                 val filtered = state.values.filter {
-                    it.name.toLowerCase(Locale.getDefault()).contains(filter.value)
+                    it.name.lowercase().contains(filter.value)
                 }
                 emit(CategoryManagerState.Values(filtered))
             }
@@ -118,7 +132,7 @@ class RadioBrowserViewModel @Inject constructor(
             clearCategoryFilter()
             categoryManager.getLanguages()
         }
-        navigateTo(RadioBrowserDirections.LanguageList)
+        navigateTo(RadioBrowserEvent.LanguageList)
     }
 
     override fun onTagClick() {
@@ -126,12 +140,12 @@ class RadioBrowserViewModel @Inject constructor(
             clearCategoryFilter()
             categoryManager.getTags()
         }
-        navigateTo(RadioBrowserDirections.TagList)
+        navigateTo(RadioBrowserEvent.TagList)
     }
 
     override fun onTopVotedClick() {
         loadStations(CategoryModel.TopVoted())
-        navigateTo(RadioBrowserDirections.TopVoted)
+        navigateTo(RadioBrowserEvent.TopVoted)
     }
 
     data class SearchState(
@@ -147,10 +161,10 @@ class RadioBrowserViewModel @Inject constructor(
 
     override fun onSearchClick() {
         loadStations(CategoryModel.GlobalSearch(
-            searchName = _searchState.value.name.toLowerCase(Locale.getDefault()),
-            searchTag = _searchState.value.tag.toLowerCase(Locale.getDefault())
+            searchName = _searchState.value.name.lowercase(),
+            searchTag = _searchState.value.tag.lowercase()
         ))
-        navigateTo(RadioBrowserDirections.Search)
+        navigateTo(RadioBrowserEvent.Search)
     }
 
     override fun onSearchNameChanged(value: String?) {

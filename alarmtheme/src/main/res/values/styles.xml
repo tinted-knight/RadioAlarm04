@@ -86,7 +86,7 @@
     </style>
 
     <style name="LightTheme.AlarmIcon">
-        <item name="android:src">@drawable/ic_add_alarm_24</item>
+        <item name="android:src">@drawable/ic_alarm_24</item>
         <item name="android:tint">@color/clAccent</item>
     </style>
 

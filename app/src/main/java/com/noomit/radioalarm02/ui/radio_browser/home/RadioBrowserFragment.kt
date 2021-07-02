@@ -6,12 +6,10 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.noomit.domain.ActiveServerState
 import com.noomit.domain.server_manager.ServerState
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.toast
 import com.noomit.radioalarm02.ui.navigation.NavHelper
-import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserDirections
+import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserEvent
 import com.noomit.radioalarm02.ui.radio_browser.RadioBrowserViewModel
 import com.noomit.radioalarm02.util.fragment.ContourFragment
 import com.noomit.radioalarm02.util.fragment.collect
@@ -55,20 +53,18 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
             when (it) {
                 is ServerState.Loading -> contour.showLoading()
                 is ServerState.Values -> contour.update(content = it.values)
-                is ServerState.Failure -> requireContext().toast(it.e.localizedMessage)
-                // #todo smth like showError or empty
+                is ServerState.Failure -> contour.showError(getString(R.string.err_server_connection))
                 else -> contour.showLoading()
             }
         }
 
-        collect(viewModel.activeServer) {
-            when (it) {
-                is ActiveServerState.None -> contour.update(activerServer = null)
-                is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
-                // #todo smth like showError or empty
-                else -> contour.showLoading()
-            }
-        }
+//        collect(viewModel.activeServer) {
+//            when (it) {
+//                is ActiveServerState.None -> contour.update(activerServer = null)
+//                is ActiveServerState.Value -> contour.update(activerServer = it.serverInfo)
+//                else -> contour.showLoading()
+//            }
+//        }
 
         collect(viewModel.searchState) {
             contour.btnSearchEnabled(it.isValid)
@@ -76,21 +72,21 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
     }
 
     override fun observeCommands() {
-        collect(viewModel.commands) { command ->
-            when (command) {
-                is RadioBrowserDirections.LanguageList -> findNavController().navigate(
+        collect(viewModel.oneshotEvents) { event ->
+            when (event) {
+                is RadioBrowserEvent.LanguageList -> findNavController().navigate(
                     R.id.action_radioBrowser_to_languageList,
                     Bundle().apply { putString(NavHelper.title, getString(R.string.nav_label_languages)) }
                 )
-                is RadioBrowserDirections.TagList -> findNavController().navigate(
+                is RadioBrowserEvent.TagList -> findNavController().navigate(
                     R.id.action_radioBrowser_to_languageList,
                     Bundle().apply { putString("title", getString(R.string.nav_label_tags)) }
                 )
-                is RadioBrowserDirections.TopVoted -> findNavController().navigate(
+                is RadioBrowserEvent.TopVoted -> findNavController().navigate(
                     R.id.action_radioBrowser_to_stationList,
                     Bundle().apply { putString("title", getString(R.string.nav_label_topvoted)) }
                 )
-                is RadioBrowserDirections.Search -> findNavController().navigate(
+                is RadioBrowserEvent.Search -> findNavController().navigate(
                     R.id.action_radioBrowser_to_stationList,
                     Bundle().apply { putString("title", getString(R.string.nav_label_search)) }
                 )

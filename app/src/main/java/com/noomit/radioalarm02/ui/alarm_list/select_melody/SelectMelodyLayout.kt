@@ -81,7 +81,7 @@ class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
         favorites.nowPlayingEmpty()
     }
 
-    override fun getRecyclerState(): Parcelable? = null
+    override fun getRecyclerState(): Parcelable? = favorites.getRecyclerState()
 
-    override fun setRecyclerState(state: Parcelable) {}
+    override fun setRecyclerState(state: Parcelable) = favorites.setRecyclerState(state)
 }

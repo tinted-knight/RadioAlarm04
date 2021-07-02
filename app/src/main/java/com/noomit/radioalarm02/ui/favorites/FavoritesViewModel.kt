@@ -2,8 +2,8 @@ package com.noomit.radioalarm02.ui.favorites
 
 import com.noomit.domain.entities.StationModel
 import com.noomit.domain.favorites_manager.FavoritesManagerContract
-import com.noomit.radioalarm02.ui.navigation.NavCommand
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
+import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.NowPlaying
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.ItemClickListener
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
@@ -12,17 +12,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-sealed class FavoritesDirections : NavCommand {
-    data class OpenExternalLink(val url: String) : FavoritesDirections()
-    object VolumeUp : FavoritesDirections()
-    object VolumeDown : FavoritesDirections()
+sealed class FavoritesEvent : OneShotEvent {
+    data class OpenExternalLink(val url: String) : FavoritesEvent()
+    object VolumeUp : FavoritesEvent()
+    object VolumeDown : FavoritesEvent()
 }
 
 @HiltViewModel
 // #think rewrite all to states
 class FavoritesViewModel @Inject constructor(
     private val favoritesManager: FavoritesManagerContract,
-) : NavigationViewModel<FavoritesDirections>(),
+) : NavigationViewModel<FavoritesEvent>(),
     ItemClickListener<StationModel>, NowPlayingListener {
 
     val selectAll = favoritesManager.allEntries
@@ -73,7 +73,7 @@ class FavoritesViewModel @Inject constructor(
 
     override fun onHomePageClick() {
         _nowPlayingForService.value?.let {
-            navigateTo(FavoritesDirections.OpenExternalLink(it.station.homepage))
+            navigateTo(FavoritesEvent.OpenExternalLink(it.station.homepage))
         }
     }
 

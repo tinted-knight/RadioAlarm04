@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-interface NavCommand
+interface OneShotEvent
 
 object NavHelper {
     const val title = "title"
 }
 
 // #todo naming and look into Channel.comsumeAsFlow/collectAsFlow
-abstract class NavigationViewModel<T : NavCommand> : ViewModel() {
+abstract class NavigationViewModel<T : OneShotEvent> : ViewModel() {
     private val navigation = MutableSharedFlow<T>(replay = 0)
-    val commands: SharedFlow<T>
+    val oneshotEvents: SharedFlow<T>
         get() = navigation
 
     protected fun navigateTo(destination: T) {

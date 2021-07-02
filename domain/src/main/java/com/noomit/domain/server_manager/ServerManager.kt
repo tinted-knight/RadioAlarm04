@@ -3,10 +3,7 @@ package com.noomit.domain.server_manager
 import com.noomit.domain.RadioBrowserContract
 import com.noomit.domain.ServerInfo
 import com.noomit.domain.ServerListResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 
 class ServerManager(
     private val apiService: RadioBrowserContract,
@@ -17,16 +14,15 @@ class ServerManager(
 
     override val activeServer get() = apiService.activeServer
 
-    override fun getAvalilable(scope: CoroutineScope) {
-        scope.launch(Dispatchers.IO) {
-            when (val serverList = apiService.checkForAvailableServers()) {
-                is ServerListResponse.Success -> {
-                    _state.value = ServerState.Values(serverList.value)
-                }
-                is ServerListResponse.Failure -> {
-                    // #todo handle various failure reasons
-                    _state.value = ServerState.Failure(Exception(serverList.error.toString()))
-                }
+    override suspend fun getAvalilable() {
+        _state.value = ServerState.Loading
+        when (val serverList = apiService.checkForAvailableServers()) {
+            is ServerListResponse.Success -> {
+                _state.value = ServerState.Values(serverList.value)
+            }
+            is ServerListResponse.Failure -> {
+                // #todo handle various failure reasons
+                _state.value = ServerState.Failure(Exception(serverList.error.toString()))
             }
         }
     }

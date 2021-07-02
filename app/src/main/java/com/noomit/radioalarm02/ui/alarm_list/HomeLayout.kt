@@ -136,6 +136,7 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
         (recycler.adapter as AlarmListAdapter).submitList(values)
         recycler.isVisible = true
         emptyImage.isVisible = false
+        helpView.collapse()
     }
 
     override fun showEmpty() {
@@ -144,10 +145,20 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
         emptyImage.apply {
             alpha = 0f
             isVisible = true
+            helpView.expand()
             animate().setDuration(200L)
                 .alpha(0.85f)
                 .setInterpolator(LinearInterpolator())
                 .setListener(null)
+            //#achtung: May helpView leake in Runnable???
+//                .setListener(AnimatorListener(
+//                    onEnd = {
+//                        Handler(Looper.getMainLooper())
+//                            .postDelayed({
+//                                helpView.expand()
+//                            }, 150)
+//                    }
+//                ))
         }
     }
 

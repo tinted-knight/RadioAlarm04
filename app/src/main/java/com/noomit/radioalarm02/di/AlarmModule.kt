@@ -4,9 +4,9 @@ import android.content.Context
 import com.noomit.db.AppDatabase
 import com.noomit.domain.AlarmQueries
 import com.noomit.domain.alarm_manager.AlarmManager
-import com.noomit.domain.alarm_manager.AlarmManagerContract
-import com.noomit.domain.alarm_manager.ScheduleAlarmUtilsContract
-import com.noomit.radioalarm02.util.ScheduleAlarmUtils
+import com.noomit.domain.alarm_manager.AlarmSchedulerContract
+import com.noomit.domain.alarm_manager.alarm_composer.AlarmComposer
+import com.noomit.radioalarm02.util.AlarmScheduler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,9 +17,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 @InstallIn(ViewModelComponent::class)
 class AlarmModule {
     @Provides
-    fun provideAlarmManager(queries: AlarmQueries, scheduler: ScheduleAlarmUtilsContract)
-            : AlarmManagerContract {
-        return AlarmManager(queries, scheduler)
+    fun provideAlarmManager(
+        queries: AlarmQueries,
+        scheduler: AlarmSchedulerContract,
+        composer: AlarmComposer
+    ): AlarmManager {
+        return AlarmManager(queries, scheduler, composer)
     }
 
     @Provides
@@ -28,7 +31,12 @@ class AlarmModule {
     }
 
     @Provides
-    fun provideAlarmScheduler(@ApplicationContext context: Context): ScheduleAlarmUtilsContract {
-        return ScheduleAlarmUtils(context)
+    fun provideAlarmScheduler(@ApplicationContext context: Context): AlarmSchedulerContract {
+        return AlarmScheduler(context)
+    }
+
+    @Provides
+    fun provideAlarmComposer(): AlarmComposer {
+        return AlarmComposer()
     }
 }

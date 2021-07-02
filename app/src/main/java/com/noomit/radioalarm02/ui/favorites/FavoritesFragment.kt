@@ -84,17 +84,17 @@ class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
     }
 
     override fun observeCommands() {
-        collect(favoritesViewModel.commands) { command ->
-            when (command) {
-                is FavoritesDirections.OpenExternalLink -> startActivity(
+        collect(favoritesViewModel.oneshotEvents) { event ->
+            when (event) {
+                is FavoritesEvent.OpenExternalLink -> startActivity(
                     Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(command.url)
+                        data = Uri.parse(event.url)
                     })
-                FavoritesDirections.VolumeDown -> {
+                FavoritesEvent.VolumeDown -> {
                     val audioManager = requireContext().getSystemService<AudioManager>()
                     audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 3, AudioManager.FLAG_SHOW_UI)
                 }
-                FavoritesDirections.VolumeUp -> {
+                FavoritesEvent.VolumeUp -> {
                     val audioManager = requireContext().getSystemService<AudioManager>()
                     audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_SHOW_UI)
                 }

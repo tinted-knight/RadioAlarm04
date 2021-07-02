@@ -2,12 +2,9 @@ package com.noomit.radioalarm02.ui.alarm_list.adapters
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.domain.alarm_manager.hourString
 import com.noomit.domain.alarm_manager.isDayBitOn
-import com.noomit.domain.alarm_manager.minuteString
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
 import java.text.DateFormat
@@ -31,30 +28,39 @@ class AlarmListAdapter(
         AlarmItemView(parent.context)
     )
 
+    override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isNullOrEmpty()) {
+            holder.bind(getItem(position))
+            return
+        }
+        holder.bind(getItem(position), payloads)
+    }
+
     override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
     override fun onViewAttachedToWindow(holder: AlarmListViewHolder) {
         super.onViewAttachedToWindow(holder)
-        val alarm = getItem(holder.adapterPosition)
+        // `getItem` _must_ be function
+        // if not delegate captures initially loaded item, what causes bugs
+        val getItem = { getItem(holder.adapterPosition) }
         holder.contour.delegate = object : IAlarmItemActions {
-            override fun onDeleteClick() = delegate.onDeleteClick(alarm)
+            override fun onDeleteClick() = delegate.onDeleteClick(getItem())
 
-            override fun onDeleteLongClick() = delegate.onDeleteLongClick(alarm)
+            override fun onDeleteLongClick() = delegate.onDeleteLongClick(getItem())
 
-            override fun onSwitchChange(isChecked: Boolean) =
-                delegate.onEnabledChecked(alarm, isChecked)
+            override fun onSwitchChange(isChecked: Boolean) = delegate.onEnabledChecked(getItem(), isChecked)
 
-            override fun onTimeClick() = delegate.onTimeClick(alarm)
+            override fun onTimeClick() = delegate.onTimeClick(getItem())
 
-            override fun onDayClick() = delegate.onTimeClick(alarm)
+            override fun onDayClick() = delegate.onTimeClick(getItem())
 
-            override fun onMelodyClick() = delegate.onMelodyClick(alarm)
+            override fun onMelodyClick() = delegate.onMelodyClick(getItem())
 
-            override fun onMelodyLongClick() = delegate.onMelodyLongClick(alarm)
+            override fun onMelodyLongClick() = delegate.onMelodyLongClick(getItem())
 
-            override fun onDayOfWeekClick(day: Int) = delegate.onDayOfWeekClick(day, alarm)
+            override fun onDayOfWeekClick(day: Int) = delegate.onDayOfWeekClick(day, getItem())
 
         }
     }
@@ -65,20 +71,6 @@ class AlarmListAdapter(
     }
 }
 
-class AlarmListDiffUtil : DiffUtil.ItemCallback<AlarmModel>() {
-    override fun areItemsTheSame(oldItem: AlarmModel, newItem: AlarmModel): Boolean {
-        return oldItem == newItem
-    }
-
-    override fun areContentsTheSame(oldItem: AlarmModel, newItem: AlarmModel): Boolean {
-        return (oldItem.timeInMillis == newItem.timeInMillis
-                && oldItem.isEnabled == newItem.isEnabled
-                && oldItem.daysOfWeek == newItem.daysOfWeek
-                && oldItem.bellUrl == newItem.bellUrl)
-    }
-
-}
-
 class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val dateFormat = SimpleDateFormat("MMM, d", Locale.getDefault())
@@ -87,21 +79,35 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val contour: IAlarmItem
         get() = itemView as IAlarmItem
 
-    fun bind(value: AlarmModel) {
-        if (value.timeInMillis == 0L || !value.isEnabled) {
-            contour.setTime("${value.hourString}:${value.minuteString}")
-            contour.setDay("")
-        } else {
-            val date = Date(value.timeInMillis)
-            contour.setTime(timeFormat.format(date))
-            contour.setDay(dateFormat.format(date))
-        }
-        contour.setMelody(if (value.bellUrl.isNotBlank()) value.bellName else itemView.context.getString(R.string.melody_system))
-        contour.setSwitch(value.isEnabled)
-        processDaysOfWeek(value.daysOfWeek)
+    fun bind(alarm: AlarmModel) {
+        processDateTime(alarm)
+        contour.setMelody(if (alarm.bellUrl.isNotBlank()) alarm.bellName else itemView.context.getString(R.string.melody_system))
+        contour.setSwitch(alarm.isEnabled)
+        processDaysOfWeek(alarm)
     }
 
-    private fun processDaysOfWeek(daysOfWeek: Int) {
-        IAlarmItem.days.forEach { day -> contour.checkDay(day, daysOfWeek.isDayBitOn(day)) }
+    fun bind(alarm: AlarmModel, payloads: MutableList<Any>) {
+        when (payloads[0]) {
+            Payload.IsEnabled -> {
+                contour.setSwitch(alarm.isEnabled)
+                processDateTime(alarm)
+            }
+            Payload.DaysOfWeek -> bind(alarm)
+            Payload.Time -> processDateTime(alarm)
+        }
+    }
+
+    private fun processDateTime(alarm: AlarmModel) {
+        val date = Date(alarm.timeInMillis)
+        // #todo instead of setDay(value!!) => showDay(value!!) and hideDay()
+        when (alarm.isEnabled) {
+            true -> contour.setDay(dateFormat.format(date))
+            false -> contour.setDay("")
+        }
+        contour.setTime(timeFormat.format(date))
+    }
+
+    private fun processDaysOfWeek(alarm: AlarmModel) {
+        IAlarmItem.days.forEach { day -> contour.checkDay(day, alarm.daysOfWeek.isDayBitOn(day)) }
     }
 }

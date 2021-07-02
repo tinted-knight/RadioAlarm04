@@ -40,17 +40,16 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmFire.time.attr,
     ).apply {
-//        text = "9:00"
         background = ResourcesCompat.getDrawable(resources, R.drawable.alarm_bg_time, null)
+        // text for preview
+//        text = "8:40"
     }
 
     private val dayOfWeek = TextView(
         context,
         null,
         appTheme.alarmFire.day.attr,
-    ).apply {
-//        text = "Monday"
-    }
+    )
 
     override val playerControll =
         LayoutInflater.from(context)
@@ -63,7 +62,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
 
     init {
         fitsSystemWindows = true
-        background = ResourcesCompat.getDrawable(resources, R.drawable.hipster_bg_gradient, null)
+        background = ResourcesCompat.getDrawable(resources, R.drawable.black_bg_gradient, null)
         time.layoutBy(
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },
