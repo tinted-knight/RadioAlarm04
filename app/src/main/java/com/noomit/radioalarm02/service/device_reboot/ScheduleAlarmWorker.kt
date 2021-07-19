@@ -5,7 +5,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.noomit.data.database.getAndroidSqlDriver
 import com.noomit.data.database.getDatabase
-import com.noomit.radioalarm02.util.AlarmScheduler
+import com.noomit.radioalarm02.util.AlarmSchedulerImpl
 
 class ScheduleAlarmWorker(
     private val context: Context,
@@ -15,7 +15,7 @@ class ScheduleAlarmWorker(
     override fun doWork(): Result {
         val sqlDriver = getAndroidSqlDriver(context)
         val database = getDatabase(sqlDriver)
-        val scheduler = AlarmScheduler(context)
+        val scheduler = AlarmSchedulerImpl(context)
         database.alarmQueries.nextActive().executeAsOneOrNull()?.let {
             scheduler.schedule(
                 alarmId = it.id,

@@ -52,4 +52,6 @@ dependencies {
     //SQLDelight
     implementation "com.squareup.sqldelight:android-driver:$sql_delight"
     implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
+    //DI
+    implementation "javax.inject:javax.inject:1"
 }

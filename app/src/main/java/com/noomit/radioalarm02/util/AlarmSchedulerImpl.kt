@@ -4,11 +4,15 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.noomit.domain.alarm_manager.AlarmSchedulerContract
+import com.noomit.domain.alarm_manager.AlarmScheduler
 import com.noomit.radioalarm02.MainActivity
 import com.noomit.radioalarm02.service.AlarmReceiver
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class AlarmScheduler(private val context: Context) : AlarmSchedulerContract {
+class AlarmSchedulerImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : AlarmScheduler {
     override fun schedule(alarmId: Long, bellUrl: String, bellName: String, timeInMillis: Long) {
         val operation = composePendingIntent(context, alarmId, bellUrl, bellName)
         cancelAlarm(context, operation)

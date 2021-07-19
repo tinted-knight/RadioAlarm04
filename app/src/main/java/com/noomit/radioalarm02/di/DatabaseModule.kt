@@ -1,24 +1,27 @@
 package com.noomit.radioalarm02.di
 
 import com.noomit.db.AppDatabase
+import com.noomit.domain.AlarmQueries
 import com.noomit.domain.FavoriteQueries
-import com.noomit.domain.favorites_manager.FavoritesManager
-import com.noomit.domain.favorites_manager.FavoritesManagerContract
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class FavoritesModule {
+class DatabaseModule {
+
     @Provides
-    fun provideFavoriteManager(queries: FavoriteQueries): FavoritesManagerContract {
-        return FavoritesManager(queries)
+    @ViewModelScoped
+    fun provideFavoriteQueries(database: AppDatabase): FavoriteQueries {
+        return database.favoriteQueries
     }
 
     @Provides
-    fun provideFavoriteQueries(database: AppDatabase): FavoriteQueries {
-        return database.favoriteQueries
+    @ViewModelScoped
+    fun provideAlarmQueries(database: AppDatabase): AlarmQueries {
+        return database.alarmQueries
     }
 }

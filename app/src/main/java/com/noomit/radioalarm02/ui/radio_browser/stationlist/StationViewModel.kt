@@ -3,7 +3,7 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noomit.domain.entities.StationModel
-import com.noomit.domain.favorites_manager.FavoritesManagerContract
+import com.noomit.domain.favorites_manager.FavoritesManager
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.adapter.ItemClickListener
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.views.NowPlayingListener
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +22,7 @@ sealed class UIMessage {
 
 @HiltViewModel
 class StationViewModel @Inject constructor(
-    private val favoritesManager: FavoritesManagerContract,
+    private val favoritesManager: FavoritesManager,
 ) : ViewModel(),
     ItemClickListener<StationModel>, NowPlayingListener {
 

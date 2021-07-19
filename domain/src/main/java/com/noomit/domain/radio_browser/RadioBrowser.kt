@@ -1,12 +1,10 @@
-package com.noomit.domain
+package com.noomit.domain.radio_browser
 
 import com.noomit.domain.entities.CategoryNetworkEntity
 import com.noomit.domain.entities.StationNetworkEntity
 import kotlinx.coroutines.flow.Flow
 
-data class ServerInfo(val urlString: String, val isReachable: Boolean)
-
-interface RadioBrowserContract {
+interface RadioBrowser {
     val activeServer: Flow<ActiveServerState>
     suspend fun checkForAvailableServers(): ServerListResponse
     fun setActiveServer(serverInfo: ServerInfo)
@@ -17,16 +15,4 @@ interface RadioBrowserContract {
     suspend fun getAllStations(): List<StationNetworkEntity>
     suspend fun getTopVoted(): List<StationNetworkEntity>
     suspend fun search(name: String, tag: String): List<StationNetworkEntity>
-}
-
-sealed class ActiveServerState {
-    object None : ActiveServerState()
-    data class Value(val serverInfo: ServerInfo) : ActiveServerState()
-}
-
-sealed class ServerListResponse {
-    enum class ServerListFailure { UnknownHost, NetworkError, NoReachableServers }
-
-    class Success(val value: List<ServerInfo>) : ServerListResponse()
-    class Failure(val error: ServerListFailure) : ServerListResponse()
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.noomit.domain.alarm_manager.AlarmManager
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.domain.entities.StationModel
-import com.noomit.domain.server_manager.ServerManagerContract
+import com.noomit.domain.server_manager.ServerManager
 import com.noomit.radioalarm02.ui.alarm_list.adapters.AlarmAdapterActions
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.navigation.OneShotEvent
@@ -26,7 +26,7 @@ sealed class AlarmListEvent : OneShotEvent {
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val manager: AlarmManager,
-    private val serverManager: ServerManagerContract,
+    private val serverManager: ServerManager,
 ) : NavigationViewModel<AlarmListEvent>(), IHomeLayoutDelegate, AlarmAdapterActions {
 
     val alarms = manager.alarms

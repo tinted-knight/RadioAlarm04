@@ -12,10 +12,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-internal class AlarmManagerImpl(
+class AlarmManagerImpl @Inject constructor(
     private val queries: AlarmQueries,
-    private val alarmScheduler: AlarmSchedulerContract,
+    private val alarmScheduler: AlarmScheduler,
     private val alarmComposer: AlarmComposer,
 ) : AlarmManager {
 

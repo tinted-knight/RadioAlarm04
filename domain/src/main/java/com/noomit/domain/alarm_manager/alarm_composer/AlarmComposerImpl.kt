@@ -5,8 +5,9 @@ import com.noomit.domain.alarm_manager.switchBitByDay
 import com.noomit.domain.alarm_manager.zipDaysInBits
 import com.noomit.domain.entities.AlarmModel
 import java.util.*
+import javax.inject.Inject
 
-internal class AlarmComposerImpl : AlarmComposer {
+class AlarmComposerImpl @Inject constructor() : AlarmComposer {
 
     override fun composeDbEntity(hour: Int, minute: Int): AlarmModel {
         val calendar = Calendar.getInstance().apply {

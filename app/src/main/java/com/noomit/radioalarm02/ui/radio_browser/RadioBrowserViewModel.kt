@@ -1,13 +1,13 @@
 package com.noomit.radioalarm02.ui.radio_browser
 
 import androidx.lifecycle.viewModelScope
-import com.noomit.domain.ActiveServerState
-import com.noomit.domain.ServerInfo
-import com.noomit.domain.category_manager.CategoryManagerContract
+import com.noomit.domain.category_manager.CategoryManager
 import com.noomit.domain.category_manager.CategoryManagerState
 import com.noomit.domain.entities.CategoryModel
-import com.noomit.domain.server_manager.ServerManagerContract
-import com.noomit.domain.station_manager.StationManagerContract
+import com.noomit.domain.radio_browser.ActiveServerState
+import com.noomit.domain.radio_browser.ServerInfo
+import com.noomit.domain.server_manager.ServerManager
+import com.noomit.domain.station_manager.StationManager
 import com.noomit.domain.station_manager.StationManagerState
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.navigation.OneShotEvent
@@ -29,9 +29,9 @@ sealed class RadioBrowserEvent : OneShotEvent {
 @FlowPreview
 @HiltViewModel
 class RadioBrowserViewModel @Inject constructor(
-    private val serverManager: ServerManagerContract,
-    private val categoryManager: CategoryManagerContract,
-    private val stationManager: StationManagerContract,
+    private val serverManager: ServerManager,
+    private val categoryManager: CategoryManager,
+    private val stationManager: StationManager,
 ) : NavigationViewModel<RadioBrowserEvent>(), RadioBrowserHomeDelegate {
 
     val availableServers = serverManager.state

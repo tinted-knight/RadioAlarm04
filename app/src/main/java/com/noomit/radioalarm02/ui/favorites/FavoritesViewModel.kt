@@ -1,7 +1,7 @@
 package com.noomit.radioalarm02.ui.favorites
 
 import com.noomit.domain.entities.StationModel
-import com.noomit.domain.favorites_manager.FavoritesManagerContract
+import com.noomit.domain.favorites_manager.FavoritesManager
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import com.noomit.radioalarm02.ui.radio_browser.stationlist.NowPlaying
@@ -21,7 +21,7 @@ sealed class FavoritesEvent : OneShotEvent {
 @HiltViewModel
 // #think rewrite all to states
 class FavoritesViewModel @Inject constructor(
-    private val favoritesManager: FavoritesManagerContract,
+    private val favoritesManager: FavoritesManager,
 ) : NavigationViewModel<FavoritesEvent>(),
     ItemClickListener<StationModel>, NowPlayingListener {
 

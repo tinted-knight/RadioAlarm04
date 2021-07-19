@@ -30,6 +30,6 @@ interface AlarmManager {
 
 fun AlarmManager(
     queries: AlarmQueries,
-    alarmScheduler: AlarmSchedulerContract,
+    alarmScheduler: AlarmScheduler,
     alarmComposer: AlarmComposer,
 ): AlarmManager = AlarmManagerImpl(queries, alarmScheduler, alarmComposer)
