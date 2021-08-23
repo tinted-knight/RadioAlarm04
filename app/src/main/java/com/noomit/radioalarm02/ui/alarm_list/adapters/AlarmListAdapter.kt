@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noomit.domain.alarm_manager.isDayBitOn
 import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
 import java.text.DateFormat
@@ -108,6 +107,6 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private fun processDaysOfWeek(alarm: AlarmModel) {
-        IAlarmItem.days.forEach { day -> contour.checkDay(day, alarm.daysOfWeek.isDayBitOn(day)) }
+        alarm.newDaysOfWeek.forEach { contour.checkDay(it.key, it.value) }
     }
 }

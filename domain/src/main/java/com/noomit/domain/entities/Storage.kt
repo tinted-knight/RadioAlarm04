@@ -1,6 +1,8 @@
 package com.noomit.domain.entities
 
 import com.noomit.domain.Alarm
+import com.noomit.domain.alarm_manager.DaysOfWeek
+import com.noomit.domain.alarm_manager.isDayBitOn
 
 sealed class CategoryModel {
     abstract val name: String
@@ -54,6 +56,7 @@ data class AlarmModel(
     val repeat: Boolean = false,
     val daysOfWeek: Int,
     val timeInMillis: Long,
+    val newDaysOfWeek: MutableMap<Int, Boolean> = mutableMapOf()
 ) {
     constructor(alarm: Alarm) : this(
         id = alarm.id,
@@ -64,6 +67,9 @@ data class AlarmModel(
         bellName = alarm.bell_name,
         daysOfWeek = alarm.days_of_week,
         timeInMillis = alarm.time_in_millis
-    )
-
+    ) {
+        DaysOfWeek.days.forEach { day ->
+            newDaysOfWeek[day] = alarm.days_of_week.isDayBitOn(day)
+        }
+    }
 }

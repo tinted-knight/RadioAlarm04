@@ -14,15 +14,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
+import com.noomit.domain.alarm_manager.DaysOfWeek.FRI_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.MON_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.SAT_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.SUN_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.THU_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.TUE_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.WED_ID
+import com.noomit.domain.alarm_manager.DaysOfWeek.days
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.FRI_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.MON_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.SAT_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.SUN_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.THU_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.TUE_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.WED_ID
-import com.noomit.radioalarm02.ui.alarm_list.adapters.IAlarmItem.Companion.days
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 import java.util.*
@@ -46,20 +46,6 @@ interface IAlarmItem {
     fun checkDay(day: Int, isActive: Boolean)
 
     var delegate: IAlarmItemActions?
-
-    companion object {
-        val days = listOf(
-            Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
-            Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
-        )
-        const val MON_ID = 0
-        const val TUE_ID = 1
-        const val WED_ID = 2
-        const val THU_ID = 3
-        const val FRI_ID = 4
-        const val SAT_ID = 5
-        const val SUN_ID = 6
-    }
 }
 
 // #achtung flashes when click on day
