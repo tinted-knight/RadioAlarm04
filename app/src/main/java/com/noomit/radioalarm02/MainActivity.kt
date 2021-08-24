@@ -29,10 +29,13 @@ class MainActivity : AppCompatActivity() {
 
     private var isPlaying = false
 
+    private lateinit var serviceIntent: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        serviceIntent = PlayerService.intent(this)
         // Template to request "change brightness" permission
 //        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
 //            if (Settings.System.canWrite(this)) {
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        application.startService(PlayerService.intent(this))
+        application.startService(serviceIntent)
 
         playerBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -82,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         unregisterReceiver(playerBroadcastReceiver)
-        if (!isPlaying) application.stopService(PlayerService.intent(this))
+        if (!isPlaying) application.stopService(serviceIntent)
         playerBroadcastReceiver = null
         super.onPause()
     }

@@ -18,7 +18,7 @@ abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if (service is PlayerService.PlayerServiceBinder) {
-                playerControlView?.player = service.exoPlayerInstance
+                playerControlView?.player = service.exoPlayerInstance.get()
                 this@PlayerServiceFragment.service = service
                 service.setCaption(notificationCaption)
                 onServiceConnected()
