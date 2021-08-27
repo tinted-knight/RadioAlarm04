@@ -35,13 +35,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             serverManager.getAvalilable()
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             manager.observeNextActive()
-//            serverManager.activeServer.collect {
-//                if (it is ActiveServerState.Value) {
-//                    ilog(it.serverInfo.urlString)
-//                }
-//            }
         }
     }
 

@@ -80,9 +80,9 @@ class PlayerService : Service() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         exoPlayer.release()
         hideNotification()
+        super.onDestroy()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

@@ -14,7 +14,6 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import com.ncorti.slidetoact.SlideToActView
 import com.noomit.radioalarm02.R
-import com.noomit.radioalarm02.ilog
 import com.noomit.radioalarm02.service.AlarmReceiver
 import com.noomit.radioalarm02.service.PlayerService
 import com.noomit.radioalarm02.util.BaseWakelockActivity

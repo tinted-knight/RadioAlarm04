@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.di
+package com.noomit.radioalarm02.di.storage
 
 import android.content.Context
 import com.noomit.data.database.getAndroidSqlDriver
@@ -10,22 +10,18 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+object AppDatabaseModule {
 
     @Provides
-    @Singleton
     fun provideAppDatabase(driver: AndroidSqliteDriver): AppDatabase {
         return getDatabase(driver)
     }
 
     @Provides
-    @Singleton
     fun provideSqlDriver(@ApplicationContext appContext: Context): AndroidSqliteDriver {
         return getAndroidSqlDriver(appContext)
     }
-
 }

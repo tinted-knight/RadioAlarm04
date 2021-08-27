@@ -139,20 +139,4 @@ class AlarmManagerImpl @Inject constructor(
             }
             .collect()
     }
-
-    override fun selectById(id: Long) = AlarmModel(queries.selectById(id).executeAsOne())
-
-    override fun updateTimeInMillis(id: Long, timeInMillis: Long) {
-        queries.updateTimeInMillis(
-            alarmId = id,
-            timeInMillis = timeInMillis,
-        )
-    }
-
-    override val nextActive: AlarmModel?
-        get() {
-            val next = queries.nextActive().executeAsOneOrNull()
-                ?: return null
-            return AlarmModel(next)
-        }
 }
