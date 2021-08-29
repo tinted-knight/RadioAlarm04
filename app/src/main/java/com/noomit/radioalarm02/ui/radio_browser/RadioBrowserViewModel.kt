@@ -9,6 +9,7 @@ import com.noomit.domain.radio_browser.ServerInfo
 import com.noomit.domain.server_manager.ServerManager
 import com.noomit.domain.station_manager.StationManager
 import com.noomit.domain.station_manager.StationManagerState
+import com.noomit.radioalarm02.ilog
 import com.noomit.radioalarm02.ui.navigation.NavigationViewModel
 import com.noomit.radioalarm02.ui.navigation.OneShotEvent
 import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
@@ -48,6 +49,7 @@ class RadioBrowserViewModel @Inject constructor(
             // So why not to try once more
             activeServer.collect {
                 if (it is ActiveServerState.None) serverManager.getAvalilable()
+                else if (it is ActiveServerState.Value) ilog("activeServer: ${it.serverInfo.urlString}")
             }
         }
     }
@@ -160,10 +162,12 @@ class RadioBrowserViewModel @Inject constructor(
     val searchState: StateFlow<SearchState> = _searchState
 
     override fun onSearchClick() {
-        loadStations(CategoryModel.GlobalSearch(
-            searchName = _searchState.value.name.lowercase(),
-            searchTag = _searchState.value.tag.lowercase()
-        ))
+        loadStations(
+            CategoryModel.GlobalSearch(
+                searchName = _searchState.value.name.lowercase(),
+                searchTag = _searchState.value.tag.lowercase()
+            )
+        )
         navigateTo(RadioBrowserEvent.Search)
     }
 
