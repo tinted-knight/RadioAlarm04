@@ -22,7 +22,7 @@ class RadioBrowserImpl @Inject constructor(
     private val apiFactory: ApiFactoryContract
 ) : RadioBrowser {
 
-    private lateinit var api: RadioBrowserApi
+    private var api: RadioBrowserApi? = null
 
     //  #todo This is the only usage of Flow here
     //      Probabaly active server logic should be moved to domain,
@@ -87,27 +87,23 @@ class RadioBrowserImpl @Inject constructor(
         _activeServer.value = ActiveServerState.Value(serverInfo)
     }
 
-    override suspend fun getLanguageList() = getLanguageListOrThrow()
+    override suspend fun getLanguageList() = getOrThrow { getLanguageList() }
 
-    override suspend fun getTagList() = api.getTagList()
+    override suspend fun getTagList() = getOrThrow { getTagList() }
 
     override suspend fun stationsByLanguage(langString: String) =
-        api.getStationsByLanguage(langString)
+        getOrThrow { getStationsByLanguage(langString) }
 
-    override suspend fun stationsByTag(tagString: String) = api.getStationsByTag(tagString)
+    override suspend fun stationsByTag(tagString: String) = getOrThrow { getStationsByTag(tagString) }
 
-    override suspend fun getAllStations() = api.getAllStations()
+    override suspend fun getAllStations() = getOrThrow { getAllStations() }
 
-    override suspend fun getTopVoted() = api.getTopVoted()
+    override suspend fun getTopVoted() = getOrThrow { getTopVoted() }
 
-    private suspend fun getLanguageListOrThrow(): List<CategoryNetworkEntity> {
-        // #todo wrapper for every method that calls [api] field
-        if (::api.isInitialized) {
-            return api.getLanguageList()
-        } else {
-            throw UninitializedPropertyAccessException("lateinit errrrror")
-        }
+    override suspend fun search(name: String, tag: String) = getOrThrow { search(SearchRequest(name, tag)) }
+
+    private suspend fun <T> getOrThrow(block: suspend RadioBrowserApi.() -> List<T>): List<T> {
+        val api = api ?: throw UninitializedPropertyAccessException("API service not initialized")
+        return block(api)
     }
-
-    override suspend fun search(name: String, tag: String) = api.search(SearchRequest(name, tag))
 }
