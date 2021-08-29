@@ -5,6 +5,7 @@ import com.noomit.domain.category_manager.CategoryManager
 import com.noomit.domain.category_manager.CategoryManagerState
 import com.noomit.domain.entities.CategoryModel
 import com.noomit.domain.radio_browser.ActiveServerState
+import com.noomit.domain.radio_browser.RadioBrowser
 import com.noomit.domain.radio_browser.ServerInfo
 import com.noomit.domain.server_manager.ServerManager
 import com.noomit.domain.station_manager.StationManager
@@ -16,6 +17,7 @@ import com.noomit.radioalarm02.ui.radio_browser.home.RadioBrowserHomeDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,13 +33,14 @@ sealed class RadioBrowserEvent : OneShotEvent {
 @HiltViewModel
 class RadioBrowserViewModel @Inject constructor(
     private val serverManager: ServerManager,
+    private val apiService: RadioBrowser,
     private val categoryManager: CategoryManager,
     private val stationManager: StationManager,
 ) : NavigationViewModel<RadioBrowserEvent>(), RadioBrowserHomeDelegate {
 
     val availableServers = serverManager.state
 
-    private val activeServer = serverManager.activeServer
+    private val activeServer = serverManager.activeServer()
 
     private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
 
@@ -46,10 +49,19 @@ class RadioBrowserViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             // If there is no activeServer, it means something has gone wrong with connection
-            // So why not to try once more
+            // try once more with delay
             activeServer.collect {
-                if (it is ActiveServerState.None) serverManager.getAvalilable()
-                else if (it is ActiveServerState.Value) ilog("activeServer: ${it.serverInfo.urlString}")
+                when (it) {
+                    is ActiveServerState.None -> {
+                        delay(1_000)
+                        serverManager.getAvalilable()
+                    }
+                    is ActiveServerState.Value -> {
+                        apiService.setActiveServer(it.serverInfo)
+                        ilog("activeServer: ${it.serverInfo.urlString}, ${it.hashCode()}")
+                    }
+                    else -> ilog("RadioBrowserViewModel::init, activer server unknown state")
+                }
             }
         }
     }

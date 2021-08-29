@@ -2,7 +2,9 @@ package com.noomit.radioalarm02.di.network
 
 import com.noomit.data.remote.ApiFactory
 import com.noomit.data.remote.ApiFactoryContract
+import com.noomit.data.remote.ServerResolverImpl
 import com.noomit.data.remote.RadioBrowserImpl
+import com.noomit.domain.radio_browser.ServerResolver
 import com.noomit.domain.radio_browser.RadioBrowser
 import dagger.Binds
 import dagger.Module
@@ -21,4 +23,8 @@ abstract class RadioBrowserApiModule {
     @Binds
     @Singleton
     abstract fun bindApi(factory: ApiFactory): ApiFactoryContract
+
+    @Binds
+    @Singleton
+    abstract fun bindServerResolver(impl: ServerResolverImpl): ServerResolver
 }

@@ -5,8 +5,6 @@ import com.noomit.domain.entities.StationNetworkEntity
 import kotlinx.coroutines.flow.Flow
 
 interface RadioBrowser {
-    val activeServer: Flow<ActiveServerState>
-    suspend fun checkForAvailableServers(): ServerListResponse
     fun setActiveServer(serverInfo: ServerInfo)
     suspend fun getLanguageList(): List<CategoryNetworkEntity>
     suspend fun getTagList(): List<CategoryNetworkEntity>
