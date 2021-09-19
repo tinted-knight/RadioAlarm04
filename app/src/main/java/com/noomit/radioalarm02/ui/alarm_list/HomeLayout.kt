@@ -189,7 +189,6 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
         ).apply {
             stateListAnimator = ItemListAnimator(this)
             background = GradientDrawable()
-            setOnClickListener { delegate?.onFavoriteClick() }
         }
 
     private val bbarCentralButton: TextView
