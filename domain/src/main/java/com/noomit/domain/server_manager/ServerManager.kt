@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ServerManager {
     val state: Flow<ServerState>
-    val activeServer: Flow<ActiveServerState>
+    fun activeServer(): Flow<ActiveServerState>
 
     suspend fun getAvalilable()
     fun setServerManually(serverInfo: ServerInfo)

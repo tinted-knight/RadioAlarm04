@@ -1,13 +1,11 @@
 package com.noomit.radioalarm02.ui.alarm_fire
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.noomit.domain.alarm_manager.AlarmManager
+import com.noomit.domain.alarm_manager.DismissAlarmManager
 import com.noomit.domain.alarm_manager.alarm_composer.AlarmComposer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DismissAlarmViewModel @Inject constructor(
-    private val manager: AlarmManager,
+    private val manager: DismissAlarmManager,
     private val alarmComposer: AlarmComposer,
 ) : ViewModel() {
 
@@ -43,12 +41,6 @@ class DismissAlarmViewModel @Inject constructor(
             return df.format(now)
         }
 
-    init {
-        viewModelScope.launch {
-            manager.observeNextActive()
-        }
-    }
-
     fun alarmFired() = alarmId?.let {
         val alarm = manager.selectById(it)
         val updated = alarmComposer.reComposeFired(alarm)
@@ -56,5 +48,6 @@ class DismissAlarmViewModel @Inject constructor(
             id = updated.id,
             timeInMillis = updated.timeInMillis,
         )
+        manager.scheduleNextActive()
     }
 }

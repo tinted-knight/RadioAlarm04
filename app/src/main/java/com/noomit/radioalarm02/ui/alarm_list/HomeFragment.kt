@@ -1,7 +1,6 @@
 package com.noomit.radioalarm02.ui.alarm_list
 
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -50,13 +49,11 @@ class HomeFragment : ContourFragment<IHomeLayout>() {
                 is AlarmListEvent.HoldToDelete -> context?.toast(getString(R.string.toast_hold_to_del))
                 is AlarmListEvent.SelectMelody -> findNavController().navigate(R.id.action_home_to_selectMelody)
                 is AlarmListEvent.TestMelody -> startActivity(
-                    AlarmActivity.composeIntent(
+                    AlarmActivity.composeTestIntent(
                         context = requireContext(),
                         id = event.alarm.id,
                         url = event.alarm.bellUrl,
                         name = event.alarm.bellName,
-                        action = AlarmActivity.ACTION_TEST,
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
                     )
                 )
                 is AlarmListEvent.TimeChange -> pickTimeUpdateAlarm(event.alarm)

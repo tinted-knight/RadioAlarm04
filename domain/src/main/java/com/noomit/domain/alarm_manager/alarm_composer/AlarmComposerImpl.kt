@@ -1,8 +1,6 @@
 package com.noomit.domain.alarm_manager.alarm_composer
 
-import com.noomit.domain.alarm_manager.isDayBitOn
-import com.noomit.domain.alarm_manager.switchBitByDay
-import com.noomit.domain.alarm_manager.zipDaysInBits
+import com.noomit.domain.alarm_manager.*
 import com.noomit.domain.entities.AlarmModel
 import java.util.*
 import javax.inject.Inject
@@ -26,13 +24,13 @@ class AlarmComposerImpl @Inject constructor() : AlarmComposer {
             bellUrl = "",
             bellName = "system", // #todo i18n
             repeat = false,
-            daysOfWeek = zipDaysInBits(listOf(calendar.dayOfWeek)),
+            daysOfWeek = calendar.packWeekInBits(),
             timeInMillis = calendar.timeInMillis,
         )
     }
 
     override fun reCompose(alarm: AlarmModel, dayOfWeek: Int): AlarmModel {
-        val newDays = switchBitByDay(dayOfWeek, alarm.daysOfWeek)
+        val newDays = alarm.switchDayBit(dayOfWeek)
         if (newDays == 0) return alarm.copy(
             daysOfWeek = 0,
             timeInMillis = 0,

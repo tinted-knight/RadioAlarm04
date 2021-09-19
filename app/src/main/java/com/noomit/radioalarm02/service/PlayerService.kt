@@ -80,9 +80,9 @@ class PlayerService : Service() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         exoPlayer.release()
         hideNotification()
+        super.onDestroy()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -98,7 +98,7 @@ class PlayerService : Service() {
             }
             updateNotification()
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
     }
 
     private val playerStateListener = object : Player.Listener {
@@ -213,8 +213,8 @@ class PlayerService : Service() {
     }
 
     inner class PlayerServiceBinder : Binder() {
-        val exoPlayerInstance: SimpleExoPlayer
-            get() = exoPlayer
+        val exoPlayerInstance: WeakReference<SimpleExoPlayer>
+            get() = WeakReference(exoPlayer)
 
         fun play() {
             exoPlayer.playWhenReady = true

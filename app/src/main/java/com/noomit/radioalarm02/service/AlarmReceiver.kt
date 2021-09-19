@@ -22,13 +22,11 @@ class AlarmReceiver : BroadcastReceiver() {
             val pendingIntent = PendingIntent.getActivity(
                 context,
                 REQUEST_CODE,
-                AlarmActivity.composeIntent(
+                AlarmActivity.composeRealIntent(
                     context = context,
                     id = alarmId,
                     url = melodyUrl,
                     name = melodyName,
-                    action = AlarmActivity.ACTION_FIRE,
-                    flags = 0
                 ),
                 PendingIntent.FLAG_UPDATE_CURRENT,
             )
@@ -53,7 +51,7 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        const val ALARM_ACTION = "alarm-action"
+        const val ALARM_ACTION = "receiver-alarm-action"
         const val ALARM_ID = "alarm-id"
         const val BELL_URL = "bell-id"
         const val BELL_NAME = "bell-name"

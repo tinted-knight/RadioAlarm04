@@ -1,34 +1,43 @@
 package com.noomit.domain.server_manager
 
-import com.noomit.domain.radio_browser.RadioBrowser
-import com.noomit.domain.radio_browser.ServerInfo
-import com.noomit.domain.radio_browser.ServerListResponse
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.noomit.domain.radio_browser.*
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class ServerManagerImpl @Inject constructor(
-    private val apiService: RadioBrowser,
+    private val serverResolver: ServerResolver,
 ) : ServerManager {
 
-    private val _state = MutableStateFlow<ServerState>(ServerState.Loading)
-    override val state = _state
+    override val state = MutableStateFlow<ServerState>(ServerState.Loading)
 
-    override val activeServer get() = apiService.activeServer
+    override fun activeServer(): Flow<ActiveServerState> = flow {
+        serverResolver.cached
+            .collect { serverList ->
+                when (serverList) {
+                    is ServerListResponse.Loading -> {
+                        state.value = ServerState.Loading
+                        emit(ActiveServerState.Loading)
+                    }
+                    is ServerListResponse.Success -> {
+                        val server = serverList.value
+                            .firstOrNull() { it.urlString.contains("de1") || it.urlString.contains("nl1") }
+                            ?: serverList.value.first()
 
-    override suspend fun getAvalilable() {
-        _state.value = ServerState.Loading
-        when (val serverList = apiService.checkForAvailableServers()) {
-            is ServerListResponse.Success -> {
-                _state.value = ServerState.Values(serverList.value)
+                        state.value = ServerState.Values(serverList.value)
+                        emit(ActiveServerState.Value(server))
+                    }
+                    is ServerListResponse.Failure -> {
+                        // #todo handle various failure reasons
+                        state.value = ServerState.Failure(Exception(serverList.error.toString()))
+                        emit(ActiveServerState.None)
+                    }
+                }
             }
-            is ServerListResponse.Failure -> {
-                // #todo handle various failure reasons
-                _state.value = ServerState.Failure(Exception(serverList.error.toString()))
-            }
-        }
     }
 
+    override suspend fun getAvalilable() = serverResolver.checkAlive()
+
     override fun setServerManually(serverInfo: ServerInfo) {
-        apiService.setActiveServer(serverInfo)
+//        apiService.setActiveServer(serverInfo)
     }
 }

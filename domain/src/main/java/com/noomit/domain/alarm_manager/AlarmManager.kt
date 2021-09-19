@@ -22,10 +22,6 @@ interface AlarmManager {
      * or clears schedule if there are no active alarms
      */
     suspend fun observeNextActive()
-
-    fun selectById(id: Long): AlarmModel
-    fun updateTimeInMillis(id: Long, timeInMillis: Long)
-    val nextActive: AlarmModel?
 }
 
 fun AlarmManager(

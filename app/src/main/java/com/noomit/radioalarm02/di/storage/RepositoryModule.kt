@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.di
+package com.noomit.radioalarm02.di.storage
 
 import com.noomit.db.AppDatabase
 import com.noomit.domain.AlarmQueries
@@ -7,20 +7,17 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class DatabaseModule {
+class RepositoryModule {
 
     @Provides
-    @ViewModelScoped
     fun provideFavoriteQueries(database: AppDatabase): FavoriteQueries {
         return database.favoriteQueries
     }
 
     @Provides
-    @ViewModelScoped
     fun provideAlarmQueries(database: AppDatabase): AlarmQueries {
         return database.alarmQueries
     }

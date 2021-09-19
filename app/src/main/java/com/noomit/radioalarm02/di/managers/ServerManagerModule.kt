@@ -1,4 +1,4 @@
-package com.noomit.radioalarm02.di
+package com.noomit.radioalarm02.di.managers
 
 import com.noomit.domain.server_manager.ServerManager
 import com.noomit.domain.server_manager.ServerManagerImpl

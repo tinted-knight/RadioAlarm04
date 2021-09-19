@@ -24,10 +24,14 @@ class AlarmActivity : BaseWakelockActivity() {
 
     private val viewModel: DismissAlarmViewModel by viewModels()
 
+    private lateinit var serviceIntent: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm)
         setWindowDecoration()
+
+        serviceIntent = PlayerService.intent(this)
 
         viewModel.alarmId = intent.getLongExtra(AlarmReceiver.ALARM_ID, -1)
         viewModel.melodyUrl = intent.getStringExtra(AlarmReceiver.BELL_URL)
@@ -39,11 +43,9 @@ class AlarmActivity : BaseWakelockActivity() {
             override fun onSlideComplete(view: SlideToActView) {
                 if (action == ACTION_FIRE) {
                     viewModel.alarmFired()
-                    application.stopService(PlayerService.intent(this@AlarmActivity))
-                    onBackPressed()
-                } else {
-                    onBackPressed()
+                    application.stopService(serviceIntent)
                 }
+                finish()
             }
         }
     }
@@ -60,7 +62,16 @@ class AlarmActivity : BaseWakelockActivity() {
     override fun onResume() {
         super.onResume()
 
-        application.startService(PlayerService.intent(this))
+        application.startService(serviceIntent)
+    }
+
+    override fun onBackPressed() {
+        if (intent.action == ACTION_FIRE) {
+            viewModel.alarmFired()
+            application.stopService(serviceIntent)
+        }
+        // to get rid of LeakCanary notification
+        finishAfterTransition()
     }
 
     private fun setWindowDecoration() {
@@ -147,7 +158,27 @@ class AlarmActivity : BaseWakelockActivity() {
         const val ACTION_FIRE = "alarm-action"
         const val ACTION_TEST = "alarm-test"
 
-        fun composeIntent(
+        fun composeTestIntent(context: Context, id: Long, url: String?, name: String?) =
+            composeIntent(
+                context = context,
+                id = id,
+                url = url,
+                name = name,
+                action = ACTION_TEST,
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            )
+
+        fun composeRealIntent(context: Context, id: Long, url: String?, name: String?) =
+            composeIntent(
+                context = context,
+                id = id,
+                url = url,
+                name = name,
+                action = ACTION_FIRE,
+                flags = 0
+            )
+
+        private fun composeIntent(
             context: Context,
             id: Long,
             url: String?,

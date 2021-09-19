@@ -8,17 +8,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class AlarmModule {
 
     @Binds
-    @ViewModelScoped
     abstract fun provideAlarmScheduler(alarmScheduler: AlarmSchedulerImpl): AlarmScheduler
 
     @Binds
-    @ViewModelScoped
     abstract fun provideAlarmComposer(alarmComposer: AlarmComposerImpl): AlarmComposer
 }
