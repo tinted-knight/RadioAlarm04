@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity
+import com.noomit.alarmtheme.R as Rtheme
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -31,7 +32,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 PendingIntent.FLAG_UPDATE_CURRENT,
             )
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_radio_24)
+                .setSmallIcon(Rtheme.drawable.ic_radio_24)
                 .setContentTitle(context.getString(R.string.notif_i_am))
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

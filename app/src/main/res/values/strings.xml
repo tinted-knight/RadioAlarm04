@@ -54,4 +54,6 @@
     <string name="err_server_connection">Cannot reach to server. Check if WiFi is enabled. Check your Internet connection and try again.</string>
     <string name="notif_channel_radio_alarm">Radio Alarm</string>
     <string name="notif_i_am">I am Radio Alarm notification</string>
+    <string name="label_codec">Codec:</string>
+    <string name="label_bitrate">Bitrate:</string>
 </resources>

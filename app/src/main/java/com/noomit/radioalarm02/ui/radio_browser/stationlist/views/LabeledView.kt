@@ -3,9 +3,11 @@ package com.noomit.radioalarm02.ui.radio_browser.stationlist.views
 import android.content.Context
 import android.graphics.drawable.PaintDrawable
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat.getColor
 import com.noomit.radioalarm02.R
 import com.squareup.contour.ContourLayout
+import com.noomit.alarmtheme.R as Rtheme
 
 class LabeledView(context: Context) : ContourLayout(context) {
     var label: String = ""
@@ -33,17 +35,17 @@ class LabeledView(context: Context) : ContourLayout(context) {
         setPadding(8.dip, 12.dip, 8.dip, 12.dip)
         elevation = 4.0f
 
-        background = PaintDrawable(getColor(resources, R.color.clTitleBg, null)).apply {
+        background = PaintDrawable(getColor(resources, Rtheme.color.clTitleBg, null)).apply {
             setCornerRadius(16.0f)
         }
 
-        labelView.setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
+        labelView.setTextColor(getColor(resources, Rtheme.color.clNowPlayingTitleExpanded, null))
         labelView.layoutBy(
             x = leftTo { parent.left() },
             y = topTo { parent.top() }
         )
 
-        valueView.setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
+        valueView.setTextColor(getColor(resources, Rtheme.color.clNowPlayingTitleExpanded, null))
         valueView.layoutBy(
             x = leftTo { labelView.right() + 4.xdip },
             y = topTo { parent.top() }

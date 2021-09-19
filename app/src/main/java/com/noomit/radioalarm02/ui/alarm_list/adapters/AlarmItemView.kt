@@ -26,6 +26,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 import java.util.*
+import com.noomit.alarmtheme.R as Rtheme
 
 interface IAlarmItemActions {
     fun onDeleteClick()
@@ -57,7 +58,7 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
     private val time = MaterialTextView(
         ContextThemeWrapper(context, appTheme.alarmItem.timeTextStyle),
         null,
-        R.attr.textAlarmTime,
+        Rtheme.attr.textAlarmTime,
     ).apply {
         setOnClickListener { delegate?.onTimeClick() }
     }
@@ -218,8 +219,8 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
 
     override fun checkDay(day: Int, isActive: Boolean) {
         val textColor = when {
-            isActive -> R.color.colorDayTextActive
-            else -> R.color.colorDayTextInactive
+            isActive -> Rtheme.color.colorDayTextActive
+            else -> Rtheme.color.colorDayTextInactive
         }
 
         val bgDrawable = getDayBackground(isActive, day)
@@ -240,10 +241,10 @@ class AlarmItemView(context: Context, attrSet: AttributeSet? = null) :
 
     private fun dayBackgroundFor(day: Int, isActive: Boolean, weekStart: Int, weekEnd: Int): Int {
         return when {
-            isActive && day == weekStart -> R.drawable.day_active_start
-            isActive && day == weekEnd -> R.drawable.day_active_end
-            isActive -> R.drawable.day_active_middle
-            else -> R.drawable.day_ripple_ltd
+            isActive && day == weekStart -> Rtheme.drawable.day_active_start
+            isActive && day == weekEnd -> Rtheme.drawable.day_active_end
+            isActive -> Rtheme.drawable.day_active_middle
+            else -> Rtheme.drawable.day_ripple_ltd
         }
     }
 }

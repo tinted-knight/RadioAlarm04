@@ -2,10 +2,10 @@ package com.noomit.radioalarm02.ui.theme
 
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
-import com.noomit.radioalarm02.R.attr as A
-import com.noomit.radioalarm02.R.color as C
-import com.noomit.radioalarm02.R.drawable as D
-import com.noomit.radioalarm02.R.style as S
+import com.noomit.alarmtheme.R.attr as A
+import com.noomit.alarmtheme.R.color as C
+import com.noomit.alarmtheme.R.drawable as D
+import com.noomit.alarmtheme.R.style as S
 
 data class ViewStyle(
     @StyleRes val style: Int,

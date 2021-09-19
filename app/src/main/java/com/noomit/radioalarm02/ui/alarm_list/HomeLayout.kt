@@ -9,6 +9,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -23,6 +24,7 @@ import com.noomit.radioalarm02.ui.alarm_list.adapters.MarginItemDecoration
 import com.noomit.radioalarm02.ui.animations.ItemListAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
+import com.noomit.alarmtheme.R as Rtheme
 
 interface IHomeLayoutDelegate {
     fun onFavoriteClick()
@@ -48,44 +50,27 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         setHasFixedSize(true)
         isVerticalScrollBarEnabled = true
-        addItemDecoration(MarginItemDecoration(R.dimen.recyclerAlarmVertical))
+        addItemDecoration(MarginItemDecoration(Rtheme.dimen.recyclerAlarmVertical))
         addOnScrollListener(recyclerScrollListener)
     }
 
-    private val btnFavorites = MaterialTextView(
-        ContextThemeWrapper(context, appTheme.btns.bbarFav.style),
-        null,
-        appTheme.btns.bbarFav.attr
-    ).apply {
+    private val btnFavorites = bbarSideButton.apply {
         text = context.getString(R.string.favorites)
-        stateListAnimator = ItemListAnimator(this)
-        background = GradientDrawable()
         setOnClickListener { delegate?.onFavoriteClick() }
     }
 
-    private val btnBrowse = MaterialTextView(
-        ContextThemeWrapper(context, appTheme.btns.bbarBrowse.style),
-        null,
-        appTheme.btns.bbarBrowse.attr
-    ).apply {
+    private val btnBrowse = bbarSideButton.apply {
         text = context.getString(R.string.browse_radio)
-        stateListAnimator = ItemListAnimator(this)
-        background = GradientDrawable()
         setOnClickListener { delegate?.onBrowseClick() }
     }
 
-    private val btnAddAlarm = MaterialTextView(
-        ContextThemeWrapper(context, appTheme.btns.bbarAddAlarm.style),
-        null,
-        appTheme.btns.bbarAddAlarm.attr
-    ).apply {
+    private val btnAddAlarm = bbarCentralButton.apply {
         text = context.getString(R.string.add_alarm)
-        stateListAnimator = ItemListAnimator(this)
         setOnClickListener { delegate?.onAddAlarmClick() }
     }
 
     private val emptyImage = ImageView(context).apply {
-        setImageDrawable(ContextCompat.getDrawable(context, R.drawable.alarm_sad))
+        setImageDrawable(ContextCompat.getDrawable(context, Rtheme.drawable.alarm_sad))
         isVisible = false
     }
 
@@ -194,5 +179,25 @@ class HomeLayout(context: Context, attrs: AttributeSet? = null) : ContourLayout(
                         .scaleX(1f).scaleY(1f).start()
                 }
             }
+        }
+
+    private val bbarSideButton: TextView
+        get() = MaterialTextView(
+            ContextThemeWrapper(context, appTheme.btns.bbarFav.style),
+            null,
+            appTheme.btns.bbarFav.attr
+        ).apply {
+            stateListAnimator = ItemListAnimator(this)
+            background = GradientDrawable()
+            setOnClickListener { delegate?.onFavoriteClick() }
+        }
+
+    private val bbarCentralButton: TextView
+        get() = MaterialTextView(
+            ContextThemeWrapper(context, appTheme.btns.bbarAddAlarm.style),
+            null,
+            appTheme.btns.bbarAddAlarm.attr
+        ).apply {
+            stateListAnimator = ItemListAnimator(this)
         }
 }

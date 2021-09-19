@@ -20,6 +20,7 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
+import com.noomit.alarmtheme.R as Rtheme
 
 interface RadioBrowserHomeDelegate {
     fun onLanguageClick()
@@ -106,9 +107,9 @@ class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = nul
     private val serverList = ServerListView(context)
 
     private val loadingIndicator = ProgressBar(
-        ContextThemeWrapper(context, R.style.LightTheme_ProgressBar),
+        ContextThemeWrapper(context, Rtheme.style.LightTheme_ProgressBar),
         null,
-        R.attr.progressBarColors
+        Rtheme.attr.progressBarColors
     )
 
     //  #todo Need this layout to be heightWrapContent to align Buttons and TextViews correctly

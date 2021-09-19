@@ -80,15 +80,15 @@ class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
                 )
                 is RadioBrowserEvent.TagList -> findNavController().navigate(
                     R.id.action_radioBrowser_to_languageList,
-                    Bundle().apply { putString("title", getString(R.string.nav_label_tags)) }
+                    Bundle().apply { putString(NavHelper.title, getString(R.string.nav_label_tags)) }
                 )
                 is RadioBrowserEvent.TopVoted -> findNavController().navigate(
                     R.id.action_radioBrowser_to_stationList,
-                    Bundle().apply { putString("title", getString(R.string.nav_label_topvoted)) }
+                    Bundle().apply { putString(NavHelper.title, getString(R.string.nav_label_topvoted)) }
                 )
                 is RadioBrowserEvent.Search -> findNavController().navigate(
                     R.id.action_radioBrowser_to_stationList,
-                    Bundle().apply { putString("title", getString(R.string.nav_label_search)) }
+                    Bundle().apply { putString(NavHelper.title, getString(R.string.nav_label_search)) }
                 )
             }
         }

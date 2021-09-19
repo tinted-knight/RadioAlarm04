@@ -83,6 +83,8 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
 //        }
     }
 
+    private val isExpanded: Boolean get() = nowPlayingView.isSelected
+
     init {
         contourHeightMatchParent()
 
@@ -106,17 +108,22 @@ class StationListLayout(context: Context, attributeSet: AttributeSet? = null) :
             y = topTo { parent.top() }.bottomTo { playerControl.top() }
         )
 
-        playerControl.layoutBy(
-            rightTo { parent.right() - 8.xdip },
-            bottomTo { parent.bottom() - 8.ydip }
-        )
-
         nowPlayingView.layoutBy(
             x = leftTo { parent.left() }
                 .rightTo { if (expanded) parent.right() else playerControl.left() },
             y = topTo { if (expanded) parent.top() else rvStationList.bottom() }
                 .bottomTo { parent.bottom() }
         )
+
+        val fabSize = appTheme.helpView.fabSize
+        playerControl.layoutBy(
+            centerHorizontallyTo { if (!isExpanded) parent.right() - fabSize - 8.xdip else parent.centerX() },
+            bottomTo { parent.bottom() - 8.ydip }
+        )
+//        playerControl.layoutBy(
+//            rightTo { parent.right() - 8.xdip },
+//            bottomTo { parent.bottom() - 8.ydip }
+//        )
     }
 
     private val expanded: Boolean get() = nowPlayingView.isSelected

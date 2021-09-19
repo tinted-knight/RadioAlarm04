@@ -4,5 +4,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:controller_layout_id="@layout/custom_playback_controls"
-    android:elevation="0dp"
     app:show_timeout="0" />

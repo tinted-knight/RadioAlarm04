@@ -54,4 +54,6 @@
     <string name="err_server_connection">Не могу доустачаться до сервера. Проверьте, включен ли WiFi, есть ли доступ в Интернет и попробуйте чуть позже.</string>
     <string name="notif_channel_radio_alarm">Радио будильник</string>
     <string name="notif_i_am">Уведомление от Радио будильника</string>
+    <string name="label_codec">Кодек:</string>
+    <string name="label_bitrate">Битрейт:</string>
 </resources>

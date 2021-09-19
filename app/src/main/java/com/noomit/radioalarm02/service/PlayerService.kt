@@ -23,6 +23,7 @@ import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
 import java.lang.ref.WeakReference
 import java.util.regex.Pattern
+import com.noomit.alarmtheme.R as Rtheme
 
 class PlayerService : Service() {
 
@@ -138,16 +139,16 @@ class PlayerService : Service() {
             setContentTitle(mediaTitle)
             setContentText(if (exoPlayer.playWhenReady) getString(R.string.state_playing) else getString(R.string.state_paused))
             addAction(
-                R.drawable.ic_play_arrow_24,
+                Rtheme.drawable.ic_play_arrow_24,
                 if (exoPlayer.playWhenReady) getString(R.string.action_pause) else getString(R.string.action_play),
                 pintentPlayPause
             )
             addAction(
-                R.drawable.ic_play_arrow_24,
+                Rtheme.drawable.ic_play_arrow_24,
                 getString(R.string.btn_close),
                 pintentStopService
             )
-            setSmallIcon(R.drawable.ic_radio_24)
+            setSmallIcon(Rtheme.drawable.ic_radio_24)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(

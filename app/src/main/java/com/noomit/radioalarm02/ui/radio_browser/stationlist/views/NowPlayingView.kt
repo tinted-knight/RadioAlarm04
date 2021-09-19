@@ -10,6 +10,7 @@ import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -31,8 +32,10 @@ import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.animations.TitleTransition
+import com.noomit.radioalarm02.ui.theme.ViewStyle
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
+import com.noomit.alarmtheme.R as Rtheme
 
 interface NowPlayingListener {
     fun onFavoriteClick()
@@ -50,7 +53,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     var nowPlayingListener: NowPlayingListener? = null
 
     private val title = MaterialTextView(context, null, appTheme.nowPlaying.titleStyle.attr).apply {
-        background = PaintDrawable(getColor(resources, R.color.clTitleBg, null))
+        background = PaintDrawable(getColor(resources, Rtheme.color.clTitleBg, null))
         elevation = 4.0f
     }
 
@@ -62,11 +65,11 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     private val country = TextView(context)
 
     private val codec = LabeledView(context).apply {
-        label = "Codec:"
+        label = resources.getString(R.string.label_codec)
     }
 
     private val bitrate = LabeledView(context).apply {
-        label = "Bitrate:"
+        label = resources.getString(R.string.label_bitrate)
     }
 
     private val tagList = ChipGroup(context).apply {
@@ -91,20 +94,12 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
         }
     }
 
-    private val btnClose = MaterialButton(
-        ContextThemeWrapper(context, appTheme.nowPlaying.btnClose.style),
-        null,
-        appTheme.nowPlaying.btnClose.attr,
-    ).apply {
+    private val btnClose = materialButton(appTheme.nowPlaying.btnClose).apply {
         text = resources.getString(R.string.btn_close)
         setOnClickListener { this@NowPlayingView.performClick() }
     }
 
-    private val btnFavorite = MaterialButton(
-        ContextThemeWrapper(context, appTheme.nowPlaying.btnFavorite.style),
-        null,
-        appTheme.nowPlaying.btnFavorite.attr,
-    ).apply {
+    private val btnFavorite = materialButton(appTheme.nowPlaying.btnFavorite).apply {
         setOnClickListener { nowPlayingListener?.onFavoriteClick() }
         setOnLongClickListener {
             nowPlayingListener?.onFavoriteLongClick()
@@ -163,7 +158,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             background.alpha = 0
             (background as PaintDrawable).setCornerRadius(0.1f)
 
-            setTextColor(getColor(resources, R.color.clNowPlayingTitle, null))
+            setTextColor(getColor(resources, Rtheme.color.clNowPlayingTitle, null))
             setPadding(0)
             textAlignment = TEXT_ALIGNMENT_TEXT_START
             layoutBy(
@@ -207,7 +202,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
             (background as PaintDrawable).setCornerRadius(16.0f)
 
             textAlignment = TEXT_ALIGNMENT_CENTER
-            setTextColor(getColor(resources, R.color.clNowPlayingTitleExpanded, null))
+            setTextColor(getColor(resources, Rtheme.color.clNowPlayingTitleExpanded, null))
             setPadding(16.dip, 8.dip, 16.dip, 8.dip)
             updateLayoutBy(
                 matchParentX(marginRight = hSpacing.value),
@@ -377,7 +372,7 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
 
     private fun loadStationIcon(station: StationModel) {
         Glide.with(this).load(station.favicon)
-            .error(R.drawable.ic_wifi_tethering_24)
+            .error(Rtheme.drawable.ic_wifi_tethering_24)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -411,7 +406,13 @@ class NowPlayingView(context: Context, attrSet: AttributeSet? = null) :
     private fun loadResourceIcon(id: Int): Drawable? {
         return ResourcesCompat.getDrawable(resources, id, null).apply {
             this?.setBounds(0, 0, 40, 40)
-            this?.setTint(getColor(resources, R.color.clNowPlayingFavIcon, null))
+            this?.setTint(getColor(resources, Rtheme.color.clNowPlayingFavIcon, null))
         };
     }
+
+    private fun materialButton(theme: ViewStyle) = MaterialButton(
+        ContextThemeWrapper(context, theme.style),
+        null,
+        theme.attr,
+    )
 }

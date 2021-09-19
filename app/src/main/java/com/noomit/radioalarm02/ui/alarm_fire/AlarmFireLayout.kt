@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
+import com.noomit.alarmtheme.R as Rtheme
 
 interface IAlarmFireLayout {
     val playerControll: PlayerControlView
@@ -40,7 +41,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
         null,
         appTheme.alarmFire.time.attr,
     ).apply {
-        background = ResourcesCompat.getDrawable(resources, R.drawable.alarm_bg_time, null)
+        background = ResourcesCompat.getDrawable(resources, Rtheme.drawable.alarm_bg_time, null)
         // text for preview
 //        text = "8:40"
     }
@@ -62,7 +63,7 @@ class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
 
     init {
         fitsSystemWindows = true
-        background = ResourcesCompat.getDrawable(resources, R.drawable.black_bg_gradient, null)
+        background = ResourcesCompat.getDrawable(resources, Rtheme.drawable.black_bg_gradient, null)
         time.layoutBy(
             centerHorizontallyTo { parent.centerX() },
             centerVerticallyTo { parent.centerY() },
