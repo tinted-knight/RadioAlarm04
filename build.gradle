@@ -13,7 +13,6 @@ buildscript {
         timber_version = '4.7.1'
         lifecycle_version = '2.4.1'
         lifecycle_extensions = '2.2.0'
-        room = '2.2.5'
         app_compat = '1.4.1'
         nav_version = '2.4.1'
         core_ktx = '1.7.0'
@@ -34,7 +33,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.1'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
