@@ -196,6 +196,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean("key-isplaying", isPlaying)
         super.onSaveInstanceState(outState)
