@@ -1,5 +1,6 @@
 package com.noomit.radioalarm02.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -21,6 +22,9 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
 import com.noomit.domain.entities.StationModel
 import com.noomit.radioalarm02.R
+import com.noomit.radioalarm02.ilog
+import com.noomit.radioalarm02.versionMPlus
+import com.noomit.radioalarm02.versionSPlus
 import java.lang.ref.WeakReference
 import java.util.regex.Pattern
 import com.noomit.alarmtheme.R as Rtheme
@@ -53,10 +57,22 @@ class PlayerService : Service() {
     private var binder = WeakReference<PlayerServiceBinder>(null)
 
     private val pintentPlayPause: PendingIntent
-        get() = PendingIntent.getService(this, 0, intent(this, PLAY_PAUSE_ACTION), 0)
+        @SuppressLint("InlinedApi")
+        get() = PendingIntent.getService(
+            this,
+            0,
+            intent(this, PLAY_PAUSE_ACTION),
+            if (versionMPlus) PendingIntent.FLAG_IMMUTABLE else 0
+        )
 
     private val pintentStopService: PendingIntent
-        get() = PendingIntent.getService(this, 0, intent(this, STOP_ACTION), 0)
+        @SuppressLint("InlinedApi")
+        get() = PendingIntent.getService(
+            this,
+            0,
+            intent(this, STOP_ACTION),
+            if (versionMPlus) PendingIntent.FLAG_IMMUTABLE else 0
+        )
 
     override fun onBind(intent: Intent): IBinder? {
         intent.let {
@@ -93,7 +109,7 @@ class PlayerService : Service() {
                     exoPlayer.playWhenReady = !exoPlayer.playWhenReady
                 }
                 STOP_ACTION -> {
-                    stopService(intent(this))
+                    stopSelf()
                 }
 //                else -> exoPlayer.playWhenReady = true
             }

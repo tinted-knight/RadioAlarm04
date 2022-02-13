@@ -68,7 +68,6 @@ class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
         contour.listener = stationViewModel
     }
 
-    @FlowPreview
     override fun observeViewModel() {
         collect(viewModel.stationList) {
             when (it) {
