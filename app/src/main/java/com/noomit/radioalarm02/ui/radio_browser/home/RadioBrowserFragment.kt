@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.noomit.domain.server_manager.ServerState
@@ -21,9 +22,7 @@ import kotlinx.coroutines.FlowPreview
 @AndroidEntryPoint
 class RadioBrowserFragment : ContourFragment<IRadioBrowserHomeLayout>() {
 
-    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModel: RadioBrowserViewModel by hiltNavGraphViewModels(R.id.nav_radio_browser)
 
     override val contour: IRadioBrowserHomeLayout
         get() = (view as ViewGroup).children.first() as IRadioBrowserHomeLayout

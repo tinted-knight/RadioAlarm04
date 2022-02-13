@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -24,9 +25,7 @@ import kotlinx.coroutines.FlowPreview
 @AndroidEntryPoint
 class CategoryListFragment : ContourFragment<ICategoryLayout>() {
 
-    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModel: RadioBrowserViewModel by hiltNavGraphViewModels(R.id.nav_radio_browser)
 
     override val layout: View
         get() = CategoryListLayout(requireContext())

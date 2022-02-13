@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
 import com.noomit.domain.station_manager.StationManagerState
@@ -28,9 +29,7 @@ import kotlinx.coroutines.flow.filterNotNull
 @AndroidEntryPoint
 class StationListFragment : PlayerServiceFragment<IStationListLayout>() {
 
-    private val viewModel: RadioBrowserViewModel by navGraphViewModels(R.id.nav_radio_browser) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModel: RadioBrowserViewModel by hiltNavGraphViewModels(R.id.nav_radio_browser)
 
     private val stationViewModel: StationViewModel by viewModels()
 
