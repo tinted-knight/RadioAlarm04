@@ -3,53 +3,54 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 31
+  compileSdkVersion 31
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 31
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 31
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles 'consumer-rules.pro'
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+    useIR = true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-        useIR = true
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 
 }
 
 dependencies {
-    implementation project(":domain")
+  implementation project(":domain")
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$app_compat"
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation "androidx.test:runner:1.3.0"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_coroutines_adapter"
-    // Coroutines
-    implementation "androidx.core:core-ktx:$core_ktx"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
-    //SQLDelight
-    implementation "com.squareup.sqldelight:android-driver:$sql_delight"
-    implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
-    //DI
-    implementation "javax.inject:javax.inject:1"
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation "androidx.appcompat:appcompat:$app_compat"
+  implementation 'androidx.test.ext:junit-ktx:1.1.3'
+  testImplementation 'junit:junit:4.13.1'
+  androidTestImplementation "androidx.test:runner:1.3.0"
+  androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+  // Retrofit
+  implementation "com.squareup.retrofit2:retrofit:$retrofit"
+  implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+  implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_coroutines_adapter"
+  // Coroutines
+  implementation "androidx.core:core-ktx:$core_ktx"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
+  //SQLDelight
+  implementation "com.squareup.sqldelight:android-driver:$sql_delight"
+  implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
+  //DI
+  implementation "javax.inject:javax.inject:1"
 }

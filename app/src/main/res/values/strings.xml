@@ -1,59 +1,59 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">RadioAlarm</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="favorites">Favorites</string>
-    <string name="add_alarm">Add alarm</string>
-    <string name="browse_radio">Browse radio</string>
-    <string name="nav_label_alarms">Alarms</string>
-    <string name="nav_label_favorites">Favorites</string>
-    <string name="nav_label_select_melody">Select alarm melody</string>
-    <string name="nav_label_rbrowser">Radio browser</string>
-    <string name="nav_label_languages">Languages</string>
-    <string name="nav_label_tags">Tags</string>
-    <string name="nav_label_topvoted">Top voted</string>
-    <string name="nav_label_search">Global search</string>
-    <string name="monday">mon</string>
-    <string name="tuesday">tue</string>
-    <string name="wednesday">wed</string>
-    <string name="thursday">thu</string>
-    <string name="friday">fri</string>
-    <string name="saturday">sat</string>
-    <string name="sunday">sun</string>
-    <string name="melody_system">system default</string>
-    <string name="lang_list">Language list</string>
-    <string name="tag_list">Tag list</string>
-    <string name="top_voted">Top voted stations</string>
-    <string name="attr_search_label">Search by station name and (or) tag:</string>
-    <string name="name_hint">Station name (optional)</string>
-    <string name="tag_hint">Station tag (optional)</string>
-    <string name="btn_search">Search</string>
-    <string name="station_count">Station count: <xliff:g example="100" id="count">%1$d</xliff:g></string>
-    <string name="toast_added">To favorites: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
-    <string name="toast_removed">Removed: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
-    <string name="toast_hold_to_del">Hold icon to delete alarm</string>
-    <string name="toast_cannot_connect_to_station">Sorry, can\'t connect to station</string>
-    <!-- PlayerService -->
-    <string name="action_pause">Pause</string>
-    <string name="action_play">Play</string>
-    <string name="state_paused">Paused</string>
-    <string name="state_playing">Playing</string>
-    <string name="state_playing_nothing">Nothing is playing…</string>
-    <!-- HelpView FAB -->
-    <string name="help_browse">Browse radio stations and add to Favorites to be able to set it as Alarm melody</string>
-    <string name="help_delete">Hold delete icon to delete Alarm</string>
-    <string name="help_melody">Tap melody field to select from Favorites, hold to test Alarm screen. While testing adjust volume</string>
-    <!-- -->
-    <string name="wake_up">Wake up</string>
-    <string name="cdesc_play">Play</string>
-    <string name="cdesc_pause">Pause</string>
-    <string name="btn_close">Close</string>
-    <string name="btn_set">Set</string>
-    <string name="btn_set_default">Set default</string>
-    <string name="btn_favorites_add">Save</string>
-    <string name="btn_favorites_remove">Remove</string>
-    <string name="err_server_connection">Cannot reach to server. Check if WiFi is enabled. Check your Internet connection and try again.</string>
-    <string name="notif_channel_radio_alarm">Radio Alarm</string>
-    <string name="notif_i_am">I am Radio Alarm notification</string>
-    <string name="label_codec">Codec:</string>
-    <string name="label_bitrate">Bitrate:</string>
+  <string name="app_name">RadioAlarm</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="favorites">Favorites</string>
+  <string name="add_alarm">Add alarm</string>
+  <string name="browse_radio">Browse radio</string>
+  <string name="nav_label_alarms">Alarms</string>
+  <string name="nav_label_favorites">Favorites</string>
+  <string name="nav_label_select_melody">Select alarm melody</string>
+  <string name="nav_label_rbrowser">Radio browser</string>
+  <string name="nav_label_languages">Languages</string>
+  <string name="nav_label_tags">Tags</string>
+  <string name="nav_label_topvoted">Top voted</string>
+  <string name="nav_label_search">Global search</string>
+  <string name="monday">mon</string>
+  <string name="tuesday">tue</string>
+  <string name="wednesday">wed</string>
+  <string name="thursday">thu</string>
+  <string name="friday">fri</string>
+  <string name="saturday">sat</string>
+  <string name="sunday">sun</string>
+  <string name="melody_system">system default</string>
+  <string name="lang_list">Language list</string>
+  <string name="tag_list">Tag list</string>
+  <string name="top_voted">Top voted stations</string>
+  <string name="attr_search_label">Search by station name and (or) tag:</string>
+  <string name="name_hint">Station name (optional)</string>
+  <string name="tag_hint">Station tag (optional)</string>
+  <string name="btn_search">Search</string>
+  <string name="station_count">Station count: <xliff:g example="100" id="count">%1$d</xliff:g></string>
+  <string name="toast_added">To favorites: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+  <string name="toast_removed">Removed: <xliff:g example="Station 42 FM" id="name">%1$s</xliff:g></string>
+  <string name="toast_hold_to_del">Hold icon to delete alarm</string>
+  <string name="toast_cannot_connect_to_station">Sorry, can\'t connect to station</string>
+  <!-- PlayerService -->
+  <string name="action_pause">Pause</string>
+  <string name="action_play">Play</string>
+  <string name="state_paused">Paused</string>
+  <string name="state_playing">Playing</string>
+  <string name="state_playing_nothing">Nothing is playing…</string>
+  <!-- HelpView FAB -->
+  <string name="help_browse">Browse radio stations and add to Favorites to be able to set it as Alarm melody</string>
+  <string name="help_delete">Hold delete icon to delete Alarm</string>
+  <string name="help_melody">Tap melody field to select from Favorites, hold to test Alarm screen. While testing adjust volume</string>
+  <!-- -->
+  <string name="wake_up">Wake up</string>
+  <string name="cdesc_play">Play</string>
+  <string name="cdesc_pause">Pause</string>
+  <string name="btn_close">Close</string>
+  <string name="btn_set">Set</string>
+  <string name="btn_set_default">Set default</string>
+  <string name="btn_favorites_add">Save</string>
+  <string name="btn_favorites_remove">Remove</string>
+  <string name="err_server_connection">Cannot reach to server. Check if WiFi is enabled. Check your Internet connection and try again.</string>
+  <string name="notif_channel_radio_alarm">Radio Alarm</string>
+  <string name="notif_i_am">I am Radio Alarm notification</string>
+  <string name="label_codec">Codec:</string>
+  <string name="label_bitrate">Bitrate:</string>
 </resources>

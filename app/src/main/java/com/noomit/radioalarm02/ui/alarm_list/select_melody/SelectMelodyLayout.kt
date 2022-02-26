@@ -16,72 +16,72 @@ import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
 
 interface ISelectMelodyLayout : IStationListLayout {
-    var onSetMelodyClick: (() -> Unit)?
-    var onSetDefaultRingtone: (() -> Unit)?
+  var onSetMelodyClick: (() -> Unit)?
+  var onSetDefaultRingtone: (() -> Unit)?
 }
 
 class SelectMelodyLayout(context: Context, attrSet: AttributeSet? = null) :
-    ContourLayout(context, attrSet), ISelectMelodyLayout {
-    override var onSetMelodyClick: (() -> Unit)? = null
+  ContourLayout(context, attrSet), ISelectMelodyLayout {
+  override var onSetMelodyClick: (() -> Unit)? = null
 
-    override var onSetDefaultRingtone: (() -> Unit)? = null
+  override var onSetDefaultRingtone: (() -> Unit)? = null
 
-    private val favorites = StationListLayout(context)
+  private val favorites = StationListLayout(context)
 
-    private val btnSetup = MaterialButton(context).apply {
-        text = resources.getString(R.string.btn_set)
-        isEnabled = false
-        maxLines = 1
-        ellipsize = TextUtils.TruncateAt.MARQUEE
-        setOnClickListener { onSetMelodyClick?.invoke() }
-    }
+  private val btnSetup = MaterialButton(context).apply {
+    text = resources.getString(R.string.btn_set)
+    isEnabled = false
+    maxLines = 1
+    ellipsize = TextUtils.TruncateAt.MARQUEE
+    setOnClickListener { onSetMelodyClick?.invoke() }
+  }
 
-    private val btnSystem = MaterialButton(
-        ContextThemeWrapper(context, appTheme.btns.text.style),
-        null,
-        appTheme.btns.text.attr,
-    ).apply {
-        text = resources.getString(R.string.btn_set_default)
-        setOnClickListener { onSetDefaultRingtone?.invoke() }
-    }
+  private val btnSystem = MaterialButton(
+    ContextThemeWrapper(context, appTheme.btns.text.style),
+    null,
+    appTheme.btns.text.attr,
+  ).apply {
+    text = resources.getString(R.string.btn_set_default)
+    setOnClickListener { onSetDefaultRingtone?.invoke() }
+  }
 
-    init {
-        btnSystem.layoutBy(
-            leftTo { parent.left() + 8.xdip },
-            bottomTo { parent.bottom() }
-        )
-        btnSetup.layoutBy(
-            leftTo { btnSystem.right() + 8.xdip }.rightTo { parent.right() - 8.xdip },
-            bottomTo { parent.bottom() }.topTo { btnSystem.top() }
-        )
-        favorites.layoutBy(
-            matchParentX(8, 8),
-            topTo { parent.top() }.bottomTo { btnSystem.top() }
-        )
-    }
+  init {
+    btnSystem.layoutBy(
+      leftTo { parent.left() + 8.xdip },
+      bottomTo { parent.bottom() }
+    )
+    btnSetup.layoutBy(
+      leftTo { btnSystem.right() + 8.xdip }.rightTo { parent.right() - 8.xdip },
+      bottomTo { parent.bottom() }.topTo { btnSystem.top() }
+    )
+    favorites.layoutBy(
+      matchParentX(8, 8),
+      topTo { parent.top() }.bottomTo { btnSystem.top() }
+    )
+  }
 
-    override val playerControl = favorites.playerControl
+  override val playerControl = favorites.playerControl
 
-    override var listener: NowPlayingListener? = null
+  override var listener: NowPlayingListener? = null
 
-    override fun setStationsAdapter(adapter: StationListAdapter) =
-        favorites.setStationsAdapter(adapter)
+  override fun setStationsAdapter(adapter: StationListAdapter) =
+    favorites.setStationsAdapter(adapter)
 
-    override fun showLoading() = favorites.showLoading()
+  override fun showLoading() = favorites.showLoading()
 
-    override fun showContent(values: List<StationModel>) = favorites.showContent(values)
+  override fun showContent(values: List<StationModel>) = favorites.showContent(values)
 
-    override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
-        btnSetup.isEnabled = true
-        favorites.nowPlaying(station, inFavorites)
-    }
+  override fun nowPlaying(station: StationModel, inFavorites: Boolean) {
+    btnSetup.isEnabled = true
+    favorites.nowPlaying(station, inFavorites)
+  }
 
-    override fun nowPlayingEmpty() {
-        btnSetup.isEnabled = false
-        favorites.nowPlayingEmpty()
-    }
+  override fun nowPlayingEmpty() {
+    btnSetup.isEnabled = false
+    favorites.nowPlayingEmpty()
+  }
 
-    override fun getRecyclerState(): Parcelable? = favorites.getRecyclerState()
+  override fun getRecyclerState(): Parcelable? = favorites.getRecyclerState()
 
-    override fun setRecyclerState(state: Parcelable) = favorites.setRecyclerState(state)
+  override fun setRecyclerState(state: Parcelable) = favorites.setRecyclerState(state)
 }

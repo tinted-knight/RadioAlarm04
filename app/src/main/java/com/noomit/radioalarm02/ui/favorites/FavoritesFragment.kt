@@ -21,99 +21,99 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FavoritesFragment : PlayerServiceFragment<IStationListLayout>() {
 
-    private val favoritesViewModel: FavoritesViewModel by viewModels()
+  private val favoritesViewModel: FavoritesViewModel by viewModels()
 
-    override val layout: View
-        get() = StationListLayout(requireContext())
+  override val layout: View
+    get() = StationListLayout(requireContext())
 
-    override val contour: IStationListLayout
-        get() = view as IStationListLayout
+  override val contour: IStationListLayout
+    get() = view as IStationListLayout
 
-    override val notificationCaption: String
-        get() = getString(R.string.app_name)
+  override val notificationCaption: String
+    get() = getString(R.string.app_name)
 
-    private var recyclerState: Parcelable? = null
+  private var recyclerState: Parcelable? = null
 
-    override fun initPlayerViews() {
-        playerControlView = contour.playerControl
-    }
+  override fun initPlayerViews() {
+    playerControlView = contour.playerControl
+  }
 
-    override fun prepareView(savedState: Bundle?) {
-        val adapter = StationListAdapter(delegate = favoritesViewModel)
-        contour.apply {
-            setStationsAdapter(adapter)
-            showLoading()
-            recyclerState?.let {
-                contour.setRecyclerState(it)
-                return@apply
-            }
-            savedState?.let { bundle ->
-                bundle.getParcelable<Parcelable>(RECYCLER_STATE)?.let { state ->
-                    contour.setRecyclerState(state)
-                }
-            }
+  override fun prepareView(savedState: Bundle?) {
+    val adapter = StationListAdapter(delegate = favoritesViewModel)
+    contour.apply {
+      setStationsAdapter(adapter)
+      showLoading()
+      recyclerState?.let {
+        contour.setRecyclerState(it)
+        return@apply
+      }
+      savedState?.let { bundle ->
+        bundle.getParcelable<Parcelable>(RECYCLER_STATE)?.let { state ->
+          contour.setRecyclerState(state)
         }
-        contour.listener = favoritesViewModel
+      }
+    }
+    contour.listener = favoritesViewModel
+  }
+
+  override fun observeViewModel() {
+    collect(favoritesViewModel.selectAll) {
+      contour.showContent(it)
+      favoritesViewModel.serviceIsPlaying(service?.playingModel)
     }
 
-    override fun observeViewModel() {
-        collect(favoritesViewModel.selectAll) {
-            contour.showContent(it)
-            favoritesViewModel.serviceIsPlaying(service?.playingModel)
+    // #todo filterNotNull
+    collect(favoritesViewModel.nowPlayingForService) {
+      if (it == null) {
+        service?.pause()
+        service?.playingModel = null
+      } else {
+        service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
+        service?.playingModel = it.station
+        if (it.playImmediately) service?.play()
+      }
+    }
+
+    collect(favoritesViewModel.nowPlayingView) {
+      if (it == null) {
+        contour.nowPlayingEmpty()
+      } else {
+        contour.nowPlaying(it.station, it.inFavorites)
+      }
+    }
+  }
+
+  override fun observeCommands() {
+    collect(favoritesViewModel.oneshotEvents) { event ->
+      when (event) {
+        is FavoritesEvent.OpenExternalLink -> startActivity(
+          Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(event.url)
+          })
+        FavoritesEvent.VolumeDown -> {
+          val audioManager = requireContext().getSystemService<AudioManager>()
+          audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 3, AudioManager.FLAG_SHOW_UI)
         }
-
-        // #todo filterNotNull
-        collect(favoritesViewModel.nowPlayingForService) {
-            if (it == null) {
-                service?.pause()
-                service?.playingModel = null
-            } else {
-                service?.mediaItem = ServiceMediaItem(url = it.station.streamUrl, title = it.station.name)
-                service?.playingModel = it.station
-                if (it.playImmediately) service?.play()
-            }
+        FavoritesEvent.VolumeUp -> {
+          val audioManager = requireContext().getSystemService<AudioManager>()
+          audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_SHOW_UI)
         }
-
-        collect(favoritesViewModel.nowPlayingView) {
-            if (it == null) {
-                contour.nowPlayingEmpty()
-            } else {
-                contour.nowPlaying(it.station, it.inFavorites)
-            }
-        }
+      }
     }
+  }
 
-    override fun observeCommands() {
-        collect(favoritesViewModel.oneshotEvents) { event ->
-            when (event) {
-                is FavoritesEvent.OpenExternalLink -> startActivity(
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(event.url)
-                    })
-                FavoritesEvent.VolumeDown -> {
-                    val audioManager = requireContext().getSystemService<AudioManager>()
-                    audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 3, AudioManager.FLAG_SHOW_UI)
-                }
-                FavoritesEvent.VolumeUp -> {
-                    val audioManager = requireContext().getSystemService<AudioManager>()
-                    audioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_SHOW_UI)
-                }
-            }
-        }
-    }
+  override fun onConnectionError() {
+    requireContext().toast(getString(R.string.toast_cannot_connect_to_station))
+  }
 
-    override fun onConnectionError() {
-        requireContext().toast(getString(R.string.toast_cannot_connect_to_station))
-    }
+  override fun onPause() {
+    val state = contour.getRecyclerState()
+    recyclerState = state
+    super.onPause()
+  }
 
-    override fun onPause() {
-        val state = contour.getRecyclerState()
-        recyclerState = state
-        super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(RECYCLER_STATE, recyclerState)
-        super.onSaveInstanceState(outState)
-    }
+  override fun onSaveInstanceState(outState: Bundle) {
+    outState.putParcelable(RECYCLER_STATE, recyclerState)
+    super.onSaveInstanceState(outState)
+  }
 }

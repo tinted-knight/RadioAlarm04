@@ -9,12 +9,12 @@ import androidx.work.WorkManager
 @Suppress("NAME_SHADOWING")
 class BootCompletedReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val action = intent?.action ?: return
-        if (action != Intent.ACTION_BOOT_COMPLETED) return
+  override fun onReceive(context: Context?, intent: Intent?) {
+    val action = intent?.action ?: return
+    if (action != Intent.ACTION_BOOT_COMPLETED) return
 
-        val context = context ?: return
-        val workRequest = OneTimeWorkRequestBuilder<ScheduleAlarmWorker>().build()
-        WorkManager.getInstance(context).enqueue(workRequest)
-    }
+    val context = context ?: return
+    val workRequest = OneTimeWorkRequestBuilder<ScheduleAlarmWorker>().build()
+    WorkManager.getInstance(context).enqueue(workRequest)
+  }
 }

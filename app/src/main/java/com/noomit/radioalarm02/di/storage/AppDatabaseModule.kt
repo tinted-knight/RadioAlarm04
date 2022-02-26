@@ -15,13 +15,13 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object AppDatabaseModule {
 
-    @Provides
-    fun provideAppDatabase(driver: AndroidSqliteDriver): AppDatabase {
-        return getDatabase(driver)
-    }
+  @Provides
+  fun provideAppDatabase(driver: AndroidSqliteDriver): AppDatabase {
+    return getDatabase(driver)
+  }
 
-    @Provides
-    fun provideSqlDriver(@ApplicationContext appContext: Context): AndroidSqliteDriver {
-        return getAndroidSqlDriver(appContext)
-    }
+  @Provides
+  fun provideSqlDriver(@ApplicationContext appContext: Context): AndroidSqliteDriver {
+    return getAndroidSqlDriver(appContext)
+  }
 }

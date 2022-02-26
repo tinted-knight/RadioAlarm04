@@ -9,17 +9,17 @@ import kotlinx.coroutines.launch
 interface OneShotEvent
 
 object NavHelper {
-    const val title = "title"
+  const val title = "title"
 }
 
 // #todo naming and look into Channel.comsumeAsFlow/collectAsFlow
 abstract class NavigationViewModel<T : OneShotEvent> : ViewModel() {
-    private val navigation = MutableSharedFlow<T>(replay = 0)
-    val oneshotEvents: SharedFlow<T>
-        get() = navigation
+  private val navigation = MutableSharedFlow<T>(replay = 0)
+  val oneshotEvents: SharedFlow<T>
+    get() = navigation
 
-    protected fun navigateTo(destination: T) {
+  protected fun navigateTo(destination: T) {
 //        tplog("navigateTo, ${navigation.subscriptionCount.value}")
-        viewModelScope.launch { navigation.emit(destination) }
-    }
+    viewModelScope.launch { navigation.emit(destination) }
+  }
 }

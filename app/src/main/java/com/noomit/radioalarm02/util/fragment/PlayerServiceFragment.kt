@@ -11,70 +11,70 @@ import com.noomit.radioalarm02.service.PlayerService
 
 abstract class PlayerServiceFragment<L>() : ContourFragment<L>() {
 
-    protected var playerControlView: PlayerControlView? = null
+  protected var playerControlView: PlayerControlView? = null
 
-    protected var service: PlayerService.PlayerServiceBinder? = null
+  protected var service: PlayerService.PlayerServiceBinder? = null
 
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            if (service is PlayerService.PlayerServiceBinder) {
-                playerControlView?.player = service.exoPlayerInstance.get()
-                this@PlayerServiceFragment.service = service
-                service.setCaption(notificationCaption)
-                onServiceConnected()
-            }
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-        }
-
+  private val connection = object : ServiceConnection {
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+      if (service is PlayerService.PlayerServiceBinder) {
+        playerControlView?.player = service.exoPlayerInstance.get()
+        this@PlayerServiceFragment.service = service
+        service.setCaption(notificationCaption)
+        onServiceConnected()
+      }
     }
 
-    abstract val notificationCaption: String
-
-    /**
-     * Fires when [service] connects to this [PlayerServiceFragment]
-     * Expected that here [service] should not be null
-     */
-    open fun onServiceConnected() {}
-
-    /**
-     * Here [playerControlView] need to be initialized with
-     * corresponding view in layout
-     */
-    protected abstract fun initPlayerViews()
-
-    /**
-     * Called when broadcast message comes with connection error from [PlayerService]
-     */
-    open fun onConnectionError() {}
-
-    override fun onStart() {
-        super.onStart()
-        bindExoPlayerService()
+    override fun onServiceDisconnected(name: ComponentName?) {
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initPlayerViews()
-    }
+  }
 
-    override fun onDestroyView() {
-        playerControlView?.player = null
-        playerControlView = null
-        super.onDestroyView()
-    }
+  abstract val notificationCaption: String
 
-    override fun onStop() {
-        requireActivity().unbindService(connection)
-        super.onStop()
-    }
+  /**
+   * Fires when [service] connects to this [PlayerServiceFragment]
+   * Expected that here [service] should not be null
+   */
+  open fun onServiceConnected() {}
 
-    private fun bindExoPlayerService() {
-        requireActivity().apply {
-            val intent = PlayerService.intent(this)
-            application.startService(intent)
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
+  /**
+   * Here [playerControlView] need to be initialized with
+   * corresponding view in layout
+   */
+  protected abstract fun initPlayerViews()
+
+  /**
+   * Called when broadcast message comes with connection error from [PlayerService]
+   */
+  open fun onConnectionError() {}
+
+  override fun onStart() {
+    super.onStart()
+    bindExoPlayerService()
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    initPlayerViews()
+  }
+
+  override fun onDestroyView() {
+    playerControlView?.player = null
+    playerControlView = null
+    super.onDestroyView()
+  }
+
+  override fun onStop() {
+    requireActivity().unbindService(connection)
+    super.onStop()
+  }
+
+  private fun bindExoPlayerService() {
+    requireActivity().apply {
+      val intent = PlayerService.intent(this)
+      application.startService(intent)
+      bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
+  }
 }

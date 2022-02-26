@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class ServerManagerModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindServerManager(manager: ServerManagerImpl): ServerManager
+  @Binds
+  @Singleton
+  abstract fun bindServerManager(manager: ServerManagerImpl): ServerManager
 }

@@ -12,13 +12,13 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ViewModelComponent::class)
 class RepositoryModule {
 
-    @Provides
-    fun provideFavoriteQueries(database: AppDatabase): FavoriteQueries {
-        return database.favoriteQueries
-    }
+  @Provides
+  fun provideFavoriteQueries(database: AppDatabase): FavoriteQueries {
+    return database.favoriteQueries
+  }
 
-    @Provides
-    fun provideAlarmQueries(database: AppDatabase): AlarmQueries {
-        return database.alarmQueries
-    }
+  @Provides
+  fun provideAlarmQueries(database: AppDatabase): AlarmQueries {
+    return database.alarmQueries
+  }
 }

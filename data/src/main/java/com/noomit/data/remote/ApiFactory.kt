@@ -7,17 +7,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 interface ApiFactoryContract {
-    fun get(baseUrl: String): RadioBrowserApi
+  fun get(baseUrl: String): RadioBrowserApi
 }
 
 class ApiFactory @Inject constructor() : ApiFactoryContract {
-    override fun get(baseUrl: String): RadioBrowserApi {
-        val gson = GsonBuilder().setLenient().create()
-        val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
-        return retrofit.create(RadioBrowserApi::class.java)
-    }
+  override fun get(baseUrl: String): RadioBrowserApi {
+    val gson = GsonBuilder().setLenient().create()
+    val retrofit = Retrofit.Builder()
+      .baseUrl(baseUrl)
+      .addConverterFactory(GsonConverterFactory.create(gson))
+      .addCallAdapterFactory(CoroutineCallAdapterFactory())
+      .build()
+    return retrofit.create(RadioBrowserApi::class.java)
+  }
 }

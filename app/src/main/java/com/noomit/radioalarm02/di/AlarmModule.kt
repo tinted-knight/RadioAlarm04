@@ -13,9 +13,9 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ViewModelComponent::class)
 abstract class AlarmModule {
 
-    @Binds
-    abstract fun provideAlarmScheduler(alarmScheduler: AlarmSchedulerImpl): AlarmScheduler
+  @Binds
+  abstract fun provideAlarmScheduler(alarmScheduler: AlarmSchedulerImpl): AlarmScheduler
 
-    @Binds
-    abstract fun provideAlarmComposer(alarmComposer: AlarmComposerImpl): AlarmComposer
+  @Binds
+  abstract fun provideAlarmComposer(alarmComposer: AlarmComposerImpl): AlarmComposer
 }

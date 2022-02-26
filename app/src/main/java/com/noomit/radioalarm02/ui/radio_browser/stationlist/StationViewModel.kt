@@ -15,63 +15,63 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class UIMessage {
-    data class Added(val value: String) : UIMessage()
-    data class Removed(val value: String) : UIMessage()
-    data class OpenExternalLink(val url: String) : UIMessage()
+  data class Added(val value: String) : UIMessage()
+  data class Removed(val value: String) : UIMessage()
+  data class OpenExternalLink(val url: String) : UIMessage()
 }
 
 @HiltViewModel
 class StationViewModel @Inject constructor(
-    private val favoritesManager: FavoritesManager,
+  private val favoritesManager: FavoritesManager,
 ) : ViewModel(),
-    ItemClickListener<StationModel>, NowPlayingListener {
+  ItemClickListener<StationModel>, NowPlayingListener {
 
-    private val _nowPlayingForService = MutableStateFlow<NowPlaying?>(null)
-    val nowPlayingForService: StateFlow<NowPlaying?> = _nowPlayingForService
+  private val _nowPlayingForService = MutableStateFlow<NowPlaying?>(null)
+  val nowPlayingForService: StateFlow<NowPlaying?> = _nowPlayingForService
 
-    private val _nowPlayingView = MutableStateFlow<NowPlaying?>(null)
-    val nowPlayingView: StateFlow<NowPlaying?> = _nowPlayingView
+  private val _nowPlayingView = MutableStateFlow<NowPlaying?>(null)
+  val nowPlayingView: StateFlow<NowPlaying?> = _nowPlayingView
 
-    private val _message = MutableSharedFlow<UIMessage>()
-    val uiMessage: SharedFlow<UIMessage> = _message
+  private val _message = MutableSharedFlow<UIMessage>()
+  val uiMessage: SharedFlow<UIMessage> = _message
 
-    override fun onClick(item: StationModel) {
-        val nowPlaying = NowPlaying(
-            station = item,
-            inFavorites = favoritesManager.check(item),
-        )
-        _nowPlayingForService.value = nowPlaying
-        _nowPlayingView.value = nowPlaying
+  override fun onClick(item: StationModel) {
+    val nowPlaying = NowPlaying(
+      station = item,
+      inFavorites = favoritesManager.check(item),
+    )
+    _nowPlayingForService.value = nowPlaying
+    _nowPlayingView.value = nowPlaying
+  }
+
+  override fun onLongClick(item: StationModel) {
+    favoritesManager.add(item)
+    viewModelScope.launch { _message.emit(UIMessage.Added(item.name)) }
+  }
+
+  override fun onFavoriteClick() {
+    _nowPlayingForService.value?.let {
+      if (!it.inFavorites) {
+        favoritesManager.add(it.station)
+        viewModelScope.launch { _message.emit(UIMessage.Added(it.station.name)) }
+        _nowPlayingView.value = it.copy(inFavorites = true)
+      } else {
+        favoritesManager.delete(it.station)
+        viewModelScope.launch { _message.emit(UIMessage.Removed(it.station.name)) }
+        _nowPlayingView.value = it.copy(inFavorites = false)
+      }
     }
+  }
 
-    override fun onLongClick(item: StationModel) {
-        favoritesManager.add(item)
-        viewModelScope.launch { _message.emit(UIMessage.Added(item.name)) }
+  override fun onFavoriteLongClick() {}
+
+  override fun onHomePageClick() {
+    _nowPlayingForService.value?.let {
+      viewModelScope.launch { _message.emit(UIMessage.OpenExternalLink(it.station.homepage)) }
     }
+  }
 
-    override fun onFavoriteClick() {
-        _nowPlayingForService.value?.let {
-            if (!it.inFavorites) {
-                favoritesManager.add(it.station)
-                viewModelScope.launch { _message.emit(UIMessage.Added(it.station.name)) }
-                _nowPlayingView.value = it.copy(inFavorites = true)
-            } else {
-                favoritesManager.delete(it.station)
-                viewModelScope.launch { _message.emit(UIMessage.Removed(it.station.name)) }
-                _nowPlayingView.value = it.copy(inFavorites = false)
-            }
-        }
-    }
-
-    override fun onFavoriteLongClick() {}
-
-    override fun onHomePageClick() {
-        _nowPlayingForService.value?.let {
-            viewModelScope.launch { _message.emit(UIMessage.OpenExternalLink(it.station.homepage)) }
-        }
-    }
-
-    override fun onHomePageLongClick() {}
+  override fun onHomePageLongClick() {}
 
 //    override fun onVolumeUp() {
 //        TODO("Not yet implemented")
@@ -83,7 +83,7 @@ class StationViewModel @Inject constructor(
 }
 
 data class NowPlaying(
-    val station: StationModel,
-    val inFavorites: Boolean,
-    val playImmediately: Boolean = true,
+  val station: StationModel,
+  val inFavorites: Boolean,
+  val playImmediately: Boolean = true,
 )

@@ -15,82 +15,82 @@ import com.squareup.contour.ContourLayout
 import com.noomit.alarmtheme.R as Rtheme
 
 interface IAlarmFireLayout {
-    val playerControll: PlayerControlView
-    val playerView: PlayerView
+  val playerControll: PlayerControlView
+  val playerView: PlayerView
 
-    fun setStationName(value: String)
-    fun setTime(value: String)
-    fun setDay(value: String)
+  fun setStationName(value: String)
+  fun setTime(value: String)
+  fun setDay(value: String)
 }
 
 class AlarmFireLayout(context: Context, attrSet: AttributeSet? = null) :
-    ContourLayout(context, attrSet), IAlarmFireLayout {
+  ContourLayout(context, attrSet), IAlarmFireLayout {
 
-    private val stationName = TextView(
-        context,
-        null,
-        appTheme.alarmFire.station.attr,
-    ).apply {
-        text = ""
-        maxLines = 2
-        ellipsize = TextUtils.TruncateAt.END
-    }
+  private val stationName = TextView(
+    context,
+    null,
+    appTheme.alarmFire.station.attr,
+  ).apply {
+    text = ""
+    maxLines = 2
+    ellipsize = TextUtils.TruncateAt.END
+  }
 
-    private val time = TextView(
-        context,
-        null,
-        appTheme.alarmFire.time.attr,
-    ).apply {
-        background = ResourcesCompat.getDrawable(resources, Rtheme.drawable.alarm_bg_time, null)
-        // text for preview
+  private val time = TextView(
+    context,
+    null,
+    appTheme.alarmFire.time.attr,
+  ).apply {
+    background = ResourcesCompat.getDrawable(resources, Rtheme.drawable.alarm_bg_time, null)
+    // text for preview
 //        text = "8:40"
-    }
+  }
 
-    private val dayOfWeek = TextView(
-        context,
-        null,
-        appTheme.alarmFire.day.attr,
+  private val dayOfWeek = TextView(
+    context,
+    null,
+    appTheme.alarmFire.day.attr,
+  )
+
+  override val playerControll =
+    LayoutInflater.from(context)
+      .inflate(R.layout.exo_player_control_view, null) as PlayerControlView
+
+  override val playerView = PlayerView(context).apply {
+    useController = false
+    isVisible = false
+  }
+
+  init {
+    fitsSystemWindows = true
+    background = ResourcesCompat.getDrawable(resources, Rtheme.drawable.black_bg_gradient, null)
+    time.layoutBy(
+      centerHorizontallyTo { parent.centerX() },
+      centerVerticallyTo { parent.centerY() },
     )
+    stationName.layoutBy(
+      matchParentX(16, 16),
+      topTo { parent.top() + 8.ydip }
+    )
+    dayOfWeek.layoutBy(
+      centerHorizontallyTo { parent.centerX() },
+      topTo { time.bottom() + 16.ydip }
+    )
+    playerControll.layoutBy(
+      emptyX(),
+      emptyY()
+    )
+  }
 
-    override val playerControll =
-        LayoutInflater.from(context)
-            .inflate(R.layout.exo_player_control_view, null) as PlayerControlView
+  override fun setStationName(value: String) {
+    stationName.text = value
+  }
 
-    override val playerView = PlayerView(context).apply {
-        useController = false
-        isVisible = false
-    }
+  override fun setTime(value: String) {
+    time.text = value
+  }
 
-    init {
-        fitsSystemWindows = true
-        background = ResourcesCompat.getDrawable(resources, Rtheme.drawable.black_bg_gradient, null)
-        time.layoutBy(
-            centerHorizontallyTo { parent.centerX() },
-            centerVerticallyTo { parent.centerY() },
-        )
-        stationName.layoutBy(
-            matchParentX(16, 16),
-            topTo { parent.top() + 8.ydip }
-        )
-        dayOfWeek.layoutBy(
-            centerHorizontallyTo { parent.centerX() },
-            topTo { time.bottom() + 16.ydip }
-        )
-        playerControll.layoutBy(
-            emptyX(),
-            emptyY()
-        )
-    }
-
-    override fun setStationName(value: String) {
-        stationName.text = value
-    }
-
-    override fun setTime(value: String) {
-        time.text = value
-    }
-
-    override fun setDay(value: String) {
-        dayOfWeek.text = value
-    }
+  override fun setDay(value: String) {
+    dayOfWeek.text = value
+  }
 }

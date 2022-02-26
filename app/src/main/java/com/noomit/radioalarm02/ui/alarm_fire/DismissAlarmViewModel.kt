@@ -13,41 +13,41 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DismissAlarmViewModel @Inject constructor(
-    private val manager: DismissAlarmManager,
-    private val alarmComposer: AlarmComposer,
+  private val manager: DismissAlarmManager,
+  private val alarmComposer: AlarmComposer,
 ) : ViewModel() {
 
-    companion object {
-        private const val TIMER_TICK_DELAY = 1_000L * 30
+  companion object {
+    private const val TIMER_TICK_DELAY = 1_000L * 30
+  }
+
+  var alarmId: Long? = null
+  var melodyUrl: String? = null
+  var melodyName: String? = null
+
+  val time = flow<String> {
+    val df = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
+    while (true) {
+      val now = Calendar.getInstance()
+      emit(df.format(now.time))
+      delay(TIMER_TICK_DELAY)
+    }
+  }
+
+  val day: String
+    get() {
+      val df = SimpleDateFormat("EEEE", Locale.getDefault())
+      val now = Date(Calendar.getInstance().timeInMillis)
+      return df.format(now)
     }
 
-    var alarmId: Long? = null
-    var melodyUrl: String? = null
-    var melodyName: String? = null
-
-    val time = flow<String> {
-        val df = SimpleDateFormat.getTimeInstance(DateFormat.SHORT)
-        while (true) {
-            val now = Calendar.getInstance()
-            emit(df.format(now.time))
-            delay(TIMER_TICK_DELAY)
-        }
-    }
-
-    val day: String
-        get() {
-            val df = SimpleDateFormat("EEEE", Locale.getDefault())
-            val now = Date(Calendar.getInstance().timeInMillis)
-            return df.format(now)
-        }
-
-    fun alarmFired() = alarmId?.let {
-        val alarm = manager.selectById(it)
-        val updated = alarmComposer.reComposeFired(alarm)
-        manager.updateTimeInMillis(
-            id = updated.id,
-            timeInMillis = updated.timeInMillis,
-        )
-        manager.scheduleNextActive()
-    }
+  fun alarmFired() = alarmId?.let {
+    val alarm = manager.selectById(it)
+    val updated = alarmComposer.reComposeFired(alarm)
+    manager.updateTimeInMillis(
+      id = updated.id,
+      timeInMillis = updated.timeInMillis,
+    )
+    manager.scheduleNextActive()
+  }
 }

@@ -19,90 +19,90 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AlarmFireFragment : PlayerServiceFragment<IAlarmFireLayout>() {
 
-    private var ringtone: Ringtone? = null
+  private var ringtone: Ringtone? = null
 
-    private val viewModel: DismissAlarmViewModel by activityViewModels()
+  private val viewModel: DismissAlarmViewModel by activityViewModels()
 
-    private var playerBroadcastReceiver: BroadcastReceiver? = null
+  private var playerBroadcastReceiver: BroadcastReceiver? = null
 
-    override val layout: View
-        get() = AlarmFireLayout(requireContext())
+  override val layout: View
+    get() = AlarmFireLayout(requireContext())
 
-    override val contour: IAlarmFireLayout
-        get() = view as IAlarmFireLayout
+  override val contour: IAlarmFireLayout
+    get() = view as IAlarmFireLayout
 
-    override val notificationCaption: String
-        get() = getString(R.string.app_name)
+  override val notificationCaption: String
+    get() = getString(R.string.app_name)
 
-    override fun onStart() {
-        super.onStart()
-        registerBroadcastReceiver()
+  override fun onStart() {
+    super.onStart()
+    registerBroadcastReceiver()
+  }
+
+  override fun onStop() {
+    stopRingtone()
+    activity?.unregisterReceiver(playerBroadcastReceiver)
+    playerBroadcastReceiver = null
+    super.onStop()
+  }
+
+  override fun prepareView(savedState: Bundle?) {
+    contour.setDay(viewModel.day)
+  }
+
+  override fun onServiceConnected() {
+    if (viewModel.melodyUrl.isNullOrEmpty()) {
+      playDefaultRingtone()
+      return
     }
-
-    override fun onStop() {
-        stopRingtone()
-        activity?.unregisterReceiver(playerBroadcastReceiver)
-        playerBroadcastReceiver = null
-        super.onStop()
+    viewModel.melodyUrl?.let {
+      service?.mediaItem = ServiceMediaItem(
+        url = it,
+        title = viewModel.melodyName ?: it
+      )
+      service?.play()
+      contour.setStationName(viewModel.melodyName ?: "")
     }
+  }
 
-    override fun prepareView(savedState: Bundle?) {
-        contour.setDay(viewModel.day)
-    }
+  override fun onConnectionError() {
+    playDefaultRingtone()
+  }
 
-    override fun onServiceConnected() {
-        if (viewModel.melodyUrl.isNullOrEmpty()) {
-            playDefaultRingtone()
-            return
+  override fun initPlayerViews() {
+    playerControlView = contour.playerControll
+  }
+
+  override fun observeViewModel() {
+    collect(viewModel.time) { contour.setTime(it) }
+  }
+
+  private fun playDefaultRingtone() {
+    ringtone?.let { stopRingtone() }
+
+    val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+    ringtone = RingtoneManager.getRingtone(requireContext(), ringtoneUri)
+    ringtone?.play()
+  }
+
+  private fun stopRingtone() {
+    ringtone?.stop()
+    service?.pause()
+    ringtone = null
+  }
+
+  private fun registerBroadcastReceiver() {
+    playerBroadcastReceiver = object : BroadcastReceiver() {
+      override fun onReceive(context: Context?, intent: Intent?) {
+        val codeError = intent?.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)
+        when (codeError) {
+          PlayerService.BR_CODE_ERROR -> onConnectionError()
         }
-        viewModel.melodyUrl?.let {
-            service?.mediaItem = ServiceMediaItem(
-                url = it,
-                title = viewModel.melodyName ?: it
-            )
-            service?.play()
-            contour.setStationName(viewModel.melodyName ?: "")
-        }
+      }
     }
-
-    override fun onConnectionError() {
-        playDefaultRingtone()
-    }
-
-    override fun initPlayerViews() {
-        playerControlView = contour.playerControll
-    }
-
-    override fun observeViewModel() {
-        collect(viewModel.time) { contour.setTime(it) }
-    }
-
-    private fun playDefaultRingtone() {
-        ringtone?.let { stopRingtone() }
-
-        val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        ringtone = RingtoneManager.getRingtone(requireContext(), ringtoneUri)
-        ringtone?.play()
-    }
-
-    private fun stopRingtone() {
-        ringtone?.stop()
-        service?.pause()
-        ringtone = null
-    }
-
-    private fun registerBroadcastReceiver() {
-        playerBroadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val codeError = intent?.getIntExtra(PlayerService.BR_MEDIA_UNAVAILABLE, -1)
-                when (codeError) {
-                    PlayerService.BR_CODE_ERROR -> onConnectionError()
-                }
-            }
-        }
-        requireActivity().registerReceiver(
-            playerBroadcastReceiver,
-            IntentFilter(PlayerService.BR_ACTION_ERROR),
-        )
-    }
+    requireActivity().registerReceiver(
+      playerBroadcastReceiver,
+      IntentFilter(PlayerService.BR_ACTION_ERROR),
+    )
+  }
 }

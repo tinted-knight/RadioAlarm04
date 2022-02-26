@@ -23,176 +23,176 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class RadioBrowserEvent : OneShotEvent {
-    object LanguageList : RadioBrowserEvent()
-    object TagList : RadioBrowserEvent()
-    object TopVoted : RadioBrowserEvent()
-    object Search : RadioBrowserEvent()
+  object LanguageList : RadioBrowserEvent()
+  object TagList : RadioBrowserEvent()
+  object TopVoted : RadioBrowserEvent()
+  object Search : RadioBrowserEvent()
 }
 
 @FlowPreview
 @HiltViewModel
 class RadioBrowserViewModel @Inject constructor(
-    private val serverManager: ServerManager,
-    private val apiService: RadioBrowser,
-    private val categoryManager: CategoryManager,
-    private val stationManager: StationManager,
+  private val serverManager: ServerManager,
+  private val apiService: RadioBrowser,
+  private val categoryManager: CategoryManager,
+  private val stationManager: StationManager,
 ) : NavigationViewModel<RadioBrowserEvent>(), RadioBrowserHomeDelegate {
 
-    val availableServers = serverManager.state
+  val availableServers = serverManager.state
 
-    private val activeServer = serverManager.activeServer()
+  private val activeServer = serverManager.activeServer()
 
-    private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
+  private val caterogyFilter = MutableStateFlow<Filter>(Filter.None)
 
-    private val stationFilter = MutableStateFlow<Filter>(Filter.None)
+  private val stationFilter = MutableStateFlow<Filter>(Filter.None)
 
-    init {
-        viewModelScope.launch {
-            // If there is no activeServer, it means something has gone wrong with connection
-            // try once more with delay
-            activeServer.collect {
-                when (it) {
-                    is ActiveServerState.None -> {
-                        delay(1_000)
-                        serverManager.getAvalilable()
-                    }
-                    is ActiveServerState.Value -> {
-                        apiService.setActiveServer(it.serverInfo)
-                        ilog("activeServer: ${it.serverInfo.urlString}, ${it.hashCode()}")
-                    }
-                    else -> ilog("RadioBrowserViewModel::init, activer server unknown state")
-                }
-            }
+  init {
+    viewModelScope.launch {
+      // If there is no activeServer, it means something has gone wrong with connection
+      // try once more with delay
+      activeServer.collect {
+        when (it) {
+          is ActiveServerState.None -> {
+            delay(1_000)
+            serverManager.getAvalilable()
+          }
+          is ActiveServerState.Value -> {
+            apiService.setActiveServer(it.serverInfo)
+            ilog("activeServer: ${it.serverInfo.urlString}, ${it.hashCode()}")
+          }
+          else -> ilog("RadioBrowserViewModel::init, activer server unknown state")
         }
+      }
     }
+  }
 
-    fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
+  fun setServer(serverInfo: ServerInfo) = serverManager.setServerManually(serverInfo)
 
-    fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
-        stringFlow.debounce(500)
-            .filterNotNull()
-            .collect {
-                if (it.isBlank()) {
-                    caterogyFilter.emit(Filter.None)
-                } else {
-                    caterogyFilter.emit(Filter.Value(it))
-                }
-            }
-    }
-
-    fun applyStationFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
-        stringFlow.debounce(500)
-            .filterNotNull()
-            .collect {
-                if (it.isBlank()) {
-                    stationFilter.emit(Filter.None)
-                } else {
-                    stationFilter.emit(Filter.Value(it))
-                }
-            }
-    }
-
-    fun requestCategory(model: CategoryModel) {
-        loadStations(model)
-    }
-
-    /**
-     * Request stations by [category]. Observe result by [stationList]
-     */
-    private fun loadStations(category: CategoryModel) = viewModelScope.launch {
-        clearStationFilter()
-        stationManager.stationsBy(category)
-    }
-
-    /**
-     * List of stations by category (i.e. language, tag), filtered by **station name** set up with
-     * [applyCategoryFilter] method
-     */
-    val stationList: Flow<StationManagerState> = stationFilter
-        .combineTransform(stationManager.state) { filter, state ->
-            if (state !is StationManagerState.Success || filter !is Filter.Value) {
-                emit(state)
-            } else {
-                val list = state.values.filter {
-                    it.name.lowercase().contains(filter.value)
-                }
-                emit(StationManagerState.Success(list, state.category))
-            }
+  fun applyCategoryFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
+    stringFlow.debounce(500)
+      .filterNotNull()
+      .collect {
+        if (it.isBlank()) {
+          caterogyFilter.emit(Filter.None)
+        } else {
+          caterogyFilter.emit(Filter.Value(it))
         }
-        .flowOn(Dispatchers.Default)
+      }
+  }
 
-    /**
-     * List of categories(languages or tags), filtered by **category name** set up with
-     * [applyCategoryFilter] method
-     */
-    val categoryList: Flow<CategoryManagerState> = caterogyFilter
-        .combineTransform(categoryManager.state) { filter, state ->
-            if (state !is CategoryManagerState.Values || filter !is Filter.Value) {
-                emit(state)
-            } else {
-                val filtered = state.values.filter {
-                    it.name.lowercase().contains(filter.value)
-                }
-                emit(CategoryManagerState.Values(filtered))
-            }
+  fun applyStationFilter(stringFlow: Flow<String?>) = viewModelScope.launch {
+    stringFlow.debounce(500)
+      .filterNotNull()
+      .collect {
+        if (it.isBlank()) {
+          stationFilter.emit(Filter.None)
+        } else {
+          stationFilter.emit(Filter.Value(it))
         }
+      }
+  }
 
-    private fun clearCategoryFilter() = viewModelScope.launch { caterogyFilter.emit(Filter.None) }
+  fun requestCategory(model: CategoryModel) {
+    loadStations(model)
+  }
 
-    private fun clearStationFilter() = viewModelScope.launch { stationFilter.emit(Filter.None) }
+  /**
+   * Request stations by [category]. Observe result by [stationList]
+   */
+  private fun loadStations(category: CategoryModel) = viewModelScope.launch {
+    clearStationFilter()
+    stationManager.stationsBy(category)
+  }
 
-    override fun onLanguageClick() {
-        viewModelScope.launch {
-            clearCategoryFilter()
-            categoryManager.getLanguages()
+  /**
+   * List of stations by category (i.e. language, tag), filtered by **station name** set up with
+   * [applyCategoryFilter] method
+   */
+  val stationList: Flow<StationManagerState> = stationFilter
+    .combineTransform(stationManager.state) { filter, state ->
+      if (state !is StationManagerState.Success || filter !is Filter.Value) {
+        emit(state)
+      } else {
+        val list = state.values.filter {
+          it.name.lowercase().contains(filter.value)
         }
-        navigateTo(RadioBrowserEvent.LanguageList)
+        emit(StationManagerState.Success(list, state.category))
+      }
     }
+    .flowOn(Dispatchers.Default)
 
-    override fun onTagClick() {
-        viewModelScope.launch {
-            clearCategoryFilter()
-            categoryManager.getTags()
+  /**
+   * List of categories(languages or tags), filtered by **category name** set up with
+   * [applyCategoryFilter] method
+   */
+  val categoryList: Flow<CategoryManagerState> = caterogyFilter
+    .combineTransform(categoryManager.state) { filter, state ->
+      if (state !is CategoryManagerState.Values || filter !is Filter.Value) {
+        emit(state)
+      } else {
+        val filtered = state.values.filter {
+          it.name.lowercase().contains(filter.value)
         }
-        navigateTo(RadioBrowserEvent.TagList)
+        emit(CategoryManagerState.Values(filtered))
+      }
     }
 
-    override fun onTopVotedClick() {
-        loadStations(CategoryModel.TopVoted())
-        navigateTo(RadioBrowserEvent.TopVoted)
-    }
+  private fun clearCategoryFilter() = viewModelScope.launch { caterogyFilter.emit(Filter.None) }
 
-    data class SearchState(
-        val name: String = "",
-        val tag: String = "",
-    ) {
-        val isValid: Boolean
-            get() = name.isNotBlank() || tag.isNotBlank()
-    }
+  private fun clearStationFilter() = viewModelScope.launch { stationFilter.emit(Filter.None) }
 
-    private val _searchState = MutableStateFlow(SearchState())
-    val searchState: StateFlow<SearchState> = _searchState
-
-    override fun onSearchClick() {
-        loadStations(
-            CategoryModel.GlobalSearch(
-                searchName = _searchState.value.name.lowercase(),
-                searchTag = _searchState.value.tag.lowercase()
-            )
-        )
-        navigateTo(RadioBrowserEvent.Search)
+  override fun onLanguageClick() {
+    viewModelScope.launch {
+      clearCategoryFilter()
+      categoryManager.getLanguages()
     }
+    navigateTo(RadioBrowserEvent.LanguageList)
+  }
 
-    override fun onSearchNameChanged(value: String?) {
-        _searchState.value = _searchState.value.copy(name = value ?: "")
+  override fun onTagClick() {
+    viewModelScope.launch {
+      clearCategoryFilter()
+      categoryManager.getTags()
     }
+    navigateTo(RadioBrowserEvent.TagList)
+  }
 
-    override fun onSearchTagChanged(value: String?) {
-        _searchState.value = _searchState.value.copy(tag = value ?: "")
-    }
+  override fun onTopVotedClick() {
+    loadStations(CategoryModel.TopVoted())
+    navigateTo(RadioBrowserEvent.TopVoted)
+  }
+
+  data class SearchState(
+    val name: String = "",
+    val tag: String = "",
+  ) {
+    val isValid: Boolean
+      get() = name.isNotBlank() || tag.isNotBlank()
+  }
+
+  private val _searchState = MutableStateFlow(SearchState())
+  val searchState: StateFlow<SearchState> = _searchState
+
+  override fun onSearchClick() {
+    loadStations(
+      CategoryModel.GlobalSearch(
+        searchName = _searchState.value.name.lowercase(),
+        searchTag = _searchState.value.tag.lowercase()
+      )
+    )
+    navigateTo(RadioBrowserEvent.Search)
+  }
+
+  override fun onSearchNameChanged(value: String?) {
+    _searchState.value = _searchState.value.copy(name = value ?: "")
+  }
+
+  override fun onSearchTagChanged(value: String?) {
+    _searchState.value = _searchState.value.copy(tag = value ?: "")
+  }
 }
 
 private sealed class Filter {
-    object None : Filter()
-    data class Value(val value: String) : Filter()
+  object None : Filter()
+  data class Value(val value: String) : Filter()
 }
