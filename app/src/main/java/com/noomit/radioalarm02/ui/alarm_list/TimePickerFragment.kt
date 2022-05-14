@@ -7,13 +7,13 @@ import androidx.fragment.app.DialogFragment
 import java.util.*
 
 class TimePickerFragment(
-    private val timeSetListener: TimePickerDialog.OnTimeSetListener,
+  private val timeSetListener: TimePickerDialog.OnTimeSetListener,
 ) : DialogFragment() {
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val cal = Calendar.getInstance()
-        val hour = cal[Calendar.HOUR_OF_DAY]
-        val minute = cal[Calendar.MINUTE]
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    val cal = Calendar.getInstance()
+    val hour = cal[Calendar.HOUR_OF_DAY]
+    val minute = cal[Calendar.MINUTE]
 
-        return TimePickerDialog(requireActivity(), timeSetListener, hour, minute, true)
-    }
+    return TimePickerDialog(requireActivity(), timeSetListener, hour, minute, true)
+  }
 }

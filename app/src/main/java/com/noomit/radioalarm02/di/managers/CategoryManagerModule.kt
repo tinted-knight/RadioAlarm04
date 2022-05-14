@@ -10,6 +10,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class CategoryManagerModule {
-    @Binds
-    abstract fun bindCategoryManager(manager: CategoryManagerImpl): CategoryManager
+  @Binds
+  abstract fun bindCategoryManager(manager: CategoryManagerImpl): CategoryManager
 }

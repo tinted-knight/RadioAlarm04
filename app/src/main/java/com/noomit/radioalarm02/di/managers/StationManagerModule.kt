@@ -10,6 +10,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class StationManagerModule {
-    @Binds
-    abstract fun bindStationManager(manager: StationManagerImpl): StationManager
+  @Binds
+  abstract fun bindStationManager(manager: StationManagerImpl): StationManager
 }

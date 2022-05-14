@@ -10,6 +10,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class FavoritesManagerModule {
-    @Binds
-    abstract fun bindFavoriteManager(manager: FavoritesManagerImpl): FavoritesManager
+  @Binds
+  abstract fun bindFavoriteManager(manager: FavoritesManagerImpl): FavoritesManager
 }

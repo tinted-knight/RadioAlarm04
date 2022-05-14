@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="radioBrowserCategory" format="reference" />
-    <attr name="buttonBarButtonFavorites" format="reference" />
-    <attr name="buttonBarButtonBrowse" format="reference" />
-    <attr name="buttonBarButtonCenter" format="reference" />
-    <attr name="buttonText" format="reference" />
-    <attr name="buttonOutline" format="reference" />
-    <attr name="textAlarmTime" format="reference" />
-    <attr name="textInputOutlined" format="reference" />
-    <attr name="textAlarmFireStation" format="reference" />
-    <attr name="textAlarmFireTime" format="reference" />
-    <attr name="textAlarmFireDay" format="reference" />
-    <attr name="alarmCardMelody" format="reference" />
-    <attr name="alarmCardAlarmIcon" format="reference" />
-    <attr name="stationCountText" format="reference" />
-    <attr name="progressBarColors" format="reference" />
-    <attr name="stationTag" format="reference" />
-    <!--  Nowplaying  -->
-    <attr name="nowplaying_title" format="reference" />
-    <attr name="nowplaying_close" format="reference" />
-    <attr name="nowplaying_favorite" format="reference" />
-    <!-- HelpView -->
-    <attr name="help_text" format="reference" />
-    <attr name="help_icon" format="reference" />
-    <attr name="help_fab" format="reference" />
-    <attr name="help_divider" format="reference" />
+  <attr name="radioBrowserCategory" format="reference" />
+  <attr name="buttonBarButtonFavorites" format="reference" />
+  <attr name="buttonBarButtonBrowse" format="reference" />
+  <attr name="buttonBarButtonCenter" format="reference" />
+  <attr name="buttonText" format="reference" />
+  <attr name="buttonOutline" format="reference" />
+  <attr name="textAlarmTime" format="reference" />
+  <attr name="textInputOutlined" format="reference" />
+  <attr name="textAlarmFireStation" format="reference" />
+  <attr name="textAlarmFireTime" format="reference" />
+  <attr name="textAlarmFireDay" format="reference" />
+  <attr name="alarmCardMelody" format="reference" />
+  <attr name="alarmCardAlarmIcon" format="reference" />
+  <attr name="stationCountText" format="reference" />
+  <attr name="progressBarColors" format="reference" />
+  <attr name="stationTag" format="reference" />
+  <!--  Nowplaying  -->
+  <attr name="nowplaying_title" format="reference" />
+  <attr name="nowplaying_close" format="reference" />
+  <attr name="nowplaying_favorite" format="reference" />
+  <!-- HelpView -->
+  <attr name="help_text" format="reference" />
+  <attr name="help_icon" format="reference" />
+  <attr name="help_fab" format="reference" />
+  <attr name="help_divider" format="reference" />
 </resources>

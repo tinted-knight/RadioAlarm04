@@ -4,99 +4,98 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+  compileSdkVersion v.compileSdk
+  buildToolsVersion v.buildTools
 
-    defaultConfig {
-        applicationId "com.noomit.radioalarm02"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    applicationId "com.noomit.radioalarm02"
+    minSdkVersion v.minSdk
+    targetSdkVersion v.targetSdk
+    versionCode 1
+    versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+    useIR = true
+  }
+
+  buildFeatures {
+    viewBinding false
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled true
+      shrinkResources true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.debug
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    debug {
+      applicationIdSuffix ".debug"
+      versionNameSuffix "-debug"
     }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-        useIR = true
-    }
-
-    buildFeatures {
-        viewBinding false
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
-        }
-        debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
-        }
-    }
+  }
 }
 
 dependencies {
-    implementation project(":data")
-    implementation project(":alarmtheme")
-    implementation project(":domain")
+  implementation project(":data")
+  implementation project(":alarmtheme")
+  implementation project(":domain")
 
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+  implementation fileTree(dir: "libs", include: ["*.jar"])
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+  implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+  testImplementation 'junit:junit:4.13.1'
+  androidTestImplementation "androidx.test.ext:junit:1.1.2"
+  androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
 
-    implementation "androidx.core:core-ktx:$core_ktx"
-    implementation "androidx.appcompat:appcompat:$app_compat"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
-    //Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    //MDC
-    implementation "com.google.android.material:material:$material"
-    // ViewModel, LiveData & Lifecycle
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+  implementation "androidx.core:core-ktx:$core_ktx"
+  implementation "androidx.appcompat:appcompat:$app_compat"
+  implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
+  //Navigation
+  implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+  implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+  //MDC
+  implementation "com.google.android.material:material:$material"
+  // ViewModel, LiveData & Lifecycle
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 //    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 //    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
-    // Timber
-    implementation "com.jakewharton.timber:timber:$timber_version"
-    //Glide
-    implementation "com.github.bumptech.glide:glide:$glide"
-    kapt "com.github.bumptech.glide:compiler:$glide"
-    //ExoPlayer
-    implementation "com.google.android.exoplayer:exoplayer-core:$exo_payer"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_payer"
-    implementation "com.google.android.exoplayer:exoplayer-hls:$exo_payer"
-    //SQLDelight
-    implementation "com.squareup.sqldelight:android-driver:$sql_delight"
-    implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
-    //swipe button
-    implementation "com.ncorti:slidetoact:$slide_to_act"
-    // Contour layout
-    implementation "app.cash.contour:contour:$contour"
-    // Hilt dependencies
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_arch"
-//    kapt "androidx.hilt:hilt-compiler:$hilt_version"
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
-    //WorkManager
-    implementation "androidx.work:work-runtime-ktx:$work_manager"
+  implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_extensions"
+  implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+  // Coroutines
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
+  // Timber
+  implementation "com.jakewharton.timber:timber:$timber_version"
+  //Glide
+  implementation "com.github.bumptech.glide:glide:$glide"
+  kapt "com.github.bumptech.glide:compiler:$glide"
+  //ExoPlayer
+  implementation "com.google.android.exoplayer:exoplayer-core:$exo_payer"
+  implementation "com.google.android.exoplayer:exoplayer-ui:$exo_payer"
+  implementation "com.google.android.exoplayer:exoplayer-hls:$exo_payer"
+  //SQLDelight
+  implementation "com.squareup.sqldelight:android-driver:$sql_delight"
+  implementation "com.squareup.sqldelight:coroutines-extensions-jvm:$sql_delight"
+  //swipe button
+  implementation "com.ncorti:slidetoact:$slide_to_act"
+  // Contour layout
+  implementation "app.cash.contour:contour:$contour"
+  // Hilt dependencies
+  implementation "com.google.dagger:hilt-android:$hilt_version"
+  kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+  implementation "androidx.hilt:hilt-navigation-fragment:1.0.0"
+  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
+  // WorkManager
+  implementation "androidx.work:work-runtime-ktx:$work_manager"
 }

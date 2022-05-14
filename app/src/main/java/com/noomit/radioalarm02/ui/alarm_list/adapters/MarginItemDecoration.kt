@@ -6,12 +6,12 @@ import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.RecyclerView
 
 class MarginItemDecoration(@DimenRes private val space: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State,
-    ) {
-        outRect.bottom = parent.context.resources.getDimension(space).toInt()
-    }
+  override fun getItemOffsets(
+    outRect: Rect,
+    view: View,
+    parent: RecyclerView,
+    state: RecyclerView.State,
+  ) {
+    outRect.bottom = parent.context.resources.getDimension(space).toInt()
+  }
 }

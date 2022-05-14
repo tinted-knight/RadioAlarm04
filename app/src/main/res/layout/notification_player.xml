@@ -1,53 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/LightTheme"
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/LightTheme"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:padding="8dp"
+  android:theme="@style/LightTheme">
+
+  <TextView
+    android:id="@+id/tv_caption"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:theme="@style/LightTheme">
+    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+    tools:text="App name" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tv_caption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        tools:text="App name" />
+      android:id="@+id/tv_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_weight="1"
+      android:ellipsize="marquee"
+      android:padding="8dp"
+      android:singleLine="true"
+      tools:text="Not So Very Long Radio Station Title" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+    <TextView
+      android:id="@+id/tv_stop"
+      style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginEnd="4dp"
+      android:text="@string/btn_close" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ellipsize="marquee"
-            android:padding="8dp"
-            android:singleLine="true"
-            tools:text="Not So Very Long Radio Station Title" />
-
-        <TextView
-            android:id="@+id/tv_stop"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:text="@string/btn_close" />
-
-        <TextView
-            android:id="@+id/tv_play_pause"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            android:text="@string/action_pause" />
-    </LinearLayout>
+    <TextView
+      android:id="@+id/tv_play_pause"
+      style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:padding="8dp"
+      android:text="@string/action_pause" />
+  </LinearLayout>
 
 </LinearLayout>

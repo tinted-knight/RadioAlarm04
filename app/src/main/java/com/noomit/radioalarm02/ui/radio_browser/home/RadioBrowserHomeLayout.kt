@@ -20,282 +20,284 @@ import com.noomit.radioalarm02.R
 import com.noomit.radioalarm02.ui.animations.PushOnPressAnimator
 import com.noomit.radioalarm02.ui.theme.appTheme
 import com.squareup.contour.ContourLayout
+import com.noomit.alarmtheme.R as Rtheme
 
 interface RadioBrowserHomeDelegate {
-    fun onLanguageClick()
-    fun onTagClick()
-    fun onTopVotedClick()
-    fun onSearchClick()
-    fun onSearchNameChanged(value: String?)
-    fun onSearchTagChanged(value: String?)
+  fun onLanguageClick()
+  fun onTagClick()
+  fun onTopVotedClick()
+  fun onSearchClick()
+  fun onSearchNameChanged(value: String?)
+  fun onSearchTagChanged(value: String?)
 }
 
 interface IRadioBrowserHomeLayout {
-    var delegate: RadioBrowserHomeDelegate?
-    fun setServerAdapter(adapter: ServerListAdapter)
-    fun serverListCollapse()
-    fun showLoading()
-    fun showError(message: String)
-    fun btnSearchEnabled(isEnabled: Boolean)
-    fun setSearchFields(name: String, tag: String)
-    fun update(content: List<ServerInfo>)
-    fun update(activerServer: ServerInfo?)
+  var delegate: RadioBrowserHomeDelegate?
+  fun setServerAdapter(adapter: ServerListAdapter)
+  fun serverListCollapse()
+  fun showLoading()
+  fun showError(message: String)
+  fun btnSearchEnabled(isEnabled: Boolean)
+  fun setSearchFields(name: String, tag: String)
+  fun update(content: List<ServerInfo>)
+  fun update(activerServer: ServerInfo?)
 }
 
 class RadioBrowserHomeLayout(context: Context, attributeSet: AttributeSet? = null) :
-    ContourLayout(context, attributeSet), IRadioBrowserHomeLayout {
+  ContourLayout(context, attributeSet), IRadioBrowserHomeLayout {
 
-    override var delegate: RadioBrowserHomeDelegate? = null
+  override var delegate: RadioBrowserHomeDelegate? = null
 
-    private val btnLanguages = materialButton.apply {
-        text = context.getString(R.string.lang_list)
-        setOnClickListener { delegate?.onLanguageClick() }
+  private val btnLanguages = materialButton.apply {
+    text = context.getString(R.string.lang_list)
+    setOnClickListener { delegate?.onLanguageClick() }
+  }
+
+  private val btnTags = materialButton.apply {
+    text = context.getString(R.string.tag_list)
+    setOnClickListener { delegate?.onTagClick() }
+  }
+
+  private val btnTopVoted = materialButton.apply {
+    text = context.getString(R.string.top_voted)
+    setOnClickListener { delegate?.onTopVotedClick() }
+  }
+
+  private val searchLabel = TextView(context).apply {
+    text = context.getString(R.string.attr_search_label)
+  }
+
+  private val searchName = textInputLayout.apply {
+    hint = context.getString(R.string.name_hint)
+    boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
+    val cornerRadius = 12.0f
+    this.id = View.generateViewId()
+    setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+    val editText = TextInputEditText(this.context).apply {
+      this.id = View.generateViewId()
+      isSingleLine = true
+      addTextChangedListener(
+        onTextChanged = { text, _, _, _ -> delegate?.onSearchNameChanged(text.toString()) }
+      )
     }
+    addView(editText)
+  }
 
-    private val btnTags = materialButton.apply {
-        text = context.getString(R.string.tag_list)
-        setOnClickListener { delegate?.onTagClick() }
+  private val searchTag = textInputLayout.apply {
+    hint = context.getString(R.string.tag_hint)
+    boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
+    val cornerRadius = 12.0f
+    this.id = View.generateViewId()
+    setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
+    val editText = TextInputEditText(this.context).apply {
+      this.id = View.generateViewId()
+      isSingleLine = true
+      addTextChangedListener(
+        onTextChanged = { text, _, _, _ -> delegate?.onSearchTagChanged(text.toString()) }
+      )
     }
+    addView(editText)
+  }
 
-    private val btnTopVoted = materialButton.apply {
-        text = context.getString(R.string.top_voted)
-        setOnClickListener { delegate?.onTopVotedClick() }
-    }
+  private val btnSearch = MaterialButton(context).apply {
+    text = context.getString(R.string.btn_search)
+    setOnClickListener { delegate?.onSearchClick() }
+  }
 
-    private val searchLabel = TextView(context).apply {
-        text = context.getString(R.string.attr_search_label)
-    }
+  private val serverList = ServerListView(context)
 
-    private val searchName = textInputLayout.apply {
-        hint = context.getString(R.string.name_hint)
-        boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
-        val cornerRadius = 12.0f
-        this.id = View.generateViewId()
-        setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        val editText = TextInputEditText(this.context).apply {
-            this.id = View.generateViewId()
-            isSingleLine = true
-            addTextChangedListener(
-                onTextChanged = { text, _, _, _ -> delegate?.onSearchNameChanged(text.toString()) }
-            )
-        }
-        addView(editText)
-    }
+  private val loadingIndicator = ProgressBar(
+    ContextThemeWrapper(context, Rtheme.style.LightTheme_ProgressBar),
+    null,
+    Rtheme.attr.progressBarColors
+  )
 
-    private val searchTag = textInputLayout.apply {
-        hint = context.getString(R.string.tag_hint)
-        boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
-        val cornerRadius = 12.0f
-        this.id = View.generateViewId()
-        setBoxCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius)
-        val editText = TextInputEditText(this.context).apply {
-            this.id = View.generateViewId()
-            isSingleLine = true
-            addTextChangedListener(
-                onTextChanged = { text, _, _, _ -> delegate?.onSearchTagChanged(text.toString()) }
-            )
-        }
-        addView(editText)
-    }
+  //  #todo Need this layout to be heightWrapContent to align Buttons and TextViews correctly
+  //      So the right way may be to have outer layout with math_parent
+  //      and in case of error show errorView centered in outer layout
+  //      If no error show content with heightWrapContent aligned to top of outer layout
+  private val errorMessage = TextView(context).apply {
+    isVisible = false
+  }
 
-    private val btnSearch = MaterialButton(context).apply {
-        text = context.getString(R.string.btn_search)
-        setOnClickListener { delegate?.onSearchClick() }
-    }
+  private val divider = View(context).apply {
+    setBackgroundColor(Color.parseColor("#575757"))
+  }
 
-    private val serverList = ServerListView(context)
+  init {
+    id = View.generateViewId()
 
-    private val loadingIndicator = ProgressBar(
-        ContextThemeWrapper(context, R.style.LightTheme_ProgressBar),
-        null,
-        R.attr.progressBarColors
+    contourHeightWrapContent()
+    setPadding(16.dip, 0.dip, 16.dip, 0.dip)
+
+    loadingIndicator.layoutBy(
+      centerHorizontallyTo { parent.centerX() }.widthOf { 60.xdip },
+      topTo { parent.top() + 100.ydip }.heightOf { 60.ydip }
     )
 
-    //  #todo Need this layout to be heightWrapContent to align Buttons and TextViews correctly
-    //      So the right way may be to have outer layout with math_parent
-    //      and in case of error show errorView centered in outer layout
-    //      If no error show content with heightWrapContent aligned to top of outer layout
-    private val errorMessage = TextView(context).apply {
-        isVisible = false
-    }
+    errorMessage.layoutBy(emptyX(), emptyY())
 
-    private val divider = View(context).apply {
-        setBackgroundColor(Color.parseColor("#575757"))
-    }
+    btnLanguages.layoutBy(
+      x = matchParentX(),
+      y = topTo { parent.top() }
+    )
 
-    init {
-        id = View.generateViewId()
+    btnTags.layoutBy(
+      x = matchParentX(),
+      y = topTo { btnLanguages.bottom() }
+    )
 
-        contourHeightWrapContent()
-        setPadding(16.dip, 0.dip, 16.dip, 0.dip)
+    btnTopVoted.layoutBy(
+      x = matchParentX(),
+      y = topTo { btnTags.bottom() }
+    )
 
-        loadingIndicator.layoutBy(
-            centerHorizontallyTo { parent.centerX() }.widthOf { 60.xdip },
-            topTo { parent.top() + 100.ydip }.heightOf { 60.ydip }
-        )
+    divider.layoutBy(
+      x = matchParentX(16, 16),
+      y = topTo { btnTopVoted.bottom() + 8.ydip }.heightOf { 1.ydip }
+    )
 
-        errorMessage.layoutBy(emptyX(), emptyY())
+    searchLabel.layoutBy(
+      x = matchParentX(),
+      topTo { divider.bottom() + 16.ydip }
+    )
+    searchName.layoutBy(
+      x = matchParentX(),
+      y = topTo { searchLabel.bottom() }
+    )
+    searchTag.layoutBy(
+      x = matchParentX(),
+      y = topTo { searchName.bottom() }
+    )
+    btnSearch.layoutBy(
+      x = rightTo { parent.right() },
+      y = topTo { searchTag.bottom() }
+    )
 
-        btnLanguages.layoutBy(
-            x = matchParentX(),
-            y = topTo { parent.top() }
-        )
+    val xPadding = { if (!serverList.isSelected) 8.xdip else 16.xdip }
 
-        btnTags.layoutBy(
-            x = matchParentX(),
-            y = topTo { btnLanguages.bottom() }
-        )
+    serverList.layoutBy(
+      x = leftTo { parent.left() + xPadding() }.rightTo { parent.right() - xPadding() },
+      y = topTo {
+        when {
+          serverList.isSelected -> parent.top()
+          else -> searchTag.bottom()
+        }
+      }
+    )
 
-        btnTopVoted.layoutBy(
-            x = matchParentX(),
-            y = topTo { btnTags.bottom() }
-        )
+    serverList.setOnClickListener(::serverListClick)
+  }
 
-        divider.layoutBy(
-            x = matchParentX(16, 16),
-            y = topTo { btnTopVoted.bottom() + 8.ydip }.heightOf { 1.ydip }
-        )
+  override fun setServerAdapter(adapter: ServerListAdapter) {
+    serverList.recycler.adapter = adapter
+  }
 
-        searchLabel.layoutBy(
-            x = matchParentX(),
-            topTo { divider.bottom() + 16.ydip }
-        )
-        searchName.layoutBy(
-            x = matchParentX(),
-            y = topTo { searchLabel.bottom() }
-        )
-        searchTag.layoutBy(
-            x = matchParentX(),
-            y = topTo { searchName.bottom() }
-        )
-        btnSearch.layoutBy(
-            x = rightTo { parent.right() },
-            y = topTo { searchTag.bottom() }
-        )
+  override fun serverListCollapse() {
+    serverListClick(serverList)
+  }
 
-        val xPadding = { if (!serverList.isSelected) 8.xdip else 16.xdip }
+  override fun showLoading() {
+    hideViews()
+    loadingIndicator.isVisible = true
+  }
 
-        serverList.layoutBy(
-            x = leftTo { parent.left() + xPadding() }.rightTo { parent.right() - xPadding() },
-            y = topTo {
-                when {
-                    serverList.isSelected -> parent.top()
-                    else -> searchTag.bottom()
-                }
-            }
-        )
+  override fun showError(message: String) {
+    hideViews()
+    loadingIndicator.isVisible = false
+    errorMessage.text = message
+    errorMessage.isSingleLine = false
+    errorMessage.updateLayoutBy(
+      leftTo { parent.left() + 16.xdip }.rightTo { parent.right() + 16.xdip },
+      topTo { parent.top() }
+    )
+    errorMessage.isVisible = true
+  }
 
-        serverList.setOnClickListener(::serverListClick)
-    }
+  override fun setSearchFields(name: String, tag: String) {
+    searchName.editText?.setText(name)
+    searchTag.editText?.setText(tag)
+  }
 
-    override fun setServerAdapter(adapter: ServerListAdapter) {
-        serverList.recycler.adapter = adapter
-    }
+  override fun btnSearchEnabled(isEnabled: Boolean) {
+    btnSearch.isEnabled = isEnabled
+  }
 
-    override fun serverListCollapse() {
-        serverListClick(serverList)
-    }
+  override fun update(content: List<ServerInfo>) {
+    loadingIndicator.isVisible = false
 
-    override fun showLoading() {
-        hideViews()
-        loadingIndicator.isVisible = true
-    }
-
-    override fun showError(message: String) {
-        hideViews()
-        loadingIndicator.isVisible = false
-        errorMessage.text = message
-        errorMessage.isSingleLine = false
-        errorMessage.updateLayoutBy(
-            leftTo { parent.left() + 16.xdip }.rightTo { parent.right() + 16.xdip },
-            topTo { parent.top() }
-        )
-        errorMessage.isVisible = true
-    }
-
-    override fun setSearchFields(name: String, tag: String) {
-        searchName.editText?.setText(name)
-        searchTag.editText?.setText(tag)
-    }
-
-    override fun btnSearchEnabled(isEnabled: Boolean) {
-        btnSearch.isEnabled = isEnabled
-    }
-
-    override fun update(content: List<ServerInfo>) {
-        loadingIndicator.isVisible = false
-
-        (serverList.recycler.adapter as ServerListAdapter).submitList(content)
-        serverList.recycler.isVisible = true
+    (serverList.recycler.adapter as ServerListAdapter).submitList(content)
+    serverList.recycler.isVisible = true
 //        serverList.isVisible = true
 
-        btnLanguages.isEnabled = true
-        btnLanguages.isVisible = true
+    btnLanguages.isEnabled = true
+    btnLanguages.isVisible = true
 
-        btnTags.isEnabled = true
-        btnTags.isVisible = true
+    btnTags.isEnabled = true
+    btnTags.isVisible = true
 
-        btnTopVoted.isEnabled = true
-        btnTopVoted.isVisible = true
+    btnTopVoted.isEnabled = true
+    btnTopVoted.isVisible = true
 
-        divider.isVisible = true
+    divider.isVisible = true
 
-        searchLabel.isVisible = true
-        searchName.isVisible = true
-        searchTag.isVisible = true
-        btnSearch.isVisible = true
+    searchLabel.isVisible = true
+    searchName.isVisible = true
+    searchTag.isVisible = true
+    btnSearch.isVisible = true
+  }
+
+  override fun update(activerServer: ServerInfo?) {
+    serverList.active.text = activerServer?.urlString ?: "No activer server..."
+  }
+
+  private fun hideViews() {
+    errorMessage.isVisible = false
+
+    serverList.recycler.isVisible = false
+    btnLanguages.isEnabled = false
+    btnLanguages.isVisible = false
+
+    btnTags.isEnabled = false
+    btnTags.isVisible = false
+
+    btnTopVoted.isEnabled = false
+    btnTopVoted.isVisible = false
+
+    divider.isVisible = false
+
+    searchLabel.isVisible = false
+    searchName.isVisible = false
+    searchTag.isVisible = false
+    btnSearch.isVisible = false
+
+    serverList.isVisible = false
+  }
+
+  @Suppress("UNUSED_PARAMETER")
+  private fun serverListClick(view: View) {
+    TransitionManager.beginDelayedTransition(
+      this, ChangeBounds()
+        .setInterpolator(LinearInterpolator())
+        .setDuration(200)
+    )
+    serverList.isSelected = !serverList.isSelected
+    requestLayout()
+  }
+
+  private val materialButton: MaterialButton
+    get() = MaterialButton(
+      ContextThemeWrapper(context, appTheme.btns.text.style),
+      null,
+      appTheme.btns.text.attr
+    ).apply {
+      stateListAnimator = PushOnPressAnimator(this)
     }
 
-    override fun update(activerServer: ServerInfo?) {
-        serverList.active.text = activerServer?.urlString ?: "No activer server..."
-    }
-
-    private fun hideViews() {
-        errorMessage.isVisible = false
-
-        serverList.recycler.isVisible = false
-        btnLanguages.isEnabled = false
-        btnLanguages.isVisible = false
-
-        btnTags.isEnabled = false
-        btnTags.isVisible = false
-
-        btnTopVoted.isEnabled = false
-        btnTopVoted.isVisible = false
-
-        divider.isVisible = false
-
-        searchLabel.isVisible = false
-        searchName.isVisible = false
-        searchTag.isVisible = false
-        btnSearch.isVisible = false
-
-        serverList.isVisible = false
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    private fun serverListClick(view: View) {
-        TransitionManager.beginDelayedTransition(this, ChangeBounds()
-            .setInterpolator(LinearInterpolator())
-            .setDuration(200)
-        )
-        serverList.isSelected = !serverList.isSelected
-        requestLayout()
-    }
-
-    private val materialButton: MaterialButton
-        get() = MaterialButton(
-            ContextThemeWrapper(context, appTheme.btns.text.style),
-            null,
-            appTheme.btns.text.attr
-        ).apply {
-            stateListAnimator = PushOnPressAnimator(this)
-        }
-
-    private val textInputLayout: TextInputLayout
-        get() = TextInputLayout(
-            ContextThemeWrapper(context, appTheme.textInput.layout.style),
-            null,
-            appTheme.textInput.layout.attr
-        )
+  private val textInputLayout: TextInputLayout
+    get() = TextInputLayout(
+      ContextThemeWrapper(context, appTheme.textInput.layout.style),
+      null,
+      appTheme.textInput.layout.attr
+    )
 }

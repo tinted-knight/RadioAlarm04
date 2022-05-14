@@ -1,214 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LightTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/clPrimary</item>
-        <item name="colorPrimaryDark">@color/clPrimaryDark</item>
-        <item name="colorAccent">@color/clAccent</item>
-        <item name="colorSecondary">@color/clSecondary</item>
-        <item name="radioBrowserCategory">@style/LightTheme.MaterialButton</item>
-        <item name="buttonBarButtonFavorites">@style/LightTheme.BBar.Favorites</item>
-        <item name="buttonBarButtonBrowse">@style/LightTheme.BBar.Browse</item>
-        <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
-        <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
-        <item name="buttonOutline">@style/LightTheme.ButtonOutline</item>
-        <item name="textAlarmTime">@style/LightTheme.TextTime</item>
-        <item name="textInputOutlined">@style/LightTheme.TextInputOutlined</item>
-        <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
-        <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
-        <item name="textAlarmFireDay">@style/LightTheme.AlarmFireDay</item>
-        <item name="alarmCardMelody">@style/LightTheme.MelodyText</item>
-        <item name="alarmCardAlarmIcon">@style/LightTheme.AlarmIcon</item>
-        <item name="stationCountText">@style/LightTheme.TextStationCount</item>
-        <item name="stationTag">@style/LightTheme.StationTag</item>
-        <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
-        <item name="android:statusBarColor">@color/clStatusBarBackground</item>
-        <item name="android:navigationBarColor">@color/clStatusBarBackground</item>
-        <item name="android:windowBackground">@color/clBackground</item>
-        <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
-        <item name="nowplaying_close">@style/LightTheme.NowPlayingClose</item>
-        <item name="nowplaying_favorite">@style/LightTheme.NowPlayingFavorite</item>
-        <item name="help_text">@style/LightTheme.HelpText</item>
-        <item name="help_icon">@style/LightTheme.HelpIcon</item>
-        <item name="help_fab">@style/LightTheme.FabImmitation</item>
-        <item name="help_divider">@style/LightTheme.HelpDivider</item>
-    </style>
+  <style name="LightTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/clPrimary</item>
+    <item name="colorPrimaryDark">@color/clPrimaryDark</item>
+    <item name="colorAccent">@color/clAccent</item>
+    <item name="colorSecondary">@color/clSecondary</item>
+    <item name="radioBrowserCategory">@style/LightTheme.MaterialButton</item>
+    <item name="buttonBarButtonFavorites">@style/LightTheme.BBar.Favorites</item>
+    <item name="buttonBarButtonBrowse">@style/LightTheme.BBar.Browse</item>
+    <item name="buttonBarButtonCenter">@style/LightTheme.BBar.Center</item>
+    <item name="buttonText">@style/LightTheme.MaterialButtonText</item>
+    <item name="buttonOutline">@style/LightTheme.ButtonOutline</item>
+    <item name="textAlarmTime">@style/LightTheme.TextTime</item>
+    <item name="textInputOutlined">@style/LightTheme.TextInputOutlined</item>
+    <item name="textAlarmFireStation">@style/LightTheme.AlarmFireStation</item>
+    <item name="textAlarmFireTime">@style/LightTheme.AlarmFireTime</item>
+    <item name="textAlarmFireDay">@style/LightTheme.AlarmFireDay</item>
+    <item name="alarmCardMelody">@style/LightTheme.MelodyText</item>
+    <item name="alarmCardAlarmIcon">@style/LightTheme.AlarmIcon</item>
+    <item name="stationCountText">@style/LightTheme.TextStationCount</item>
+    <item name="stationTag">@style/LightTheme.StationTag</item>
+    <item name="progressBarColors">@style/LightTheme.ProgressBar</item>
+    <item name="android:statusBarColor">@color/clStatusBarBackground</item>
+    <item name="android:navigationBarColor">@color/clStatusBarBackground</item>
+    <item name="android:windowBackground">@color/clBackground</item>
+    <item name="nowplaying_title">@style/LightTheme.NowplayingTitle</item>
+    <item name="nowplaying_close">@style/LightTheme.NowPlayingClose</item>
+    <item name="nowplaying_favorite">@style/LightTheme.NowPlayingFavorite</item>
+    <item name="help_text">@style/LightTheme.HelpText</item>
+    <item name="help_icon">@style/LightTheme.HelpIcon</item>
+    <item name="help_fab">@style/LightTheme.FabImmitation</item>
+    <item name="help_divider">@style/LightTheme.HelpDivider</item>
+  </style>
 
-    <style name="LightTheme.Fullscreen" parent="LightTheme">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
+  <style name="AlarmFired.Fullscreen" parent="LightTheme">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+  </style>
 
-    <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
-        <!--        <item name="android:indeterminateBehavior">repeat</item>-->
-        <!--        <item name="android:indeterminateDuration">1000</item>-->
-        <item name="android:indeterminate">true</item>
-        <!--        <item name="android:indeterminateDrawable">@drawable/progress_bar</item>-->
-    </style>
+  <style name="LightTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar">
+    <!--        <item name="android:indeterminateBehavior">repeat</item>-->
+    <!--        <item name="android:indeterminateDuration">1000</item>-->
+    <item name="android:indeterminate">true</item>
+    <!--        <item name="android:indeterminateDrawable">@drawable/progress_bar</item>-->
+  </style>
 
-    <style name="LightTheme.MaterialButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
+  <style name="LightTheme.MaterialButton" parent="Widget.MaterialComponents.Button">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center</item>
+  </style>
 
-    <style name="LightTheme.TextInputOutlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundMode">outline</item>
-    </style>
+  <style name="LightTheme.TextInputOutlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="boxBackgroundMode">outline</item>
+  </style>
 
-    <style name="LightTheme.TextStationCount" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textSize">10sp</item>
-    </style>
+  <style name="LightTheme.TextStationCount" parent="Widget.MaterialComponents.TextView">
+    <item name="android:textSize">10sp</item>
+  </style>
 
-    <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="fontFamily">@font/pt_sans_caption</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-    </style>
+  <style name="LightTheme.MaterialButtonText" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="fontFamily">@font/pt_sans_caption</item>
+    <item name="android:paddingTop">12dp</item>
+    <item name="android:paddingBottom">12dp</item>
+  </style>
 
-    <style name="LightTheme.ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
+  <style name="LightTheme.ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
 
-    <!-- Alarm Card -->
-    <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton">
-        <item name="android:minHeight">36dp</item>
-        <item name="android:minWidth">36dp</item>
-    </style>
+  <!-- Alarm Card -->
+  <style name="LightTheme.ActionButton" parent="Widget.AppCompat.ActionButton">
+    <item name="android:minHeight">36dp</item>
+    <item name="android:minWidth">36dp</item>
+  </style>
 
-    <style name="LightTheme.MelodyText" parent="Widget.MaterialComponents.TextView">
-        <item name="android:background">?selectableItemBackground</item>
-        <item name="android:padding">2dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-    </style>
+  <style name="LightTheme.MelodyText" parent="Widget.MaterialComponents.TextView">
+    <item name="android:background">?selectableItemBackground</item>
+    <item name="android:padding">2dp</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:ellipsize">end</item>
+  </style>
 
-    <style name="LightTheme.AlarmIcon">
-        <item name="android:src">@drawable/ic_alarm_24</item>
-        <item name="android:tint">@color/clAccent</item>
-    </style>
+  <style name="LightTheme.AlarmIcon">
+    <item name="android:src">@drawable/ic_alarm_24</item>
+    <item name="android:tint">@color/clAccent</item>
+  </style>
 
-    <style name="LightTheme.DayOfWeek">
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">2dp</item>
-    </style>
+  <style name="LightTheme.DayOfWeek">
+    <item name="android:background">?attr/selectableItemBackground</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:padding">2dp</item>
+  </style>
 
-    <style name="LightTheme.TextTime" parent="Widget.MaterialComponents.TextView">
-        <item name="fontFamily">@font/allerta_stencil</item>
-        <item name="android:textSize">28sp</item>
-        <!--        <item name="android:textColor">@color/clTimeText</item>-->
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-    </style>
+  <style name="LightTheme.TextTime" parent="Widget.MaterialComponents.TextView">
+    <item name="fontFamily">@font/allerta_stencil</item>
+    <item name="android:textSize">28sp</item>
+    <!--        <item name="android:textColor">@color/clTimeText</item>-->
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+  </style>
 
-    <!-- Alarm fire  -->
-    <style name="LightTheme.AlarmFireStation" parent="TextAppearance.AppCompat.Display1">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/clFireTextColor</item>
-        <item name="android:textAlignment">center</item>
-    </style>
+  <!-- Alarm fire  -->
+  <style name="LightTheme.AlarmFireStation" parent="TextAppearance.AppCompat.Display1">
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/clFireTextColor</item>
+    <item name="android:textAlignment">center</item>
+  </style>
 
-    <style name="LightTheme.AlarmFireTime" parent="TextAppearance.AppCompat.Display3">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/clFireTextColor</item>
-        <item name="android:padding">16dp</item>
-    </style>
+  <style name="LightTheme.AlarmFireTime" parent="TextAppearance.AppCompat.Display3">
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:textColor">@color/clFireTextColor</item>
+    <item name="android:padding">16dp</item>
+  </style>
 
-    <style name="LightTheme.AlarmFireDay" parent="TextAppearance.AppCompat.Display1">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/clFireTextColor</item>
-        <item name="android:padding">8dp</item>
-    </style>
+  <style name="LightTheme.AlarmFireDay" parent="TextAppearance.AppCompat.Display1">
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:textColor">@color/clFireTextColor</item>
+    <item name="android:padding">8dp</item>
+  </style>
 
-    <!-- Bottom Bar  -->
-    <style name="LightTheme.BBar">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:drawablePadding">4dp</item>
-        <item name="android:textAlignment">center</item>
-    </style>
+  <!-- Bottom Bar  -->
+  <style name="LightTheme.BBar">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:drawablePadding">4dp</item>
+    <item name="android:textAlignment">center</item>
+  </style>
 
-    <style name="LightTheme.BBar.Favorites" parent="LightTheme.BBar">
-        <!--        <item name="android:background">?attr/selectableItemBackground</item>-->
-        <item name="android:background">@color/clBackground</item>
-        <item name="drawableTopCompat">@drawable/ic_favorite_border_24</item>
-        <item name="android:padding">8dp</item>
-    </style>
+  <style name="LightTheme.BBar.Favorites" parent="LightTheme.BBar">
+    <!--        <item name="android:background">?attr/selectableItemBackground</item>-->
+    <item name="android:background">@color/clBackground</item>
+    <item name="drawableTopCompat">@drawable/ic_favorite_border_24</item>
+    <item name="android:padding">8dp</item>
+  </style>
 
-    <style name="LightTheme.BBar.Browse" parent="LightTheme.BBar">
-        <!--        <item name="android:background">?attr/selectableItemBackground</item>-->
-        <item name="android:background">@color/clBackground</item>
-        <item name="drawableTopCompat">@drawable/ic_search_24</item>
-        <item name="android:padding">8dp</item>
-    </style>
+  <style name="LightTheme.BBar.Browse" parent="LightTheme.BBar">
+    <!--        <item name="android:background">?attr/selectableItemBackground</item>-->
+    <item name="android:background">@color/clBackground</item>
+    <item name="drawableTopCompat">@drawable/ic_search_24</item>
+    <item name="android:padding">8dp</item>
+  </style>
 
-    <style name="LightTheme.BBar.Center" parent="LightTheme.BBar">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="drawableTopCompat">@drawable/ic_add_alarm_24</item>
-        <item name="android:padding">8dp</item>
-        <item name="colorControlNormal">@color/clPrimary</item>
-    </style>
+  <style name="LightTheme.BBar.Center" parent="LightTheme.BBar">
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    <item name="drawableTopCompat">@drawable/ic_add_alarm_24</item>
+    <item name="android:padding">8dp</item>
+    <item name="colorControlNormal">@color/clPrimary</item>
+  </style>
 
-    <!-- NowPlaying card   -->
-    <style name="LightTheme.StationTag" parent="Widget.MaterialComponents.TextView">
-        <item name="android:fontFamily">@font/pt_sans_narrow</item>
-        <item name="android:background">@drawable/tag_background</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:paddingStart">8dp</item>
-        <item name="android:paddingEnd">8dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-    </style>
+  <!-- NowPlaying card   -->
+  <style name="LightTheme.StationTag" parent="Widget.MaterialComponents.TextView">
+    <item name="android:fontFamily">@font/pt_sans_narrow</item>
+    <item name="android:background">@drawable/tag_background</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:paddingStart">8dp</item>
+    <item name="android:paddingEnd">8dp</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">4dp</item>
+  </style>
 
-    <style name="LightTheme.NowplayingTitle" parent="Widget.MaterialComponents.TextView">
-        <!--        <item name="fontFamily">@font/pt_sans_caption</item>-->
-        <item name="android:textSize">18sp</item>
-        <item name="android:ellipsize">end</item>
-    </style>
+  <style name="LightTheme.NowplayingTitle" parent="Widget.MaterialComponents.TextView">
+    <!--        <item name="fontFamily">@font/pt_sans_caption</item>-->
+    <item name="android:textSize">18sp</item>
+    <item name="android:ellipsize">end</item>
+  </style>
 
-    <style name="LightTheme.NowPlayingClose" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="drawableLeftCompat">@drawable/ic_close_24</item>
-        <item name="colorControlNormal">#FFff0000</item>
-    </style>
+  <style name="LightTheme.NowPlayingClose" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="drawableLeftCompat">@drawable/ic_close_24</item>
+    <item name="colorControlNormal">#FFff0000</item>
+  </style>
 
-    <style name="LightTheme.NowPlayingFavorite" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="drawableLeftCompat">@drawable/ic_favorite_border_24</item>
-    </style>
-    <!-- end NowPlaying card   -->
+  <style name="LightTheme.NowPlayingFavorite" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="drawableLeftCompat">@drawable/ic_favorite_border_24</item>
+  </style>
+  <!-- end NowPlaying card   -->
 
-    <style name="LightTheme.HelpText" parent="Widget.MaterialComponents.TextView">
-        <item name="android:fontFamily">@font/pt_sans_narrow</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/helpText</item>
-    </style>
+  <style name="LightTheme.HelpText" parent="Widget.MaterialComponents.TextView">
+    <item name="android:fontFamily">@font/pt_sans_narrow</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">@color/helpText</item>
+  </style>
 
-    <style name="LightTheme.FabImmitation">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:src">@drawable/ic_help_24</item>
-        <item name="android:tint">@color/helpTint</item>
-    </style>
+  <style name="LightTheme.FabImmitation">
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    <item name="android:padding">12dp</item>
+    <item name="android:src">@drawable/ic_help_24</item>
+    <item name="android:tint">@color/helpTint</item>
+  </style>
 
-    <style name="LightTheme.HelpIcon">
-        <item name="android:tint">@color/helpTint</item>
-    </style>
+  <style name="LightTheme.HelpIcon">
+    <item name="android:tint">@color/helpTint</item>
+  </style>
 
-    <style name="LightTheme.HelpDivider">
-        <item name="android:background">@color/helpBackground</item>
-    </style>
+  <style name="LightTheme.HelpDivider">
+    <item name="android:background">@color/helpBackground</item>
+  </style>
 
-    <style name="LightTheme.ExoPlayerFab" parent="Widget.AppCompat.ImageButton">
-        <item name="android:background">@drawable/fake_fab</item>
-        <item name="android:layout_width">56dp</item>
-        <item name="android:layout_height">56dp</item>
-        <item name="android:tint">@color/clOnPrimary</item>
-    </style>
+  <style name="LightTheme.ExoPlayerFab" parent="Widget.AppCompat.ImageButton">
+    <item name="android:background">@drawable/fake_fab</item>
+    <item name="android:layout_width">56dp</item>
+    <item name="android:layout_height">56dp</item>
+    <item name="android:tint">@color/clOnPrimary</item>
+    <item name="android:elevation">0dp</item>
+  </style>
 
 </resources>

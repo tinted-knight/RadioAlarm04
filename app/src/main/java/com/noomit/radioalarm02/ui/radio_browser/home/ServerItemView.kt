@@ -7,29 +7,29 @@ import com.noomit.radioalarm02.ui.animations.ItemListAnimator
 import com.squareup.contour.ContourLayout
 
 interface IServerItem {
-    fun setName(value: String)
+  fun setName(value: String)
 }
 
 class ServerItemView(context: Context) : ContourLayout(context), IServerItem {
-    private val name = TextView(context).apply {
-        isSingleLine = true
-        ellipsize = TextUtils.TruncateAt.MARQUEE
+  private val name = TextView(context).apply {
+    isSingleLine = true
+    ellipsize = TextUtils.TruncateAt.MARQUEE
+  }
+
+  init {
+    contourHeightOf {
+      name.height() + 16.ydip
     }
 
-    init {
-        contourHeightOf {
-            name.height() + 16.ydip
-        }
+    stateListAnimator = ItemListAnimator(this)
 
-        stateListAnimator = ItemListAnimator(this)
+    name.layoutBy(
+      matchParentX(16, 16),
+      topTo { parent.top() + 8.ydip }
+    )
+  }
 
-        name.layoutBy(
-            matchParentX(16, 16),
-            topTo { parent.top() + 8.ydip }
-        )
-    }
-
-    override fun setName(value: String) {
-        name.text = value
-    }
+  override fun setName(value: String) {
+    name.text = value
+  }
 }

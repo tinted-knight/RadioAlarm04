@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:elevation="0dp"
-    android:layoutDirection="ltr"
-    android:orientation="horizontal"
-    android:padding="2dp">
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layoutDirection="ltr"
+  android:orientation="horizontal"
+  android:padding="2dp">
 
-    <ImageButton
-        android:id="@id/exo_play"
-        style="@style/LightTheme.ExoPlayerFab"
-        android:contentDescription="@string/cdesc_play"
-        android:src="@drawable/ic_play_arrow_24" />
+  <ImageButton
+    android:id="@id/exo_play"
+    style="@style/LightTheme.ExoPlayerFab"
+    android:contentDescription="@string/cdesc_play"
+    android:src="@drawable/ic_play_arrow_24" />
 
-    <ImageButton
-        android:id="@id/exo_pause"
-        style="@style/LightTheme.ExoPlayerFab"
-        android:contentDescription="@string/cdesc_pause"
-        android:src="@drawable/ic_pause_24" />
+  <ImageButton
+    android:id="@id/exo_pause"
+    style="@style/LightTheme.ExoPlayerFab"
+    android:contentDescription="@string/cdesc_pause"
+    android:src="@drawable/ic_pause_24" />
 
 </LinearLayout>
