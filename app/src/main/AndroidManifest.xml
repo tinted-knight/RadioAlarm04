@@ -30,7 +30,7 @@
     <activity
       android:name="com.noomit.radioalarm02.ui.alarm_fire.AlarmActivity"
       android:showOnLockScreen="true"
-      android:theme="@style/LightTheme.Fullscreen"></activity>
+      android:theme="@style/AlarmFired.Fullscreen"></activity>
 
     <activity
       android:name=".MainActivity"

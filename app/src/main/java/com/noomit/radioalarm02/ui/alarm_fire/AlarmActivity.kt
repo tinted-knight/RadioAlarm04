@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -90,7 +89,7 @@ class AlarmActivity : BaseWakelockActivity() {
         return
       }
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        version30plus(nightMode)
+        version30plus()
         return
       }
     }
@@ -127,31 +126,8 @@ class AlarmActivity : BaseWakelockActivity() {
   }
 
   @RequiresApi(Build.VERSION_CODES.R)
-  private fun version30plus(nightMode: Int) {
+  private fun version30plus() {
     window.setDecorFitsSystemWindows(false)
-    val insetController = window.insetsController ?: return
-    when (nightMode) {
-      Configuration.UI_MODE_NIGHT_NO -> {
-        insetController.setSystemBarsAppearance(
-          WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-          WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-        )
-        insetController.setSystemBarsAppearance(
-          WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-          WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-        )
-      }
-      Configuration.UI_MODE_NIGHT_YES -> {
-        insetController.setSystemBarsAppearance(
-          0,
-          WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-        )
-        insetController.setSystemBarsAppearance(
-          0,
-          WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-        )
-      }
-    }
   }
 
   companion object {

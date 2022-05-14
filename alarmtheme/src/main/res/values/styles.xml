@@ -35,7 +35,7 @@
     <item name="help_divider">@style/LightTheme.HelpDivider</item>
   </style>
 
-  <style name="LightTheme.Fullscreen" parent="LightTheme">
+  <style name="AlarmFired.Fullscreen" parent="LightTheme">
     <item name="android:windowNoTitle">true</item>
     <item name="android:windowActionBar">false</item>
     <item name="android:windowFullscreen">true</item>
