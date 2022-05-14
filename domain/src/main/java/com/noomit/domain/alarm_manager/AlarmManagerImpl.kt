@@ -121,6 +121,8 @@ class AlarmManagerImpl @Inject constructor(
     }
   }
 
+  override fun hasSchedulePermission() = alarmScheduler.hasSchedulePermisson()
+
   override suspend fun observeNextActive() {
     queries.nextActive()
       .asFlow()

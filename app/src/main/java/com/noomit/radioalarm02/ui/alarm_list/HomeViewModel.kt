@@ -35,20 +35,22 @@ class HomeViewModel @Inject constructor(
   val alarms = manager.alarms
 
   init {
-    viewModelScope.launch() {
-      serverManager.activeServer().collect {
-        when (it) {
-          ActiveServerState.Loading -> ilog("activeserver.loading, ${it.hashCode()}")
-          ActiveServerState.None -> ilog("activeserver.none, ${it.hashCode()}")
-          is ActiveServerState.Value -> ilog("activeserver.value, ${it.hashCode()}")
+    if (manager.hasSchedulePermission()) {
+      viewModelScope.launch() {
+        serverManager.activeServer().collect {
+          when (it) {
+            ActiveServerState.Loading -> ilog("activeserver.loading, ${it.hashCode()}")
+            ActiveServerState.None -> ilog("activeserver.none, ${it.hashCode()}")
+            is ActiveServerState.Value -> ilog("activeserver.value, ${it.hashCode()}")
+          }
         }
       }
-    }
-    viewModelScope.launch(Dispatchers.IO) {
-      serverManager.getAvalilable()
-    }
-    viewModelScope.launch(Dispatchers.IO) {
-      manager.observeNextActive()
+      viewModelScope.launch(Dispatchers.IO) {
+        serverManager.getAvalilable()
+      }
+      viewModelScope.launch(Dispatchers.IO) {
+        manager.observeNextActive()
+      }
     }
   }
 

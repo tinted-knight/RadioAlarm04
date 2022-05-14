@@ -16,6 +16,7 @@ interface AlarmManager {
   fun selectMelodyFor(alarm: AlarmModel)
   fun setMelody(favorite: StationModel)
   fun setDefaultRingtone()
+  fun hasSchedulePermission(): Boolean
 
   /**
    * Observes database and on each change checks next active alarm and modifies schedule

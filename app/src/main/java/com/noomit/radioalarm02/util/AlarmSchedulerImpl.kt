@@ -25,6 +25,14 @@ class AlarmSchedulerImpl @Inject constructor(
     cancelAlarm(context, composePendingIntent(context, -1, "", ""))
   }
 
+  override fun hasSchedulePermisson(): Boolean {
+    val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    return when {
+      Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> systemAlarmManager.canScheduleExactAlarms()
+      else -> true
+    }
+  }
+
   @SuppressLint("InlinedApi")
   private fun setWithAlarmClock(context: Context, timeInMillis: Long, operation: PendingIntent) {
     val clockInfo = AlarmManager.AlarmClockInfo(
