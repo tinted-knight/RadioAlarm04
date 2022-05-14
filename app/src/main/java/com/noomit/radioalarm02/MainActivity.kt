@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
   private var isPlaying = false
 
   private lateinit var serviceIntent: Intent
+
+  private val viewmodel: MainViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -63,6 +66,8 @@ class MainActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
+
+    viewmodel.requestSchedulePermission(this, supportFragmentManager)
 
     application.startService(serviceIntent)
 

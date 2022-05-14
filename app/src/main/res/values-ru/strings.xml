@@ -56,4 +56,7 @@
   <string name="notif_i_am">Уведомление от Радио будильника</string>
   <string name="label_codec">Кодек:</string>
   <string name="label_bitrate">Битрейт:</string>
+  <string name="schedule_permission_accept">Хорошо</string>
+  <string name="schedule_permission_refuse">Не хочу</string>
+  <string name="schedule_permission_explanation">На Андроид версии 12 и приложению нужно ваше разрешение для установки точных будильников. Спасибо!</string>
 </resources>

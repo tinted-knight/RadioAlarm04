@@ -56,4 +56,7 @@
   <string name="notif_i_am">I am Radio Alarm notification</string>
   <string name="label_codec">Codec:</string>
   <string name="label_bitrate">Bitrate:</string>
+  <string name="schedule_permission_accept">Accept</string>
+  <string name="schedule_permission_refuse">No way</string>
+  <string name="schedule_permission_explanation">On Android 12 and higher we need your permission to schedule precise alarms. Thanks!</string>
 </resources>
