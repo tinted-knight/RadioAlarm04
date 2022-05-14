@@ -4,13 +4,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-  compileSdkVersion 31
-  buildToolsVersion "30.0.3"
+  compileSdkVersion v.compileSdk
+  buildToolsVersion v.buildTools
 
   defaultConfig {
     applicationId "com.noomit.radioalarm02"
-    minSdkVersion 21
-    targetSdkVersion 31
+    minSdkVersion v.minSdk
+    targetSdkVersion v.targetSdk
     versionCode 1
     versionName "1.0"
 

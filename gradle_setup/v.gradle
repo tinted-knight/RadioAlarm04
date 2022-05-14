@@ -1,0 +1,8 @@
+ext {
+  v = [
+    targetSdk : 31,
+    compileSdk: 31,
+    minSdk    : 21,
+    buildTools: "31.0.0",
+  ]
+}
