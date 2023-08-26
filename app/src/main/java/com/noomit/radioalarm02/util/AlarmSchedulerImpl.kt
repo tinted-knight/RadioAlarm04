@@ -46,7 +46,13 @@ class AlarmSchedulerImpl @Inject constructor(
       ),
     )
     val systemAlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    systemAlarmManager.setAlarmClock(clockInfo, operation)
+    // TODO(timur): Using setAlarmClock may still delay alarm for ~4 minutes
+    //  Experimenting with setExact
+//    systemAlarmManager.setAlarmClock(clockInfo, operation)
+    systemAlarmManager.setExact(
+      AlarmManager.RTC_WAKEUP, timeInMillis,
+      operation,
+    )
   }
 
   private fun cancelAlarm(context: Context, operation: PendingIntent) {
@@ -54,7 +60,12 @@ class AlarmSchedulerImpl @Inject constructor(
     systemAlarmManager.cancel(operation)
   }
 
-  private fun composePendingIntent(context: Context, alarmId: Long, bellUrl: String, bellName: String) =
+  private fun composePendingIntent(
+    context: Context,
+    alarmId: Long,
+    bellUrl: String,
+    bellName: String
+  ) =
     PendingIntent.getBroadcast(
       context,
       101, // #fake

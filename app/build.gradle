@@ -12,7 +12,7 @@ android {
     minSdkVersion v.minSdk
     targetSdkVersion v.targetSdk
     versionCode 1
-    versionName "1.0"
+    versionName "1.0.1"
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -24,7 +24,6 @@ android {
 
   kotlinOptions {
     jvmTarget = JavaVersion.VERSION_1_8.toString()
-    useIR = true
   }
 
   buildFeatures {
@@ -43,6 +42,7 @@ android {
       versionNameSuffix "-debug"
     }
   }
+  namespace 'com.noomit.radioalarm02'
 }
 
 dependencies {

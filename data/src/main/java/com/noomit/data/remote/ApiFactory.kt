@@ -2,6 +2,7 @@ package com.noomit.data.remote
 
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -13,10 +14,19 @@ interface ApiFactoryContract {
 class ApiFactory @Inject constructor() : ApiFactoryContract {
   override fun get(baseUrl: String): RadioBrowserApi {
     val gson = GsonBuilder().setLenient().create()
+    val client = OkHttpClient.Builder()
+//      .addInterceptor { chain ->
+//        val request = chain.request()
+//        Log.d("tagg", request.url().toString())
+//        Log.d("tagg", request.body().toString())
+//        chain.proceed(request)
+//      }
+      .build()
     val retrofit = Retrofit.Builder()
       .baseUrl(baseUrl)
       .addConverterFactory(GsonConverterFactory.create(gson))
       .addCallAdapterFactory(CoroutineCallAdapterFactory())
+      .client(client)
       .build()
     return retrofit.create(RadioBrowserApi::class.java)
   }
