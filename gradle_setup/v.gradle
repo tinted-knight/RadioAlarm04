@@ -3,6 +3,6 @@ ext {
     targetSdk : 31,
     compileSdk: 31,
     minSdk    : 21,
-    buildTools: "31.0.0",
+    buildTools: "33.0.1",
   ]
 }

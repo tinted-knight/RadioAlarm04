@@ -14,7 +14,6 @@ android {
 
   kotlinOptions {
     jvmTarget = JavaVersion.VERSION_1_8.toString()
-    useIR = true
   }
 
   buildTypes {
@@ -23,6 +22,7 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
+  namespace 'com.noomit.alarmtheme'
 }
 
 dependencies {
