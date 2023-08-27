@@ -24,14 +24,16 @@ class ServerManagerImpl @Inject constructor(
             state.value = ServerState.Loading
             emit(ActiveServerState.Loading)
           }
+
           is ServerListResponse.Success -> {
             val server = serverList.value
-              .firstOrNull() { it.urlString.contains("de1") || it.urlString.contains("nl1") }
+              .firstOrNull() { it.urlString.contains("at1") }
               ?: serverList.value.first()
 
             state.value = ServerState.Values(serverList.value)
             emit(ActiveServerState.Value(server))
           }
+
           is ServerListResponse.Failure -> {
             // #todo handle various failure reasons
             state.value = ServerState.Failure(Exception(serverList.error.toString()))

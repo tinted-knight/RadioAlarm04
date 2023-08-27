@@ -17,7 +17,6 @@ class ServerResolverImpl @Inject constructor() : ServerResolver {
 
   override val cached = MutableStateFlow<ServerListResponse>(ServerListResponse.Loading)
 
-  @Suppress("BlockingMethodInNonBlockingContext")
   override suspend fun checkAlive() = withContext(Dispatchers.IO) {
     try {
       val rawServerList = InetAddress.getAllByName("all.api.radio-browser.info")
