@@ -8,7 +8,8 @@ import com.noomit.domain.entities.AlarmModel
 import com.noomit.radioalarm02.R
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 interface AlarmAdapterActions {
   fun onDeleteClick(alarm: AlarmModel)
@@ -24,10 +25,14 @@ class AlarmListAdapter(
   private val delegate: AlarmAdapterActions,
 ) : ListAdapter<AlarmModel, AlarmListViewHolder>(AlarmListDiffUtil()) {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AlarmListViewHolder(
-    AlarmItemView(parent.context)
+    AlarmItemView(parent.context),
   )
 
-  override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int, payloads: MutableList<Any>) {
+  override fun onBindViewHolder(
+    holder: AlarmListViewHolder,
+    position: Int,
+    payloads: MutableList<Any>,
+  ) {
     if (payloads.isNullOrEmpty()) {
       holder.bind(getItem(position))
       return
@@ -49,7 +54,8 @@ class AlarmListAdapter(
 
       override fun onDeleteLongClick() = delegate.onDeleteLongClick(getItem())
 
-      override fun onSwitchChange(isChecked: Boolean) = delegate.onEnabledChecked(getItem(), isChecked)
+      override fun onSwitchChange(isChecked: Boolean) =
+        delegate.onEnabledChecked(getItem(), isChecked)
 
       override fun onTimeClick() = delegate.onTimeClick(getItem())
 
@@ -80,19 +86,25 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
   fun bind(alarm: AlarmModel) {
     processDateTime(alarm)
-    contour.setMelody(if (alarm.bellUrl.isNotBlank()) alarm.bellName else itemView.context.getString(R.string.melody_system))
+    contour.setMelody(
+      if (alarm.bellUrl.isNotBlank()) alarm.bellName else itemView.context.getString(
+        R.string.melody_system,
+      ),
+    )
     contour.setSwitch(alarm.isEnabled)
     processDaysOfWeek(alarm)
   }
 
   fun bind(alarm: AlarmModel, payloads: MutableList<Any>) {
     when (payloads[0]) {
-      Payload.IsEnabled -> {
+      Payload.IsEnabled  -> {
         contour.setSwitch(alarm.isEnabled)
         processDateTime(alarm)
+        processDaysOfWeek(alarm)
       }
+
       Payload.DaysOfWeek -> bind(alarm)
-      Payload.Time -> processDateTime(alarm)
+      Payload.Time       -> processDateTime(alarm)
     }
   }
 
@@ -100,7 +112,7 @@ class AlarmListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val date = Date(alarm.timeInMillis)
     // #todo instead of setDay(value!!) => showDay(value!!) and hideDay()
     when (alarm.isEnabled) {
-      true -> contour.setDay(dateFormat.format(date))
+      true  -> contour.setDay(dateFormat.format(date))
       false -> contour.setDay("")
     }
     contour.setTime(timeFormat.format(date))
