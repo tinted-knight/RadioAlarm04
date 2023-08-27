@@ -47,6 +47,16 @@ class AlarmManagerImpl @Inject constructor(
   }
 
   override fun updateDayOfWeek(dayToSwitch: Int, alarm: AlarmModel) {
+    // If we are trying to uncheck last day - disable alarm
+    if (alarm.switchDayBit(dayToSwitch) == 0 && alarm.isEnabled) {
+      return queries.updateDays(
+        alarmId = alarm.id,
+        daysOfWeek = 0,
+        timeInMillis = alarm.timeInMillis,
+        isEnabled = false,
+      )
+    }
+
     val updated = alarmComposer.reCompose(alarm, dayToSwitch)
     queries.updateDays(
       alarmId = updated.id,
